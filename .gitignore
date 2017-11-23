@@ -3,7 +3,9 @@
 *.swp
 *.out
 *.dSYM/
+*.DS_Store
 *~
 
 TESTS/
 WATCH
+todo

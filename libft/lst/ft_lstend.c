@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstend.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/06/10 17:42:13 by lportay           #+#    #+#             */
+/*   Updated: 2017/06/10 17:42:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
+/*
+** O(n) complexity
+*/
 
-int main(int ac, char **av, char **env)
+t_list	*ft_lstend(t_list *lst)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
 }

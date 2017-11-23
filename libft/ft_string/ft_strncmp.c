@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/08/24 21:26:43 by lportay           #+#    #+#             */
+/*   Updated: 2017/08/24 21:26:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+int		ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	if (n == 0)
+		return (0);
+	while (*s1 == *s2)
+	{
+		if (*s1++ == '\0' || --n <= 0)
+			return (0);
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

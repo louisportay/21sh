@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_dlstcount.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/01/16 14:53:43 by lportay           #+#    #+#             */
+/*   Updated: 2017/03/17 09:43:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+size_t	ft_dlstcount(t_dlist *dlst)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	size_t nb_maillons;
+
+	nb_maillons = 0;
+	ft_dlsthead(&dlst);
+	while ((dlst = dlst->next))
+		nb_maillons++;
+	return (nb_maillons);
 }

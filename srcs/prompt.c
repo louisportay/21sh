@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/22 11:53:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-
-int main(int ac, char **av, char **env)
+void	print_prompt(t_21sh *env)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	t_hash *ps1;
+
+	if ((ps1 = hashlookup(env->localvar, "PS1")))
+		ft_putstr((char *)ps1->data);
 }

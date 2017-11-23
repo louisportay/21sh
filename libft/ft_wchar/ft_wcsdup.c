@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_wcsdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/03/03 13:10:33 by lportay           #+#    #+#             */
+/*   Updated: 2017/04/25 14:56:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+wchar_t		*ft_wcsdup(const wchar_t *s)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	wchar_t	*tmp;
+	wchar_t	*dest;
+
+	if (!(dest = (wchar_t *)malloc(sizeof(wchar_t) * (ft_wcslen(s) + 1))))
+		return (NULL);
+	tmp = dest;
+	while (*s)
+	{
+		*dest = *s;
+		s++;
+		dest++;
+	}
+	*dest = '\0';
+	return (tmp);
 }

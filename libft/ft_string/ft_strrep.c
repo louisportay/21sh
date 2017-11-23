@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strrep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/05/10 15:36:50 by lportay           #+#    #+#             */
+/*   Updated: 2017/05/10 15:54:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
+/*
+** Delete the old string in str and replace it with a pointer (new_str)
+*/
 
-int main(int ac, char **av, char **env)
+void	ft_strrep(char **str, char *new_str)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	ft_strdel(str);
+	*str = new_str;
 }

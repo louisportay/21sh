@@ -1,22 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   hashclear.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/11/16 16:10:56 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/16 17:19:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
+/*
+** Clear the whole hashtable, even stacked buckets
+*/
 
-int main(int ac, char **av, char **env)
+void	hashclear(t_hash **table, void (*del)(void **))
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	t_hash *tmp;
+	int i;
+
+	i = 0;
+	while (i < HASHSIZE)
+	{
+		if (table[i])
+		{
+			tmp = table[i];
+			while (tmp)
+			{
+				table[i] = table[i]->next;
+				ft_strdel(&tmp->key);
+				(*del)(&tmp->data);
+				free(tmp);
+				tmp = table[i];
+			}
+		}
+		i++;
+	}
 }

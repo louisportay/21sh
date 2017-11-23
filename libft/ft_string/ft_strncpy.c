@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2016/11/04 11:36:50 by lportay           #+#    #+#             */
+/*   Updated: 2017/03/16 19:17:02 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+char	*ft_strncpy(char *dst, const char *src, size_t len)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	char *tmp;
+
+	tmp = dst;
+	while (len > 0 && *src != '\0')
+	{
+		*tmp++ = *src++;
+		len--;
+	}
+	while (len > 0)
+	{
+		*tmp++ = '\0';
+		len--;
+	}
+	return (dst);
 }

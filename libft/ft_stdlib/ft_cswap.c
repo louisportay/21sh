@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_cswap.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/04/25 16:09:18 by lportay           #+#    #+#             */
+/*   Updated: 2017/04/25 16:09:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
-
-
-int main(int ac, char **av, char **env)
+void	ft_cswap(char *a, char *b)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	char tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }

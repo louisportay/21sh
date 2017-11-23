@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/10/23 17:42:31 by lportay           #+#    #+#             */
+/*   Updated: 2017/10/23 17:43:21 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+char	*ft_strcat(char *s1, const char *s2)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	char *tmp;
+
+	tmp = s1;
+	while (*s1)
+		s1++;
+	while (*s2)
+		*s1++ = (unsigned char)*s2++;
+	*s1 = '\0';
+	return (tmp);
 }

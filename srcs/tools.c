@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/11/20 10:48:13 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/20 10:48:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
+/*
+** function written for tputs to output the characters
+*/
 
-int main(int ac, char **av, char **env)
+int		ft_putchar_stdin(int c)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	write(STDIN_FILENO, &c, 1);
+	return (c);
 }

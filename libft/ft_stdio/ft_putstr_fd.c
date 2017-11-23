@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2016/11/07 11:34:41 by lportay           #+#    #+#             */
+/*   Updated: 2017/10/19 16:57:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
+/*
+** Insert the string 's' in the buffer 'buf' and then call write to 'fd'
+** what's remaining in the buffer
+*/
 
-int main(int ac, char **av, char **env)
+void	ft_putstr_fd(int fd, char const *s)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	size_t	i;
+
+	i = ft_strlen(s);
+	write(fd, s, i);
 }

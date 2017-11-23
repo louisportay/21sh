@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2017/10/31 10:49:16 by lportay          ###   ########.fr        #
+#    Updated: 2017/11/23 13:41:24 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,14 @@ INCLUDE= includes/
 vpath %.h $(INCLUDE)
 HEADERS= ft_21sh.h
 
-SRCS= main.c\
+SRCS=	main.c\
+	ft_21sh.c\
+	line.c\
+	error.c\
+	signal.c\
+	lexer.c\
+	tools.c\
+	prompt.c\
 
 OBJ= $(SRCS:%.c=%.o)
 OBJDIR= obj
@@ -40,10 +47,15 @@ LIB= libft.a
 LIBDIR= libft/
 
 NAME=21sh
+
+GREEN="\033[32m"
+RESET="\033[0m"
+
 all: $(LIB) $(NAME)
 
 $(NAME): $(addprefix $(OBJDIR)/, $(OBJ)) $(LIBDIR)$(LIB)
 	$(CC) $(CFLAGS) -o $(NAME) $(addprefix $(OBJDIR)/, $(OBJ)) -L$(LIBDIR) -lft -ltermcap
+	@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
 
 $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
 	$(COMPILE.c) $< -o $@

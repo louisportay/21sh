@@ -1,22 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   str_to_dlst.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/11/23 11:40:48 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/23 12:24:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+t_dlist	*str_to_dlst(char *str)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	t_dlist *lst;
+	unsigned len;
+	char 	*buf;
+
+	if (!str)
+		return (NULL);
+	lst = NULL;
+	len = ft_strlen(str);
+	while (len--)
+	{
+		buf = (char *)malloc(sizeof(char));
+		*buf = str[len];
+		ft_dlstadd(&lst, ft_dlstnewaddr(buf, 1));
+	}
+	ft_dlstadd(&lst, ft_dlstnew("HEAD", 5));
+	return (lst);
 }

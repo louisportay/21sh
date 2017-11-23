@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2016/11/14 11:21:55 by lportay           #+#    #+#             */
+/*   Updated: 2017/05/10 21:40:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+void	ft_lstiter(t_list *lst, void (*f)(t_list *elem))
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	t_list *tmp;
+
+	if (lst && *f)
+	{
+		tmp = lst;
+		while (tmp)
+		{
+			lst = lst->next;
+			(*f)(tmp);
+			tmp = lst;
+		}
+	}
 }

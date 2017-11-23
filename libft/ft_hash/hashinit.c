@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   hashinit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/11/16 15:39:20 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/16 17:31:51 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
+/*
+** Init the whole hashtable depending on the HASHSIZE, every pointer to NULL
+*/
 
-int main(int ac, char **av, char **env)
+void	hashinit(t_hash **table)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	int i;
+
+	i = 0;
+	while (i < HASHSIZE)
+		table[i++] = NULL;
 }

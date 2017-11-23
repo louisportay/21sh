@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/08/28 19:15:52 by lportay           #+#    #+#             */
+/*   Updated: 2017/08/28 19:15:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+int	ft_isspace(int c)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' ||
+			c == '\r')
+		return (1);
 	return (0);
 }

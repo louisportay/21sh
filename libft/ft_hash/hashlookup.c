@@ -1,22 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   hashlookup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/05/16 16:29:53 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/16 16:43:33 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
+/*
+** Search inside the whole table the bucket with the given 'key'
+** Even the stacked buckets are inspected
+** Pointer to the maillon if successful
+** NULL if not
+*/
 
-int main(int ac, char **av, char **env)
+t_hash	*hashlookup(t_hash **table, char *key)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	t_hash *tmp;
+
+	tmp = table[hashindex(key)];
+	while (tmp != NULL)
+	{
+		if (ft_strcmp(key, tmp->key) == 0)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }

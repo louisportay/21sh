@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_dlstaddr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/03/22 14:42:18 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/17 16:21:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+t_dlist	*ft_dlstaddr(t_dlist *dlst, size_t rank)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	ft_dlsthead(&dlst);
+	while (rank-- > 0)
+		dlst = dlst->next;
+	return (dlst);
 }

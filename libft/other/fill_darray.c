@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   fill_darray.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/04/24 19:34:10 by lportay           #+#    #+#             */
+/*   Updated: 2017/04/24 19:35:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+void	fill_darray(int **tab, int lin, int col, int val)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	int i;
+	int j;
+
+	i = 0;
+	while (i < lin)
+	{
+		j = 0;
+		while (j < col)
+			tab[i][j++] = val;
+		i++;
+	}
 }

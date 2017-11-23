@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_stroccur.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2016/11/13 09:46:05 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/16 19:21:16 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+size_t	ft_stroccur(const char *s, char c)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	size_t i;
+
+	if (!s || ft_isprint(c) == 0)
+		return (0);
+	i = 0;
+	while (*s)
+		if (*s++ == c)
+			i++;
+	return (i);
 }

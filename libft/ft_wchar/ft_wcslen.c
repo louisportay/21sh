@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_wcslen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/03/03 13:18:30 by lportay           #+#    #+#             */
+/*   Updated: 2017/04/25 14:55:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+size_t		ft_wcslen(const wchar_t *s)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	wchar_t *i;
+
+	i = (wchar_t *)s;
+	while (*s)
+		s++;
+	return (s - i);
 }

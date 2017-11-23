@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strmatch.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Created: 2017/10/19 15:49:44 by lportay           #+#    #+#             */
+/*   Updated: 2017/10/19 15:50:24 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-
-int main(int ac, char **av, char **env)
+int		ft_strmatch(const char *s1, const char *s2)
 {
-	(void)ac;
-	(void)av;
-	vingtetunsh(env);
-	return (0);
+	int i;
+
+	i = 0;
+	while (*s1 == *s2)
+	{
+		if (*s1++ == '\0')
+			return (i);
+		s2++;
+		i++;
+	}
+	return (i);
 }
