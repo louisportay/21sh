@@ -6,6 +6,9 @@
 *.DS_Store
 *~
 
+
 TESTS/
 WATCH
-todo
+READ
+dump.c
+21sh

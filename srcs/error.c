@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/23 13:21:54 by lportay          ###   ########.fr       */
+/*   Updated: 2017/11/28 16:15:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ void	wrap_exit(int status, t_21sh *env)
 {
 	if (env->line)
 		ft_dlstdel(&env->line, &delvoid);
+	if (env->histlist)
+		del_history(&env->histlist);
+	if (env->histfile)
+		close(env->histfile);
 	if (env->environ)
 	{
 		del_array((void **)env->environ);

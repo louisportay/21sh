@@ -1,33 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_to_dlst.c                                      :+:      :+:    :+:   */
+/*   del_test.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/23 11:40:48 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/28 16:28:13 by lportay          ###   ########.fr       */
+/*   Created: 2017/11/28 10:55:42 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/28 11:08:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_dlist	*str_to_dlst(char *str)
+void	del_test(void *test, size_t test_size)
 {
-	t_dlist 	*lst;
-	unsigned	len;
-	char 		*buf;
-
-	if (!str)
-		return (NULL);
-	lst = NULL;
-	len = ft_strlen(str);
-	while (len--)
-	{
-		buf = (char *)malloc(sizeof(char));
-		*buf = str[len];
-		ft_dlstadd(&lst, ft_dlstnewaddr(buf, 1));
-	}
-	ft_dlstadd(&lst, ft_dlstnew("HEAD", 5));
-	return (lst);
+	(void)test_size;
+	ft_strdel(&((t_utest *)test)->testname);
+	free(test);
 }

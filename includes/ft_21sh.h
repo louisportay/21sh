@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/23 13:44:49 by lportay          ###   ########.fr       */
+/*   Updated: 2017/11/28 16:42:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 # define FT_SH21_H
 
 # include "libft.h"
+# include <sys/ioctl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <termios.h>
 # include <term.h>
-# include <sys/ioctl.h>
 # include <curses.h>
+# include <fcntl.h>
 
 # define NOENVIRON_STR	"Invalid Environment to use with this program.\n"
 # define NOWINDOW_STR	"Couldn't retrieve window attributes.\n"
@@ -28,6 +31,10 @@
 
 # define NODIR_STR		"Error retrieving current directory\n"
 # define NOMEM_STR		"Not enough memory available for dynamic allocation\n"
+
+# define FLAGS	(O_RDWR | O_CREAT)
+
+# define T_HISTENTRY(ptr)	((t_histentry *)ptr)
 
 enum				e_errcode
 {
@@ -42,32 +49,42 @@ enum				e_errcode
 	NOMEM,
 };
 
+struct		s_termcaps
+{
+	char	*le;
+	char	*nd;
+	char	*im;
+	char	*ei;
+	char	*dc;
+};
+
+typedef struct			s_histentry
+{
+	t_dlist		*line;
+	unsigned	index;
+}						t_histentry;
+
 /*
 ** struct termios = 60 bytes
 ** struct winsize = 8 bytes
 */
 
-struct	termcaps
+typedef struct			s_21sh
 {
-	char *le;
-	char *nd;
-	char *im;
-	char *ei;
-	char *dc;
-};
+	t_hash 				*localvar[HASHSIZE];
+	struct termios		tios;
+	struct termios		oldtios;
+	struct s_termcaps	tc;
+	struct winsize		ws;
+	t_dlist				*line;
+	t_dlist				*histlist;
+	int					histindex;
+	char				**environ;
+	int					histfile;
+	bool				line_edition;
+	bool				history;
 
-typedef struct		s_21sh
-{
-	t_hash 			*localvar[HASHSIZE];
-	struct termios	tios;
-	struct termios	oldtios;
-	struct termcaps	tc;
-	struct winsize	ws;
-	t_dlist			*line;
-	char			**environ;
-	bool			line_edition;
-
-}			t_21sh;
+}						t_21sh;
 
 void	vingtetunsh(char **env);
 
@@ -77,25 +94,17 @@ void	wrap_exit(int status, t_21sh *env);
 int		wrap_signal(void);
 void	sig_switch(int signum, t_21sh *env);
 
+int		get_histfile(t_21sh *env);
+void	del_history(t_dlist	**history);
+void	init_hist(t_21sh *env);
+void	dump_history(t_dlist *histlist);
+
 void 	lineread(t_21sh *env);
 void	getrawline(t_21sh *env);
 
 void	print_prompt(t_21sh *env);
 
 int		ft_putchar_stdin(int c);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 enum	e_toktype
 {

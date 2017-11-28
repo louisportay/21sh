@@ -6,32 +6,34 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/23 13:37:03 by lportay          ###   ########.fr       */
+/*   Updated: 2017/11/28 17:22:33 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int	init_local(t_hash **localvar)// peut etre utilise pour reset les variables locales
+static int	init_local(t_21sh *env)// peut etre utilise pour reset les variables locales
 {
 	t_hash *tmp;
 
-	hashclear(localvar, &ft_memdel);
+	hashclear(env->localvar, &ft_memdel);
 	if (!(tmp = hashcreate("PS1", "21sh$ ", 7)))
 		return (NOMEM);
-	hashinsert(localvar, tmp, 0, &ft_memdel);
+	hashinsert(env->localvar, tmp, 0, &ft_memdel);
 	if (!(tmp = hashcreate("PS2", "> ", 7)))
 		return (NOMEM);
-	hashinsert(localvar, tmp, 0, &ft_memdel);
+	hashinsert(env->localvar, tmp, 0, &ft_memdel);
 	if (!(tmp = hashcreate("PS4", "+ ", 7)))
 		return (NOMEM);
-	hashinsert(localvar, tmp, 0, &ft_memdel);
-	if (!(tmp = hashcreate("HISTSIZE", "20", 7)))
+	hashinsert(env->localvar, tmp, 0, &ft_memdel);
+	if (get_histfile(env) == NOMEM)
 		return (NOMEM);
-	hashinsert(localvar, tmp, 0, &ft_memdel);
-	if (!(tmp = hashcreate("HISTFILESIZE", "100", 7)))
+	if (!(tmp = hashcreate("HISTSIZE", "10", 7)))
 		return (NOMEM);
-	hashinsert(localvar, tmp, 0, &ft_memdel);
+	hashinsert(env->localvar, tmp, 0, &ft_memdel);
+	if (!(tmp = hashcreate("HISTFILESIZE", "10", 7)))
+		return (NOMEM);
+	hashinsert(env->localvar, tmp, 0, &ft_memdel);
 	return (SUCCESS);
 }
 
@@ -79,6 +81,22 @@ static void	init_termios(t_21sh *env)
 }
 
 /*
+** mettre les variables dans l'ordre dans lequel elles ont ete declarees
+*/
+//
+
+static void	init_values(t_21sh *env)
+{
+	env->environ = NULL;
+	env->line = NULL;
+	hashinit(env->localvar);
+	env->history = true;
+	env->histfile = 0;
+	env->histlist = NULL;
+	env->histindex = 1;
+}
+
+/*
 ** Changer la gestion de l'acquisition de ligne si pas de TERM -->passer en mode raw
 */
 
@@ -87,11 +105,7 @@ static int	init(t_21sh *env, char **environ)
 	char	*tmp;
 	int		ret;
 
-	env->environ = NULL;
-	env->line = NULL;
-	hashinit(env->localvar);
-	env->line_edition = true;
-
+	init_values(env);
 	if (tcgetattr(STDIN_FILENO, &env->oldtios) == -1 || tcgetattr(STDIN_FILENO, &env->tios) == -1 ||
 		(tmp = getenv("TERM")) == NULL || tgetent(NULL, tmp) == ERR)
 		env->line_edition = false;
@@ -106,8 +120,9 @@ static int	init(t_21sh *env, char **environ)
 		return (NOENVIRON);
 	if ((ret = init_env(env)) != SUCCESS)
 		return (ret);
-	if ((ret = init_local(env->localvar)) != SUCCESS)
+	if ((ret = init_local(env)) != SUCCESS)
 		return (ret);
+	init_hist(env);
 	return (SUCCESS);
 }
 
@@ -119,13 +134,13 @@ void	vingtetunsh(char  **environ)
 	if ((ret = init(&env, environ)) != SUCCESS)
 		fatal_err(ret, &env);
 	sig_switch(0, &env);
+
 	if (env.line_edition == true)
 		while (1)
 			lineread(&env);
 	else
 		while (1)
 			getrawline(&env);
-	
 
-//wrap_exit(EXIT_SUCCESS, &env);
+	wrap_exit(EXIT_SUCCESS, &env);
 }

@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_to_dlst.c                                      :+:      :+:    :+:   */
+/*   exec_all_tests.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/23 11:40:48 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/28 16:28:13 by lportay          ###   ########.fr       */
+/*   Created: 2017/11/28 12:23:35 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/28 12:59:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_dlist	*str_to_dlst(char *str)
+int		exec_all_tests(t_list *lst)
 {
-	t_dlist 	*lst;
-	unsigned	len;
-	char 		*buf;
+	int	ret;
 
-	if (!str)
-		return (NULL);
-	lst = NULL;
-	len = ft_strlen(str);
-	while (len--)
+	ret = 0;
+	while (lst)
 	{
-		buf = (char *)malloc(sizeof(char));
-		*buf = str[len];
-		ft_dlstadd(&lst, ft_dlstnewaddr(buf, 1));
+		if (exec_test((t_utest *)lst->content) == -1)
+			ret = -1;
+		lst = lst->next;
 	}
-	ft_dlstadd(&lst, ft_dlstnew("HEAD", 5));
-	return (lst);
+	return (ret);
 }

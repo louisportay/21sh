@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_to_dlst.c                                      :+:      :+:    :+:   */
+/*   new_test.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/23 11:40:48 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/28 16:28:13 by lportay          ###   ########.fr       */
+/*   Created: 2017/11/28 10:46:37 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/28 11:08:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_dlist	*str_to_dlst(char *str)
-{
-	t_dlist 	*lst;
-	unsigned	len;
-	char 		*buf;
+/*
+** Cree un nouvel element de liste contenant le nom du test
+** et un pointeur sur fonction du test a faire.
+*/
 
-	if (!str)
+t_utest	*new_utest(char *testname, int (*f)(void))
+{
+	t_utest	*elem;
+
+	if (!testname || !f)
 		return (NULL);
-	lst = NULL;
-	len = ft_strlen(str);
-	while (len--)
-	{
-		buf = (char *)malloc(sizeof(char));
-		*buf = str[len];
-		ft_dlstadd(&lst, ft_dlstnewaddr(buf, 1));
-	}
-	ft_dlstadd(&lst, ft_dlstnew("HEAD", 5));
-	return (lst);
+	elem = (t_utest *)malloc(sizeof(t_utest));
+	elem->testname = ft_strdup(testname);
+	elem->testfunc = f;
+	return (elem);
 }

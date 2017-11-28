@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_to_dlst.c                                      :+:      :+:    :+:   */
+/*   load_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/23 11:40:48 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/28 16:28:13 by lportay          ###   ########.fr       */
+/*   Created: 2017/11/28 10:48:51 by lportay           #+#    #+#             */
+/*   Updated: 2017/11/28 11:11:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_dlist	*str_to_dlst(char *str)
+void	load_test(t_list **alst, t_utest *test)
 {
-	t_dlist 	*lst;
-	unsigned	len;
-	char 		*buf;
+	t_list *testinlist;
 
-	if (!str)
-		return (NULL);
-	lst = NULL;
-	len = ft_strlen(str);
-	while (len--)
-	{
-		buf = (char *)malloc(sizeof(char));
-		*buf = str[len];
-		ft_dlstadd(&lst, ft_dlstnewaddr(buf, 1));
-	}
-	ft_dlstadd(&lst, ft_dlstnew("HEAD", 5));
-	return (lst);
+	testinlist = ft_lstnewaddr(test, sizeof (t_utest *));
+	if (!(*alst))
+		*alst = testinlist;
+	else
+		ft_lstaddend(alst, testinlist);
 }

@@ -6,26 +6,27 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2017/11/23 13:41:24 by lportay          ###   ########.fr        #
+#    Updated: 2017/11/28 17:18:12 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY: clean fclean re
-vpath %.c srcs/
-export $(DEBUG)
+.PHONY: clean fclean re all main
+vpath %.c srcs/ libft/
+
+include libft/libfiles.mk
 
 CC= gcc-7 
 DEBUG=sanitize
 OPT=LIB
 ARCH= $(shell uname)
+CFLAGS= -Wall -Wextra -Werror -I $(INCLUDE) -I $(LIBDIR)$(INCLUDE)
 
 ifeq ($(DEBUG), yes)
-	CFLAGS= -Wall -Wextra -Werror -g -I $(INCLUDE) -I $(LIBDIR)$(INCLUDE)
+	CFLAGS+= -g
 else ifeq ($(DEBUG), sanitize)
-	CFLAGS= -Wall -Wextra -Werror -g -fsanitize=address -I $(INCLUDE) -I $(LIBDIR)$(INCLUDE)
-else
-	CFLAGS= -Wall -Wextra -Werror -I $(INCLUDE) -I $(LIBDIR)$(INCLUDE)
+	CFLAGS+= -fsanitize=address
 endif
+
 
 INCLUDE= includes/
 vpath %.h $(INCLUDE)
@@ -39,6 +40,7 @@ SRCS=	main.c\
 	lexer.c\
 	tools.c\
 	prompt.c\
+	history.c\
 
 OBJ= $(SRCS:%.c=%.o)
 OBJDIR= obj
@@ -46,12 +48,13 @@ OBJDIR= obj
 LIB= libft.a
 LIBDIR= libft/
 
-NAME=21sh
+NAME= 21sh
 
 GREEN="\033[32m"
 RESET="\033[0m"
 
 all: $(LIB) $(NAME)
+#ameliorer le linking avec la librairie, eviter d'ouvrir le dossier avec la directive includes
 
 $(NAME): $(addprefix $(OBJDIR)/, $(OBJ)) $(LIBDIR)$(LIB)
 	$(CC) $(CFLAGS) -o $(NAME) $(addprefix $(OBJDIR)/, $(OBJ)) -L$(LIBDIR) -lft -ltermcap
@@ -63,7 +66,10 @@ $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
 $(OBJDIR):
 	-mkdir -p $@
 
-$(LIB): 
+$(LIBDIR)$(LIB):
+	$(MAKE) -C $(LIBDIR)
+
+$(LIB):
 	@$(MAKE) -C $(LIBDIR)
 
 main: $(LIB)
@@ -73,9 +79,7 @@ main: $(LIB)
 clean:
 
 ifeq ($(OPT), LIB)
-	$(MAKE) clean -C $(LIBDIR)
-else
-
+	@$(MAKE) clean -C $(LIBDIR)
 endif
 	-rm -rf $(OBJDIR) 
 	@-rm -f a.out
@@ -85,9 +89,7 @@ endif
 fclean: clean
 
 ifeq ($(OPT), LIB)
-	$(MAKE) fclean -C $(LIBDIR)
-else
-
+	@$(MAKE) fclean -C $(LIBDIR)
 endif		
 	-rm -f $(NAME)
 	@-rm -rf $(NAME).dSYM

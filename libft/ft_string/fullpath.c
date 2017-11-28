@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 09:49:03 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/17 09:50:42 by lportay          ###   ########.fr       */
+/*   Updated: 2017/11/23 14:08:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ char *fullpath(char *dirname, char *basename)
 	char		*fullname;
 	unsigned	len;
 
-	if (!dirname || !basename)
-		return (NULL);
+	if (!dirname)
+		return (ft_strdup(basename));
+ 	if (!basename)
+		return (ft_strdup(dirname));
 	len = ft_strlen(dirname) + ft_strlen(basename) + 2;
 	if (!(fullname = (char *)malloc(sizeof(char) * len)))
 		return (NULL);

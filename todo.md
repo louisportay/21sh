@@ -127,3 +127,4 @@ checker la (g)libC présente sur les macs -- voir si c'est possible d'en mettre 
 
 avoir une fonction qui expand le prompt en fonction des caracteres set
 launch options pour changer l'edition de ligne
+switch qui trigger les bonnes fonctions quand on change l'env ou les localvar

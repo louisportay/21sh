@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/16 19:21:40 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/12 17:50:09 by lportay          ###   ########.fr       */
+/*   Updated: 2017/11/28 10:45:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@
 # include "other.h"
 # include "ft_hash.h"
 # include "ft_btree.h"
+# include "utest.h"
 
 #endif
