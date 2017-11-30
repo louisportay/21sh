@@ -1,6 +1,7 @@
 vpath %.c ft_string/ ft_stdio/ ft_stdlib/ lst/ dlst/ buffer/ ft_ctype/ ft_wchar/ other/ ft_printf/ ft_hash/ ft_btree/ utest/
+vpath %.h includes/
+
 INCLUDE= includes
-vpath %.h $(INCLUDE)
 HEADER= libft.h
 
 CTYPE=	ft_isprint.c\

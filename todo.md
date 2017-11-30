@@ -92,6 +92,10 @@ Alt-T		Swap the current word with the previous
 Ctrl-T		Swap the last two characters (not the current one)
 Ctrl-_		Undo last action to edit the line
 
+CTRL-S stop output to the screen
+CTRL-Q resume the screen output
+CTRL-L clear the screen
+
 *RETURN
 
 

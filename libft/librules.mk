@@ -1,8 +1,3 @@
-$(NAME): $(LIBOBJS)
-		ar rc $@ $?
-		ranlib $@
-		@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
-
 $(PRINTFOBJDIR)/%.o: %.c ft_printf.h $(HEADER) | $(PRINTFOBJDIR)
 	$(COMPILE.c) $< -o $@
 
