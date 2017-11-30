@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2017/11/28 17:18:12 by lportay          ###   ########.fr        #
+#    Updated: 2017/11/30 08:54:56 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,14 +63,16 @@ $(NAME): $(addprefix $(OBJDIR)/, $(OBJ)) $(LIBDIR)$(LIB)
 $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
 	$(COMPILE.c) $< -o $@
 
+include libft/librules.mk
+
 $(OBJDIR):
 	-mkdir -p $@
 
 $(LIBDIR)$(LIB):
 	$(MAKE) -C $(LIBDIR)
 
-$(LIB):
-	@$(MAKE) -C $(LIBDIR)
+#$(LIB):
+#	@$(MAKE) -C $(LIBDIR)
 
 main: $(LIB)
 	$(CC) $(CFLAGS) -o test $(main) -L$(LIBDIR) -lft -ltermcap

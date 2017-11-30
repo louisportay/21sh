@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/28 17:22:33 by lportay          ###   ########.fr       */
+/*   Updated: 2017/11/29 11:21:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,13 +134,13 @@ void	vingtetunsh(char  **environ)
 	if ((ret = init(&env, environ)) != SUCCESS)
 		fatal_err(ret, &env);
 	sig_switch(0, &env);
-
-	if (env.line_edition == true)
-		while (1)
-			lineread(&env);
-	else
-		while (1)
-			getrawline(&env);
+	dump_history(env->histlist->next);
+//	if (env.line_edition == true)
+//		while (1)
+//			lineread(&env);
+//	else
+//		while (1)
+//			getrawline(&env);
 
 	wrap_exit(EXIT_SUCCESS, &env);
 }

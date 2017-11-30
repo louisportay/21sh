@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/25 17:01:50 by lportay           #+#    #+#              #
-#    Updated: 2017/11/28 09:35:13 by lportay          ###   ########.fr        #
+#    Updated: 2017/11/30 08:53:35 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,11 +30,6 @@ GREEN="\033[32m"
 RESET="\033[0m"
 
 all: $(NAME)
-
-$(NAME): $(LIBOBJS)
-		ar rc $@ $?
-		ranlib $@
-		@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
 
 include librules.mk
 
