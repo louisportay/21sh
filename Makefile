@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2017/11/30 09:27:44 by lportay          ###   ########.fr        #
+#    Updated: 2017/11/30 17:32:26 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CC= gcc-7
 CFLAGS= -Wall -Wextra -Werror -I $(INCLUDE) -I $(LIBDIR)$(INCLUDE)
 DEBUG=sanitize
 OPT=LIB
-ARCH= $(shell uname)
+ARCH:= $(shell uname)
 
 ifeq ($(ARCH), Darwin)
 	CC= clang
@@ -56,8 +56,8 @@ RESET="\033[0m"
 
 all: $(LIB) $(NAME)
 
-$(NAME): $(OBJ) $(LIBDIR)$(LIB)
-	$(CC) $(CFLAGS) -o $(NAME) $(addprefix $(OBJDIR)/, $(OBJ)) -L$(LIBDIR) -lft -ltermcap
+$(NAME): $(LIBDIR)$(LIB) $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $(OBJ) -L$(LIBDIR) -lft -ltermcap
 	@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
 
 $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)

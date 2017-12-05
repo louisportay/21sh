@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/28 16:42:00 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/05 12:10:24 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,14 @@
 # define NODIR_STR		"Error retrieving current directory\n"
 # define NOMEM_STR		"Not enough memory available for dynamic allocation\n"
 
-# define FLAGS	(O_RDWR | O_CREAT)
+#define HISTSIZE "10"
+#define HISTFILESIZE "10"
+#define HISTFILE ".21sh_history"
 
 # define T_HISTENTRY(ptr)	((t_histentry *)ptr)
+
+# define DEBUG 	write(STDOUT_FILENO, "DEBUG\n", 6)
+
 
 enum				e_errcode
 {
@@ -49,6 +54,14 @@ enum				e_errcode
 	NOMEM,
 };
 
+enum		e_readcode
+{
+	READON,
+	READERROR,
+	FINISHREAD,
+	EXITSHELL,
+};
+
 struct		s_termcaps
 {
 	char	*le;
@@ -57,6 +70,12 @@ struct		s_termcaps
 	char	*ei;
 	char	*dc;
 };
+
+typedef struct		s_error
+{
+	int 			errno;
+	char 			*errmessage;
+}					t_error;
 
 typedef struct			s_histentry
 {
@@ -86,6 +105,18 @@ typedef struct			s_21sh
 
 }						t_21sh;
 
+/* histlist --> HEAD
+**   			histentry --> line	--> HEAD
+**				...					--> l
+**									--> s
+**									--> ' '
+**									--> -
+**									--> l
+**									--> ...
+**							--> index
+**				dlist
+** dlist		(histentry)
+*/
 void	vingtetunsh(char **env);
 
 void	fatal_err(char errcode, t_21sh *env);
@@ -94,10 +125,13 @@ void	wrap_exit(int status, t_21sh *env);
 int		wrap_signal(void);
 void	sig_switch(int signum, t_21sh *env);
 
-int		get_histfile(t_21sh *env);
-void	del_history(t_dlist	**history);
-void	init_hist(t_21sh *env);
-void	dump_history(t_dlist *histlist);
+void		init_hist(t_21sh *env);
+int			get_histfile(t_21sh *env);
+void		del_history(t_dlist	**history);
+t_histentry	*new_histentry(t_dlist *line, unsigned index);
+void		dump_history(t_dlist *histlist);
+void		trim_history(t_dlist **histlist, t_hash *histsizebucket);
+void		save_history(t_hash **localvar, t_dlist *histlist);
 
 void 	lineread(t_21sh *env);
 void	getrawline(t_21sh *env);
@@ -105,6 +139,8 @@ void	getrawline(t_21sh *env);
 void	print_prompt(t_21sh *env);
 
 int		ft_putchar_stdin(int c);
+
+void	del_histentry(void *histentry, size_t histentrysize);
 
 enum	e_toktype
 {

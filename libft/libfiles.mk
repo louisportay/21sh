@@ -104,6 +104,8 @@ DLST=   ft_dlstadd.c\
 	ft_dlstend.c\
 	ft_dlstinsert.c\
 	str_to_dlst.c\
+	dlst_to_str.c\
+	ft_dlstdup.c\
 
 BUFFER= putc_in_buf.c\
 	putc_in_buf_fd.c\
@@ -142,6 +144,7 @@ HASH=	hashindex.c\
 	hashcreate.c\
 	hashclear.c\
 	hashinit.c\
+	hashaddr.c\
 
 BTREE=	btree_apply.c\
 	btree_create_node.c\

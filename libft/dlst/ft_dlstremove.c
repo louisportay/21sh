@@ -6,13 +6,13 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/04 11:33:26 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/23 12:16:45 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/05 12:17:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		ft_dlstremove(t_dlist **alst, void (*del)(void *, size_t), bool mov)
+void		ft_dlstremove(t_dlist **alst, void (*del)(void *, size_t))
 {
 	t_dlist *tmp;
 
@@ -22,10 +22,7 @@ void		ft_dlstremove(t_dlist **alst, void (*del)(void *, size_t), bool mov)
 		tmp->next = tmp->next->next;
 		ft_dlstdelone(&tmp->next->previous, del);
 		tmp->next->previous = tmp;
-		if (mov == true)	
-			*alst = tmp->next;
-		else
-			*alst = tmp;
+		*alst = tmp;
 	}
 	else if ((*alst)->previous && !(*alst)->next)
 	{

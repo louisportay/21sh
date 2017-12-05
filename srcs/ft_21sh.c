@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/30 08:59:48 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/05 13:27:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ static int	init_local(t_21sh *env)// peut etre utilise pour reset les variables 
 	hashinsert(env->localvar, tmp, 0, &ft_memdel);
 	if (get_histfile(env) == NOMEM)
 		return (NOMEM);
-	if (!(tmp = hashcreate("HISTSIZE", "10", 7)))
+	if (!(tmp = hashcreate("HISTSIZE", HISTSIZE, ft_strlen(HISTSIZE))))
 		return (NOMEM);
 	hashinsert(env->localvar, tmp, 0, &ft_memdel);
-	if (!(tmp = hashcreate("HISTFILESIZE", "10", 7)))
+	if (!(tmp = hashcreate("HISTFILESIZE", HISTFILESIZE, ft_strlen(HISTFILESIZE))))
 		return (NOMEM);
 	hashinsert(env->localvar, tmp, 0, &ft_memdel);
 	return (SUCCESS);
@@ -89,6 +89,7 @@ static void	init_values(t_21sh *env)
 {
 	env->environ = NULL;
 	env->line = NULL;
+	env->line_edition = true;
 	hashinit(env->localvar);
 	env->history = true;
 	env->histfile = 0;
@@ -123,6 +124,7 @@ static int	init(t_21sh *env, char **environ)
 	if ((ret = init_local(env)) != SUCCESS)
 		return (ret);
 	init_hist(env);
+	sig_switch(0, env);
 	return (SUCCESS);
 }
 
@@ -133,11 +135,12 @@ void	vingtetunsh(char  **environ)
 
 	if ((ret = init(&env, environ)) != SUCCESS)
 		fatal_err(ret, &env);
-	sig_switch(0, &env);
-	dump_history(env.histlist->next);
-//	if (env.line_edition == true)
-//		while (1)
-//			lineread(&env);
+
+//	dump_history(env.histlist->next);
+
+	if (env.line_edition == true)
+		while (1)//
+			lineread(&env);
 //	else
 //		while (1)
 //			getrawline(&env);

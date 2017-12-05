@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 16:01:58 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/16 15:01:26 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/02 11:00:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int			hashdel(t_hash **table, char *key, void (*del)(void **));
 void		hashclear(t_hash **table, void (*del)(void **));
 t_hash		*hashlookup(t_hash **table, char *key);
 t_hash		*hashcreate(char *key, void *data, size_t data_size);
+t_hash		*hashaddr(char *key, void *data, size_t data_size);
 
 #endif
