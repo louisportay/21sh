@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/05 13:27:54 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/06 21:44:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@ void	del_histentry(void *histentry, size_t histentrysize)
 
 }
 
+/*
+** Imprimer dans le bon sens pour le built-in `history'
+*/
+//
 void	dump_history(t_dlist *histlist)
 {
 	while (histlist)
@@ -115,10 +119,13 @@ void	save_history(t_hash **localvar, t_dlist *histlist)
 	while (histlist->previous && histfilesize)
 	{
 		s = dlst_to_str(T_HISTENTRY(histlist->content)->line);
-		write(histfile, s, ft_strlen(s));
-		write(histfile, "\n", 1);
+		if (s && isonlywhitespace(s) == false)
+		{
+			write(histfile, s, ft_strlen(s));
+			write(histfile, "\n", 1);
+			histfilesize--;
+		}
 		ft_strdel(&s);
-		histfilesize--;
 		histlist = histlist->previous;
 	}
 	close(histfile);

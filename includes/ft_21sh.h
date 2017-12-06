@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/05 12:10:24 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/06 21:52:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <fcntl.h>
 
 # define NOENVIRON_STR	"Invalid Environment to use with this program.\n"
-# define NOWINDOW_STR	"Couldn't retrieve window attributes.\n"
 # define FAILSETENV_STR "Couldn't set properly the Environment.\n"
 # define FAILSETLOCAL_STR "Couldn't set properly Local Variables.\n"
 # define FAILSETSIGHDLR_STR "Couldn't set properly Sighandlers.\n"
@@ -32,20 +31,28 @@
 # define NODIR_STR		"Error retrieving current directory\n"
 # define NOMEM_STR		"Not enough memory available for dynamic allocation\n"
 
+# define EOT	4
+# define DEL	127
+# define RETURN	'\n'
+# define UP_KEY "\033[A"
+# define DOWN_KEY "\033[B"
+# define RIGHT_KEY "\033[C"
+# define LEFT_KEY "\033[D"
+
 #define HISTSIZE "10"
 #define HISTFILESIZE "10"
 #define HISTFILE ".21sh_history"
 
 # define T_HISTENTRY(ptr)	((t_histentry *)ptr)
 
-# define DEBUG 	write(STDOUT_FILENO, "DEBUG\n", 6)
+# define DEBUG 		write(STDOUT_FILENO, "DEBUG\n", 7)
+# define DEBUG1 	write(STDOUT_FILENO, "DEBUG1\n", 8)
 
 
 enum				e_errcode
 {
 	SUCCESS,
 	NOENVIRON,
-	NOWINDOW,
 	FAILSETENV,
 	FAILSETLOCAL,
 	FAILSETSIGHDLR,
@@ -88,6 +95,8 @@ typedef struct			s_histentry
 ** struct winsize = 8 bytes
 */
 
+//padder correctement
+
 typedef struct			s_21sh
 {
 	t_hash 				*localvar[HASHSIZE];
@@ -96,10 +105,12 @@ typedef struct			s_21sh
 	struct s_termcaps	tc;
 	struct winsize		ws;
 	t_dlist				*line;
+	t_dlist				*lastline;
 	t_dlist				*histlist;
 	int					histindex;
-	char				**environ;
 	int					histfile;
+	char				**environ;
+	unsigned			cursor_offset[2];
 	bool				line_edition;
 	bool				history;
 
@@ -132,15 +143,18 @@ t_histentry	*new_histentry(t_dlist *line, unsigned index);
 void		dump_history(t_dlist *histlist);
 void		trim_history(t_dlist **histlist, t_hash *histsizebucket);
 void		save_history(t_hash **localvar, t_dlist *histlist);
+void		del_histentry(void *histentry, size_t histentrysize);
 
 void 	lineread(t_21sh *env);
 void	getrawline(t_21sh *env);
 
 void	print_prompt(t_21sh *env);
+void	change_cursor_offset(t_21sh *env, int movement);
+
 
 int		ft_putchar_stdin(int c);
+bool	isonlywhitespace(char *str);
 
-void	del_histentry(void *histentry, size_t histentrysize);
 
 enum	e_toktype
 {

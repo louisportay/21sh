@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/05 13:13:54 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/06 21:43:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	dump_err(char errcode)
 {
 	t_error	err[] = {
 		{NOENVIRON, NOENVIRON_STR},
-		{NOWINDOW, NOWINDOW_STR},
 		{FAILSETENV, FAILSETENV_STR},
 		{FAILSETLOCAL, FAILSETLOCAL_STR},
 		{FAILSETSIGHDLR, FAILSETSIGHDLR_STR},
@@ -50,8 +49,8 @@ void		fatal_err(char errcode, t_21sh *env)
 
 void	wrap_exit(int status, t_21sh *env)
 {
-	//ft_dlsthead(&env->line);//
 	if (env->line)
+	//ft_dlsthead(&env->line);//
 		ft_dlstdel(&env->line, &delvoid);
 	if (env->histlist)//faire une fonction dédiée
 	{

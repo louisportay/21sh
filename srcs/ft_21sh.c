@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/05 13:27:40 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/06 22:15:07 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ static int	init_env(t_21sh *env)
 
 static void	init_termios(t_21sh *env)
 {
-	if (env->line_edition == true)
-	{
 		env->tios.c_lflag &= ~(ICANON | ECHO);
 		env->tios.c_cc[VMIN] &= 1;
 		env->tios.c_cc[VTIME] &= 0;
@@ -74,10 +72,8 @@ static void	init_termios(t_21sh *env)
 		env->tc.im = tgetstr("im", NULL);
 		env->tc.ei = tgetstr("ei", NULL);
 		env->tc.dc = tgetstr("dc", NULL);
-		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &env->tios) == -1 ||
-	!env->tc.le || !env->tc.nd || !env->tc.im || !env->tc.ei || !env->tc.dc)
+		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &env->tios) == -1 || !env->tc.le || !env->tc.nd || !env->tc.im || !env->tc.ei || !env->tc.dc)
 			env->line_edition = false;	
-	}
 }
 
 /*
@@ -88,10 +84,14 @@ static void	init_termios(t_21sh *env)
 static void	init_values(t_21sh *env)
 {
 	env->environ = NULL;
-	env->line = NULL;
-	env->line_edition = true;
 	hashinit(env->localvar);
+
+	env->line = NULL;
+	env->lastline = NULL;
+
 	env->history = true;
+	env->line_edition = true;
+
 	env->histfile = 0;
 	env->histlist = NULL;
 	env->histindex = 1;
@@ -108,12 +108,10 @@ static int	init(t_21sh *env, char **environ)
 
 	init_values(env);
 	if (tcgetattr(STDIN_FILENO, &env->oldtios) == -1 || tcgetattr(STDIN_FILENO, &env->tios) == -1 ||
-		(tmp = getenv("TERM")) == NULL || tgetent(NULL, tmp) == ERR)
+		(tmp = getenv("TERM")) == NULL || tgetent(NULL, tmp) == ERR || ioctl(STDIN_FILENO, TIOCGWINSZ, &env->ws) == -1)
 		env->line_edition = false;
-	init_termios(env);
-
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &env->ws) == -1)// changer peut etre ca en changeant la bool pour l edition de ligne
-		return (NOWINDOW);
+	else
+		init_termios(env);
 
 	if (wrap_signal() == FAILSETSIGHDLR)
 		return (FAILSETSIGHDLR);
