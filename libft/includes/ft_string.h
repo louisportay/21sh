@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 15:39:37 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/17 11:05:27 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/09 12:57:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ char	*ft_strexpand(char *str, char c, char *expr);
 char	*ft_basename(char *path);
 char	*ft_dirname(char *path);
 char 	*fullpath(char *dirname, char *basename);
+char	*getpath(char *pathlist, char *exec);
 
 #endif

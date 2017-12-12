@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 17:59:26 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/16 13:44:50 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/09 12:43:24 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	del_array(void **tab)
 {
 	if (tab != NULL)
-	{
 		while (*tab != NULL)
 			ft_memdel(&(*tab++));
-	}
 }

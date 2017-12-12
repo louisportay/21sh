@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:42:15 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/08 18:26:15 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 int main(int ac, char **av, char **env)
 {
 	(void)ac;
-	(void)av;
-	vingtetunsh(env);
+	vingtetunsh(av, env);
 	return (0);
 }

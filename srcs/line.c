@@ -6,60 +6,89 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/06 22:29:03 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/12 23:13:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void clear_line(t_21sh *env, t_dlist *line)
+void clear_line(t_21sh *env)
 {
-	int length;
+	unsigned n_lines;
 
-	length = ft_dlstcount(line);
-	change_cursor_offset(env, -length);
-	while (length)
+	n_lines = env->cursor_offset  / env->ws.ws_col;
+	tputs(env->tc.cr, 1, &ft_putchar_stdin);
+	while (n_lines)
 	{
-		tputs(env->tc.le, 1, &ft_putchar_stdin);
-		tputs(env->tc.dc, 1, &ft_putchar_stdin);
-		length--;
+		tputs(env->tc.up, 1, &ft_putchar_stdin);
+		n_lines--;
 	}
-}
-
-static void	wrap_clear_line(t_21sh *env)
-{
-	if (env->line)
-	{
-		while (env->line->next)
-		{
-			change_cursor_offset(env, 1);
-			tputs(env->tc.nd, 1, &ft_putchar_stdin);
-			env->line = env->line->next;
-		}
-		clear_line(env, env->line);
-		ft_dlsthead(&env->line);
-	}
-	else
-		clear_line(env, T_HISTENTRY(env->histlist->content)->line);
+	tputs(env->tc.cd, 1, &ft_putchar_stdin);
 }
 
 static void	print_line(t_21sh *env, t_dlist *list)
 {
 	while (list)
 	{
-		change_cursor_offset(env, 1);
-		ft_putstr(list->content);
+		env->cursor_offset++;
+		env->line_len++;
+		write(STDOUT_FILENO, list->content, 1);
 		list = list->next;
 	}
 }
+
+void	begin_newline(t_21sh *env)
+{
+	tputs(env->tc.cr, 1, &ft_putchar_stdin);
+	tputs(env->tc.dow, 1, &ft_putchar_stdin);
+}
+
+static void	print_line_again(t_21sh *env, t_dlist *list)
+{
+	while (list)
+	{
+		env->cursor_offset++;
+		write(STDOUT_FILENO, list->content, 1);
+		list = list->next;
+	}
+}
+
 /*
-** first `if' --> Will modify the current history entry if the return key is not pressed
-** and if up_key or down_key is triggered
+** Called when the window size changes and for CTRL-L trigger
 */
 
+void	redraw_line(t_21sh *env)
+{
+	env->cursor_offset = 0;
+	print_prompt(env);
+	if (env->line)
+	{
+		ft_dlsthead(&env->line);
+		print_line_again(env, env->line->next);
+		ft_dlstend(&env->line);
+	}
+	else
+		print_line_again(env, T_HISTENTRY(env->histlist->content)->line->next);
+	if (env->line_len == env->ws.ws_col)
+		begin_newline(env);
+}
+
+/*
+** These 2 functions will print the histentry before loading them to be changed.
+** They're changed when the user do something else than scrolling with UP and
+** and DOWN KEYS. (See `user_input' first condition)
+** It will update the current history entry if it has been changed and if the
+** return key has not been pressed (and if UP_KEY or DOWN_KEY has been triggered
+*/
+ 
 static void	up_key(t_21sh *env)
 {
-	wrap_clear_line(env);
+	clear_line(env);
+	env->cursor_offset = 0;
+	print_prompt(env);
+	env->line_len = env->cursor_offset;
+	if (env->line)
+		ft_dlsthead(&env->line);
 	if (env->histlist->previous && env->line && env->line != env->lastline)
 	{
 		ft_dlstdel(&T_HISTENTRY(env->histlist->content)->line, &delvoid);
@@ -67,12 +96,19 @@ static void	up_key(t_21sh *env)
 	}
 	env->histlist = env->histlist->next;
 	print_line(env, T_HISTENTRY(env->histlist->content)->line->next);
+	if (env->line_len == env->ws.ws_col)
+		begin_newline(env);
 	env->line = NULL;
 }
 
 static void	down_key(t_21sh *env)
 {
-	wrap_clear_line(env);
+	clear_line(env);
+	env->cursor_offset = 0;
+	print_prompt(env);
+	env->line_len = env->cursor_offset;
+	if (env->line)
+		ft_dlsthead(&env->line);
 	if (env->histlist->previous && env->line && env->line != env->lastline)
 	{
 		ft_dlstdel(&T_HISTENTRY(env->histlist->content)->line, &delvoid);
@@ -90,7 +126,40 @@ static void	down_key(t_21sh *env)
 		print_line(env, T_HISTENTRY(env->histlist->content)->line->next);
 		env->line = NULL;
 	}
+	if (env->line_len == env->ws.ws_col)
+		begin_newline(env);
 }
+
+void	move_cursor_forward(t_21sh *env)
+{
+		env->cursor_offset++;
+		if (!(env->cursor_offset % env->ws.ws_col))
+			begin_newline(env);
+		else
+			tputs(env->tc.nd, 1, &ft_putchar_stdin);
+}
+
+void	move_cursor_backward(t_21sh *env)
+{
+	char *tmp;
+
+	if (!(env->cursor_offset % env->ws.ws_col))
+	{
+		tputs(env->tc.up, 1, &ft_putchar_stdin);
+		write(STDIN_FILENO, ESC"[", 2);
+		tmp = ft_itoa(env->ws.ws_col);
+		ft_putstr_fd(STDIN_FILENO, tmp);
+		write(STDIN_FILENO, "C", 1);
+		free(tmp);
+	}
+	else
+		tputs(env->tc.le, 1, &ft_putchar_stdin);
+	env->cursor_offset--;
+}
+
+/*
+** HUGE switch for user input
+*/
 
 static int	user_input(char *buf, t_21sh *env)
 {
@@ -99,51 +168,52 @@ static int	user_input(char *buf, t_21sh *env)
 		env->line = ft_dlstdup(T_HISTENTRY(env->histlist->content)->line);
 		ft_dlstend(&env->line);
 	}
-	if (buf[0] == RETURN)
+	if (*buf == RETURN)
 	{
 		if (env->line && ft_dlstaddr(env->line, 0) != env->lastline)
 			ft_dlstdel(&env->lastline, &delvoid);
 		return (FINISHREAD);
 	}
-	else if (buf[0] == EOT && ft_dlstcount(env->line) == 0)
+	else if (*buf == EOT && !ft_dlstcount(env->line))
 		return (EXITSHELL);
-	else if (buf[0] == 'd')//dump some information
+//	else if (*buf == '@')		//dump some information
+//	{
+//		if (env->multiline == true)
+//			DEBUG;
+//		printf("line_len %zu\n", env->line_len);
+//		printf("ws_col %d\n", env->ws.ws_col);
+//		printf("\n\noffset = %zu\nrow =%zu\ncol = %zu\nSYSCOL = %d\n", env->cursor_offset, env->cursor_offset / env->ws.ws_col, env->cursor_offset % env->ws.ws_col, env->ws.ws_col);
+	//	printf("%d\n", env->ws.ws_col);
+//	}
+	else if (*buf == CTRL_L)
 	{
-//		tputs(tgetstr("up", NULL), 1, &ft_putchar_stdin);//go the line up
-		printf("\n[0] =%d\n[1] = %d\n", env->cursor_offset[0], env->cursor_offset[1]);
+		tputs(env->tc.cl, 1, &ft_putchar_stdin);
+		redraw_line(env);
 	}
-	else if (ft_isprint(buf[0]))
+	else if (ft_isprint(*buf))
 	{
-		change_cursor_offset(env, 1);
-		write(STDOUT_FILENO, &buf[0], 1);
+		write(STDOUT_FILENO, &(*buf), 1);
+		tputs(env->tc.le, 1, &ft_putchar_stdin);
+		move_cursor_forward(env);
+		env->line_len++;
 		ft_dlstinsert(env->line, ft_dlstnew(buf, 1));
 		env->line = env->line->next;
 	}
-	else if (buf[0] == DEL && env->line->previous)
+	else if (*buf == DEL && env->line->previous)
 	{
-		change_cursor_offset(env, -1);
-		tputs(env->tc.le, 1, &ft_putchar_stdin);
+		move_cursor_backward(env);
+		env->line_len--;
 		tputs(env->tc.dc, 1, &ft_putchar_stdin);
 		ft_dlstremove(&env->line, &delvoid);
 	}
 	else if (!ft_strncmp(buf, LEFT_KEY, 4) && env->line->previous)
 	{
-		if (env->cursor_offset[0] == 0 && env->cursor_offset[1] > 0)
-		{
-			env->cursor_offset[0] = env->ws.ws_col - 1;
-			env->cursor_offset[1]--;
-		}
-		else
-		{
-			tputs(env->tc.le, 1, &ft_putchar_stdin);
-			change_cursor_offset(env, -1);
-		}
+		move_cursor_backward(env);
 		env->line = env->line->previous;
 	}
-	else if (!ft_strncmp(buf, RIGHT_KEY, 4) && env->line->next)//modifier tout ca avec l'offset et tout
+	else if (!ft_strncmp(buf, RIGHT_KEY, 4) && env->line->next)
 	{
-		change_cursor_offset(env, 1);
-		tputs(env->tc.nd, 1, &ft_putchar_stdin);
+		move_cursor_forward(env);
 		env->line = env->line->next;
 	}
 	else if (!ft_strncmp(buf, UP_KEY, 4) && env->histlist->next)
@@ -157,6 +227,7 @@ static int	user_input(char *buf, t_21sh *env)
 //		write(STDOUT_FILENO, "CTRL-W\n", 8);
 //	else if (!ft_strncmp(buf, "\t", 1))
 		//	autocompletion
+
 	return (READON);
 }
 
@@ -171,6 +242,14 @@ static void	add_histentry(t_21sh *env)
 		ft_dlstdel(&env->line, &delvoid);
 }
 
+void	update_linemode(t_21sh *env)
+{
+	if (env->multiline == true && env->line_len < env->ws.ws_col)
+		env->multiline = false;
+	else if (env->multiline == false && env->line_len >= env->ws.ws_col)
+		env->multiline = true;
+}
+
 void	lineread(t_21sh *env)
 {
 	int		status;
@@ -179,13 +258,15 @@ void	lineread(t_21sh *env)
 	status = READON;
 	env->line = ft_dlstnew("HEAD", 5);
 	env->lastline = env->line;
-	env->cursor_offset[0] = 0;
-	env->cursor_offset[1] = 0;
-
+	env->cursor_offset = 0;
+	env->multiline = false;
 	print_prompt(env);
+	env->line_len = env->cursor_offset;
+
 	tputs(env->tc.im, 1, &ft_putchar_stdin);
 	while (status == READON)
 	{
+		update_linemode(env);
 		ft_bzero(buf, 4);
 		if (read(STDIN_FILENO, buf, 4) == -1)
 			status = READERROR;
@@ -203,33 +284,13 @@ void	lineread(t_21sh *env)
 	else if (status == EXITSHELL)
 		wrap_exit(EXIT_SUCCESS, env);
 //	else if (status == FINISHREAD)
-//		we're all done!
+//		we're all done! add histentry and return
 
 	//DEBUG//
 	write(1, "\n", 1);//
 	print_line(env, env->line->next);//print what's retrieved
 	write(1, "\n", 1);//
 	/////////
+
 	add_histentry(env);
-}
-
-void	getrawline(t_21sh *env)
-{
-	char *tmp;
-
-	print_prompt(env);
-	if (get_next_line(STDIN_FILENO, &tmp) == -1)
-		fatal_err(FAILREAD, env);
-	if (!tmp)
-		wrap_exit(EXIT_SUCCESS, env);
-	env->line = str_to_dlst(tmp);
-	ft_strdel(&tmp);
-
-	//DEBUG//
-	write(1, "\n", 1);//
-	print_line(env, env->line->next);//
-	write(1, "\n", 1);//
-	/////////
-	
-	ft_dlstdel(&env->line, &delvoid);
 }

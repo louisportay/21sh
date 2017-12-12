@@ -6,18 +6,22 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 19:03:35 by lportay           #+#    #+#             */
-/*   Updated: 2016/11/10 17:10:33 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/09 19:09:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+/*
+** man 3 strstr
+*/
 
 char	*ft_strstr(const char *big, const char *little)
 {
 	char *tmp_b;
 	char *tmp_l;
 
-	if (ft_strlen(little) == 0 || big == little)
+	if (!ft_strlen(little) || big == little)
 		return ((char *)big);
 	while (*big)
 	{

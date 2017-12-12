@@ -154,16 +154,17 @@ gestion d'alias ?
 shell script ?
 --> si oui, reserved words
 
-
-Regarder le code de Hotrace (et l'algo de hash)
-GIT Clone le minishell et mettre a jour github si VGS + recent
-checker la (g)libC présente sur les macs -- voir si c'est possible d'en mettre une plus recente et de linker avec
-
-
 avoir une fonction qui expand le prompt en fonction des caracteres set
 launch options pour changer l'edition de ligne
 'aliases' are handled during line edition, not when executed
 switch qui trigger les bonnes fonctions quand on change l'env ou les localvar
 
-Avoir différentes listes pour l'autocompletion (Variables locales, Variables d'env, Dossiers ouvrables, fichiers du répertoire courant...)
+Avoir différentes listes pour l'autocompletion (Variables locales, Variables d'env, Dossiers ouvrables, fichiers du répertoire courantm binaires trouves dans le PATH...)
 history builtin (OPT: [n] + -c)
+
+
+Si tu es un mec tres chaud, ajouter des dependances au prompt et a certaines parties du programme pour qu'elles ne soient mises a jour que si tel evenement est trigger... alors oui mais non en fait tu as pas le temps
+
+Lire un fichier de config pour set des trucs eventuellement
+passer des options au lancement pour ne pas lire ce fichier ou etre en mode raw
+builtin pour switcher du mode normal au mode raw et inversement si c'est possible

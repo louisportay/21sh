@@ -43,6 +43,7 @@ STRING=	ft_bzero.c\
 	ft_basename.c\
 	ft_dirname.c\
 	fullpath.c\
+	getpath.c\
 
 STDLIB=	ft_bwidth.c\
 	ft_itoa.c\

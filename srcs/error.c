@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/06 21:43:36 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/09 17:44:38 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,20 @@
 
 static void	dump_err(char errcode)
 {
-	t_error	err[] = {
-		{NOENVIRON, NOENVIRON_STR},
-		{FAILSETENV, FAILSETENV_STR},
-		{FAILSETLOCAL, FAILSETLOCAL_STR},
-		{FAILSETSIGHDLR, FAILSETSIGHDLR_STR},
-		{FAILREAD, FAILREAD_STR},
-		{NODIR, NODIR_STR},
-		{NOMEM, NOMEM_STR},
-		{0, NULL}
-	};
+	t_keyval err[6];
 	int 	i;
 
+	err[0] = KEY_VAL(NOENVIRON, NOENVIRON_STR);
+	err[1] = KEY_VAL(NOMEM, NOMEM_STR);
+	err[2] = KEY_VAL(NODIR, NODIR_STR);
+	err[3] = KEY_VAL(FAILSETSIGHDLR, FAILSETSIGHDLR_STR);
+	err[4] = KEY_VAL(FAILREAD, FAILREAD_STR);
+	err[5] = KEY_VAL(0, NULL);
 	i = 0;
-	while (errcode != err[i].errno && err[i].errno)
+	while (errcode != err[i].key && err[i].key)
 		i++;
-	if (err[i].errno)
-		ft_putstr(err[i].errmessage);
+	if (err[i].key)
+		ft_putstr(err[i].val);
 }
 
 /*

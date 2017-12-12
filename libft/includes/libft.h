@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/16 19:21:40 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/28 10:45:26 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/12 19:29:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,17 @@
 # include "ft_hash.h"
 # include "ft_btree.h"
 # include "utest.h"
+
+# define KEY_VAL(KEY, VAL) (t_keyval){.val = VAL, .key = KEY}
+
+/*
+** The 'val' field is first because of padding
+*/
+
+typedef struct	s_keyval
+{
+	char 		*val;
+	int 		key;
+}				t_keyval;
 
 #endif

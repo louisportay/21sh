@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 17:59:02 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/13 17:23:59 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/09 13:11:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 ** in the 'env' array
 */
 
-static int	modify_env(char *tmp, const char *value, int overwrite,
-char **tmp_env)
+static int	modify_env(char *tmp, const char *value, int ow, char **tmp_env)
 {
 	int len;
 
@@ -26,7 +25,7 @@ char **tmp_env)
 	while (*tmp_env)
 		if (ft_strncmp(tmp, *tmp_env++, len) == 0)
 		{
-			if (overwrite != 0)
+			if (ow != 0)
 				ft_strrep(--tmp_env, ft_strjoin(tmp, value));
 			ft_strdel(&tmp);
 			return (0);
@@ -34,8 +33,7 @@ char **tmp_env)
 	return (1);
 }
 
-int			ft_setenv(const char *name, const char *value, int overwrite,
-char ***env)
+int			ft_setenv(const char *name, const char *value, int ow, char ***env)
 {
 	size_t	cells;
 	char	**tmp_env;
@@ -45,7 +43,7 @@ char ***env)
 	cells = 0;
 	tmp_env = *env;
 	tmp = ft_strjoin(name, "=");
-	if (modify_env(tmp, value, overwrite, tmp_env) == 0)
+	if (modify_env(tmp, value, ow, tmp_env) == 0)
 		return (0);
 	while (*tmp_env++)
 		cells++;

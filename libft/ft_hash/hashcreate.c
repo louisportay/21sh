@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/10 19:18:35 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/16 16:29:09 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/08 09:02:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_hash	*hashcreate(char *key, void *data, size_t data_size)
 		bucket->data_size = 0;
 		return (bucket);
 	}
-	if (!(tmp = (char *)malloc(data_size)))
+	if (!(tmp = (char *)malloc(sizeof(char) * data_size)))
 		return (NULL);
 	ft_memcpy(tmp, data, data_size);
 	bucket->data = tmp;

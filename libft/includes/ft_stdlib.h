@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:49:08 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/17 16:35:17 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/09 13:11:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ int		ft_lwidth(long nb);
 size_t	ft_bwidth(unsigned long value, int base);
 int		**ft_darray(int lin, int col);
 char	*ft_getenv(const char *name, char **env);
-int		ft_setenv(const char *name, const char *value,
-int		overwrite, char ***env);
+int		ft_setenv(const char *name, const char *value, int ow, char ***env);
 int		ft_unsetenv(const char *name, char ***env);
 char	**ft_copyenv(char **env);
 

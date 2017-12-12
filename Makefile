@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2017/11/30 17:32:26 by lportay          ###   ########.fr        #
+#    Updated: 2017/12/11 10:27:22 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRCS=	main.c\
 		tools.c\
 		prompt.c\
 		history.c\
+		rawline.c\
 
 #OBJ= $(SRCS:%.c=%.o)
 OBJDIR= obj
