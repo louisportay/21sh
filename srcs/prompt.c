@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/12 20:29:25 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/14 12:56:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,15 @@ static void	d_flag(t_21sh *env)
 
 static void	h_flag(t_21sh *env)
 {
-	char	hostname[HOST_NAME_MAX];
+	char	hostname[CUSTOM_HOST_NAME_MAX];
 
-	if (gethostname(hostname, HOST_NAME_MAX) == 0)
+	if (gethostname(hostname, CUSTOM_HOST_NAME_MAX) == 0)
 		print_flag(env, hostname);
 }
+
+//		printf("%d\n", _POSIX_HOST_NAME_MAX);
+//	printf("%d\n", HOST_NAME_MAX);
+//	printf("%d\n", CUSTOM_HOST_NAME_MAX);
 
 /*
 ** TTY name flag

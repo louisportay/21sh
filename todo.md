@@ -35,11 +35,15 @@ ft-sh3
 #Edition de ligne au niveau du curseur
 #bouger à gauche et à droite
 
+Keys to catch
+=============
+
 #UP-KEY ou CTRL-P
 #DOWN-KEY ou CTRL-N
 #CTRL-O	run the command
 #CTRL-B letter back
 #CTRL-F letter forward
+#CTRL-haut, CTRL-bas (pour changer de ligne) quand on edite sur plusieurs lignes
 
 builtin `history`, avec des options pour modifier le comportement
 *CTRL-R	(navigating history, while you're typing)
@@ -47,9 +51,9 @@ builtin `history`, avec des options pour modifier le comportement
 
 *ALT-R	Revert changes made to a command pulled from the history __NOPE__
 
-CTRL-haut, CTRL-bas (pour changer de ligne) quand on edite sur plusieurs lignes
 CTRL-left pour aller d'un mot a gauche
 CTRL-right pour aller d'un mot à droite
+
 HOME et END pour respectivement le debut et la fin de ligne
 
 CTRL-SHIFT-C Copier
@@ -69,10 +73,6 @@ Alt-C	Capitalize the character under the cursor and move the cursor to the end o
 !# (where # is a number) execute the #nth command in histlist
 !abc (where abc is a string)	execute the last command beginning with 'abc'
 (:p) 	add this after a `bang` expression, it will print the command rather than executing it
-
-
-Keys to catch
-=============
 
 *CTRL-W (erase a word, put it in the clipboard)
 *CTRL-K (cut the line from the cursor 'til the end)

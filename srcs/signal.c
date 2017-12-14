@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 12:04:12 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/12 23:12:17 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/14 10:42:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 /*
 ** Définir les comportements pour chaque signal
+** SIGINT reaffiche le prompt et kill les process en cours
 */
 
 void		sig_switch(int signum, t_21sh *envaddr)

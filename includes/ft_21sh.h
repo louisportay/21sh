@@ -6,12 +6,12 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 10:09:35 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/14 12:56:04 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_21SH_H
-# define FT_SH21_H
+# define FT_21SH_H
 
 # include "libft.h"
 # include <sys/ioctl.h>
@@ -34,10 +34,10 @@
 
 # define READBUF 6
 
-# define EOT	4
 # define DEL	127
 # define RETURN	'\n'
 # define C_B '\002'
+# define C_D '\004'
 # define C_F '\006'
 # define C_L '\f'	// '\014'
 # define C_N '\016'
@@ -63,6 +63,15 @@
 #define HISTSIZE "30"
 #define HISTFILESIZE "20"
 #define HISTFILE ".21sh_history"
+
+# define PREVIOUS 0
+# define CURRENT 1
+
+#ifdef __linux__
+# define CUSTOM_HOST_NAME_MAX HOST_NAME_MAX
+#elif __APPLE__
+# define CUSTOM_HOST_NAME_MAX _POSIX_HOST_NAME_MAX
+#endif
 
 /*
 ** This must be $(NAME) in the makefile
@@ -111,7 +120,8 @@ struct		s_termcaps
 	char	*dow;
 	char	*cl;
 	char	*cd;
-//	char	*cm;
+	char	*sc;
+	char	*rc;
 };
 
 /*

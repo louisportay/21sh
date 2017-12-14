@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 10:16:48 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/14 11:21:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,9 @@ static void	init_termios(t_21sh *env)
 		env->tc.dow = tgetstr("do", NULL);//	cursor go one line down
 		env->tc.cl = tgetstr("cl", NULL);//		clear the screen
 		env->tc.cd = tgetstr("cd", NULL);//		clear the line from the cursor until the end of screen
+		env->tc.sc = tgetstr("sc", NULL);//		save cursor position
+		env->tc.rc = tgetstr("rc", NULL);//		restore cursor position
+
 		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &env->tios) == -1 || !env->tc.le || !env->tc.nd || !env->tc.im || !env->tc.ei || !env->tc.dc || !env->tc.cr || !env->tc.up || !env->tc.dow || !env->tc.cl || !env->tc.cd)
 			env->line_edition = false;	
 }

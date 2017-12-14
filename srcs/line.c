@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 10:37:20 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/14 13:03:38 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,12 +182,12 @@ void	move_cursor_backward(t_21sh *env)
 void	insert_char_multiline(char *buf, t_21sh *env)
 {
 	tputs(env->tc.cd, 1, &ft_putchar_stdin);
-	tputs(tgetstr("sc", NULL), 1, &ft_putchar_stdin);
+	tputs(env->tc.sc, 1, &ft_putchar_stdin);
 	env->line_len++;
 	ft_dlstinsert(env->line, ft_dlstnew(buf, 1));
 	env->line = env->line->next;
 	print_rest_of_line(env->line);
-	tputs(tgetstr("rc", NULL), 1, &ft_putchar_stdin);
+	tputs(env->tc.rc, 1, &ft_putchar_stdin);
 	move_cursor_forward(env);
 }
 
@@ -235,6 +235,27 @@ void	update_linemode(t_21sh *env)
 		env->multiline = true;
 }
 
+//Hello
+
+void	del_char_multiline(t_21sh *env, bool flag)
+{
+	(void)env;
+	(void)flag;
+}
+
+void	del_char(t_21sh *env, bool flag)
+{
+	if (env->multiline)
+		return (del_char_multiline(env, flag));
+	if (flag == PREVIOUS)
+		move_cursor_backward(env);
+	else if (flag == CURRENT)
+		env->line = env->line->next;
+	env->line_len--;
+	tputs(env->tc.dc, 1, &ft_putchar_stdin);
+	ft_dlstremove(&env->line, &delvoid);
+}
+
 /*
 ** HUGE switch for user input
 */
@@ -256,8 +277,13 @@ static int	user_input(char *buf, t_21sh *env)
 			ft_dlstdel(&env->lastline, &delvoid);
 		return (FINISHREAD);
 	}
-	else if (*buf == EOT && !ft_dlstcount(env->line))
-		return (EXITSHELL);
+	else if (*buf == C_D)
+	{
+		if (!ft_dlstcount(env->line))
+			return (EXITSHELL);
+		else if (env->emacs_mode && env->line->next)
+				del_char(env, CURRENT);
+	}
 //	else if (*buf == '@')		//dump some information
 //		tputs(env->tc.dow, 1, &ft_putchar_stdin);
 //	{
@@ -283,13 +309,8 @@ static int	user_input(char *buf, t_21sh *env)
 	}
 	else if (ft_isprint(*buf) && env->multiline == true)
 		insert_char_multiline(buf, env);
-	else if (*buf == DEL && env->line->previous)//add other keystrokes to delete (CTRL_D qui va supprimer le current char, faire un del multiline
-	{
-		move_cursor_backward(env);
-		env->line_len--;
-		tputs(env->tc.dc, 1, &ft_putchar_stdin);
-		ft_dlstremove(&env->line, &delvoid);
-	}
+	else if (*buf == DEL && env->line->previous) //add other keystrokes to delete
+			del_char(env, PREVIOUS);
 	else if ((!ft_strncmp(buf, LEFT_KEY, 4) || (*buf == C_B && env->emacs_mode)) && env->line->previous)
 	{
 		move_cursor_backward(env);
@@ -339,11 +360,9 @@ static void	add_histentry(t_21sh *env)
 
 void	move_cursor_end_of_line(t_21sh *env)
 {
-//	ft_printf("\033[%dB", env->num_lines - env->cursor_line);
 	move_cursor_n_lines(env->num_lines - env->cursor_line);
 	tputs(env->tc.cr, 1, &ft_putchar_stdin);
 	move_cursor_n_columns(env->line_len % env->ws.ws_col);
-//	ft_printf("\033[%ldC", env->line_len % env->ws.ws_col);
 }
 
 //change lineread return *eventually*
