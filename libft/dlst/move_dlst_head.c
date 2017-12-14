@@ -1,18 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   move_dlst_head.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/24 16:31:24 by lportay           #+#    #+#             */
-/*   Updated: 2017/04/25 16:57:02 by lportay          ###   ########.fr       */
+/*   Created: 2017/12/13 19:49:37 by lportay           #+#    #+#             */
+/*   Updated: 2017/12/14 09:49:08 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		abs(int x)
+int		move_dlst_head(t_dlist **dlist, int movement)
 {
-	return ((x < 0) ? -x : x);
+	if (!movement)
+		return (movement);
+	if (movement > 0)
+		while ((*dlist)->next && movement)
+		{
+			*dlist = (*dlist)->next;
+			movement--;
+		}
+	else
+		while ((*dlist)->previous && movement)
+		{
+			*dlist = (*dlist)->previous;
+			movement++;
+		}
+	return (movement);
 }

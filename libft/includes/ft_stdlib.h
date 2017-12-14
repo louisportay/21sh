@@ -6,14 +6,14 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:49:08 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/09 13:11:44 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/13 22:44:07 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_STDLIB_H
 # define FT_STDLIB_H
 
-int		abs(int x);
+int		abs(int j);
 int		ft_atoi(const char *str);
 int		ft_atoi_base(char *str, int base);
 char	*ft_itoa(long n);

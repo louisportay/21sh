@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/24 21:53:15 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/05 12:18:21 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/13 20:03:23 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ void				ft_dlstinsert(t_dlist *previous, t_dlist *between);
 t_dlist				*str_to_dlst(char *str);
 char				*dlst_to_str(t_dlist *dlst);
 t_dlist				*ft_dlstdup(t_dlist *dlst);
+int					move_dlst_head(t_dlist **dlist, int movement);
 
 #endif

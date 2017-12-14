@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/12 20:25:15 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/14 10:16:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,6 @@ static void	init_termios(t_21sh *env)
 		env->tc.dow = tgetstr("do", NULL);//	cursor go one line down
 		env->tc.cl = tgetstr("cl", NULL);//		clear the screen
 		env->tc.cd = tgetstr("cd", NULL);//		clear the line from the cursor until the end of screen
-										//	ce	clear the line from the cursor until the end of line
 		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &env->tios) == -1 || !env->tc.le || !env->tc.nd || !env->tc.im || !env->tc.ei || !env->tc.dc || !env->tc.cr || !env->tc.up || !env->tc.dow || !env->tc.cl || !env->tc.cd)
 			env->line_edition = false;	
 }
@@ -167,6 +166,7 @@ static void	init_values(t_21sh *env)
 	env->histindex = 1;
 
 	env->prompt_mode = 1;
+	env->emacs_mode = true;
 }
 
 static int	init(t_21sh *env, char **av, char **environ)
@@ -209,6 +209,5 @@ void	vingtetunsh(char **av, char  **environ)
 //	else
 //		while (1)
 //			getrawline(&env);
-
 	wrap_exit(EXIT_SUCCESS, &env);
 }

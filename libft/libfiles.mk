@@ -55,7 +55,7 @@ STDLIB=	ft_bwidth.c\
 	ft_fswap.c\
 	ft_cswap.c\
 	ft_lwidth.c\
-	ft_abs.c\
+	abs.c\
 	ft_darray.c\
 	ft_getenv.c\
 	ft_setenv.c\
@@ -107,6 +107,7 @@ DLST=   ft_dlstadd.c\
 	str_to_dlst.c\
 	dlst_to_str.c\
 	ft_dlstdup.c\
+	move_dlst_head.c\
 
 BUFFER= putc_in_buf.c\
 	putc_in_buf_fd.c\

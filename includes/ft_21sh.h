@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/12 22:01:15 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/14 10:09:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,36 @@
 # define NODIR_STR		"Error retrieving current directory\n"
 # define NOMEM_STR		"Not enough memory available for dynamic allocation\n"
 
+# define READBUF 6
+
 # define EOT	4
 # define DEL	127
 # define RETURN	'\n'
-# define CTRL_L '\f'
+# define C_B '\002'
+# define C_F '\006'
+# define C_L '\f'	// '\014'
+# define C_N '\016'
+# define C_O '\017'
+# define C_P '\020'
+# define C_R '\022'
+
+# define ESC	"\033"
+
 # define UP_KEY "\033[A"
 # define DOWN_KEY "\033[B"
 # define RIGHT_KEY "\033[C"
 # define LEFT_KEY "\033[D"
 
-# define ESC	"\033"
+# define C_UP "\E[1;5A"
+# define C_DOWN "\E[1;5B"
 
-# define PS1 "=\\s=$ "
+# define PS1  "=\\s=$ "//"SUPERFUCKINGREALLYLONGPROMPT$ "
 # define PS2 "> "
 # define PS3 ""
 # define PS4 "+ "
 
-#define HISTSIZE "10"
-#define HISTFILESIZE "10"
+#define HISTSIZE "30"
+#define HISTFILESIZE "20"
 #define HISTFILE ".21sh_history"
 
 /*
@@ -85,6 +97,8 @@ enum		e_readcode
 	EXITSHELL,
 };
 
+//regrouper les termcaps logiquement
+
 struct		s_termcaps
 {
 	char	*le;
@@ -97,6 +111,7 @@ struct		s_termcaps
 	char	*dow;
 	char	*cl;
 	char	*cd;
+//	char	*cm;
 };
 
 /*
@@ -123,8 +138,11 @@ typedef struct			s_21sh
 	int					histfile;
 	size_t				cursor_offset;	// number of lines by (cursor_offset / ws_col) col number by (cursor_offset % ws_col)
 	size_t				line_len;		// include the prompt len
+	unsigned			cursor_line;
+	unsigned			num_lines;
 	char 				prompt_mode;
 	bool				multiline;
+	bool				emacs_mode;
 
 	bool				line_edition;
 	bool				history;
@@ -179,7 +197,7 @@ void		trim_history(t_dlist **histlist, t_hash *histsizebucket);
 void		save_history(t_hash **localvar, t_dlist *histlist);
 void		del_histentry(void *histentry, size_t histentrysize);
 
-void 	lineread(t_21sh *env);
+void	lineread(t_21sh *env);
 void	getrawline(t_21sh *env);
 
 void	clear_line(t_21sh *env);

@@ -4,11 +4,10 @@ Fonctions à implémenter
 *Edition de ligne
 *Lexing
 *Parsing
+*Expansion (expand tilde; globbing...)
 *Exec
 
 *Signal Handling
-
-*Expansion (expand tilde; globbing...)
 *Autocompletion
 
 ft-sh2
@@ -35,14 +34,18 @@ ft-sh3
 
 #Edition de ligne au niveau du curseur
 #bouger à gauche et à droite
-UP-KEY ou CTRL-P
-DOWN-KEY ou CTRL-N
---> pour naviguer dans l'historique (builtin `history`, avec des options pour modifier le comportement)
 
+#UP-KEY ou CTRL-P
+#DOWN-KEY ou CTRL-N
+#CTRL-O	run the command
+#CTRL-B letter back
+#CTRL-F letter forward
+
+builtin `history`, avec des options pour modifier le comportement
 *CTRL-R	(navigating history, while you're typing)
-*CTRL-O	run the command
 *CTRL-G	leave the history without executing the command
-*ALT-R	Revert changes made to a command pulled from the history
+
+*ALT-R	Revert changes made to a command pulled from the history __NOPE__
 
 CTRL-haut, CTRL-bas (pour changer de ligne) quand on edite sur plusieurs lignes
 CTRL-left pour aller d'un mot a gauche
@@ -54,7 +57,7 @@ MODE SELECTION pour Couper avec CTRL-SHIFT-X
 CTRL-SHIFT-V Coller
 
 CTRL-C pour réafficher le prompt
-CTRL-D exit le shell quand la ligne est vide sinon ignorer
+CTRL-D exit le shell quand la ligne est vide, ignorer si c'est caractere vide, sinon l'effacer
 
 catch CTRL-\ and other signals, don't do nuts
 
@@ -168,3 +171,8 @@ Si tu es un mec tres chaud, ajouter des dependances au prompt et a certaines par
 Lire un fichier de config pour set des trucs eventuellement
 passer des options au lancement pour ne pas lire ce fichier ou etre en mode raw
 builtin pour switcher du mode normal au mode raw et inversement si c'est possible
+
+tester des KEYS
+HOME, END, BACKSPACE, des trucs que ya pas la...
+
+Lire le man de readline pour les keystrokes
