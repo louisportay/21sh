@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 13:03:38 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/14 13:29:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,9 +321,9 @@ static int	user_input(char *buf, t_21sh *env)
 		move_cursor_forward(env);
 		env->line = env->line->next;
 	}
-	else if ((!ft_strncmp(buf, UP_KEY, 4) || (*buf == C_P && env->emacs_mode)) && env->histlist->next)
+	else if ((!ft_strncmp(buf, UP_KEY, 4) || (*buf == C_P && env->emacs_mode)) && env->histlist->next && env->history)
 		up_key(env);
-	else if ((!ft_strncmp(buf, DOWN_KEY, 4) || (*buf == C_N && env->emacs_mode)) && env->histlist->previous)
+	else if ((!ft_strncmp(buf, DOWN_KEY, 4) || (*buf == C_N && env->emacs_mode)) && env->histlist->previous && env->history)
 		down_key(env);
 	else if (!ft_strncmp(buf, C_UP, 6) && (env->cursor_offset >= env->ws.ws_col))
 		go_upper_line(env);

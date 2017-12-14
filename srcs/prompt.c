@@ -18,7 +18,7 @@
 
 char	ispromptflag(char c)
 {
-	if (c == 'd' || c == 'h' || c == 'l' || c == 's' || c == 'u' || c == 'w' ||
+	if (c == 'd' || c == 'H' || c == 'l' || c == 's' || c == 'u' || c == 'w' ||
 			c == 'W' || c == '!')
 		return (c);
 	return (0);
@@ -53,10 +53,10 @@ static void	d_flag(t_21sh *env)
 }
 
 /*
-** Hostname flag
+** Hostname flag (not truncated)
 */
 
-static void	h_flag(t_21sh *env)
+static void	cap_h_flag(t_21sh *env)
 {
 	char	hostname[CUSTOM_HOST_NAME_MAX];
 
@@ -64,9 +64,6 @@ static void	h_flag(t_21sh *env)
 		print_flag(env, hostname);
 }
 
-//		printf("%d\n", _POSIX_HOST_NAME_MAX);
-//	printf("%d\n", HOST_NAME_MAX);
-//	printf("%d\n", CUSTOM_HOST_NAME_MAX);
 
 /*
 ** TTY name flag
@@ -160,7 +157,7 @@ static void	bang_flag(t_21sh *env)
 static void	init_flags(t_prompt_flag *flags)
 {
 	flags[0] = PROMPT_FLAG(&d_flag, 'd');
-	flags[1] = PROMPT_FLAG(&h_flag, 'h');
+	flags[1] = PROMPT_FLAG(&cap_h_flag, 'H');
 	flags[2] = PROMPT_FLAG(&l_flag, 'l');
 	flags[3] = PROMPT_FLAG(&s_flag, 's');
 	flags[4] = PROMPT_FLAG(&u_flag, 'u');

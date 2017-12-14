@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/06 21:44:31 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/14 13:27:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,21 @@ void	save_history(t_hash **localvar, t_dlist *histlist)
 
 void	init_hist(t_21sh *env)
 {
-	char				*histentry;
+	char	*histentry;
 
+
+	if (get_next_line(env->histfile, &histentry) == -1)
+	{
+		env->history = false;
+		close(env->histfile);
+		return ;
+	}
 	while (histentry)
 	{
 		if (get_next_line(env->histfile, &histentry) == -1)
 		{
+			close(env->histfile);
+			ft_dlstdel(&env->histlist, &del_histentry);
 			env->history = false;
 			return ;
 		}

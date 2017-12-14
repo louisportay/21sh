@@ -51,7 +51,7 @@ void	wrap_exit(int status, t_21sh *env)
 		ft_dlstdel(&env->line, &delvoid);
 	if (env->histlist)//faire une fonction dédiée
 	{
-	//	ft_dlsthead(&env->histlist);//
+	////ft_dlsthead(&env->histlist);//
 		if (env->histlist->next)
 		{
 			trim_history(&env->histlist->next, hashlookup(env->localvar, "HISTFILESIZE"));

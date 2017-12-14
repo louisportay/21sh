@@ -147,7 +147,7 @@ New42sh
 =======
 
 *Suspens*
-
+builtin fc
 
 Others
 ======
@@ -169,7 +169,7 @@ history builtin (OPT: [n] + -c)
 Si tu es un mec tres chaud, ajouter des dependances au prompt et a certaines parties du programme pour qu'elles ne soient mises a jour que si tel evenement est trigger... alors oui mais non en fait tu as pas le temps
 
 Lire un fichier de config pour set des trucs eventuellement
-passer des options au lancement pour ne pas lire ce fichier ou etre en mode raw
+passer des options au lancement pour ne pas lire ce fichier ou etre en mode rawa ou ne pas avoir d'historique
 builtin pour switcher du mode normal au mode raw et inversement si c'est possible
 
 tester des KEYS

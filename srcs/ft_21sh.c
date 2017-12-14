@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 11:21:44 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/14 13:11:46 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ int			fill_localtable(t_hash **localvar, char *key, char *value)
 
 static int	init_local(t_21sh *env)
 {
-	char	hostname[HOST_NAME_MAX];
+	char	hostname[CUSTOM_HOST_NAME_MAX];
 	t_var 	locals[7];
 	int		i;
 
 	i = 0;
 	hashclear(env->localvar, &ft_memdel);
-	gethostname(hostname, HOST_NAME_MAX);
+	gethostname(hostname, CUSTOM_HOST_NAME_MAX);
 	locals[0] = VAR("PS1", PS1);
 	locals[1] = VAR("PS2", PS2);
 	locals[2] = VAR("PS4", PS4);
