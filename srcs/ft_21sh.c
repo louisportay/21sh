@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 13:11:46 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/20 12:27:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ static void	init_values(t_21sh *env)
 
 	env->line = NULL;
 	env->lastline = NULL;
+	env->yank = NULL;//ft_dlstnew("HEAD", 5);
 
 	env->history = true;
 	env->line_edition = true;
@@ -193,7 +194,8 @@ static int	init(t_21sh *env, char **av, char **environ)
 		return (ret);
 	if ((ret = init_local(env)) != SUCCESS)
 		return (ret);
-	init_hist(env);
+	if (env->history)
+		init_hist(env);
 	sig_switch(0, env);
 	return (SUCCESS);
 }

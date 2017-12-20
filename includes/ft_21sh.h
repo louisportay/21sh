@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 12:56:04 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/20 19:04:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,53 @@
 # define NOENVIRON_STR	"Invalid Environment to use with this program.\n"
 # define FAILSETSIGHDLR_STR "Couldn't set properly Sighandlers.\n"
 # define FAILREAD_STR	"Can't read from STDIN\n"
-
 # define NODIR_STR		"Error retrieving current directory\n"
 # define NOMEM_STR		"Not enough memory available for dynamic allocation\n"
 
-# define READBUF 6
+# define READMAXLEN 6
 
-# define DEL	127
-# define RETURN	'\n'
+# define C_A '\001'
 # define C_B '\002'
 # define C_D '\004'
+# define C_E '\005'
 # define C_F '\006'
+# define C_H '\b'	// '\008'
+# define C_I '\t'	// '\011'
+# define C_J '\n'	// '\012'
+# define C_K '\v'
 # define C_L '\f'	// '\014'
 # define C_N '\016'
 # define C_O '\017'
 # define C_P '\020'
 # define C_R '\022'
+# define C_U '\025'
+# define C_Y '\031'
+# define ESC '\033'
 
-# define ESC	"\033"
+# define NEWLINE_	'\n'
+# define TAB		'\t'
+# define BACKSPACE	127
 
-# define UP_KEY "\033[A"
-# define DOWN_KEY "\033[B"
-# define RIGHT_KEY "\033[C"
-# define LEFT_KEY "\033[D"
+# define M_B "\Eb"
+# define M_D "\Ed"
+# define M_E "\Ee"
+# define M_F "\Ef"
+
+//mettre des ifdef pour rendre les defines portables
+
+# define HOME "\E[H"//72 MAC
+# define END  "\E[F"//70 MAC
+# define DELETE "\E[3~"//51 MAC
+
+# define UP_KEY "\E[A"
+# define DOWN_KEY "\E[B"
+# define RIGHT_KEY "\E[C"
+# define LEFT_KEY "\E[D"
 
 # define C_UP "\E[1;5A"
 # define C_DOWN "\E[1;5B"
+# define C_RIGHT "\E[1;5C"
+# define C_LEFT "\E[1;5D"
 
 # define PS1  "=\\s=$ "//"SUPERFUCKINGREALLYLONGPROMPT$ "
 # define PS2 "> "
@@ -63,9 +84,6 @@
 #define HISTSIZE "30"
 #define HISTFILESIZE "20"
 #define HISTFILE ".21sh_history"
-
-# define PREVIOUS 0
-# define CURRENT 1
 
 #ifdef __linux__
 # define CUSTOM_HOST_NAME_MAX HOST_NAME_MAX
@@ -81,9 +99,7 @@
 
 # define T_HISTENTRY(ptr)	((t_histentry *)ptr)
 
-# define PROMPT_FLAG(FUNC, FLAG)	(t_prompt_flag){.func = FUNC, .flag = FLAG}
-# define VAR(KEY, VAL)				(t_var){.key = KEY, .val = VAL}
-
+//TO DELETE
 # define DEBUG 		write(STDOUT_FILENO, "DEBUG\n", 7)
 # define DEBUG1 	write(STDOUT_FILENO, "DEBUG1\n", 8)
 
@@ -106,7 +122,17 @@ enum		e_readcode
 	EXITSHELL,
 };
 
-//regrouper les termcaps logiquement
+enum		e_linestate
+{
+	NORMAL,
+	SQUOTE,
+	DQUOTE,
+	BQUOTE,
+	LPAREN,
+	LBRACE,
+};
+
+//regrouper les termcaps logiquement, dans le bon ordre
 
 struct		s_termcaps
 {
@@ -142,6 +168,7 @@ typedef struct			s_21sh
 
 	struct s_termcaps	tc;
 	t_dlist				*line;
+	t_dlist				*yank;
 	t_dlist				*lastline;
 	t_dlist				*histlist;
 	int					histindex;
@@ -171,12 +198,21 @@ typedef struct			s_21sh
 ** dlist		(histentry)
 */
 
+# define PROMPT_FLAG(FUNC, FLAG)	(t_prompt_flag){.func = FUNC, .flag = FLAG}
+# define VAR(KEY, VAL)				(t_var){.key = KEY, .val = VAL}
+# define LINE_FUNC(TEST, FUNC)		(t_line_func){.test = TEST, .f = FUNC}
+
 typedef struct	s_prompt_flag
 {
 	void		(*func)(t_21sh *env);
 	char		flag;
 }				t_prompt_flag;
 
+typedef struct	s_line_func
+{
+	bool	(*test)(t_21sh *env, char *buf);
+	void	(*f)(t_21sh *env);
+}				t_line_func;
 
 typedef struct	s_var
 {
@@ -206,6 +242,7 @@ void		dump_history(t_dlist *histlist);
 void		trim_history(t_dlist **histlist, t_hash *histsizebucket);
 void		save_history(t_hash **localvar, t_dlist *histlist);
 void		del_histentry(void *histentry, size_t histentrysize);
+void		add_histentry(t_21sh *env);
 
 void	lineread(t_21sh *env);
 void	getrawline(t_21sh *env);
@@ -217,6 +254,65 @@ void	print_prompt(t_21sh *env);
 
 int		ft_putchar_stdin(int c);
 bool	isonlywhitespace(char *str);
+bool	dlst_isonlywhitespace(t_dlist *dlst);
+
+void	move_cursor_n_columns(int n);
+void	move_cursor_n_lines(int n);
+void	move_cursor_forward(t_21sh *env);
+void	move_cursor_backward(t_21sh *env);
+void	move_cursor_end_of_line(t_21sh *env);
+
+void	print_line_cursor_len(t_21sh *env, t_dlist *list);
+void	print_line_cursor(t_21sh *env, t_dlist *list);
+void	print_line(t_dlist *list);
+
+void	up_key(t_21sh *env);
+void	down_key(t_21sh *env);
+
+void	insert_char(char *buf, t_21sh *env);
+void	del_previous_char(t_21sh *env);
+void	del_current_char(t_21sh *env);
+
+void	kill_line_end(t_21sh *env);
+void	kill_line_beginning(t_21sh *env);
+void	yank(t_21sh *env);
+
+void	redraw_line(t_21sh *env);
+void	clear_line(t_21sh *env);
+void	clear_screen_(t_21sh *env);
+
+void	go_upper_line(t_21sh *env);
+void	go_lower_line(t_21sh *env);
+void	go_to_line_beginning(t_21sh *env);
+void	go_to_line_end(t_21sh *env);
+void	go_to_previous_word(t_21sh *env);
+void	go_to_next_word(t_21sh *env);
+
+void	load_line(t_21sh *env);
+void	update_linemode(t_21sh *env);
+void	lkey(t_21sh *env);
+void	rkey(t_21sh *env);
+
+void	reverse_emacs_mode(t_21sh *env);
+
+bool	test_kill_beginline(t_21sh *env, char *buf);
+bool	test_kill_endline(t_21sh *env, char *buf);
+bool	test_clear_screen(t_21sh *env, char *buf);
+bool	test_yank(t_21sh *env, char *buf);
+bool	test_next_word(t_21sh *env, char *buf);
+bool	test_previous_word(t_21sh *env, char *buf);
+bool	test_upper_line(t_21sh *env, char *buf);
+bool	test_lower_line(t_21sh *env, char *buf);
+bool	test_line_end(t_21sh *env, char *buf);
+bool	test_line_beginning(t_21sh *env, char *buf);
+bool	test_upkey(t_21sh *env, char *buf);
+bool	test_downkey(t_21sh *env, char *buf);
+bool	test_rkey(t_21sh *env, char *buf);
+bool	test_lkey(t_21sh *env, char *buf);
+bool	test_del_current_char(t_21sh *env, char *buf);
+bool 	test_del_previous_char(t_21sh *env, char *buf);
+bool	test_emacs_mode(t_21sh *env, char *buf);
+bool	test_load_line(t_21sh *env, char *buf);
 
 
 enum	e_toktype

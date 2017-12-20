@@ -6,12 +6,12 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2017/12/11 10:27:22 by lportay          ###   ########.fr        #
+#    Updated: 2017/12/20 18:36:55 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: clean fclean re all
-vpath %.c srcs/
+vpath %.c srcs/ srcs/line
 vpath %.h includes/
 
 CC= gcc-7 
@@ -34,7 +34,6 @@ HEADERS= ft_21sh.h
 
 SRCS=	main.c\
 		ft_21sh.c\
-		line.c\
 		error.c\
 		signal.c\
 		lexer.c\
@@ -42,6 +41,17 @@ SRCS=	main.c\
 		prompt.c\
 		history.c\
 		rawline.c\
+		\
+		line.c\
+		move_cursor.c\
+		print_line.c\
+		up_down_keys.c\
+		go_to.c\
+		del_insert.c\
+		kill_yank.c\
+		line_utils.c\
+		clear.c\
+		line_test.c\
 
 #OBJ= $(SRCS:%.c=%.o)
 OBJDIR= obj

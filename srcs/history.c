@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 13:27:09 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/20 19:58:07 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_histentry		*new_histentry(t_dlist *line, unsigned index)
 void	del_histentry(void *histentry, size_t histentrysize)
 {
 	(void)histentrysize;
-	ft_dlsthead(&T_HISTENTRY(histentry)->line);//
+//	ft_dlsthead(&T_HISTENTRY(histentry)->line);//
 	ft_dlstdel(&T_HISTENTRY(histentry)->line, &delvoid);
 	free(histentry);
 
@@ -131,6 +131,17 @@ void	save_history(t_hash **localvar, t_dlist *histlist)
 	close(histfile);
 }
 
+void	add_histentry(t_21sh *env)
+{
+	if (env->line->next && dlst_isonlywhitespace(env->line->next) == false)
+	{
+		ft_dlstinsert(env->histlist, ft_dlstnewaddr(new_histentry(env->line, env->histindex++), sizeof(t_histentry *)));
+		trim_history(&env->histlist->next, hashlookup(env->localvar, "HISTSIZE"));
+	}
+	else
+		ft_dlstdel(&env->line, &delvoid);
+}
+
 void	init_hist(t_21sh *env)
 {
 	char	*histentry;
@@ -144,19 +155,15 @@ void	init_hist(t_21sh *env)
 	}
 	while (histentry)
 	{
+		if (ft_strlen(histentry))
+				ft_dlstadd(&env->histlist, ft_dlstnewaddr(new_histentry(str_to_dlst(histentry), env->histindex++), sizeof(t_histentry *)));
+			free(histentry);
 		if (get_next_line(env->histfile, &histentry) == -1)
 		{
 			close(env->histfile);
 			ft_dlstdel(&env->histlist, &del_histentry);
 			env->history = false;
 			return ;
-		}
-		if (histentry)
-		{
-			if (ft_strcmp(histentry, "\0"))
-				ft_dlstadd(&env->histlist, ft_dlstnewaddr(new_histentry(
-		str_to_dlst(histentry), env->histindex++), sizeof(t_histentry *)));
-			free(histentry);
 		}
 	}
 	close(env->histfile);

@@ -1,45 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools.c                                            :+:      :+:    :+:   */
+/*   print_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/20 10:48:13 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 15:20:41 by lportay          ###   ########.fr       */
+/*   Created: 2017/12/19 16:53:49 by lportay           #+#    #+#             */
+/*   Updated: 2017/12/19 16:56:57 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-/*
-** function written for tputs to output the characters
-*/
-
-int		ft_putchar_stdin(int c)
+void	print_line_cursor_len(t_21sh *env, t_dlist *list)
 {
-	write(STDIN_FILENO, &c, 1);
-	return (c);
+	while (list)
+	{
+		env->line_len++;
+		env->cursor_offset++;
+		write(STDOUT_FILENO, list->content, 1);
+		list = list->next;
+	}
 }
 
-bool	isonlywhitespace(char *s)
+void	print_line_cursor(t_21sh *env, t_dlist *list)
 {
-	while (*s)
+	while (list)
 	{
-		if (*s != '\t' && *s != ' ')
-			return (false);
-		s++;
+		env->cursor_offset++;
+		write(STDOUT_FILENO, list->content, 1);
+		list = list->next;
 	}
-	return (true);
 }
 
-bool	dlst_isonlywhitespace(t_dlist *dlst)
+void	print_line(t_dlist *list)
 {
-	while (dlst)
+	while (list)
 	{
-		if (isonlywhitespace(dlst->content) == false)
-			return (false);
-		dlst = dlst->next;
+		write(STDOUT_FILENO, list->content, 1);
+		list = list->next;
 	}
-	return (true);
 }

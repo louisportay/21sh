@@ -34,73 +34,43 @@ ft-sh3
 
 #Edition de ligne au niveau du curseur
 #bouger à gauche et à droite
-
-Keys to catch
-=============
-
 #UP-KEY ou CTRL-P
 #DOWN-KEY ou CTRL-N
-#CTRL-O	run the command
+#CTRL-O/CTRL-J run the command
 #CTRL-B letter back
 #CTRL-F letter forward
 #CTRL-haut, CTRL-bas (pour changer de ligne) quand on edite sur plusieurs lignes
+#CTRL-A / HOME 
+#CTRL-E / END pour respectivement le debut et la fin de ligne
+#CTRL-D exit le shell quand la ligne est vide|ignorer si c'est caractere vide|sinon effacer le caractere
+#Alt-b (CTRL-left) 	one word backward
+#Alt-f (CTRL-right) 	one word forward
+#Ctrl-D or Delete		Delete the character under the cursor
+#Ctrl-H	or Backspace	Delete the character before the cursor
+#CTRL-L clear the screen
+#CTRL-K cut the line from the cursor 'til the end
+#CTRL-Y (paste what's inside the clipboard)
+#CTRL-U (cut the line before the cursor, not included, to the beginning)
 
-builtin `history`, avec des options pour modifier le comportement
+CTRL-C pour réafficher le prompt 			*SIGNAL to catch*
+CTRL-\ and other signals, don't do nothing
+
+*Alt-D	Delete the word after the cursor on the current line
+*CTRL-W (cut the previous word, put it in the clipboard)
+
 *CTRL-R	(navigating history, while you're typing)
 *CTRL-G	leave the history without executing the command
+*CTRL-J print the command to execute it
+*CTRL-O execute the command then print it
 
-*ALT-R	Revert changes made to a command pulled from the history __NOPE__
-
-CTRL-left pour aller d'un mot a gauche
-CTRL-right pour aller d'un mot à droite
-
-HOME et END pour respectivement le debut et la fin de ligne
-
-CTRL-SHIFT-C Copier
-MODE SELECTION pour Couper avec CTRL-SHIFT-X
-CTRL-SHIFT-V Coller
-
-CTRL-C pour réafficher le prompt
-CTRL-D exit le shell quand la ligne est vide, ignorer si c'est caractere vide, sinon l'effacer
-
-catch CTRL-\ and other signals, don't do nuts
-
-Alt-U	Capitalize every characters from the cursor to the end of the current word
-Alt-L	Uncapitalize -		-	-	-	-		-	-	-	-	-	-	-	-	-
-Alt-C	Capitalize the character under the cursor and move the cursor to the end of the word
+builtin `history`, avec des options pour modifier le comportement
 
 !! execute last command
 !# (where # is a number) execute the #nth command in histlist
 !abc (where abc is a string)	execute the last command beginning with 'abc'
+
+
 (:p) 	add this after a `bang` expression, it will print the command rather than executing it
-
-*CTRL-W (erase a word, put it in the clipboard)
-*CTRL-K (cut the line from the cursor 'til the end)
-*CTRL-U (cut the line before the cursor, not included, to the beginning)
-*CTRL-Y (paste what's inside the clipboard)
-
-*CTRL-A || Home-key (Go to the line beginning)
-*CTRL-e || end-key (Go to the end)
-
-Alt-b	one word backward
-Ctrl-b	one letter backward
-Alt-f	one word forward
-Ctrl-f	one letter forward 
-
-Ctrl-D or Delete		Delete the character under the cursor
-Alt-D					Delete all the characters after the cursor on the current line
-Ctrl-H	or Backspace	Delete the character before the cursor
-
-Alt-T		Swap the current word with the previous
-Ctrl-T		Swap the last two characters (not the current one)
-Ctrl-_		Undo last action to edit the line
-
-CTRL-S stop output to the screen
-CTRL-Q resume the screen output
-CTRL-L clear the screen
-
-*RETURN
-
 
 *Split on multiple lines*
 
@@ -110,7 +80,6 @@ double quote
 back quotes
 backslash
 
-crochets
 accolades
 parenthèses
 
@@ -176,3 +145,5 @@ tester des KEYS
 HOME, END, BACKSPACE, des trucs que ya pas la...
 
 Lire le man de readline pour les keystrokes
+
+Splitter les .h
