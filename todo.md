@@ -139,11 +139,9 @@ Si tu es un mec tres chaud, ajouter des dependances au prompt et a certaines par
 
 Lire un fichier de config pour set des trucs eventuellement
 passer des options au lancement pour ne pas lire ce fichier ou etre en mode rawa ou ne pas avoir d'historique
-builtin pour switcher du mode normal au mode raw et inversement si c'est possible
-
-tester des KEYS
-HOME, END, BACKSPACE, des trucs que ya pas la...
+builtin pour switcher du mode normal au mode raw et inversement (si la conf le permet)
 
 Lire le man de readline pour les keystrokes
 
 Splitter les .h
+tester l'imbrication des quotes

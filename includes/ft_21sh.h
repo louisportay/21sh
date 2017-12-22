@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/20 19:04:29 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/22 10:29:49 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define NODIR_STR		"Error retrieving current directory\n"
 # define NOMEM_STR		"Not enough memory available for dynamic allocation\n"
 
-# define READMAXLEN 6
+# define READLEN 6
 
 # define C_A '\001'
 # define C_B '\002'
@@ -41,7 +41,7 @@
 # define C_H '\b'	// '\008'
 # define C_I '\t'	// '\011'
 # define C_J '\n'	// '\012'
-# define C_K '\v'
+# define C_K '\v'	// '\013'
 # define C_L '\f'	// '\014'
 # define C_N '\016'
 # define C_O '\017'
@@ -60,23 +60,31 @@
 # define M_E "\Ee"
 # define M_F "\Ef"
 
-//mettre des ifdef pour rendre les defines portables
-
-# define HOME "\E[H"//72 MAC
-# define END  "\E[F"//70 MAC
-# define DELETE "\E[3~"//51 MAC
+//mettre des ifdef pour rendre les defines de keystroke portables
 
 # define UP_KEY "\E[A"
 # define DOWN_KEY "\E[B"
 # define RIGHT_KEY "\E[C"
 # define LEFT_KEY "\E[D"
 
+# define END  "\E[F"//70 MAC
+# define HOME "\E[H"//72 MAC
+# define DELETE "\E[3~"//51 MAC
+# define PAGE_UP "\E[5~" //MAC ?
+# define PAGE_DOWN "\E[6~" //MAC ?
+
 # define C_UP "\E[1;5A"
 # define C_DOWN "\E[1;5B"
 # define C_RIGHT "\E[1;5C"
 # define C_LEFT "\E[1;5D"
 
-# define PS1  "=\\s=$ "//"SUPERFUCKINGREALLYLONGPROMPT$ "
+# define C_END "\E[1;5F"
+# define C_HOME "\E[1;5H"
+# define C_DELETE "\E[3;5~"
+# define C_PAGEUP "\E[5;5~"
+# define C_PAGEDOWN "\E[6;5~"
+
+# define PS1  "=\\s=$ "
 # define PS2 "> "
 # define PS3 ""
 # define PS4 "+ "
@@ -102,6 +110,7 @@
 //TO DELETE
 # define DEBUG 		write(STDOUT_FILENO, "DEBUG\n", 7)
 # define DEBUG1 	write(STDOUT_FILENO, "DEBUG1\n", 8)
+# define DEBUG2 	write(STDOUT_FILENO, "DEBUG2\n", 8)
 
 
 enum				e_errcode
@@ -125,11 +134,12 @@ enum		e_readcode
 enum		e_linestate
 {
 	NORMAL,
+	BSLASH,
 	SQUOTE,
 	DQUOTE,
 	BQUOTE,
-	LPAREN,
-	LBRACE,
+//	LPAREN,
+//	LBRACE,
 };
 
 //regrouper les termcaps logiquement, dans le bon ordre
@@ -210,7 +220,7 @@ typedef struct	s_prompt_flag
 
 typedef struct	s_line_func
 {
-	bool	(*test)(t_21sh *env, char *buf);
+	bool	(*test)(t_21sh *env, char *buf, int *bufindex);
 	void	(*f)(t_21sh *env);
 }				t_line_func;
 
@@ -295,23 +305,23 @@ void	rkey(t_21sh *env);
 
 void	reverse_emacs_mode(t_21sh *env);
 
-bool	test_kill_beginline(t_21sh *env, char *buf);
-bool	test_kill_endline(t_21sh *env, char *buf);
-bool	test_clear_screen(t_21sh *env, char *buf);
-bool	test_yank(t_21sh *env, char *buf);
-bool	test_next_word(t_21sh *env, char *buf);
-bool	test_previous_word(t_21sh *env, char *buf);
-bool	test_upper_line(t_21sh *env, char *buf);
-bool	test_lower_line(t_21sh *env, char *buf);
-bool	test_line_end(t_21sh *env, char *buf);
-bool	test_line_beginning(t_21sh *env, char *buf);
-bool	test_upkey(t_21sh *env, char *buf);
-bool	test_downkey(t_21sh *env, char *buf);
-bool	test_rkey(t_21sh *env, char *buf);
-bool	test_lkey(t_21sh *env, char *buf);
-bool	test_del_current_char(t_21sh *env, char *buf);
-bool 	test_del_previous_char(t_21sh *env, char *buf);
-bool	test_emacs_mode(t_21sh *env, char *buf);
+bool	test_kill_beginline(t_21sh *env, char *buf, int *bufindex);
+bool	test_kill_endline(t_21sh *env, char *buf, int *bufindex);
+bool	test_clear_screen(t_21sh *env, char *buf, int *bufindex);
+bool	test_yank(t_21sh *env, char *buf, int *bufindex);
+bool	test_next_word(t_21sh *env, char *buf, int *bufindex);
+bool	test_previous_word(t_21sh *env, char *buf, int *bufindex);
+bool	test_upper_line(t_21sh *env, char *buf, int *bufindex);
+bool	test_lower_line(t_21sh *env, char *buf, int *bufindex);
+bool	test_line_end(t_21sh *env, char *buf, int *bufindex);
+bool	test_line_beginning(t_21sh *env, char *buf, int *bufindex);
+bool	test_upkey(t_21sh *env, char *buf, int *bufindex);
+bool	test_downkey(t_21sh *env, char *buf, int *bufindex);
+bool	test_rkey(t_21sh *env, char *buf, int *bufindex);
+bool	test_lkey(t_21sh *env, char *buf, int *bufindex);
+bool	test_del_current_char(t_21sh *env, char *buf, int *bufindex);
+bool 	test_del_previous_char(t_21sh *env, char *buf, int *bufindex);
+bool	test_emacs_mode(t_21sh *env, char *buf, int *bufindex);
 bool	test_load_line(t_21sh *env, char *buf);
 
 
@@ -328,7 +338,7 @@ enum	e_toktype
 		LOR,
 		SEMICOL,
 		DSEMICOL,
-		BSLASH,
+	//	BSLASH,
 		LREDIR,
 		RSREDIR,
 		HEREDOC,
