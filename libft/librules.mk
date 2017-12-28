@@ -37,6 +37,9 @@ $(BTREEOBJDIR)/%.o: %.c ft_btree.h $(HEADER)| $(BTREEOBJDIR)
 $(UTESTOBJDIR)/%.o: %.c utest.h $(HEADER)| $(UTESTOBJDIR)
 	$(COMPILE.c) $< -o $@
 
+$(STACKOBJDIR)/%.o: %.c stack.h $(HEADER)| $(STACKOBJDIR)
+	$(COMPILE.c) $< -o $@
+
 $(LIBOBJDIR):
 	-mkdir -p $@
 $(CTYPEOBJDIR): | $(LIBOBJDIR)
@@ -64,4 +67,6 @@ $(HASHOBJDIR): | $(LIBOBJDIR)
 $(BTREEOBJDIR): | $(LIBOBJDIR)
 	-mkdir -p $@
 $(UTESTOBJDIR): | $(LIBOBJDIR)
+	-mkdir -p $@
+$(STACKOBJDIR): | $(LIBOBJDIR)
 	-mkdir -p $@

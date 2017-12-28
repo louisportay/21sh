@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 12:04:12 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 10:42:28 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/28 11:24:20 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void		sig_switch(int signum, t_21sh *envaddr)
 	if (signum == SIGWINCH)
 	{
 		ioctl(STDIN_FILENO, TIOCGWINSZ, &env->ws);
-		//tputs(env->tc.cl, 1, &ft_putchar_stdin);//always work
-		clear_line(env);//work like `bash'
+		update_linemode(env);
+		clear_line(env);
 		redraw_line(env);
 	}
 	if (envaddr != NULL)

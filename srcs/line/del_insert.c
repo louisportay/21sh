@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:44:52 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/20 18:27:54 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/27 15:17:41 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void	del_current_char(t_21sh *env)
 void	del_previous_char(t_21sh *env)
 {
 	move_cursor_backward(env);
+	env->cursor_line = env->cursor_offset / env->ws.ws_col;
+	if (env->multiline == false && env->cursor_line < env->num_lines)
+		env->multiline = true;
 	del_char(env);
 }
 

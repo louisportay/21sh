@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/22 10:29:05 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/28 11:58:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,20 @@ static void	init_funcs(t_line_func *funcs)
 	funcs[7] = LINE_FUNC(&test_line_end, &go_to_line_end);
 	funcs[8] = LINE_FUNC(&test_lower_line, &go_lower_line);
 	funcs[9] = LINE_FUNC(&test_upper_line, &go_upper_line);
-	funcs[10] = LINE_FUNC(&test_previous_word, &go_to_previous_word);
-	funcs[11] = LINE_FUNC(&test_next_word, &go_to_next_word);
+	funcs[10] = LINE_FUNC(&test_go_prev_word, &go_to_previous_word);
+	funcs[11] = LINE_FUNC(&test_go_next_word, &go_to_next_word);
 	funcs[12] = LINE_FUNC(&test_kill_beginline, &kill_line_beginning);
 	funcs[13] = LINE_FUNC(&test_kill_endline, &kill_line_end);
 	funcs[14] = LINE_FUNC(&test_clear_screen, &clear_screen_);
 	funcs[15] = LINE_FUNC(&test_yank, &yank);
 	funcs[16] = LINE_FUNC(&test_emacs_mode, &reverse_emacs_mode);
-	funcs[17] = LINE_FUNC(NULL, NULL);
+	funcs[17] = LINE_FUNC(&test_killprevword, &kill_prev_word);
+	funcs[18] = LINE_FUNC(NULL, NULL);
 }
 
 static int	user_input(t_21sh *env, char *buf, int *bufi)
 {
-	t_line_func	funcs[18];
+	t_line_func	funcs[19];
 	int			i;
 
 	i = 0;
@@ -51,7 +52,12 @@ static int	user_input(t_21sh *env, char *buf, int *bufi)
 		return (FINISHREAD);
 	}
 	else if (*buf == C_D && !ft_dlstcount(env->line))
-		return (EXITSHELL);
+	{
+		if (env->linestate->state == UNQUOTED)
+			return (EXITSHELL);
+		else
+			return (ERR_QUOTE);
+	}
 	else if (ft_isprint(*buf))
 		insert_char(buf, env);
 	else
@@ -67,9 +73,7 @@ static int	user_input(t_21sh *env, char *buf, int *bufi)
 		*bufi = 0;
 	}
 
-////	else if (buf == C_W && env->line->previous)
-////		kill_prev_word(env);
-////	else if (!ft_strncmp(buf, M_D, ft_strlen(M_D)) && env->line->next)
+////	else if (!ft_strncmp(buf, M_D, ft_strlen(M_D)) && env->line->next && env->emacs_mode)
 ////		kill_next_word(env);
 
 //	else if (buf == C_R && env->history)
@@ -77,6 +81,83 @@ static int	user_input(t_21sh *env, char *buf, int *bufi)
 //	else if (buf == TAB && env->autocomplete)
 //		autocompletion
 	return (READON);
+}
+
+void	query_linestate(t_dlist *dlst, t_stack **lineState)
+{
+	while (dlst)
+	{
+		if (*(char *)(dlst->content) == '\\')
+		{
+			if ((*lineState)->state == BSLASH)
+				stack_pop(lineState);
+			else if ((*lineState)->state != SQUOTE)
+				stack_push(lineState, stack_create(BSLASH));
+		}
+		else if (*(char *)(dlst->content) == '\'')
+		{
+			if ((*lineState)->state == SQUOTE)
+				stack_pop(lineState);
+			else if ((*lineState)->state != DQUOTE && (*lineState)->state != BSLASH)
+				stack_push(lineState, stack_create(SQUOTE));
+		}
+		else if (*(char *)(dlst->content) == '\"')
+		{
+			if ((*lineState)->state == DQUOTE)
+				stack_pop(lineState);
+			else if ((*lineState)->state != SQUOTE && (*lineState)->state != BSLASH)
+				stack_push(lineState, stack_create(DQUOTE));
+		}
+		else if (*(char *)(dlst->content) == '`')
+		{
+			if ((*lineState)->state == BQUOTE)
+				stack_pop(lineState);
+			else if ((*lineState)->state != SQUOTE && (*lineState)->state != BSLASH)
+				stack_push(lineState, stack_create(BQUOTE));
+		}
+		if (*(char *)(dlst->content) != '\\' && (*lineState)->state == BSLASH)
+			stack_pop(lineState);
+		dlst = dlst->next;
+		}
+}
+
+void	join_split_lines(t_21sh *env)
+{
+	t_dlist *tmp;
+
+	if (env->split_line && env->line->next)
+	{
+		tmp = env->split_line;
+		ft_dlstend(&env->split_line);
+		env->line = env->line->next;
+		ft_dlstdelone(&env->line->previous, &delvoid);
+		env->line->previous = env->split_line;
+		env->split_line->next = env->line;
+		env->split_line = tmp;
+	}
+	else if (env->split_line && !env->line->next)
+		ft_dlstdelone(&env->line, &delvoid);
+	else if (!env->split_line)
+		env->split_line = env->line;
+}
+
+void	wrap_lineread(t_21sh *env)
+{
+	env->split_line = NULL;
+	env->prompt_mode = PS1;
+	stack_push(&env->linestate, stack_create(UNQUOTED));
+	lineread(env);
+	while (env->linestate && env->linestate->state != UNQUOTED)
+		lineread(env);
+	if (env->linestate)
+		stack_del(&env->linestate);
+
+	//DEBUG//
+	write(1, "\n", 1);//
+	if (env->split_line)
+		print_line(env->split_line->next);//print what's retrieved
+	write(1, "\n", 1);//
+	/////////
 }
 
 //change lineread return *eventually*
@@ -96,6 +177,8 @@ void		lineread(t_21sh *env)
 	print_prompt(env);
 	env->line_len = env->cursor_offset;
 	ft_bzero(buf, READLEN);
+	if (env->linestate->state == BSLASH)
+		stack_pop(&env->linestate);
 
 	tputs(env->tc.im, 1, &ft_putchar_stdin);
 	while (status == READON)
@@ -116,22 +199,36 @@ void		lineread(t_21sh *env)
 		fatal_err(FAILREAD, env);
 	else if (status == EXITSHELL)
 		wrap_exit(EXIT_SUCCESS, env);
-	if (env->history)
-		add_histentry(env);
-	else 
+	else if (status == ERR_QUOTE)
+	{
+		write(STDIN_FILENO, "\n", 1);
+		dump_err(BADQUOTES);
+		ft_dlstdel(&env->split_line, &delvoid);
 		ft_dlstdel(&env->line, &delvoid);
+		stack_del(&env->linestate);
+		return ;
+	}
+
+	query_linestate(env->line->next, &env->linestate);
+
+	if (env->linestate->state != UNQUOTED)
+	{
+		if ((env->cursor_offset % env->ws.ws_col))
+			write(STDIN_FILENO, "\n", 1);
+		env->prompt_mode = PS2;
+		ft_dlstaddend(env->line, ft_dlstnew("\n", 1));
+	}
+
+	join_split_lines(env);
+
+	if (env->history && env->split_line->next && env->linestate->state == UNQUOTED && dlst_isonlywhitespace(env->split_line->next) == false)
+		add_histentry(env);
+	else if (env->linestate->state == UNQUOTED)
+		ft_dlstdel(&env->split_line, &delvoid);
 
 //		return (EXIT_SUCCESS);
 //	else if (status == FINISHREAD)
 //		add_histentry(env);
 //	 	return (FINISHREAD);
 //	we're all done! add histentry and return
-
-	//DEBUG//
-	write(1, "\n", 1);//
-	if (env->line)
-		print_line(env->line->next);//print what's retrieved
-	write(1, "\n", 1);//
-	/////////
-
 }

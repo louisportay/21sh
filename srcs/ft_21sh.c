@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/20 12:27:12 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/28 11:03:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static int	init_local(t_21sh *env)
 	i = 0;
 	hashclear(env->localvar, &ft_memdel);
 	gethostname(hostname, CUSTOM_HOST_NAME_MAX);
-	locals[0] = VAR("PS1", PS1);
-	locals[1] = VAR("PS2", PS2);
-	locals[2] = VAR("PS4", PS4);
+	locals[0] = VAR("PS1", PS1_VAL);
+	locals[1] = VAR("PS2", PS2_VAL);
+	locals[2] = VAR("PS4", PS4_VAL);
 	locals[3] = VAR("HISTSIZE", HISTSIZE);
 	locals[4] = VAR("HISTFILESIZE", HISTFILESIZE);
 	locals[5] = VAR("HOSTNAME", hostname);
@@ -160,7 +160,8 @@ static void	init_values(t_21sh *env)
 
 	env->line = NULL;
 	env->lastline = NULL;
-	env->yank = NULL;//ft_dlstnew("HEAD", 5);
+	env->yank = NULL;
+	env->linestate = NULL;
 
 	env->history = true;
 	env->line_edition = true;
@@ -169,7 +170,6 @@ static void	init_values(t_21sh *env)
 	env->histlist = NULL;
 	env->histindex = 1;
 
-	env->prompt_mode = 1;
 	env->emacs_mode = true;
 }
 
@@ -210,7 +210,7 @@ void	vingtetunsh(char **av, char  **environ)
 
 	if (env.line_edition == true)
 		while (1)//
-			lineread(&env);
+			wrap_lineread(&env);
 //	else
 //		while (1)
 //			getrawline(&env);

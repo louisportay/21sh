@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/22 10:29:49 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/28 11:04:37 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@
 # include <pwd.h>
 
 # define NOENVIRON_STR	"Invalid Environment to use with this program.\n"
-# define FAILSETSIGHDLR_STR "Couldn't set properly Sighandlers.\n"
-# define FAILREAD_STR	"Can't read from STDIN\n"
-# define NODIR_STR		"Error retrieving current directory\n"
 # define NOMEM_STR		"Not enough memory available for dynamic allocation\n"
+# define NODIR_STR		"Error retrieving current directory\n"
+# define FAILSETSIGHDLR_STR "Couldn't set properly signal handlers.\n"
+# define FAILREAD_STR	"Can't read from STDIN\n"
+# define BADQUOTES_STR		"Unexpected end of file\n"
 
 # define READLEN 6
 
@@ -48,6 +49,7 @@
 # define C_P '\020'
 # define C_R '\022'
 # define C_U '\025'
+# define C_W '\027'
 # define C_Y '\031'
 # define ESC '\033'
 
@@ -60,7 +62,7 @@
 # define M_E "\Ee"
 # define M_F "\Ef"
 
-//mettre des ifdef pour rendre les defines de keystroke portables
+//mettre des ifdef pour rendre les defines de keystroke portables entre linux et Apple
 
 # define UP_KEY "\E[A"
 # define DOWN_KEY "\E[B"
@@ -84,13 +86,13 @@
 # define C_PAGEUP "\E[5;5~"
 # define C_PAGEDOWN "\E[6;5~"
 
-# define PS1  "=\\s=$ "
-# define PS2 "> "
-# define PS3 ""
-# define PS4 "+ "
+# define PS1_VAL  "=\\s=$ "
+# define PS2_VAL "> "
+# define PS3_VAL ""
+# define PS4_VAL "+ "
 
 #define HISTSIZE "30"
-#define HISTFILESIZE "20"
+#define HISTFILESIZE "30"
 #define HISTFILE ".21sh_history"
 
 #ifdef __linux__
@@ -121,6 +123,7 @@ enum				e_errcode
 	FAILREAD,
 	NODIR,
 	NOMEM,
+	BADQUOTES,
 };
 
 enum		e_readcode
@@ -129,17 +132,25 @@ enum		e_readcode
 	READERROR,
 	FINISHREAD,
 	EXITSHELL,
+	ERR_QUOTE,
 };
 
 enum		e_linestate
 {
-	NORMAL,
-	BSLASH,
-	SQUOTE,
-	DQUOTE,
-	BQUOTE,
-//	LPAREN,
-//	LBRACE,
+	UNQUOTED,	//0
+	BSLASH,		//1
+	SQUOTE,		//2
+	DQUOTE,		//3
+	BQUOTE,		//4
+};
+
+enum		e_prompt_mode
+{
+	NOPROMPT,
+	PS1,
+	PS2,
+	PS3,
+	PS4,
 };
 
 //regrouper les termcaps logiquement, dans le bon ordre
@@ -166,6 +177,7 @@ struct		s_termcaps
 */
 
 //padder correctement
+// faire des sous-structures en fonction des modules ? (demande beaucoup de refacto, utilise potentiellement plus de lignes)
 
 typedef struct			s_21sh
 {
@@ -177,14 +189,17 @@ typedef struct			s_21sh
 	struct winsize		ws;
 
 	struct s_termcaps	tc;
+
 	t_dlist				*line;
 	t_dlist				*yank;
 	t_dlist				*lastline;
 	t_dlist				*histlist;
+	t_dlist				*split_line;
 	int					histindex;
 	int					histfile;
 	size_t				cursor_offset;	// number of lines by (cursor_offset / ws_col) col number by (cursor_offset % ws_col)
 	size_t				line_len;		// include the prompt len
+	t_stack				*linestate;
 	unsigned			cursor_line;
 	unsigned			num_lines;
 	char 				prompt_mode;
@@ -236,8 +251,10 @@ typedef struct			s_histentry
 	unsigned	index;
 }						t_histentry;
 
+
 void	vingtetunsh(char **av, char **env);
 
+void	dump_err(char errcode);
 void	fatal_err(char errcode, t_21sh *env);
 void	wrap_exit(int status, t_21sh *env);
 
@@ -254,6 +271,7 @@ void		save_history(t_hash **localvar, t_dlist *histlist);
 void		del_histentry(void *histentry, size_t histentrysize);
 void		add_histentry(t_21sh *env);
 
+void	wrap_lineread(t_21sh *env);
 void	lineread(t_21sh *env);
 void	getrawline(t_21sh *env);
 
@@ -285,6 +303,8 @@ void	del_current_char(t_21sh *env);
 
 void	kill_line_end(t_21sh *env);
 void	kill_line_beginning(t_21sh *env);
+void	kill_prev_word(t_21sh *env);
+//void	kill_next_word(t_21sh *env);
 void	yank(t_21sh *env);
 
 void	redraw_line(t_21sh *env);
@@ -309,8 +329,8 @@ bool	test_kill_beginline(t_21sh *env, char *buf, int *bufindex);
 bool	test_kill_endline(t_21sh *env, char *buf, int *bufindex);
 bool	test_clear_screen(t_21sh *env, char *buf, int *bufindex);
 bool	test_yank(t_21sh *env, char *buf, int *bufindex);
-bool	test_next_word(t_21sh *env, char *buf, int *bufindex);
-bool	test_previous_word(t_21sh *env, char *buf, int *bufindex);
+bool	test_go_next_word(t_21sh *env, char *buf, int *bufindex);
+bool	test_go_prev_word(t_21sh *env, char *buf, int *bufindex);
 bool	test_upper_line(t_21sh *env, char *buf, int *bufindex);
 bool	test_lower_line(t_21sh *env, char *buf, int *bufindex);
 bool	test_line_end(t_21sh *env, char *buf, int *bufindex);
@@ -324,8 +344,12 @@ bool 	test_del_previous_char(t_21sh *env, char *buf, int *bufindex);
 bool	test_emacs_mode(t_21sh *env, char *buf, int *bufindex);
 bool	test_load_line(t_21sh *env, char *buf);
 
+bool	test_killprevword(t_21sh *env, char *buf, int *bufindex);
+//bool	test_killnextword(t_21sh *env, char *buf, int *bufindex);
 
-enum	e_toktype
+
+
+/*enum	e_toktype
 {
 		WORD,
 		IO_NUMBER,
@@ -338,7 +362,6 @@ enum	e_toktype
 		LOR,
 		SEMICOL,
 		DSEMICOL,
-	//	BSLASH,
 		LREDIR,
 		RSREDIR,
 		HEREDOC,
@@ -352,6 +375,9 @@ typedef struct		s_token
 	struct s_token	*next_tok;
 	enum e_toktype	type;
 }					t_token;
+*/
+
+#endif
 
 // Shell script stuff
 
@@ -375,4 +401,3 @@ typedef struct		s_token
 //		WHILE,
 //};
 
-#endif

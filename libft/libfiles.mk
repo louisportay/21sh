@@ -1,4 +1,4 @@
-vpath %.c ft_string/ ft_stdio/ ft_stdlib/ lst/ dlst/ buffer/ ft_ctype/ ft_wchar/ other/ ft_printf/ ft_hash/ ft_btree/ utest/
+vpath %.c ft_string/ ft_stdio/ ft_stdlib/ lst/ dlst/ buffer/ ft_ctype/ ft_wchar/ other/ ft_printf/ ft_hash/ ft_btree/ utest/ stack/
 vpath %.h includes/
 
 INCLUDE= includes
@@ -159,35 +159,13 @@ UTEST=	new_test.c\
 		load_test.c\
 		exec_test.c\
 		exec_all_tests.c\
-		
-#LIBSRCS= $(BTREE)\
-		 $(HASH)\
-		 $(PRINTF)\
-		 $(OTHER)\
-		 $(WCHAR)\
-		 $(BUFFER)\
-		 $(DLST)\
-		 $(LST)\
-		 $(STDIO)\
-		 $(STDLIB)\
-		 $(STRING)\
-		 $(CTYPE)\
 
-#LIBHEADERS= libft.h\
-			ft_printf.h\
-			buffer.h\
-			ft_dlst.h\
-			ft_lst.h\
-			ft_ctype.h\
-			ft_stdio.h\
-			ft_stdlib.h\
-			ft_wchar.h\
-			other.h\
-			ft_string.h\
-			ft_hash.h\
-			ft_btree.h 
+STACK=	stack_create.c\
+		stack_del.c\
+		stack_pop.c\
+		stack_print.c\
+		stack_push.c\
 
-LIBOBJDIR= libobj
 
 PRINTFOBJ= $(PRINTF:%.c=%.o)
 CTYPEOBJ= $(CTYPE:%.c=%.o)
@@ -202,19 +180,23 @@ OTHEROBJ= $(OTHER:%.c=%.o)
 HASHOBJ= $(HASH:%.c=%.o)
 BTREEOBJ= $(BTREE:%.c=%.o)
 UTESTOBJ= $(UTEST:%.c=%.o)
+STACKOBJ= $(STACK:%.c=%.o)
 
-#LIBOBJS= $(PRINTFOBJDIR)/$(PRINTFOBJ)\
-         $(CTYPEOBJDIR)/$(CTYPEOBJ)\
-         $(STDIOOBJDIR)/$(STDIOOBJ)\
-         $(STDLIBOBJDIR)/$(STDLIBOBJ)\
-         $(STRINGOBJDIR)/$(STRINGOBJ)\
-         $(LSTOBJDIR)/$(LSTOBJ)\
-         $(DLSTOBJDIR)/$(DLSTOBJ)\
-         $(WCHAROBJDIR)/$(WCHAROBJ)\
-         $(BUFFEROBJDIR)/$(BUFFEROBJ)\
-         $(OTHEROBJDIR)/$(OTHEROBJ)\
-         $(HASHOBJDIR)/$(HASHOBJ)\
-         $(BTREEOBJDIR)/$(BTREEOBJ)\
+LIBOBJDIR= libobj
+PRINTFOBJDIR= $(LIBOBJDIR)/ft_printf
+CTYPEOBJDIR= $(LIBOBJDIR)/ft_ctype
+STDIOOBJDIR= $(LIBOBJDIR)/ft_stdio
+STDLIBOBJDIR= $(LIBOBJDIR)/ft_stdlib
+STRINGOBJDIR= $(LIBOBJDIR)/ft_string
+LSTOBJDIR= $(LIBOBJDIR)/lst
+DLSTOBJDIR= $(LIBOBJDIR)/dlst
+WCHAROBJDIR= $(LIBOBJDIR)/ft_wchar
+BUFFEROBJDIR= $(LIBOBJDIR)/buffer
+OTHEROBJDIR= $(LIBOBJDIR)/other
+HASHOBJDIR= $(LIBOBJDIR)/ft_hash
+BTREEOBJDIR= $(LIBOBJDIR)/ft_btree
+UTESTOBJDIR= $(LIBOBJDIR)/utest
+STACKOBJDIR= $(LIBOBJDIR)/stack
 
 LIBOBJS=	$(addprefix $(PRINTFOBJDIR)/, $(PRINTFOBJ))\
 			$(addprefix $(CTYPEOBJDIR)/, $(CTYPEOBJ))\
@@ -229,17 +211,4 @@ LIBOBJS=	$(addprefix $(PRINTFOBJDIR)/, $(PRINTFOBJ))\
 			$(addprefix $(HASHOBJDIR)/, $(HASHOBJ))\
 			$(addprefix $(BTREEOBJDIR)/, $(BTREEOBJ))\
 			$(addprefix $(UTESTOBJDIR)/, $(UTESTOBJ))\
-
-PRINTFOBJDIR= $(LIBOBJDIR)/ft_printf
-CTYPEOBJDIR= $(LIBOBJDIR)/ft_ctype
-STDIOOBJDIR= $(LIBOBJDIR)/ft_stdio
-STDLIBOBJDIR= $(LIBOBJDIR)/ft_stdlib
-STRINGOBJDIR= $(LIBOBJDIR)/ft_string
-LSTOBJDIR= $(LIBOBJDIR)/lst
-DLSTOBJDIR= $(LIBOBJDIR)/dlst
-WCHAROBJDIR= $(LIBOBJDIR)/ft_wchar
-BUFFEROBJDIR= $(LIBOBJDIR)/buffer
-OTHEROBJDIR= $(LIBOBJDIR)/other
-HASHOBJDIR= $(LIBOBJDIR)/ft_hash
-BTREEOBJDIR= $(LIBOBJDIR)/ft_btree
-UTESTOBJDIR= $(LIBOBJDIR)/utest
+			$(addprefix $(STACKOBJDIR)/, $(STACKOBJ))\

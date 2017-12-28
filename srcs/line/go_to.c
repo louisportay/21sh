@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:10:46 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/20 20:03:28 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/28 11:29:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,13 @@ void	go_to_previous_word(t_21sh *env)
 	{
 		if (ft_isalnum(*(char *)env->line->content) == true)
 			inword = true;
-		move_cursor_backward(env);
-		env->line = env->line->previous;
+		lkey(env);
 	}
 	while (inword == true && env->line->previous)
 	{
 		if (ft_isalnum(*(char *)env->line->content) == false)
 			break;
-	lkey(env);
+		lkey(env);
 	}
 }
 
@@ -93,13 +92,12 @@ void	go_to_next_word(t_21sh *env)
 			inword = true;
 			break;
 		}
-		move_cursor_forward(env);
-		env->line = env->line->next;
+		rkey(env);
 	}
 	while (inword == true && env->line->next)
 	{
 		if (ft_isalnum(*(char *)env->line->next->content) == false)
 			break;
-	rkey(env);
+		rkey(env);
 	}
 }

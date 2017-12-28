@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_to_dlst.c                                      :+:      :+:    :+:   */
+/*   stack_del.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/23 11:40:48 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/27 13:28:51 by lportay          ###   ########.fr       */
+/*   Created: 2017/12/22 11:24:46 by lportay           #+#    #+#             */
+/*   Updated: 2017/12/22 16:24:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_dlist	*str_to_dlst(char *str)
+void	stack_del(t_stack **stack)
 {
-	t_dlist 	*lst;
-	unsigned	len;
-	char 		*buf;
-
-	if (!str)
-		return (NULL);
-	lst = NULL;
-	len = ft_strlen(str);
-	while (len--)
-	{
-		buf = (char *)malloc(sizeof(char) + 1);
-		buf[0] = str[len];
-		buf[1] = '\0';
-		ft_dlstadd(&lst, ft_dlstnewaddr(buf, 1));
-	}
-	ft_dlstadd(&lst, ft_dlstnew("HEAD", 5));
-	return (lst);
+	while (*stack)
+		stack_pop(stack);
+	*stack = NULL;
 }

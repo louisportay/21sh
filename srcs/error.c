@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/19 14:03:00 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/27 15:25:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 ** Function which print the right error message
 */
 
-static void	dump_err(char errcode)
+void	dump_err(char errcode)
 {
-	t_keyval err[6];
+	t_keyval err[7];
 	int 	i;
 
 	err[0] = KEY_VAL(NOENVIRON, NOENVIRON_STR);
@@ -26,7 +26,8 @@ static void	dump_err(char errcode)
 	err[2] = KEY_VAL(NODIR, NODIR_STR);
 	err[3] = KEY_VAL(FAILSETSIGHDLR, FAILSETSIGHDLR_STR);
 	err[4] = KEY_VAL(FAILREAD, FAILREAD_STR);
-	err[5] = KEY_VAL(0, NULL);
+	err[5] = KEY_VAL(BADQUOTES, BADQUOTES_STR);
+	err[6] = KEY_VAL(0, NULL);
 	i = 0;
 	while (errcode != err[i].key && err[i].key)
 		i++;
@@ -52,6 +53,8 @@ void	wrap_exit(int status, t_21sh *env)
 	if (env->yank)
 	//ft_dlsthead(&env->yank);//
 		ft_dlstdel(&env->yank, &delvoid);
+	if (env->linestate)
+		stack_del(&env->linestate);
 	if (env->histlist)//faire une fonction dédiée
 	{
 	////ft_dlsthead(&env->histlist);//

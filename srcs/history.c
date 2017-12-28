@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/20 19:58:07 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/27 15:17:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,13 +133,8 @@ void	save_history(t_hash **localvar, t_dlist *histlist)
 
 void	add_histentry(t_21sh *env)
 {
-	if (env->line->next && dlst_isonlywhitespace(env->line->next) == false)
-	{
-		ft_dlstinsert(env->histlist, ft_dlstnewaddr(new_histentry(env->line, env->histindex++), sizeof(t_histentry *)));
+		ft_dlstinsert(env->histlist, ft_dlstnewaddr(new_histentry(env->split_line, env->histindex++), sizeof(t_histentry *)));
 		trim_history(&env->histlist->next, hashlookup(env->localvar, "HISTSIZE"));
-	}
-	else
-		ft_dlstdel(&env->line, &delvoid);
 }
 
 void	init_hist(t_21sh *env)

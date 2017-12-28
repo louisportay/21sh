@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/20 18:34:08 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/22 10:26:48 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/22 16:03:50 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ bool	test_yank(t_21sh *env, char *buf, int *bufindex)
 		return (false);
 }
 
-bool	test_next_word(t_21sh *env, char *buf, int *bufindex)
+bool	test_go_next_word(t_21sh *env, char *buf, int *bufindex)
 {
 	if (!ft_strncmp(buf, M_F, ft_strlen(M_F)))
 	{
@@ -72,7 +72,7 @@ bool	test_next_word(t_21sh *env, char *buf, int *bufindex)
 		return (false);
 }
 
-bool	test_previous_word(t_21sh *env, char *buf, int *bufindex)
+bool	test_go_prev_word(t_21sh *env, char *buf, int *bufindex)
 {
 	if (!ft_strncmp(buf, M_B, ft_strlen(M_B)))
 	{
@@ -286,4 +286,30 @@ bool	test_load_line(t_21sh *env, char *buf)
 		return (false);
 	else
 		return (true);
+}
+
+//bool	test_killnextword(t_21sh *env, char *buf, int *bufindex)
+//{
+//	(void)bufindex;
+//	if (!ft_strncmp(buf, M_D, ft_strlen(M_D)))
+//	{
+//		ft_bzero(buf, *bufindex);
+//		*bufindex = 0;
+//		if (env->line->next && env->emacs_mode)
+//			return (true);
+//		else
+//			return (false);
+//	}
+//	else
+//		return (false);
+//
+//}
+
+bool	test_killprevword(t_21sh *env, char *buf, int *bufindex)
+{
+	(void)bufindex;
+	if (*buf == C_W && env->line->previous)
+		return (true);
+	else
+		return (false);
 }

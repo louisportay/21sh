@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 12:56:11 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/28 11:03:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,11 +201,11 @@ void	print_prompt(t_21sh *env)
 	int 		i;
 
 	i = 0;
-	prompt[0] = KEY_VAL(1, "PS1");
-	prompt[1] = KEY_VAL(2, "PS2");
-	prompt[2] = KEY_VAL(3, "PS3");
-	prompt[3] = KEY_VAL(4, "PS4");
-	prompt[4] = KEY_VAL(0, NULL);
+	prompt[0] = KEY_VAL(PS1, "PS1");
+	prompt[1] = KEY_VAL(PS2, "PS2");
+	prompt[2] = KEY_VAL(PS3, "PS3");
+	prompt[3] = KEY_VAL(PS4, "PS4");
+	prompt[4] = KEY_VAL(NOPROMPT, NULL);
 
 	while (prompt[i].key != env->prompt_mode && prompt[i].key)
 		i++;

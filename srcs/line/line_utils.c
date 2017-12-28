@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/20 17:19:09 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/22 11:44:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	update_linemode(t_21sh *env)
 {
 	env->num_lines = env->line_len / env->ws.ws_col;
 	env->cursor_line = env->cursor_offset / env->ws.ws_col;
-	if (env->multiline == true && (env->line_len < env->ws.ws_col || env->line_len == env->cursor_offset || env->cursor_line == env->num_lines))
+	if (env->multiline == true && (!env->line->next || env->line_len < env->ws.ws_col || env->line_len == env->cursor_offset || env->cursor_line == env->num_lines))
 		env->multiline = false;
 	else if (env->multiline == false && env->cursor_line < env->num_lines)
 		env->multiline = true;

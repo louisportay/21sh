@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/16 19:21:40 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/12 19:29:36 by lportay          ###   ########.fr       */
+/*   Updated: 2017/12/22 11:21:57 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@
 # include "ft_hash.h"
 # include "ft_btree.h"
 # include "utest.h"
+# include "stack.h"
 
 # define KEY_VAL(KEY, VAL) (t_keyval){.val = VAL, .key = KEY}
 
