@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/28 11:03:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/02 10:34:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ static void	init_values(t_21sh *env)
 	env->yank = NULL;
 	env->linestate = NULL;
 
+//	env->toklist = NULL;//
+
 	env->history = true;
 	env->line_edition = true;
 
@@ -210,7 +212,15 @@ void	vingtetunsh(char **av, char  **environ)
 
 	if (env.line_edition == true)
 		while (1)//
+		{
 			wrap_lineread(&env);
+			env.toklist = tokenizer(env.split_line);
+
+			delete_toklist(&env.toklist);
+			if (env.line_saved == false)
+				ft_dlstdel(&env.split_line, &delvoid);
+			ft_dlstremove(&env.final_newline, &delvoid);
+		}
 //	else
 //		while (1)
 //			getrawline(&env);

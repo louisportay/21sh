@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/28 11:58:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/01 23:31:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,40 +83,59 @@ static int	user_input(t_21sh *env, char *buf, int *bufi)
 	return (READON);
 }
 
-void	query_linestate(t_dlist *dlst, t_stack **lineState)
+void	handle_bslash(t_stack **line)
+{
+	if ((*line)->state == BSLASH)
+		stack_pop(line);
+	else if ((*line)->state != SQUOTE)
+		stack_push(line, stack_create(BSLASH));
+}
+
+void	handle_squote(t_stack **line)
+{
+	if ((*line)->state == SQUOTE)
+		stack_pop(line);
+	else if ((*line)->state != DQUOTE && (*line)->state != BSLASH)
+		stack_push(line, stack_create(SQUOTE));
+}
+
+void	handle_dquote(t_stack **line)
+{
+	if ((*line)->state == DQUOTE)
+		stack_pop(line);
+	else if ((*line)->state != SQUOTE && (*line)->state != BSLASH)
+		stack_push(line, stack_create(DQUOTE));
+}
+
+/*
+void	handle_bquote(t_stack **line)
+{
+	if ((*line)->state == BQUOTE)
+		stack_pop(line);
+	else if ((*line)->state != SQUOTE && (*line)->state != BSLASH)
+		stack_push(line, stack_create(BQUOTE));
+}
+*/
+
+void	switch_state(t_stack **state, char c)
+{
+		if (c == '\\')
+			handle_bslash(state);
+		else if (c == '\'')
+			handle_squote(state);
+		else if (c == '\"')
+			handle_dquote(state);
+//		else if (c == '`')
+//			handle_bquote(state);
+}
+
+void	query_linestate(t_dlist *dlst, t_stack **linestate)
 {
 	while (dlst)
 	{
-		if (*(char *)(dlst->content) == '\\')
-		{
-			if ((*lineState)->state == BSLASH)
-				stack_pop(lineState);
-			else if ((*lineState)->state != SQUOTE)
-				stack_push(lineState, stack_create(BSLASH));
-		}
-		else if (*(char *)(dlst->content) == '\'')
-		{
-			if ((*lineState)->state == SQUOTE)
-				stack_pop(lineState);
-			else if ((*lineState)->state != DQUOTE && (*lineState)->state != BSLASH)
-				stack_push(lineState, stack_create(SQUOTE));
-		}
-		else if (*(char *)(dlst->content) == '\"')
-		{
-			if ((*lineState)->state == DQUOTE)
-				stack_pop(lineState);
-			else if ((*lineState)->state != SQUOTE && (*lineState)->state != BSLASH)
-				stack_push(lineState, stack_create(DQUOTE));
-		}
-		else if (*(char *)(dlst->content) == '`')
-		{
-			if ((*lineState)->state == BQUOTE)
-				stack_pop(lineState);
-			else if ((*lineState)->state != SQUOTE && (*lineState)->state != BSLASH)
-				stack_push(lineState, stack_create(BQUOTE));
-		}
-		if (*(char *)(dlst->content) != '\\' && (*lineState)->state == BSLASH)
-			stack_pop(lineState);
+		switch_state(linestate, *(char *)(dlst->content));
+		if (*(char *)(dlst->content) != '\\' && (*linestate)->state == BSLASH)
+			stack_pop(linestate);
 		dlst = dlst->next;
 		}
 }
@@ -144,6 +163,7 @@ void	join_split_lines(t_21sh *env)
 void	wrap_lineread(t_21sh *env)
 {
 	env->split_line = NULL;
+	env->line_saved = false;
 	env->prompt_mode = PS1;
 	stack_push(&env->linestate, stack_create(UNQUOTED));
 	lineread(env);
@@ -216,19 +236,16 @@ void		lineread(t_21sh *env)
 		if ((env->cursor_offset % env->ws.ws_col))
 			write(STDIN_FILENO, "\n", 1);
 		env->prompt_mode = PS2;
-		ft_dlstaddend(env->line, ft_dlstnew("\n", 1));
 	}
 
 	join_split_lines(env);
 
 	if (env->history && env->split_line->next && env->linestate->state == UNQUOTED && dlst_isonlywhitespace(env->split_line->next) == false)
+	{
 		add_histentry(env);
-	else if (env->linestate->state == UNQUOTED)
-		ft_dlstdel(&env->split_line, &delvoid);
+		env->line_saved = true; 
+	}
 
-//		return (EXIT_SUCCESS);
-//	else if (status == FINISHREAD)
-//		add_histentry(env);
-//	 	return (FINISHREAD);
-//	we're all done! add histentry and return
+	ft_dlstaddend(env->split_line, (env->final_newline = ft_dlstnew("\n", 1)));
+
 }

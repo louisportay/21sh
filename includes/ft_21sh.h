@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/28 11:04:37 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/01 23:19:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ enum		e_linestate
 	BSLASH,		//1
 	SQUOTE,		//2
 	DQUOTE,		//3
-	BQUOTE,		//4
+//	BQUOTE,		//4
 };
 
 enum		e_prompt_mode
@@ -179,6 +179,63 @@ struct		s_termcaps
 //padder correctement
 // faire des sous-structures en fonction des modules ? (demande beaucoup de refacto, utilise potentiellement plus de lignes)
 
+/* 
+** n>file
+** n<file ??
+** n>>file (append)
+**
+** n>&
+** n<&
+** 
+** <&- close standard input (NO IO_NUMBER)
+** >&- close standard output (NO IO_NUMBER)
+**
+** n<&- close input from file despcriptor n
+** n>&- close output from file despcriptor n
+
+*/
+enum	e_toktype
+{
+		HEAD,
+
+		NEWLINE, 	// \n
+		SEMICOL,	// ;
+
+		NUMBER,
+		WORD,
+		ASSIGNMENT_WORD, 	// WORD=
+
+		OR,			// |
+		AND,		// & 
+		LESS,		// <
+		GREAT,		// >
+		OR_IF,		// || OR+OR
+		AND_IF, 	// && AND+AND
+		DLESS,		// << LESS+LESS (HEREDOC)
+		DGREAT,		// >> GREAT+GREAT
+		LESSAND,			// <& LESS+AND 
+		GREATAND,			// >& GREAT+AND 
+		CLOSE_STDOUT,		// <&-
+		CLOSE_STDERR,		// >&-
+
+		IO_NUMBER_GREAT,	// n> 
+		IO_NUMBER_LESS,		// n<
+		DUP_OUTPUT,			// n>&
+		DUP_INPUT,			// n<&	
+
+		FD_TO_FILE,			// n>WORD
+		FILE_TO_FD,			// n<WORD
+		CLOSE_INPUT_FD,		// n<&-
+		CLOSE_OUTPUT_FD,	// n>&-
+};
+
+typedef struct		s_token
+{
+	t_dlist 		*first_letter;
+	t_dlist 		*last_letter;
+	struct s_token	*next;
+	enum e_toktype	type;
+}					t_token;
 typedef struct			s_21sh
 {
 	t_hash 				*localvar[HASHSIZE];
@@ -195,6 +252,8 @@ typedef struct			s_21sh
 	t_dlist				*lastline;
 	t_dlist				*histlist;
 	t_dlist				*split_line;
+	t_dlist				*final_newline;
+	t_token				*toklist;
 	int					histindex;
 	int					histfile;
 	size_t				cursor_offset;	// number of lines by (cursor_offset / ws_col) col number by (cursor_offset % ws_col)
@@ -205,6 +264,7 @@ typedef struct			s_21sh
 	char 				prompt_mode;
 	bool				multiline;
 	bool				emacs_mode;
+	bool				line_saved;
 
 	bool				line_edition;
 	bool				history;
@@ -347,35 +407,16 @@ bool	test_load_line(t_21sh *env, char *buf);
 bool	test_killprevword(t_21sh *env, char *buf, int *bufindex);
 //bool	test_killnextword(t_21sh *env, char *buf, int *bufindex);
 
+void	handle_bslash(t_stack **state);
+void	handle_dquote(t_stack **state);
+void	handle_squote(t_stack **state);
+void	handle_bquote(t_stack **state);
+void	switch_state(t_stack **state, char c);
+
+t_token		*tokenizer(t_dlist *line);
+void	delete_toklist(t_token **toklist);
 
 
-/*enum	e_toktype
-{
-		WORD,
-		IO_NUMBER,
-		NEWLINE,
-		PIPE,
-		DPIPE,
-		AND,
-		LAND,
-		OR,
-		LOR,
-		SEMICOL,
-		DSEMICOL,
-		LREDIR,
-		RSREDIR,
-		HEREDOC,
-		RDREDIR
-};
-
-typedef struct		s_token
-{
-	t_dlist 		*first_letter;
-	t_dlist 		*last_letter;
-	struct s_token	*next_tok;
-	enum e_toktype	type;
-}					t_token;
-*/
 
 #endif
 

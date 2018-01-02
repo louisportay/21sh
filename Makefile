@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2017/12/20 18:36:55 by lportay          ###   ########.fr        #
+#    Updated: 2017/12/30 20:49:28 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,6 @@ SRCS=	main.c\
 		ft_21sh.c\
 		error.c\
 		signal.c\
-		lexer.c\
 		tools.c\
 		prompt.c\
 		history.c\
@@ -52,6 +51,8 @@ SRCS=	main.c\
 		line_utils.c\
 		clear.c\
 		line_test.c\
+		\
+		lexer.c\
 
 #OBJ= $(SRCS:%.c=%.o)
 OBJDIR= obj
