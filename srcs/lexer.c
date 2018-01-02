@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/02 10:31:55 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/02 20:52:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,32 +53,49 @@ bool	is_simple_operator(char c)
 	else
 		return (false);
 }
-bool is_extendable_operator(int type)
+
+bool is_word_operator(int type)
 {
-	if (type == OR || type == AND || type == LESS || type == GREAT)
-		return (true);
-	else if (type == LESSAND || type == GREATAND)
-		return (true);	
-	else if (type == DUP_INPUT || type == DUP_OUTPUT || type == IO_NUMBER_LESS || type == IO_NUMBER_GREAT)
+	if (type == WORD || type == ASSIGNMENT_WORD || type == NUMBER)
 		return (true);
 	else
 		return (false);
 }
 
-// returns true if end of token reached
+bool is_finished_operator(int type)
+{
+	if (type == OR_IF || type == AND_IF || type == DLESS || type == DGREAT || type == CLOSE_STDOUT || type == CLOSE_STDERR\
+			|| type == CLOSE_INPUT_FD || type == CLOSE_OUTPUT_FD)
+		return (true);
+	else
+		return (false);
+}
+
+bool is_extendable_operator(int type)
+{
+	if (type == OR || type == AND || type == LESS || type == GREAT || type == NUMBER)
+		return (true);
+	else if (type == LESSAND || type == GREATAND)
+		return (true);	
+	else if (type == IO_NUMBER_LESS || type == IO_NUMBER_GREAT)
+		return (true);
+	else if (type == DUP_INPUT || type == DUP_OUTPUT)
+		return (true);
+	else
+		return (false);
+}
+
+// returns true if token has been extended
 
 bool	extend_word(t_token *token, char c, int quote_state)
 {
 	if ((ft_isblank(c) == true || is_simple_operator(c)) && quote_state == UNQUOTED)
-		return (true);
+		return (false);
 	else if (token->type == WORD && c == '=')
 		token->type = ASSIGNMENT_WORD;
 	else if (token->type == NUMBER && ft_isdigit(c) == false) 
-	{
-		DEBUG;
 		token->type = WORD;
-	}
-	return (false);	
+	return (true);	
 }
 		
 // Returns true if the operator has been extended
@@ -103,10 +120,6 @@ bool	extend_operator(t_token *token, char c)
 		token->type = IO_NUMBER_GREAT;
 	else if (token->type == NUMBER && c == '<')
 		token->type = IO_NUMBER_LESS;
-	else if (token->type == IO_NUMBER_LESS && (ft_isalpha(c) == true))
-		token->type = FILE_TO_FD;
-	else if (token->type == IO_NUMBER_GREAT && (ft_isalpha(c) == true))
-		token->type = FD_TO_FILE;
 	else if (token->type == IO_NUMBER_LESS && c == '&')
 		token->type = DUP_INPUT;
 	else if (token->type == IO_NUMBER_GREAT && c == '&')
@@ -145,6 +158,44 @@ int		basic_token_type(char c, int quote_state)
 		return (WORD);
 }
 
+void	delete_toklist(t_token **toklist)
+{
+	t_token *tmp;
+
+	tmp = *toklist;
+	while (tmp)
+	{
+		*toklist = (*toklist)->next;
+		free(tmp);
+		tmp = *toklist;
+	}
+	*toklist = NULL;
+}
+
+/*
+** Replace ASSIGNMENT_WORD by WORD when something is quoted
+*/
+
+void	check_assignment_words(t_token *toklist)
+{
+	t_dlist *tmp;
+
+	while (toklist)
+	{
+		if (toklist->type == ASSIGNMENT_WORD)
+		{
+			tmp = toklist->first_letter;
+			while (tmp != toklist->last_letter)
+			{
+				if (isquote(*(char *)tmp->content) == true)
+					toklist->type = WORD;
+				tmp = tmp->next;
+			}
+		}
+		toklist = toklist->next;
+	}
+}
+
 t_token		*new_token(t_dlist *line)
 {
 	t_token *new;
@@ -156,7 +207,6 @@ t_token		*new_token(t_dlist *line)
 	new->next = NULL;
 	return (new);
 }
-
 
 void		apply_tokrules(t_token *last_tok, t_dlist *line, t_stack **quote)
 {
@@ -170,48 +220,34 @@ void		apply_tokrules(t_token *last_tok, t_dlist *line, t_stack **quote)
 		return ;
 	}
 
-//	if (isquote(*(char *)line->content) == true)
-//		switch_state(quote, *(char *)line->content);
+	if (isquote(*(char *)line->content) == true)
+		switch_state(quote, *(char *)line->content);
 
+	if (is_word_operator(last_tok->type) && !last_tok->last_letter)
+		if (extend_word(last_tok, *(char *)line->content, (*quote)->state) == false)
+				last_tok->last_letter = line->previous;
 
-	if (last_tok->type == WORD || last_tok->type == NUMBER || last_tok->type == ASSIGNMENT_WORD)
-		if (extend_word(last_tok, *(char *)line->content, (*quote)->state) == true && !last_tok->last_letter)
-			last_tok->last_letter = line->previous;
-
-
-//	if ((*quote)->state == UNQUOTED && is_extendable_operator(last_tok->type) == true)
-//	{
-//		if (extend_operator(last_tok, *(char *)line->content) == true)
-//			last_tok->last_letter = line;
-//		else
-//			last_tok->last_letter = line->previous;
-//	}
+	if ((*quote)->state == UNQUOTED && is_extendable_operator(last_tok->type))
+		if (extend_operator(last_tok, *(char *)line->content) == false)
+//			if (last_tok->type != NUMBER)// || (*(char *)line->content != '<' && *(char *)line->content != '>'))//cette condition ne fonctionne pas
+//			{
+				last_tok->last_letter = line->previous;
+//			}
 		
-	if (last_tok->last_letter && ft_isblank(*(char *)line->content) == false && (*quote)->state == UNQUOTED)
+	if (last_tok->last_letter && ((ft_isblank(*(char *)line->content) == false) || (*quote)->state != UNQUOTED))
 	{
 		last_tok->next = new_token(line);
 		last_tok->next->type = basic_token_type(*(char *)line->content, (*quote)->state);
 
-	//	if (last_tok->next->type == NEWLINE || last_tok->next->type == SEMICOL)
-	//		last_tok->next->last_letter = line;
+		if (last_tok->next->type == NEWLINE || last_tok->next->type == SEMICOL)
+			last_tok->next->last_letter = line;
 	}
-	
-//	if ((*quote)->state == BSLASH)
-//		stack_pop(quote);
-}
 
-void	delete_toklist(t_token **toklist)
-{
-	t_token *tmp;
+	if (is_finished_operator(last_tok->type) && !last_tok->last_letter)
+			last_tok->last_letter = line;
 
-	tmp = *toklist;
-	while (tmp)
-	{
-		*toklist = (*toklist)->next;
-		free(tmp);
-		tmp = *toklist;
-	}
-	*toklist = NULL;
+	if ((*quote)->state == BSLASH && *(char *)line->content != '\\')
+			stack_pop(quote);
 }
 
 t_token		*tokenizer(t_dlist *line)
@@ -237,7 +273,15 @@ t_token		*tokenizer(t_dlist *line)
 		if (last_tok->next)
 			last_tok = last_tok->next;
 	}
-	print_toklist(toklist->next);
+//	check_assignment_words(toklist->next);
+	print_toklist(toklist->next);//
 	stack_del(&quote_state);
 	return (toklist);
 }
+
+
+/*
+** 1234>
+** | |
+** | a
+*/

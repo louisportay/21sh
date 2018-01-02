@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/02 10:34:26 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/02 10:43:50 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,8 @@ void	vingtetunsh(char **av, char  **environ)
 			delete_toklist(&env.toklist);
 			if (env.line_saved == false)
 				ft_dlstdel(&env.split_line, &delvoid);
-			ft_dlstremove(&env.final_newline, &delvoid);
+			else//
+				ft_dlstremove(&env.final_newline, &delvoid);
 		}
 //	else
 //		while (1)
