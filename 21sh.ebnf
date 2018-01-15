@@ -1,0 +1,76 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    21sh.ebnf                                          :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2017/12/28 15:11:18 by lportay           #+#    #+#              #
+#    Updated: 2018/01/15 11:15:50 by lportay          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+%token WORD
+%token ASSIGNMENT_WORD
+
+%token NEWLINE
+/*     '\n'   */
+
+%token OR  AND  SEMICOL
+/*     '|' '&'    ';' */
+
+%token IO_NUMBER
+/*	 string only made of digits delimited by '<' or '>' */
+
+%token LESS GREAT
+/*      '<'  '>' */
+
+%token  AND_IF OR_IF
+/*       '&&'   '||' */
+
+%token  DLESS  DGREAT  LESSAND  GREATAND  
+/*      '<<'   '>>'    '<&'     '>&'    */ 
+
+%token CLOSE_IN	CLOSE_OUT
+/*		'<&-'	'>&-'	 */
+
+command 		:	statement_list NEWLINE
+				|	NEWLINE
+				;
+
+statement_list	:	statement_block {SEMICOL statement_block|EMPTY}
+				;
+
+statement_block	:	statement {and_or statement_block}
+				;
+
+statement	:	io_close|io_redirect|io_copy|io_file|wordlist {statement}
+			;
+
+and_or		:	OR_IF
+			|	AND_IF
+			|	OR
+			;
+
+wordlist	:	WORD|ASSIGNMENT_WORD {wordlist}
+			;
+
+io_close	:	CLOSE_IN
+			|	CLOSE_OUT
+			;
+
+io_redirect :	IO_NUMBER LESS WORD
+			|	IO_NUMBER GREAT WORD
+			|	IO_NUMBER DLESS WORD
+			|   IO_NUMBER DGREAT WORD
+			;
+
+io_copy		:	LESSAND	WORD
+			|	GREATAND WORD
+			;
+
+io_file		:	LESS WORD
+			|	DLESS WORD
+			|	GREAT WORD
+			|	DGREAT WORD
+			;

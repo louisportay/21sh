@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/25 17:01:50 by lportay           #+#    #+#              #
-#    Updated: 2017/11/30 17:32:40 by lportay          ###   ########.fr        #
+#    Updated: 2018/01/08 11:08:17 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ ARCH:= $(shell uname)
 ifeq ($(ARCH), Darwin)
 	CC= clang
 endif
+
 ifeq ($(DEBUG),yes)
 	CFLAGS+= -g
 else ifeq ($(DEBUG),sanitize)

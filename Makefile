@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2017/12/30 20:49:28 by lportay          ###   ########.fr        #
+#    Updated: 2018/01/08 11:10:47 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ ARCH:= $(shell uname)
 ifeq ($(ARCH), Darwin)
 	CC= clang
 endif
+
 ifeq ($(DEBUG), yes)
 	CFLAGS+= -g
 else ifeq ($(DEBUG), sanitize)
@@ -53,8 +54,8 @@ SRCS=	main.c\
 		line_test.c\
 		\
 		lexer.c\
+#	parser.c\
 
-#OBJ= $(SRCS:%.c=%.o)
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
 

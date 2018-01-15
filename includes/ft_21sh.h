@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/02 15:48:41 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/15 10:46:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,10 @@
 # define T_HISTENTRY(ptr)	((t_histentry *)ptr)
 
 //TO DELETE
-# define DEBUG 		write(STDOUT_FILENO, "DEBUG\n", 7)
-# define DEBUG1 	write(STDOUT_FILENO, "DEBUG1\n", 8)
-# define DEBUG2 	write(STDOUT_FILENO, "DEBUG2\n", 8)
+# define DEBUG 		write(STDOUT_FILENO, "DEBUG\n", 6)
+# define DEBUG1 	write(STDOUT_FILENO, "DEBUG1\n", 7)
+# define DEBUG2 	write(STDOUT_FILENO, "DEBUG2\n", 7)
+# define ERROR 		write(STDOUT_FILENO, "ERROR\n", 6)
 
 
 enum				e_errcode
@@ -177,23 +178,8 @@ struct		s_termcaps
 */
 
 //padder correctement
-// faire des sous-structures en fonction des modules ? (demande beaucoup de refacto, utilise potentiellement plus de lignes)
+// faire des sous-structures en fonction des modules ? (demande beaucoup de refacto, utilise plus de lignes)
 
-/* 
-** n>file
-** n<file ??
-** n>>file (append)
-**
-** n>&
-** n<&
-** 
-** <&- close standard input (NO IO_NUMBER)
-** >&- close standard output (NO IO_NUMBER)
-**
-** n<&- close input from file despcriptor n
-** n>&- close output from file despcriptor n
-
-*/
 enum	e_toktype
 {
 		HEAD,
@@ -201,7 +187,7 @@ enum	e_toktype
 		NEWLINE, 	// \n
 		SEMICOL,	// ;
 
-		NUMBER,
+		IO_NUMBER,	// NUMBER avant une redirection
 		WORD,
 		ASSIGNMENT_WORD, 	// WORD=
 
@@ -213,18 +199,11 @@ enum	e_toktype
 		AND_IF, 	// && AND+AND
 		DLESS,		// << LESS+LESS (HEREDOC)
 		DGREAT,		// >> GREAT+GREAT
-		LESSAND,			// <& LESS+AND 
-		GREATAND,			// >& GREAT+AND  =15=
-		CLOSE_STDOUT,		// <&-
-		CLOSE_STDERR,		// >&-
+		LESSAND,	// <& LESS+AND
+		GREATAND,	// >& GREAT+AND  =15=
+		CLOSE_IN,	// <&-
+		CLOSE_OUT,	// >&-
 
-		IO_NUMBER_LESS,		// n<
-		IO_NUMBER_GREAT,	// n> 
-		DUP_INPUT,			// n<&	
-		DUP_OUTPUT,			// n>& 
-
-		CLOSE_INPUT_FD,		// DUP_INPUT + '-'
-		CLOSE_OUTPUT_FD,	// DUP_OUTPUT + '-'
 };
 
 typedef struct		s_token
@@ -234,6 +213,15 @@ typedef struct		s_token
 	struct s_token	*next;
 	enum e_toktype	type;
 }					t_token;
+
+/*typedef struct		s_ast
+{
+	t_token			*token;
+	struct	s_ast	*left;
+	struct	s_ast	*right;
+
+}					t_ast;*/
+
 typedef struct			s_21sh
 {
 	t_hash 				*localvar[HASHSIZE];
@@ -252,6 +240,7 @@ typedef struct			s_21sh
 	t_dlist				*split_line;
 	t_dlist				*final_newline;
 	t_token				*toklist;
+	t_btree				*ast;
 	int					histindex;
 	int					histfile;
 	size_t				cursor_offset;	// number of lines by (cursor_offset / ws_col) col number by (cursor_offset % ws_col)
@@ -411,7 +400,8 @@ void	handle_squote(t_stack **state);
 void	handle_bquote(t_stack **state);
 void	switch_state(t_stack **state, char c);
 
-t_token		*tokenizer(t_dlist *line);
+t_token	*tokenizer(t_dlist *line);
+t_btree	*parser(t_token *toklist);
 void	delete_toklist(t_token **toklist);
 
 

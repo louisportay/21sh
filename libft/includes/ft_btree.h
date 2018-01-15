@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/10 17:36:47 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/06 17:54:29 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/04 18:27:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ typedef struct			s_btree
 	struct s_btree		*parent;
 	struct s_btree		*left;
 	struct s_btree		*right;
-	void			*data;
-}				t_btree;
+	void				*data;
+}						t_btree;
 
 enum				e_rb_color
 {
@@ -46,6 +46,6 @@ void 				btree_apply_infix(t_btree *root, void (*applyf)(void *));
 void 				btree_insert_data(t_btree **root, void *item, int (*cmpf)(void *, void *));
 void 				*btree_search_item(t_btree *root, void *data_ref, int (*cmpf)(void *, void *));
 void				print_btree(t_btree *tree, bool status, int lvl);
-
+void				btree_delete(t_btree **tree, void (*del)(void *));
 
 #endif

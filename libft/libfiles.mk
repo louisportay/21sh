@@ -153,6 +153,7 @@ BTREE=	btree_apply.c\
 	btree_insert_data.c\
 	btree_search_item.c\
 	print_btree.c\
+	btree_delete.c\
 
 UTEST=	new_test.c\
 		del_test.c\

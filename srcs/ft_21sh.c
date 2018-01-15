@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/02 10:43:50 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/15 13:02:45 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,20 +210,24 @@ void	vingtetunsh(char **av, char  **environ)
 	if ((ret = init(&env, av, environ)) != SUCCESS)
 		fatal_err(ret, &env);
 
-	if (env.line_edition == true)
-		while (1)//
-		{
+	while (1)//
+	{
+		if (env.line_edition == true)
 			wrap_lineread(&env);
-			env.toklist = tokenizer(env.split_line);
+		else
+			getrawline(&env);
 
-			delete_toklist(&env.toklist);
-			if (env.line_saved == false)
-				ft_dlstdel(&env.split_line, &delvoid);
-			else//
-				ft_dlstremove(&env.final_newline, &delvoid);
-		}
-//	else
-//		while (1)
-//			getrawline(&env);
+		env.toklist = tokenizer(env.split_line);
+//		if (!(env.ast = parser(env.toklist)))
+//			ERROR;
+
+//		if (env.ast)
+//			btree_delete(&env.ast, NULL);
+		delete_toklist(&env.toklist);
+		if (env.line_saved == false)
+			ft_dlstdel(&env.split_line, &delvoid);
+		else//
+			ft_dlstremove(&env.final_newline, &delvoid);
+	}
 	wrap_exit(EXIT_SUCCESS, &env);
 }
