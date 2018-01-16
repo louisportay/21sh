@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/15 13:02:45 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/16 14:54:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,9 @@ static void	init_values(t_21sh *env)
 	env->yank = NULL;
 	env->linestate = NULL;
 
-//	env->toklist = NULL;//
+	env->toklist = NULL;//	delete_toklist le met a NULL
+	env->ast = NULL;//		delete_btree 	- - - - - - 
+	env->rdir = NULL;//
 
 	env->history = true;
 	env->line_edition = true;
@@ -202,6 +204,33 @@ static int	init(t_21sh *env, char **av, char **environ)
 	return (SUCCESS);
 }
 
+void	dump_token(t_token *tok)
+{
+	t_dlist *tmp;
+
+	tmp = tok->first_letter;
+	while (tmp != tok->last_letter)
+	{
+		write(STDOUT_FILENO, tmp->content, 1);
+		tmp = tmp->next;
+	}
+	write(STDOUT_FILENO, tmp->content, 1);
+}
+
+void	del_redir(t_redir **redir)
+{
+	t_redir *tmp;
+
+	while (*redir)
+	{
+		ft_lstdel(&(*redir)->r_queue, NULL);
+		tmp = *redir;
+		*redir = (*redir)->next_command;
+		free(tmp);
+	}
+	*redir = NULL;
+}
+
 void	vingtetunsh(char **av, char  **environ)
 {
 	t_21sh	env;
@@ -218,12 +247,18 @@ void	vingtetunsh(char **av, char  **environ)
 			getrawline(&env);
 
 		env.toklist = tokenizer(env.split_line);
-//		if (!(env.ast = parser(env.toklist)))
-//			ERROR;
+		if (!(env.ast = parser(env.toklist)))
+			ft_putstr("ERROR\n");
+		//env.rdir redirect(env.ast);
 
-//		if (env.ast)
-//			btree_delete(&env.ast, NULL);
+		if (env.ast)
+		{
+			print_btree(env.ast, true, 0, (void (*)(void*))&dump_token);
+			write(STDIN_FILENO, "\n", 1);
+			btree_delete(&env.ast, NULL);
+		}
 		delete_toklist(&env.toklist);
+		del_redir(&env.rdir);
 		if (env.line_saved == false)
 			ft_dlstdel(&env.split_line, &delvoid);
 		else//

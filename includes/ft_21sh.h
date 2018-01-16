@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/15 10:46:40 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/16 14:59:18 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,13 +214,11 @@ typedef struct		s_token
 	enum e_toktype	type;
 }					t_token;
 
-/*typedef struct		s_ast
+typedef struct		s_redir
 {
-	t_token			*token;
-	struct	s_ast	*left;
-	struct	s_ast	*right;
-
-}					t_ast;*/
+	t_list			*r_queue;
+	struct s_redir	*next_command;
+}					t_redir;
 
 typedef struct			s_21sh
 {
@@ -241,6 +239,7 @@ typedef struct			s_21sh
 	t_dlist				*final_newline;
 	t_token				*toklist;
 	t_btree				*ast;
+	t_redir				*rdir;
 	int					histindex;
 	int					histfile;
 	size_t				cursor_offset;	// number of lines by (cursor_offset / ws_col) col number by (cursor_offset % ws_col)
@@ -429,4 +428,3 @@ void	delete_toklist(t_token **toklist);
 //		UNTIL,
 //		WHILE,
 //};
-

@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/01/08 11:10:47 by lportay          ###   ########.fr        #
+#    Updated: 2018/01/15 16:20:40 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ SRCS=	main.c\
 		line_test.c\
 		\
 		lexer.c\
-#	parser.c\
+	parser.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:52:21 by lportay           #+#    #+#             */
-/*   Updated: 2017/10/25 16:21:43 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/15 22:31:14 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 typedef struct		s_list
 {
-	void		*content;
-	size_t		content_size;
+	void			*content;
+	size_t			content_size;
 	struct s_list	*next;
-}			t_list;
+}					t_list;
 
 void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstaddend(t_list **alst, t_list *new);
