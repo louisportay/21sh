@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/15 12:04:53 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/16 18:08:10 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ bool is_word_operator(int type)
 
 bool is_maximum_operator(int type)
 {
-	if (type == OR_IF || type == AND_IF || type == DLESS || type == DGREAT || /*type == LESSAND || type == GREATAND ||*/ type == SEMICOL || type == CLOSE_IN || type == CLOSE_OUT)
+	if (type == OR_IF || type == AND_IF || type == DLESS || type == DGREAT || type == LESSAND || type == GREATAND)
 		return (true);
 	else
 		return (false);
@@ -72,7 +72,7 @@ bool is_maximum_operator(int type)
 
 bool is_extendable_operator(int type)
 {
-	if (type == OR || type == AND || type == LESS || type == GREAT || type == LESSAND || type == GREATAND)
+	if (type == OR || type == AND || type == LESS || type == GREAT)
 		return (true);
 	else
 		return (false);
@@ -110,10 +110,6 @@ bool	extend_operator(t_token *token, char c, int quote_state)
 			token->type = DGREAT;
 		else if (token->type == GREAT && c == '&')
 			token->type = GREATAND;
-		else if (token->type == LESSAND && c == '-')
-			token->type = CLOSE_IN;
-		else if (token->type == GREATAND && c == '-')
-			token->type = CLOSE_OUT;
 		else
 			return (false);
 	return (true);
@@ -204,6 +200,13 @@ t_token		*new_token(t_dlist *line)
 	return (new);
 }
 
+void	create_dash_token(t_token *last_tok, t_dlist *line)
+{
+	last_tok->next = new_token(line->next);
+	last_tok->next->type = WORD;
+	last_tok->next->last_letter = line->next;
+}
+
 void		apply_tokrules(t_token *last_tok, t_dlist *line, t_stack **quote)
 {
 	if (!line->next)
@@ -229,7 +232,7 @@ void		apply_tokrules(t_token *last_tok, t_dlist *line, t_stack **quote)
 		if (!(extend_operator(last_tok, *(char *)line->content, (*quote)->state)))
 				last_tok->last_letter = line->previous;
 		
-	if (last_tok->last_letter && (!(ft_isblank(*(char *)line->content)) || (*quote)->state != UNQUOTED))
+	if (last_tok->last_letter && (!(ft_isblank(*(char *)line->content)) || (*quote)->state != UNQUOTED) && last_tok->last_letter != line)
 	{
 		last_tok->next = new_token(line);
 		last_tok->next->type = basic_token_type(*(char *)line->content, (*quote)->state);
@@ -238,7 +241,11 @@ void		apply_tokrules(t_token *last_tok, t_dlist *line, t_stack **quote)
 	}
 
 	if (is_maximum_operator(last_tok->type) && !last_tok->last_letter)
-			last_tok->last_letter = line;
+	{
+		last_tok->last_letter = line;
+		if (*(char *)line->next->content == '-' && (last_tok->type == LESSAND || last_tok->type == GREATAND))
+			create_dash_token(last_tok, line);
+	}
 
 	if ((*quote)->state == BSLASH && *(char *)line->content != '\\')
 			stack_pop(quote);
@@ -269,7 +276,7 @@ t_token		*tokenizer(t_dlist *line)
 	}
 	check_assignment_words(toklist->next);
 	replace_and_token(toklist->next);
-	print_toklist(toklist->next);//
+//	print_toklist(toklist->next);//
 	stack_del(&quote_state);
 
 	return (toklist);

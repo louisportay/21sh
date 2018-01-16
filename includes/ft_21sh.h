@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/16 14:59:18 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/16 18:13:08 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,24 +186,23 @@ enum	e_toktype
 
 		NEWLINE, 	// \n
 		SEMICOL,	// ;
-
 		IO_NUMBER,	// NUMBER avant une redirection
 		WORD,
 		ASSIGNMENT_WORD, 	// WORD=
 
 		OR,			// |
-		AND,		// &
+		AND,		// &	/!\ UNUSED
 		LESS,		// <
 		GREAT,		// >
-		OR_IF,		// || OR+OR    =10=
-		AND_IF, 	// && AND+AND
-		DLESS,		// << LESS+LESS (HEREDOC)
-		DGREAT,		// >> GREAT+GREAT
-		LESSAND,	// <& LESS+AND
-		GREATAND,	// >& GREAT+AND  =15=
-		CLOSE_IN,	// <&-
-		CLOSE_OUT,	// >&-
+		OR_IF,		// || =10=
+		AND_IF, 	// &&
+		DLESS,		// << (HEREDOC)
+		DGREAT,		// >>
+		LESSAND,	// <&
+		GREATAND,	// >& =15=
 
+	  //ANDGREAT,	// &>
+	
 };
 
 typedef struct		s_token
