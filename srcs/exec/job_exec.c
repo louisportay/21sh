@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/24 17:27:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:29:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,30 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 	return (0);
 }
 
+int						do_pipe(t_proc *p, int fd[2], int *outfile)
+{
+	if (p->next != NULL)
+	{
+		if (pipe(fd) < 0)
+		{
+			ft_putstr_fd("Pipe broken\n", STDERR_FILENO);
+			return (1);
+		}
+		*outfile = fd[1];
+	}
+	return (0);
+}
+
+void					do_postloop(t_job *j, int fg, int istty)
+{
+	if (istty == 0)
+		job_wait(j);
+	else if (fg != 0)
+		job_putfg(j, 0);
+	else
+		job_putbg(j, 0);
+}
+
 int						job_exec(t_job *j, int fg, int istty)
 {
 	t_proc				*p;
@@ -48,15 +72,8 @@ int						job_exec(t_job *j, int fg, int istty)
 	p = j->first_process;
 	while (p != NULL)
 	{
-		if (p->next != NULL)
-		{
-			if (pipe(fd) < 0)
-			{
-				ft_putstr_fd("Pipe broken\n", STDERR_FILENO);
-				return (1);
-			}
-			outfile = fd[1];
-		}
+		if (do_pipe(p, fd, &outfile) == 1)
+			return (1);
 		if (do_fork(p, j, (int[2]){infile, outfile}, fg, istty) == 1)
 			return (1);
 		if (infile != j->stdin)
@@ -67,12 +84,7 @@ int						job_exec(t_job *j, int fg, int istty)
 		p = p->next;
 	}
 	job_fmtinfo(j, EXE_LCHD);
-	if (istty == 0)
-		job_wait(j);
-	else if (fg != 0)
-		job_putfg(j, 0);
-	else
-		job_putbg(j, 0);
+	do_postloop(j, fg, istty);
 	return (0);
 }
 

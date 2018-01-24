@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/24 17:55:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/01/24 19:21:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,13 @@ struct					s_job
 
 t_proc					*proc_new(char **argv);
 void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
+void					proc_clear(t_proc **proc);
+
 int						proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg);
 
 t_job					*job_new(char *cmd, t_proc *plist);
 void					job_insert(t_job **head, t_job **curr, t_job *j);
+void					job_clear(t_job **jobs);
 
 t_job					*job_find(pid_t pid, t_job *job_list);
 int						job_isstopped(t_job *job);
