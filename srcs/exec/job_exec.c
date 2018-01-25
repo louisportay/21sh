@@ -13,12 +13,12 @@
 #include "exec.h"
 
 int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
-								int istty)
+								t_env *env)
 {
 	pid_t				pid;
 
 	if ((pid = fork()) == 0)
-		proc_exec(p, j->pgid, (int[3]){fd[0], fd[1], j->stderr}, fg);
+		proc_exec(p, j->pgid, (int[3]){fd[0], fd[1], j->stderr}, fg, env);
 	else if (pid < 0)
 	{
 		ft_putstr_fd("fork error\n", STDERR_FILENO);
@@ -27,7 +27,7 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 	else
 	{
 		p->pid = pid;
-		if (istty != 0)
+		if (env->istty != 0)
 		{
 			if (j->pgid == 0)
 				j->pgid = pid;
@@ -61,7 +61,7 @@ void					do_postloop(t_job *j, int fg, int istty)
 		job_putbg(j, 0);
 }
 
-int						job_exec(t_job *j, int fg, int istty)
+int						job_exec(t_job *j, int fg, t_env *env)
 {
 	t_proc				*p;
 	int					fd[2];
@@ -74,7 +74,7 @@ int						job_exec(t_job *j, int fg, int istty)
 	{
 		if (do_pipe(p, fd, &outfile) == 1)
 			return (1);
-		if (do_fork(p, j, (int[2]){infile, outfile}, fg, istty) == 1)
+		if (do_fork(p, j, (int[2]){infile, outfile}, fg, env) == 1)
 			return (1);
 		if (infile != j->stdin)
 			close(infile);

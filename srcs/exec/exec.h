@@ -13,6 +13,7 @@
 #ifndef EXEC_H
 # define EXEC_H
 
+# include <stdio.h> //
 # include <sys/types.h>
 # include <termios.h>
 # include <stdlib.h>
@@ -21,6 +22,7 @@
 # include "tokens.h"
 # include "ft_mem.h"
 # include "ft_string.h"
+# include "environ.h"
 
 # define EXE_LCHD ("launched")
 
@@ -54,7 +56,7 @@ t_proc					*proc_new(char **argv);
 void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
 void					proc_clear(t_proc **proc);
 
-int						proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg);
+void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg, t_env *env);
 
 t_job					*job_new(char *cmd, t_proc *plist);
 void					job_insert(t_job **head, t_job **curr, t_job *j);
@@ -69,5 +71,7 @@ void					job_wait(t_job *j);
 void					job_putfg(t_job *j, int cont);
 void					job_putbg(t_job *j, int cont);
 void					job_fmtinfo(t_job *j, char *status);
+
+void					setup_signals(void (*sig)()); 
 
 #endif
