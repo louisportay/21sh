@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/27 15:25:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/27 17:19:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	dump_err(char errcode)
 	while (errcode != err[i].key && err[i].key)
 		i++;
 	if (err[i].key)
-		ft_putstr(err[i].val);
+		ft_putstr_fd(STDERR_FILENO, err[i].val);
 }
 
 /*
@@ -45,37 +45,38 @@ void		fatal_err(char errcode, t_21sh *env)
 	wrap_exit(EXIT_FAILURE, env);
 }
 
+/*
+** Free everything
+*/
+
 void	wrap_exit(int status, t_21sh *env)
 {
-	if (env->line)
+	if (env->line.line)
 	//ft_dlsthead(&env->line);//
-		ft_dlstdel(&env->line, &delvoid);
-	if (env->yank)
+		ft_dlstdel(&env->line.line, &delvoid);
+	if (env->line.yank)
 	//ft_dlsthead(&env->yank);//
-		ft_dlstdel(&env->yank, &delvoid);
-	if (env->linestate)
-		stack_del(&env->linestate);
-	if (env->histlist)//faire une fonction dédiée
+		ft_dlstdel(&env->line.yank, &delvoid);
+	if (env->line.linestate)
+		stack_del(&env->line.linestate);
+	if (env->hist.list)//faire une fonction dédiée
 	{
 	////ft_dlsthead(&env->histlist);//
-		if (env->histlist->next)
+		if (env->hist.list->next)
 		{
-			trim_history(&env->histlist->next, hashlookup(env->localvar, "HISTFILESIZE"));
-			save_history(env->localvar, env->histlist->next);
-			env->histlist = env->histlist->next;
-			ft_dlstdelone(&env->histlist->previous, &delvoid);
-			ft_dlstdel(&env->histlist, &del_histentry);
+			trim_history(&env->hist.list->next, get_kvp("HISTFILESIZE", env->local));
+			save_history(env->local, env->hist.list->next);
+			env->hist.list = env->hist.list->next;
+			ft_dlstdelone(&env->hist.list->previous, &delvoid);
+			ft_dlstdel(&env->hist.list, &del_histentry);
 		}
 		else
-			ft_dlstdelone(&env->histlist, &delvoid);
+			ft_dlstdelone(&env->hist.list, &delvoid);
 	}
 	if (env->environ)
-	{
-		del_array((void **)env->environ);
-		free(env->environ);
-		env->environ = NULL;
-	}
-	hashclear(env->localvar, ft_memdel);
+		delete_kvp(&env->environ);
+	if (env->local)
+		delete_kvp(&env->local);
 	write(STDOUT_FILENO, "exit\n", 6);
 	if (env->line_edition == true)
 		tcsetattr(STDIN_FILENO, TCSADRAIN, &env->oldtios);	

@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/28 15:11:18 by lportay           #+#    #+#              #
-#    Updated: 2018/01/16 15:55:53 by lportay          ###   ########.fr        #
+#    Updated: 2018/01/28 19:43:38 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@
 /*     '|' '&'    ';' */
 
 %token IO_NUMBER
-/*	 string only made of digits delimited by '<' or '>' */
+/*	 *[0-9] delimited by '<'|'>' */
 
 %token LESS GREAT
 /*      '<'  '>' */
@@ -28,8 +28,13 @@
 %token  AND_IF OR_IF
 /*       '&&'   '||' */
 
-%token  DLESS  DGREAT  LESSAND  GREATAND  
-/*      '<<'   '>>'    '<&'     '>&'    */ 
+%token  DLESS  DGREAT  LESSAND  GREATAND ANDGREAT
+/*      '<<'   '>>'    '<&'     '>&'		'&>' */
+
+%token BANG
+/*		'!'	*/
+
+//ajouter les commentaires et les expansions et les BANG_EXP
 
 command 		:	statement_list NEWLINE
 				|	NEWLINE
@@ -41,7 +46,7 @@ statement_list	:	statement_block {SEMICOL statement_block|EMPTY}
 statement_block	:	statement {and_or statement_block}
 				;
 
-statement	:	io_close|io_redirect|wordlist {statement}
+statement	:	io_redirect|wordlist {statement}
 			;
 
 and_or		:	OR_IF
@@ -58,3 +63,4 @@ io_redirect :	{IO_NUMBER} LESS WORD
 			|   {IO_NUMBER} DGREAT WORD
 			|	{IO_NUMBER} LESSAND	WORD
 			;   {IO_NUMBER} GREATAND WORD
+			;   			ANDGREAT WORD

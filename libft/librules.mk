@@ -40,6 +40,9 @@ $(UTESTOBJDIR)/%.o: %.c utest.h $(HEADER)| $(UTESTOBJDIR)
 $(STACKOBJDIR)/%.o: %.c stack.h $(HEADER)| $(STACKOBJDIR)
 	$(COMPILE.c) $< -o $@
 
+$(KVPOBJDIR)/%.o: %.c kvp.h $(HEADER)| $(KVPOBJDIR)
+	$(COMPILE.c) $< -o $@
+
 $(LIBOBJDIR):
 	-mkdir -p $@
 $(CTYPEOBJDIR): | $(LIBOBJDIR)
@@ -69,4 +72,6 @@ $(BTREEOBJDIR): | $(LIBOBJDIR)
 $(UTESTOBJDIR): | $(LIBOBJDIR)
 	-mkdir -p $@
 $(STACKOBJDIR): | $(LIBOBJDIR)
+	-mkdir -p $@
+$(KVPOBJDIR): | $(LIBOBJDIR)
 	-mkdir -p $@

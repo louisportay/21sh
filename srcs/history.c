@@ -6,37 +6,31 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/27 15:17:11 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/27 17:22:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int		get_histfile(t_21sh *env)
+char	*get_histfile(t_21sh *env)
 {
 	char	*path;
-	t_hash	*tmp;
 
-	if (!(path = ft_getenv("HOME", env->environ)))
-		env->histfile = open(HISTFILE, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR);
+	if (!(path = get_kvp("HOME", env->environ)))
+		env->hist.file = open(HISTFILE, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR);
 	else
-		env->histfile = open((path = fullpath(path, HISTFILE)), O_CREAT | O_RDWR,
+		env->hist.file = open((path = fullpath(path, HISTFILE)), O_CREAT | O_RDWR,
 		S_IWUSR | S_IRUSR);
-	if (env->histfile == -1)
+
+	if (env->hist.file == -1)
 		env->history = false;
+
 	if (path)
-	{
-		if (!(tmp = hashaddr("HISTFILE", path, ft_strlen(path))))
-			return (NOMEM);
-		hashinsert(env->localvar, tmp, 0, &ft_memdel);
-	}
+		return (path);
 	else if (env->history == true)
-	{
-		if (!(tmp = hashcreate("HISTFILE", HISTFILE, ft_strlen(HISTFILE))))
-			return (NOMEM);
-		hashinsert(env->localvar, tmp, 0, &ft_memdel);
-	}
-	return (SUCCESS);
+		return (ft_strdup(HISTFILE));
+	else
+		return (NULL);
 }
 
 t_histentry		*new_histentry(t_dlist *line, unsigned index)
@@ -62,6 +56,7 @@ void	del_histentry(void *histentry, size_t histentrysize)
 /*
 ** Imprimer dans le bon sens pour le built-in `history'
 */
+
 //
 void	dump_history(t_dlist *histlist)
 {
@@ -75,15 +70,15 @@ void	dump_history(t_dlist *histlist)
 	}
 }
 
-void	trim_history(t_dlist **histlist, t_hash *histsizebucket)
+void	trim_history(t_dlist **histlist, char *s_histsize)
 {
 	int		histsize;
 	t_dlist	*tmp;
 
-	if (!histsizebucket)
-		histsize = ft_atoi(HISTSIZE);
+	if (s_histsize)
+		histsize = ft_atoi(s_histsize);
 	else
-		histsize = ft_atoi((char *)histsizebucket->data);
+		histsize = ft_atoi(HISTSIZE);
 	tmp = *histlist;
 	while (histsize && *histlist)
 	{
@@ -98,34 +93,28 @@ void	trim_history(t_dlist **histlist, t_hash *histsizebucket)
 	*histlist = tmp;
 }
 
-void	save_history(t_hash **localvar, t_dlist *histlist)
+void	save_history(t_kvp *local, t_dlist *histlist)
 {
-	t_hash	*tmp;
-	char	*s;
+	char	*tmp;
 	int		histfile;
-	int		histfilesize;
 
-	if (!(tmp = hashlookup(localvar, "HISTFILE")))
-		histfile = open(HISTFILE, O_CREAT | O_TRUNC | O_RDWR, S_IWUSR | S_IRUSR );
+	if ((tmp = get_kvp("HISTFILE", local)))
+		histfile = open(tmp, O_CREAT | O_TRUNC | O_RDWR, S_IWUSR | S_IRUSR);
 	else
-		histfile = open((char *)tmp->data, O_CREAT | O_TRUNC | O_RDWR, S_IWUSR | S_IRUSR);
+		histfile = open(HISTFILE, O_CREAT | O_TRUNC | O_RDWR, S_IWUSR | S_IRUSR);
 	if (histfile == -1)
 		return ;
-	if (!(tmp = hashlookup(localvar, "HISTFILESIZE")))
-		histfilesize = ft_atoi(HISTFILESIZE);
-	else
-		histfilesize = ft_atoi((char *)tmp->data);
+
 	ft_dlstend(&histlist);
-	while (histlist->previous && histfilesize)
+	while (histlist->previous)
 	{
-		s = dlst_to_str(T_HISTENTRY(histlist->content)->line);
-		if (s && isonlywhitespace(s) == false)
+		tmp = dlst_to_str(T_HISTENTRY(histlist->content)->line);
+		if (tmp && !str_isblank(tmp))
 		{
-			write(histfile, s, ft_strlen(s));
+			write(histfile, tmp, ft_strlen(tmp));
 			write(histfile, "\n", 1);
-			histfilesize--;
 		}
-		ft_strdel(&s);
+		ft_strdel(&tmp);
 		histlist = histlist->previous;
 	}
 	close(histfile);
@@ -133,35 +122,34 @@ void	save_history(t_hash **localvar, t_dlist *histlist)
 
 void	add_histentry(t_21sh *env)
 {
-		ft_dlstinsert(env->histlist, ft_dlstnewaddr(new_histentry(env->split_line, env->histindex++), sizeof(t_histentry *)));
-		trim_history(&env->histlist->next, hashlookup(env->localvar, "HISTSIZE"));
+		ft_dlstinsert(env->hist.list, ft_dlstnewaddr(new_histentry(env->line.split_line, env->hist.index++), sizeof(t_histentry *)));
+		trim_history(&env->hist.list->next, get_kvp("HISTSIZE", env->local));
 }
 
 void	init_hist(t_21sh *env)
 {
 	char	*histentry;
 
-
-	if (get_next_line(env->histfile, &histentry) == -1)
+	if (get_next_line(env->hist.file, &histentry) == -1)
 	{
 		env->history = false;
-		close(env->histfile);
+		close(env->hist.file);
 		return ;
 	}
 	while (histentry)
 	{
 		if (ft_strlen(histentry))
-				ft_dlstadd(&env->histlist, ft_dlstnewaddr(new_histentry(str_to_dlst(histentry), env->histindex++), sizeof(t_histentry *)));
+				ft_dlstadd(&env->hist.list, ft_dlstnewaddr(new_histentry(str_to_dlst(histentry), env->hist.index++), sizeof(t_histentry *)));
 			free(histentry);
-		if (get_next_line(env->histfile, &histentry) == -1)
+		if (get_next_line(env->hist.file, &histentry) == -1)
 		{
-			close(env->histfile);
-			ft_dlstdel(&env->histlist, &del_histentry);
+			close(env->hist.file);
+			ft_dlstdel(&env->hist.list, &del_histentry);
 			env->history = false;
 			return ;
 		}
 	}
-	close(env->histfile);
-	trim_history(&env->histlist, hashlookup(env->localvar, "HISTSIZE"));
-	ft_dlstadd(&env->histlist, ft_dlstnew("HEAD", 5));
+	close(env->hist.file);
+	trim_history(&env->hist.list, get_kvp("HISTSIZE", env->local));
+	ft_dlstadd(&env->hist.list, ft_dlstnew("HEAD", 5));
 }

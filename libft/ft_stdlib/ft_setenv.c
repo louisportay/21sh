@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 17:59:02 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/09 13:11:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/27 13:34:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,16 @@ static int	modify_env(char *tmp, const char *value, int ow, char **tmp_env)
 
 	len = ft_strlen(tmp);
 	while (*tmp_env)
-		if (ft_strncmp(tmp, *tmp_env++, len) == 0)
+	{
+		if (ft_strncmp(tmp, *tmp_env, len) == 0)
 		{
-			if (ow != 0)
-				ft_strrep(--tmp_env, ft_strjoin(tmp, value));
+			if (ow)
+				ft_strrep(tmp_env, ft_strjoin(tmp, value));
 			ft_strdel(&tmp);
 			return (0);
 		}
+		tmp_env++;
+	}
 	return (1);
 }
 

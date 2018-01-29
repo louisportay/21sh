@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/20 18:34:08 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/22 16:03:50 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/26 15:01:34 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	test_kill_beginline(t_21sh *env, char *buf, int *bufindex)
 {
 	(void)bufindex;
-	if (*buf == C_U && env->line->previous)
+	if (*buf == C_U && env->line.line->previous)
 		return (true);
 	else
 		return (false);
@@ -24,7 +24,7 @@ bool	test_kill_beginline(t_21sh *env, char *buf, int *bufindex)
 bool	test_kill_endline(t_21sh *env, char *buf, int *bufindex)
 {
 	(void)bufindex;
-	if (*buf == C_K && env->emacs_mode && env->line->next)
+	if (*buf == C_K && env->emacs_mode && env->line.line->next)
 		return (true);
 	else
 		return (false);
@@ -42,7 +42,7 @@ bool	test_clear_screen(t_21sh *env, char *buf, int *bufindex)
 bool	test_yank(t_21sh *env, char *buf, int *bufindex)
 {
 	(void)bufindex;
-	if (*buf == C_Y && env->emacs_mode && env->yank)
+	if (*buf == C_Y && env->emacs_mode && env->line.yank)
 		return (true);
 	else
 		return (false);
@@ -54,7 +54,7 @@ bool	test_go_next_word(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->emacs_mode && env->line->next)
+		if (env->emacs_mode && env->line.line->next)
 			return (true);
 		else
 			return (false);
@@ -63,7 +63,7 @@ bool	test_go_next_word(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->line->next)
+		if (env->line.line->next)
 			return (true);
 		else
 			return (false);
@@ -78,7 +78,7 @@ bool	test_go_prev_word(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->emacs_mode && env->line->previous)
+		if (env->emacs_mode && env->line.line->previous)
 			return (true);
 		else
 			return (false);
@@ -87,7 +87,7 @@ bool	test_go_prev_word(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->line->previous)
+		if (env->line.line->previous)
 			return (true);
 		else
 			return (false);
@@ -102,7 +102,7 @@ bool	test_upper_line(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->cursor_offset >= env->ws.ws_col)
+		if (env->line.cursor_offset >= env->line.ws.ws_col)
 			return (true);
 		else
 			return (false);
@@ -117,7 +117,7 @@ bool	test_lower_line(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->cursor_line < env->num_lines)
+		if (env->line.cursor_line < env->line.num_lines)
 			return (true);
 		else
 			return (false);
@@ -132,12 +132,12 @@ bool	test_line_end(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->line->next)
+		if (env->line.line->next)
 			return (true);
 		else
 			return (false);
 	}
-	else if (*buf == C_E && env->emacs_mode && env->line->next)
+	else if (*buf == C_E && env->emacs_mode && env->line.line->next)
 		return (true);
 	else
 		return (false);
@@ -149,12 +149,12 @@ bool	test_line_beginning(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->line->previous)
+		if (env->line.line->previous)
 			return (true);
 		else
 			return (false);
 	}
-	else if (*buf == C_A && env->emacs_mode && env->line->previous)
+	else if (*buf == C_A && env->emacs_mode && env->line.line->previous)
 		return (true);
 	else
 		return (false);
@@ -166,12 +166,12 @@ bool	test_upkey(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->history && env->histlist->next)
+		if (env->history && env->hist.list->next)
 			return (true);
 		else
 			return (false);
 	}
-	if (!env->history || !env->histlist->next)
+	if (!env->history || !env->hist.list->next)
 		return (false);
 	else if (*buf == C_P && env->emacs_mode)
 		return (true);
@@ -185,12 +185,12 @@ bool	test_downkey(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->history && env->histlist->previous)
+		if (env->history && env->hist.list->previous)
 			return (true);
 		else
 			return (false);
 	}
-	if (!env->history || !env->histlist->previous)
+	if (!env->history || !env->hist.list->previous)
 		return (false);
 	else if (*buf == C_N && env->emacs_mode)
 		return (true);
@@ -204,12 +204,12 @@ bool	test_rkey(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->line->next)
+		if (env->line.line->next)
 			return (true);
 		else
 			return (false);
 	}
- 	else if (*buf == C_F && env->emacs_mode && env->line->next)
+ 	else if (*buf == C_F && env->emacs_mode && env->line.line->next)
 		return (true);
 	else
 		return (false);
@@ -221,12 +221,12 @@ bool	test_lkey(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->line->previous)
+		if (env->line.line->previous)
 			return (true);
 		else
 			return (false);
 	}
-	else if (*buf == C_B && env->emacs_mode && env->line->previous)
+	else if (*buf == C_B && env->emacs_mode && env->line.line->previous)
 		return (true);
 	else
 		return (false);
@@ -238,12 +238,12 @@ bool	test_del_current_char(t_21sh *env, char *buf, int *bufindex)
 	{
 		ft_bzero(buf, *bufindex);
 		*bufindex = 0;
-		if (env->line->next)
+		if (env->line.line->next)
 			return (true);
 		else
 			return (false);
 	}
-	else if (*buf == C_D && env->emacs_mode && env->line->next)
+	else if (*buf == C_D && env->emacs_mode && env->line.line->next)
 		return (true);
 	else
 		return (false);
@@ -252,9 +252,9 @@ bool	test_del_current_char(t_21sh *env, char *buf, int *bufindex)
 bool 	test_del_previous_char(t_21sh *env, char *buf, int *bufindex)
 {
 	(void)bufindex;
-	if (*buf == BACKSPACE && env->line->previous)
+	if (*buf == BACKSPACE && env->line.line->previous)
 		return (true);
-	else if ((*buf == C_H && env->emacs_mode) && env->line->previous)
+	else if ((*buf == C_H && env->emacs_mode) && env->line.line->previous)
 		return (true);
 	else
 		return (false);
@@ -276,7 +276,7 @@ bool	test_emacs_mode(t_21sh *env, char *buf, int *bufindex)
 
 bool	test_load_line(t_21sh *env, char *buf)
 {
-	if (env->line)
+	if (env->line.line)
 		return (false);
 	else if (!ft_strncmp(buf, UP_KEY, ft_strlen(UP_KEY)))
 		return (false);
@@ -308,7 +308,7 @@ bool	test_load_line(t_21sh *env, char *buf)
 bool	test_killprevword(t_21sh *env, char *buf, int *bufindex)
 {
 	(void)bufindex;
-	if (*buf == C_W && env->line->previous)
+	if (*buf == C_W && env->line.line->previous)
 		return (true);
 	else
 		return (false);

@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/01/15 16:20:40 by lportay          ###   ########.fr        #
+#    Updated: 2018/01/28 19:44:53 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,11 @@ else ifeq ($(DEBUG), sanitize)
 endif
 
 INCLUDE= includes/
-HEADERS= ft_21sh.h
+HEADERS= ft_21sh.h\
+		 history.c\
+		 line.h\
+		 prompt.h\
+		 token.h
 
 SRCS=	main.c\
 		ft_21sh.c\
@@ -43,6 +47,7 @@ SRCS=	main.c\
 		rawline.c\
 		\
 		line.c\
+		lineread.c\
 		move_cursor.c\
 		print_line.c\
 		up_down_keys.c\
@@ -54,7 +59,7 @@ SRCS=	main.c\
 		line_test.c\
 		\
 		lexer.c\
-	parser.c\
+		filter_tokens.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))

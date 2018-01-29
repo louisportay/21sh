@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 12:04:12 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/28 11:24:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/29 20:40:41 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,16 @@ void		sig_switch(int signum, t_21sh *envaddr)
 {
 	static t_21sh *env;
 
-	if (signum == SIGWINCH)
+	if (signum == SIGWINCH && env->line_edition)
 	{
-		ioctl(STDIN_FILENO, TIOCGWINSZ, &env->ws);
-		update_linemode(env);
+		ioctl(STDIN_FILENO, TIOCGWINSZ, &env->line.ws);
+		update_linemode(&env->line);
 		clear_line(env);
 		redraw_line(env);
+	}
+	if (signum == SIGINT)
+	{
+
 	}
 	if (envaddr != NULL)
 		env = envaddr;

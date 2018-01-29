@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/28 11:03:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/27 17:31:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	ispromptflag(char c)
 
 static void	print_flag(t_21sh *env, char *s)
 {
-	env->cursor_offset += ft_strlen(s);
+	env->line.cursor_offset += ft_strlen(s);
 	ft_putstr(s);
 }
 
@@ -48,7 +48,7 @@ static void	d_flag(t_21sh *env)
 	tm = localtime(&t);
 	time_str = asctime(tm);
 	time_str[10] = '\0';
-	env->cursor_offset += ft_strlen(time_str);//10
+	env->line.cursor_offset += ft_strlen(time_str);//10
 	ft_putstr(time_str);
 }
 
@@ -88,7 +88,7 @@ static void	s_flag(t_21sh *env)
 	size_t	len;
 
 	len = ft_strlen(SHELLNAME);
-	env->cursor_offset += len;
+	env->line.cursor_offset += len;
 	write(STDOUT_FILENO, SHELLNAME, len);
 }
 
@@ -114,11 +114,11 @@ static void	w_flag(t_21sh *env)
 	char *homedir;
 	char *tmp;
 
-	homedir = ft_getenv("HOME", env->environ);
+	homedir = get_kvp("HOME", env->environ);
 	cwd = getcwd(NULL, 0);
 	if (cwd && homedir && (tmp = ft_strstr(cwd, homedir)) && tmp == cwd && cwd[ft_strlen(homedir)] == '/')
 	{
-		env->cursor_offset += ft_strlen(cwd) - ft_strlen(homedir) + 1;
+		env->line.cursor_offset += ft_strlen(cwd) - ft_strlen(homedir) + 1;
 		write(STDOUT_FILENO, "~", 1);
 		ft_putstr(cwd + ft_strlen(homedir));
 	}
@@ -148,7 +148,7 @@ static void	bang_flag(t_21sh *env)
 {
 	char *histnum;
 
-	histnum = ft_itoa(env->histindex);
+	histnum = ft_itoa(env->hist.index);
 	if (histnum)
 		print_flag(env, histnum);
 	free(histnum);
@@ -168,50 +168,31 @@ static void	init_flags(t_prompt_flag *flags)
 
 }
 
-void	display_prompt(t_21sh *env,	char *prompt_str)
+void	print_prompt(t_21sh *env)
 {
 	t_prompt_flag	flags[9];
+	char			*prompt;
 	int				i;
 	char			c;
 
+	if (!(prompt = get_kvp(env->prompt_mode, env->local)))
+		return ;
 	i = 0;
 	init_flags(flags);
-	while (*prompt_str)
+	while (*prompt)
 	{
-		if (*prompt_str == '\\' && (c = ispromptflag(*(prompt_str + 1))))
+		if (*prompt == '\\' && (c = ispromptflag(*(prompt + 1))))
 		{
 			while (flags[i].flag != c)
 				i++;
 			flags[i].func(env);
-			prompt_str++;
+			prompt++;
 		}
 		else
 		{
-			env->cursor_offset++;
-			write(STDOUT_FILENO, prompt_str, 1);
+			env->line.cursor_offset++;
+			write(STDOUT_FILENO, prompt, 1);
 		}
-		prompt_str++;
-	}
-}
-
-void	print_prompt(t_21sh *env)
-{
-	t_keyval	prompt[5];
-	t_hash		*ps;
-	int 		i;
-
-	i = 0;
-	prompt[0] = KEY_VAL(PS1, "PS1");
-	prompt[1] = KEY_VAL(PS2, "PS2");
-	prompt[2] = KEY_VAL(PS3, "PS3");
-	prompt[3] = KEY_VAL(PS4, "PS4");
-	prompt[4] = KEY_VAL(NOPROMPT, NULL);
-
-	while (prompt[i].key != env->prompt_mode && prompt[i].key)
-		i++;
-	if (prompt[i].key)
-	{
-		if ((ps = hashlookup(env->localvar, prompt[i].val)) && ps->data)
-			display_prompt(env, (char *)ps->data);
+		prompt++;
 	}
 }

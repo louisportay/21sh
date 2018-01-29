@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/22 11:44:00 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/29 20:33:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 void	load_line(t_21sh *env)
 {
-	env->line = ft_dlstdup(T_HISTENTRY(env->histlist->content)->line);
-	ft_dlstend(&env->line);
+	env->line.line = ft_dlstdup(T_HISTENTRY(env->hist.list->content)->line);
+	ft_dlstend(&env->line.line);
 }
 
 /*
 ** The state multiline is on when the cursor is not on the last line
 */
 
-void	update_linemode(t_21sh *env)
+void	update_linemode(t_line *line)
 {
-	env->num_lines = env->line_len / env->ws.ws_col;
-	env->cursor_line = env->cursor_offset / env->ws.ws_col;
-	if (env->multiline == true && (!env->line->next || env->line_len < env->ws.ws_col || env->line_len == env->cursor_offset || env->cursor_line == env->num_lines))
-		env->multiline = false;
-	else if (env->multiline == false && env->cursor_line < env->num_lines)
-		env->multiline = true;
+	line->num_lines = line->line_len / line->ws.ws_col;
+	line->cursor_line = line->cursor_offset / line->ws.ws_col;
+	if (line->multiline == true && (!line->line->next || line->line_len < line->ws.ws_col || line->line_len == line->cursor_offset || line->cursor_line == line->num_lines))
+		line->multiline = false;
+	else if (line->multiline == false && line->cursor_line < line->num_lines)
+		line->multiline = true;
 }
 
 void	reverse_emacs_mode(t_21sh *env)
@@ -40,11 +40,11 @@ void	reverse_emacs_mode(t_21sh *env)
 void	lkey(t_21sh *env)
 {
 	move_cursor_backward(env);
-	env->line = env->line->previous;
+	env->line.line = env->line.line->previous;
 }
 
 void	rkey(t_21sh *env)
 {
 	move_cursor_forward(env);
-	env->line = env->line->next;
+	env->line.line = env->line.line->next;
 }

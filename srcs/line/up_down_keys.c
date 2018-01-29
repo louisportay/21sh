@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 17:42:27 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/19 18:40:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/26 15:00:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@
 static void	load_histentry(t_21sh *env)
 {
 	clear_line(env);
-	env->cursor_offset = 0;
+	env->line.cursor_offset = 0;
 	print_prompt(env);
-	env->line_len = env->cursor_offset;
-	if (env->line)
-		ft_dlsthead(&env->line);
-	if (env->histlist->previous && env->line && env->line != env->lastline)
+	env->line.line_len = env->line.cursor_offset;
+	if (env->line.line)
+		ft_dlsthead(&env->line.line);
+	if (env->hist.list->previous && env->line.line && env->line.line != env->line.lastline)
 	{
-		ft_dlstdel(&T_HISTENTRY(env->histlist->content)->line, &delvoid);
-		T_HISTENTRY(env->histlist->content)->line = env->line;
+		ft_dlstdel(&T_HISTENTRY(env->hist.list->content)->line, &delvoid);
+		T_HISTENTRY(env->hist.list->content)->line = env->line.line;
 	}
 }
 
@@ -40,28 +40,28 @@ static void	load_histentry(t_21sh *env)
 void	up_key(t_21sh *env)
 {
 	load_histentry(env);
-	env->histlist = env->histlist->next;
-	print_line_cursor_len(env, T_HISTENTRY(env->histlist->content)->line->next);
-	env->line = NULL;
-	if (!(env->cursor_offset % env->ws.ws_col))
-		tputs(env->tc.dow, 1, &ft_putchar_stdin);
+	env->hist.list = env->hist.list->next;
+	print_line_cursor_len(env, T_HISTENTRY(env->hist.list->content)->line->next);
+	env->line.line = NULL;
+	if (!(env->line.cursor_offset % env->line.ws.ws_col))
+		tputs(env->line.tc.dow, 1, &ft_putchar_stdin);
 }
 
 void	down_key(t_21sh *env)
 {
 	load_histentry(env);
-	env->histlist = env->histlist->previous;
-	if (!env->histlist->previous)
+	env->hist.list = env->hist.list->previous;
+	if (!env->hist.list->previous)
 	{
-		env->line = env->lastline;
-		print_line_cursor_len(env, env->line->next);
-		ft_dlstend(&env->line);
+		env->line.line = env->line.lastline;
+		print_line_cursor_len(env, env->line.line->next);
+		ft_dlstend(&env->line.line);
 	}
 	else
 	{
-		print_line_cursor_len(env, T_HISTENTRY(env->histlist->content)->line->next);
-		env->line = NULL;
+		print_line_cursor_len(env, T_HISTENTRY(env->hist.list->content)->line->next);
+		env->line.line = NULL;
 	}
-	if (!(env->cursor_offset % env->ws.ws_col))
-		tputs(env->tc.dow, 1, &ft_putchar_stdin);
+	if (!(env->line.cursor_offset % env->line.ws.ws_col))
+		tputs(env->line.tc.dow, 1, &ft_putchar_stdin);
 }

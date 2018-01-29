@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 10:48:13 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 15:20:41 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/25 18:43:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		ft_putchar_stdin(int c)
 	return (c);
 }
 
-bool	isonlywhitespace(char *s)
+bool	str_isblank(char *s)
 {
 	while (*s)
 	{
@@ -33,13 +33,47 @@ bool	isonlywhitespace(char *s)
 	return (true);
 }
 
-bool	dlst_isonlywhitespace(t_dlist *dlst)
+bool	dlst_isblank(t_dlist *dlst)
 {
 	while (dlst)
 	{
-		if (isonlywhitespace(dlst->content) == false)
+		if (str_isblank(dlst->content) == false)
 			return (false);
 		dlst = dlst->next;
 	}
 	return (true);
+}
+
+bool	is_number(char *str)
+{
+	while (*str)
+	{
+		if (ft_isdigit(*str) == false)
+			return (false);
+		str++;
+	}
+	return (true);
+}
+
+bool	is_number_w_dash(char *str)
+{
+		while (*str)
+		{
+			if (ft_isdigit(*str) == false)
+			{
+				if (*str == '-' && *(str + 1) == '\0')
+					return (true);
+				else
+					return (false);
+			}
+			str++;
+		}
+		return (false);
+}
+
+bool	is_redir(int type)
+{
+	if (type == LESS || type == GREAT || type == DLESS || type == DGREAT || type == LESSAND || type == GREATAND || type == TLESS)
+		return (true);
+	return (false);
 }

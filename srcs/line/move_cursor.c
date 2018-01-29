@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 16:52:48 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/19 18:22:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/29 20:36:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,28 @@ void	move_cursor_n_lines(int n)
 
 void	move_cursor_forward(t_21sh *env)
 {
-	env->cursor_offset++;
-	if (!(env->cursor_offset % env->ws.ws_col))
-		tputs(env->tc.dow, 1, &ft_putchar_stdin);
+	env->line.cursor_offset++;
+	if (!(env->line.cursor_offset % env->line.ws.ws_col))
+		tputs(env->line.tc.dow, 1, &ft_putchar_stdin);
 	else
-		tputs(env->tc.nd, 1, &ft_putchar_stdin);
+		tputs(env->line.tc.nd, 1, &ft_putchar_stdin);
 }
 
 void	move_cursor_backward(t_21sh *env)
 {
-	if (!(env->cursor_offset % env->ws.ws_col))
+	if (!(env->line.cursor_offset % env->line.ws.ws_col))
 	{
-		tputs(env->tc.up, 1, &ft_putchar_stdin);
-		move_cursor_n_columns(env->ws.ws_col);		
+		tputs(env->line.tc.up, 1, &ft_putchar_stdin);
+		move_cursor_n_columns(env->line.ws.ws_col);
 	}
 	else
-		tputs(env->tc.le, 1, &ft_putchar_stdin);
-	env->cursor_offset--;
+		tputs(env->line.tc.le, 1, &ft_putchar_stdin);
+	env->line.cursor_offset--;
 }
 
 void	move_cursor_end_of_line(t_21sh *env)
 {
-	move_cursor_n_lines(env->num_lines - env->cursor_line);
-	tputs(env->tc.cr, 1, &ft_putchar_stdin);
-	move_cursor_n_columns(env->line_len % env->ws.ws_col);
+	move_cursor_n_lines(env->line.num_lines - env->line.cursor_line);
+	tputs(env->line.tc.cr, 1, &ft_putchar_stdin);
+	move_cursor_n_columns(env->line.line_len % env->line.ws.ws_col);
 }

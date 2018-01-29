@@ -3,7 +3,9 @@
 *Objective* Recode a functionnal shell with essential features, described as follows:
 
 * line edition
-* pipes
+* lexing
+* parsing
+* pipe handling
 * redirection
-* auto-completion
-* simple job control (maybe...)
+* simple job control
+* signal handling

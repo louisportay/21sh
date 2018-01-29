@@ -1,7 +1,7 @@
-vpath %.c ft_string/ ft_stdio/ ft_stdlib/ lst/ dlst/ buffer/ ft_ctype/ ft_wchar/ other/ ft_printf/ ft_hash/ ft_btree/ utest/ stack/
+vpath %.c ft_string/ ft_stdio/ ft_stdlib/ lst/ dlst/ buffer/ ft_ctype/ ft_wchar/ other/ ft_printf/ ft_hash/ ft_btree/ utest/ stack/ kvp/
 vpath %.h includes/
 
-INCLUDE= includes
+INCLUDE= includes/
 HEADER= libft.h
 
 CTYPE=	ft_isprint.c\
@@ -167,6 +167,13 @@ STACK=	stack_create.c\
 		stack_print.c\
 		stack_push.c\
 
+KVP=	copy_stack_kvp.c\
+		copy_kvp_env.c\
+		delete_kvp.c\
+		dump_kvp.c\
+		get_kvp.c\
+		set_kvp.c\
+
 
 PRINTFOBJ= $(PRINTF:%.c=%.o)
 CTYPEOBJ= $(CTYPE:%.c=%.o)
@@ -182,6 +189,7 @@ HASHOBJ= $(HASH:%.c=%.o)
 BTREEOBJ= $(BTREE:%.c=%.o)
 UTESTOBJ= $(UTEST:%.c=%.o)
 STACKOBJ= $(STACK:%.c=%.o)
+KVPOBJ= $(KVP:%.c=%.o)
 
 LIBOBJDIR= libobj
 PRINTFOBJDIR= $(LIBOBJDIR)/ft_printf
@@ -198,6 +206,7 @@ HASHOBJDIR= $(LIBOBJDIR)/ft_hash
 BTREEOBJDIR= $(LIBOBJDIR)/ft_btree
 UTESTOBJDIR= $(LIBOBJDIR)/utest
 STACKOBJDIR= $(LIBOBJDIR)/stack
+KVPOBJDIR= $(LIBOBJDIR)/kvp
 
 LIBOBJS=	$(addprefix $(PRINTFOBJDIR)/, $(PRINTFOBJ))\
 			$(addprefix $(CTYPEOBJDIR)/, $(CTYPEOBJ))\
@@ -213,3 +222,4 @@ LIBOBJS=	$(addprefix $(PRINTFOBJDIR)/, $(PRINTFOBJ))\
 			$(addprefix $(BTREEOBJDIR)/, $(BTREEOBJ))\
 			$(addprefix $(UTESTOBJDIR)/, $(UTESTOBJ))\
 			$(addprefix $(STACKOBJDIR)/, $(STACKOBJ))\
+			$(addprefix $(KVPOBJDIR)/, $(KVPOBJ))\

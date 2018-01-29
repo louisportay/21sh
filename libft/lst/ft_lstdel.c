@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 20:24:29 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/16 14:58:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/17 10:59:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,12 @@ static void	lstdel_content(t_list *alst, void (*del)(void *, size_t))
 {
 	t_list *tmp;
 
-	tmp = alst;
-	while (tmp)
+	while (alst)
 	{
-		alst = alst->next;
-		(*del)(tmp->content, tmp->content_size);
-		free(tmp);
-		tmp = alst;
+		tmp = alst->next;
+		(*del)(alst->content, tmp->content_size);
+		free(alst);
+		alst = tmp;
 	}
 }
 
@@ -35,12 +34,11 @@ static void	lstdel_maillon(t_list *alst)
 {
 	t_list *tmp;
 
-	tmp = alst;
-	while (tmp)
+	while (alst)
 	{
-		alst = alst->next;
-		free(tmp);
-		tmp = alst;
+		tmp = alst->next;
+		free(alst);
+		alst = tmp;
 	}
 }
 
@@ -50,6 +48,5 @@ void		ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 		lstdel_content(*alst, del);
 	else
 		lstdel_maillon(*alst);
-	free(*alst);
 	*alst = NULL;
 }
