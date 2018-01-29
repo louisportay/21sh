@@ -84,7 +84,7 @@ int						job_exec(t_job *j, int fg, t_env *env)
 		p = p->next;
 	}
 	job_fmtinfo(j, EXE_LCHD);
-	do_postloop(j, fg, istty);
+	do_postloop(j, fg, env->istty);
 	return (0);
 }
 

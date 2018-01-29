@@ -17,29 +17,61 @@
 #define CMD ("ls -l | cat -e")
 
 #include <stdio.h>
+#include <term.h>
 #include <sys/syslimits.h>
+#include <termios.h>
 
 extern char	**environ;
 
 int			main(int ac, char **av)
 {
-	(void)ac;
-	(void)av;
 	t_env	env;
 	char	*path;
+	t_proc	*proc[3];
+	t_job	*job;
+	char	*cmd;
+	char	**argv;
 
 	if (ac < 2)
 		return (1);
 	env_setup(&env, environ);
-	if (get_path(av[1], &env, &path))
+	char *term = getenv("TERM");
+	tgetent(0, term);
+	tcgetattr(STDIN_FILENO, &env.told);
+	ft_memcpy(&env.tnew, &env.told, sizeof(struct termios));
+	cmd = NULL;
+	proc[0] = NULL;
+	for (int i = 1; i  < ac; i++)
 	{
-		printf("Path: %s\n", path);
-		t_proc *proc;
-		proc = proc_new(av + 1);
-		proc_exec(proc, 0, (int[]){0, 1, 2}, 1, &env);
+		argv = ft_strsplit(av[i], ' ');
+		for (int a = 0; argv[a] != NULL; a++)
+			printf("av[%d]: %s%s", a, argv[a], argv[a + 1] == NULL ? "\n" : " - ");
+		if (get_path(argv[0], &env, &path))
+		{
+			if ((proc[2] = proc_new(argv)) == NULL)
+				fprintf(stderr, "malloc error\n");
+			else
+				proc_insert(proc, proc + 1, proc[2]);
+			if (cmd == NULL)
+				cmd = ft_strdup(argv[0]);
+			else
+				ft_strjoinc(cmd, argv[0], '|');
+		}
+		else
+			printf("21sh: %s: command not found\n", av[1]);
 	}
-	else
-		printf("21sh: %s: command not found\n", av[1]);
+	printf("cmd: %s\n", cmd);
+	job = job_new(cmd, proc[0]);
+	job_exec(job, 1, &env);
+//	if (get_path(av[1], &env, &path))
+//	{
+//		printf("Path: %s\n", path);
+//		t_proc *proc;
+//		proc = proc_new(av + 1);
+//		proc_exec(proc, 0, (int[]){0, 1, 2}, 1, &env);
+//	}
+//	else
+//		printf("21sh: %s: command not found\n", av[1]);
 	return (0);
 }
 //	int main(int ac, char **av)

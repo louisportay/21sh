@@ -57,16 +57,17 @@ void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
 void					proc_clear(t_proc **proc);
 
 void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg, t_env *env);
+void					proc_chgstat(pid_t pid, int status);
 
 t_job					*job_new(char *cmd, t_proc *plist);
 void					job_insert(t_job **head, t_job **curr, t_job *j);
 void					job_clear(t_job **jobs);
 
 t_job					*job_find(pid_t pid, t_job *job_list);
-int						job_isstopped(t_job *job);
-int						job_iscompleted(t_job *job);
+int						job_stopped(t_job *job);
+int						job_completed(t_job *job);
 
-int						job_exec(t_job *j, int fd, int istty);
+int						job_exec(t_job *j, int fg, t_env *env);
 void					job_wait(t_job *j);
 void					job_putfg(t_job *j, int cont);
 void					job_putbg(t_job *j, int cont);

@@ -33,11 +33,11 @@ LIBRARIES:=\
 ITEM:=\
 env_setup.o\
 proc_lifecycle.o\
-proc_exec.o#\
+proc_exec.o\
 job_exec.o\
 job_lifecycle.o\
 job_utils.o\
-proc_lifecycle.o
+job_wait.o
 OBJ:=$(addprefix $(OBJ_D)/, $(ITEM))
 
 all: $(NAME)

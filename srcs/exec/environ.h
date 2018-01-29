@@ -1,7 +1,9 @@
 #ifndef ENVIRON_H
 # define ENVIRON_H
 
+# include <termios.h>
 # include <sys/syslimits.h>
+
 # include "kvp.h"
 # include "ft_hashset.h"
 
@@ -12,6 +14,11 @@ typedef struct s_env	t_env;
 
 struct					s_env
 {
+	pid_t				pid;
+	pid_t				pgid;
+	int					fd;
+	struct termios		told;
+	struct termios		tnew;
 	t_kvp				*env;
 	t_kvp				*locals;
 	int					istty;

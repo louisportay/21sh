@@ -23,7 +23,7 @@ t_job					*job_find(pid_t pid, t_job *job_list)
 	return (NULL);
 }
 
-int						job_isstopped(t_job *job)
+int						job_stopped(t_job *job)
 {
 	t_proc				*p;
 
@@ -37,7 +37,7 @@ int						job_isstopped(t_job *job)
 	return (1);
 }
 
-int						job_iscompleted(t_job *job)
+int						job_completed(t_job *job)
 {
 	t_proc				*p;
 
