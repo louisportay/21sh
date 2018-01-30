@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 13:46:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/24 17:55:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/01/29 17:15:50 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int						job_stopped(t_job *job)
 {
 	t_proc				*p;
 
-	p = job->first_process;
+	p = job->procs;
 	while (p != NULL)
 	{
 		if (p->completed == 0 && p->stopped == 0)
@@ -41,7 +41,7 @@ int						job_completed(t_job *job)
 {
 	t_proc				*p;
 
-	p = job->first_process;
+	p = job->procs;
 	while (p != NULL)
 	{
 		if (p->completed == 0)
@@ -49,4 +49,9 @@ int						job_completed(t_job *job)
 		p = p->next;
 	}
 	return (1);
+}
+
+void					job_fmtinfo(t_job *job, char *status)
+{
+	dprintf(STDERR_FILENO, "%d %s: %s\n", job->pgid, status, job->command);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 13:45:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/24 17:29:41 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/01/30 18:32:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,28 @@
 #include <termios.h>
 
 extern char	**environ;
+
+void job_print(t_job *j)
+{
+	t_proc	*p;
+	int		i;
+
+	printf("DEBUGGING PROCESSES CREATED:\n");
+	p = j->procs;
+	while (p != NULL)
+	{
+		i = 0;
+		printf("addr of proc argv: %p: ", p->argv);
+		while (p->argv[i] != NULL)
+		{
+			printf("%s%s", p->argv[i], p->argv[i + 1] != NULL ? " - " : "\n");
+			i++;
+		}
+		p = p->next;
+	}
+	printf("END OF DEBUGGING\n");
+}
+
 
 int			main(int ac, char **av)
 {
@@ -44,51 +66,49 @@ int			main(int ac, char **av)
 	for (int i = 1; i  < ac; i++)
 	{
 		argv = ft_strsplit(av[i], ' ');
-		for (int a = 0; argv[a] != NULL; a++)
-			printf("av[%d]: %s%s", a, argv[a], argv[a + 1] == NULL ? "\n" : " - ");
+		//		for (int a = 0; argv[a] != NULL; a++)
+		//			printf("av[%d]: %s%s", a, argv[a], argv[a + 1] == NULL ? "\n" : " - ");
 		if (get_path(argv[0], &env, &path))
 		{
 			if ((proc[2] = proc_new(argv)) == NULL)
 				fprintf(stderr, "malloc error\n");
 			else
 				proc_insert(proc, proc + 1, proc[2]);
-			if (cmd == NULL)
-				cmd = ft_strdup(argv[0]);
-			else
-				ft_strjoinc(cmd, argv[0], '|');
 		}
 		else
 			printf("21sh: %s: command not found\n", av[1]);
+		argv = NULL;
 	}
-	printf("cmd: %s\n", cmd);
 	job = job_new(cmd, proc[0]);
+	env.istty = isatty(env.fd);
+	if (env.istty)
+	{
+		/* Loop until we are in the foreground.  */
+		while (tcgetpgrp (env.fd) != (env.pid = getpgrp ()))
+			kill (- env.pgid, SIGTTIN);
+	
+		/* Ignore interactive and job-control signals.  */
+		signal (SIGINT, SIG_IGN);
+		signal (SIGQUIT, SIG_IGN);
+		signal (SIGTSTP, SIG_IGN);
+		signal (SIGTTIN, SIG_IGN);
+		signal (SIGTTOU, SIG_IGN);
+		signal (SIGCHLD, SIG_IGN);
+	
+		/* Put ourselves in our own process group.  */
+		env.pgid = getpid ();
+		if (setpgid (env.pgid, env.pgid) < 0)
+		{
+			perror ("Couldn't put the shell in its own process group");
+			exit (1);
+		}
+	
+		/* Grab control of the terminal.  */
+		tcsetpgrp (env.fd, env.pgid);
+	
+		/* Save default terminal attributes for shell.  */
+		tcgetattr (env.fd, &env.told);
+	}
 	job_exec(job, 1, &env);
-//	if (get_path(av[1], &env, &path))
-//	{
-//		printf("Path: %s\n", path);
-//		t_proc *proc;
-//		proc = proc_new(av + 1);
-//		proc_exec(proc, 0, (int[]){0, 1, 2}, 1, &env);
-//	}
-//	else
-//		printf("21sh: %s: command not found\n", av[1]);
 	return (0);
 }
-//	int main(int ac, char **av)
-//	{
-//		t_job	*j;
-//		t_proc	*p[3];
-//	
-//		(void)ac;
-//		(void)av;
-//		if ((j = (t_job *)ft_memalloc(sizeof(t_job))) == NULL)
-//			return (1);
-//		p[0] = NULL;
-//		p[2] = proc_new((char *[]){"/bin/ls", "-l", NULL});
-//		proc_insert(p, p + 1, p[2]);
-//		p[2] = proc_new((char *[]){"/bin/cat", "-e", NULL});
-//		proc_insert(p, p + 1, p[2]);
-//		j = job_new(ft_strdup(CMD), p[0]);
-//		job_exec(j, 1, 1);
-//		return (0);
-//	}
