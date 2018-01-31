@@ -10,7 +10,7 @@ ifeq ($(SANE),g3)
 CFLAGS+=-g3
 endif
 
-LIB_D:=../../../libs
+LIB_D:=../libs
 OBJ_D:=obj
 INC_D:=inc
 
@@ -25,13 +25,13 @@ INCLUDES:=\
 -I$(LIB_D)/qbuf/$(INC_D)
 
 LIBRARIES:=\
-	$(LIB_D)/ft_mem/libftmem.a\
-	$(LIB_D)/ft_string/libftstring.a\
-	$(LIB_D)/ft_astr/libftastr.a\
-	$(LIB_D)/kvp/libkvp.a\
-	$(LIB_D)/ft_hashset/libfthashset.a\
-	$(LIB_D)/qbuf/libqbuf.a\
-	-lcurses
+$(LIB_D)/ft_mem/libftmem.a\
+$(LIB_D)/ft_string/libftstring.a\
+$(LIB_D)/ft_astr/libftastr.a\
+$(LIB_D)/kvp/libkvp.a\
+$(LIB_D)/ft_hashset/libfthashset.a\
+$(LIB_D)/qbuf/libqbuf.a\
+-lcurses
 
 ITEM:=\
 env_setup.o\

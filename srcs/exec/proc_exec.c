@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/31 15:02:00 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/01/31 18:43:58 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	setup_fd(fd[0], STDIN_FILENO);
 	setup_fd(fd[1], STDOUT_FILENO);
 	setup_fd(fd[2], STDERR_FILENO);
+	// LPORTAY'S REDIRECTIONS
 	if (builtin != NULL)
 		exit(builtin(p->argv, env));
 	if ((astrenv = ft_env_toastr(env->env)) == NULL)

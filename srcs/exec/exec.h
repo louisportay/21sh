@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/30 17:32:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/01/31 20:54:56 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ struct					s_proc
 	char				completed;
 	char				stopped;
 	int					status;
+	void				*RDR_LST;
+//	int					std[3];
+//	int					*other;
 };
 
 struct					s_job
