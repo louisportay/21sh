@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 13:45:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/30 18:32:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/01/31 14:43:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void job_print(t_job *j)
 int			main(int ac, char **av)
 {
 	t_env	env;
-	char	*path;
 	t_proc	*proc[3];
 	t_job	*job;
 	char	*cmd;
@@ -68,15 +67,10 @@ int			main(int ac, char **av)
 		argv = ft_strsplit(av[i], ' ');
 		//		for (int a = 0; argv[a] != NULL; a++)
 		//			printf("av[%d]: %s%s", a, argv[a], argv[a + 1] == NULL ? "\n" : " - ");
-		if (get_path(argv[0], &env, &path))
-		{
-			if ((proc[2] = proc_new(argv)) == NULL)
-				fprintf(stderr, "malloc error\n");
-			else
-				proc_insert(proc, proc + 1, proc[2]);
-		}
+		if ((proc[2] = proc_new(argv)) == NULL)
+			fprintf(stderr, "malloc error\n");
 		else
-			printf("21sh: %s: command not found\n", av[1]);
+			proc_insert(proc, proc + 1, proc[2]);
 		argv = NULL;
 	}
 	job = job_new(cmd, proc[0]);

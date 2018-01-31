@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/30 18:57:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/01/31 14:48:35 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,6 @@ char *ft_astr_cat(char **argv)
 	return (qbuf_del(&buf));
 }
 
-void					print_cmd(char **argv)
-{
-	int					i;
-
-	i = 0;
-	while (argv[i] != NULL)
-	{
-		printf("%s%s", argv[i], argv[i + 1] == NULL ? "\n" : " ");
-		i++;
-	}
-}
-
 void					set_pid_data(t_env *env, pid_t pgid,
 										int fg)
 {
@@ -97,9 +85,7 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	argv = p->argv;
 	set_pid_data(env, pgid, fg);
 	builtin = PH_GET_BUILTIN(p->argv[0]);
-	printf("proc(%s): fd - 0: %d, 1: %d, 2: %d\n", argv[0], fd[0], fd[1], fd[2]);
-	print_cmd(argv);
-	if (builtin == NULL && get_path(p->argv[0], env, &path) == -1)
+	if (builtin == NULL && get_path(argv[0], env, &path) == -1)
 	{
 		printf("%s: %s: %s\n", "21sh", p->argv[0], "Command not found");
 		exit(1);

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/30 18:03:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/01/31 14:46:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ void					job_wait(t_job *j)
 	int					status;
 	pid_t				pid;
 
-	do {
+	while (1)
+	{
 		pid = waitpid(WAIT_ANY, &status, WUNTRACED);
 		if (pid == -1)
-			return ; // maybe in an other way?
-	} while (proc_chgstat(j, pid, status) == 0 && job_stopped(j) == 0 && job_completed(j) == 0);
-//	while (1)
-//	{
-//		pid = waitpid(WAIT_ANY, &status, WUNTRACED);
-//		if (proc_chgstat(j, pid, status)
-//			|| job_stopped(j)
-//			|| job_completed(j))
-//			break ;
-//	}
+		{
+			perror("waitpid");
+			return ;
+		}
+		if (proc_chgstat(j, pid, status)
+			|| job_stopped(j)
+			|| job_completed(j))
+			break ;
+	}
 }
 
 void					job_putbg(t_job *j, int continued)
