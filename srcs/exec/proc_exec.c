@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/31 14:48:35 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/01/31 15:02:00 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	argv = p->argv;
 	set_pid_data(env, pgid, fg);
 	builtin = PH_GET_BUILTIN(p->argv[0]);
-	if (builtin == NULL && get_path(argv[0], env, &path) == -1)
+	if (builtin == NULL && get_path(argv[0], env, &path) == 0)
 	{
 		printf("%s: %s: %s\n", "21sh", p->argv[0], "Command not found");
 		exit(1);
