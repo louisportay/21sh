@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/29 12:04:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/02 13:17:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_21sh t_21sh;
 # define FAILREAD_STR			"Can't read from STDIN\n"
 # define BADQUOTES_STR			"Unexpected end of file\n"
 # define FAILSETSIGHDLR_STR		"Couldn't set properly signal handlers.\n"
+
+# define AMBIG_REDIR			"ambiguous redirect\n"
 
 # define PATH					"/usr/local/bin/:/usr/bin:/bin"
 

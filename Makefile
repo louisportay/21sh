@@ -6,12 +6,16 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/01/28 19:44:53 by lportay          ###   ########.fr        #
+#    Updated: 2018/01/31 15:24:15 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: clean fclean re all
-vpath %.c srcs/ srcs/line
+
+SRCDIR= srcs/ \
+		srcs/line \
+
+vpath %.c $(SRCDIR)
 vpath %.h includes/
 
 CC= gcc-7 

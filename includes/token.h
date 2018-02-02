@@ -6,12 +6,24 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/29 18:24:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/02 14:13:17 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKEN_H
 # define TOKEN_H
+
+# define IS_LESS_REDIR(n) (n & (LESS | DLESS | TLESS | LESSAND))
+# define IS_GREAT_REDIR(n) (n & (GREAT | DGREAT | GREATAND))
+# define IS_AND_REDIR(n) (n & (ANDGREAT | ANDDGREAT))
+
+# define ISREDIR(n) (IS_LESS_REDIR(n) | IS_GREAT_REDIR(n) | IS_AND_REDIR(n))
+
+//c'est pas trop a la norme cette macro
+# define IS_MAX_OPE(n) (n & (OR_IF | AND_IF | DGREAT | LESSAND | GREATAND | ANDDGREAT | TLESS | DOLLAR | BANG | NEWLINE | SEMICOL))
+
+# define IS_NOT_MAX_OPE(n) (n & (OR | AND | LESS | GREAT | DLESS | ANDGREAT))
+# define IS_WORD_IO_NUMBER(n) (n & (WORD | ASSIGNMENT_WORD | IO_NUMBER))
 
 enum	e_toktype
 {
@@ -35,11 +47,12 @@ enum	e_toktype
 		GREATAND = 1 << 14,				// >&
 		TLESS = 1 << 15,				// <<<
 		ANDGREAT = 1 << 16,				// &>
+		ANDDGREAT = 1 << 17,			// &>>
 
-		DOLLAR = 1 << 17,				// $
-		BANG = 1 << 18,					// !
+		DOLLAR = 1 << 18,				// $
+		BANG = 1 << 19,					// !
 
-		COMMENT = 1 << 19,				// # *ANY_TOKEN NEWLINE
+		COMMENT = 1 << 20,				// # *ANY_TOKEN NEWLINE
 		PARAM_EXP = DOLLAR | 1 << 0,	// ${} | $VAR
 		CMD_SUB = DOLLAR | 1 << 2,		// $() |	bquotes+grouping --> 42SH
 		ARI_EXP = DOLLAR | 1 << 3,		// $[] | $((MATHS))
@@ -60,9 +73,9 @@ typedef struct		s_redir
 	struct s_token	*next;
 	enum e_toktype	type;
 
-	int				left_op;
-	int				fd_right_op;
-	char			*s_right_op;
+	int				lhs;
+	int				fd_rhs;
+	char			*s_rhs;
 	bool			dash;
 }					t_redir;
 

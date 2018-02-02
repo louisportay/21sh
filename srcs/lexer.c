@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/29 18:02:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/02 14:00:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,21 @@ void	init_token_table(t_keyval *tok)
 	tok[12] = KEY_VAL(DGREAT, "DGREAT");
 	tok[13] = KEY_VAL(LESSAND, "LESSAND");
 	tok[14] = KEY_VAL(GREATAND, "GREATAND");
-	tok[15] = KEY_VAL(ANDGREAT, "ANDGREAT");
-	tok[16] = KEY_VAL(TLESS, "TLESS");
-	tok[17] = KEY_VAL(DOLLAR, "DOLLAR");
-	tok[18] = KEY_VAL(BANG, "BANG");
-	tok[19] = KEY_VAL(PARAM_EXP, "PARAM_EXP");
-	tok[20] = KEY_VAL(CMD_SUB, "CMD_SUB");
-	tok[21] = KEY_VAL(ARI_EXP, "ARI_EXP");
-	tok[22] = KEY_VAL(COMMENT, "COMMENT");
-	tok[23] = KEY_VAL(0, NULL);
+	tok[15] = KEY_VAL(TLESS, "TLESS");
+	tok[16] = KEY_VAL(ANDGREAT, "ANDGREAT");
+	tok[17] = KEY_VAL(ANDDGREAT, "ANDDGREAT");
+	tok[18] = KEY_VAL(DOLLAR, "DOLLAR");
+	tok[19] = KEY_VAL(BANG, "BANG");
+	tok[20] = KEY_VAL(PARAM_EXP, "PARAM_EXP");
+	tok[21] = KEY_VAL(CMD_SUB, "CMD_SUB");
+	tok[22] = KEY_VAL(ARI_EXP, "ARI_EXP");
+	tok[23] = KEY_VAL(COMMENT, "COMMENT");
+	tok[24] = KEY_VAL(0, NULL);
 }
 
 void	print_toklist(t_token *toklist)
 {
-	t_keyval	tok[24];
+	t_keyval	tok[25];
 	int			i;
 
 	init_token_table(tok);
@@ -131,30 +132,6 @@ bool	is_delimiter(char c)
 		return (false);
 }
 
-bool is_word_operator(int type)
-{
-	if (type & (WORD | ASSIGNMENT_WORD | IO_NUMBER))
-		return (true);
-	else
-		return (false);
-}
-
-bool is_maximum_operator(int type)
-{
-	if (type & (OR_IF | AND_IF | DGREAT | LESSAND | GREATAND | ANDGREAT | TLESS | DOLLAR | BANG | NEWLINE | SEMICOL))
-		return (true);
-	else
-		return (false);
-}
-
-bool is_extendable_operator(int type)
-{
-	if (type & (OR | AND | LESS | GREAT | DLESS))
-		return (true);
-	else
-		return (false);
-}
-
 /*
 ** Returns true if token has been extended
 */
@@ -196,6 +173,8 @@ bool	extend_operator(t_token *token, char c, int quote_state)
 		token->type = GREATAND;
 	else if (token->type & DLESS && c == '<')
 		token->type = TLESS;
+	else if (token->type & ANDGREAT && c == '>')
+		token->type = ANDDGREAT;
 	else
 		return (false);
 	return (true);
@@ -238,8 +217,8 @@ void	delete_toklist(t_token **toklist)
 	while (tmp)
 	{
 		*toklist = (*toklist)->next;
-		if (tmp->type & (LESS | GREAT | DLESS | DGREAT | LESSAND | GREATAND | ANDGREAT | TLESS))
-			free(((t_redir *)tmp)->s_right_op);
+		if (ISREDIR(tmp->type))
+			free(((t_redir *)tmp)->s_rhs);
 		free(tmp);
 		tmp = *toklist;
 	}
@@ -289,11 +268,11 @@ void		apply_tokrules(t_token *last_tok, t_dlist *line, t_stack **quote)
 			stack_pop(quote);
 	}
 
-	if (!last_tok->last_letter && is_word_operator(last_tok->type))
+	if (!last_tok->last_letter && IS_WORD_IO_NUMBER(last_tok->type))
 		if (!(extend_word(last_tok, *(char *)line->content, (*quote)->state)))
 				last_tok->last_letter = line->previous;
 
-	if (!last_tok->last_letter && is_extendable_operator(last_tok->type))
+	if (!last_tok->last_letter && IS_NOT_MAX_OPE(last_tok->type))
 		if (!(extend_operator(last_tok, *(char *)line->content, (*quote)->state)))
 				last_tok->last_letter = line->previous;
 
@@ -301,14 +280,14 @@ void		apply_tokrules(t_token *last_tok, t_dlist *line, t_stack **quote)
 	{
 		last_tok->next = new_token(line);
 		last_tok->next->type = basic_token_type(*(char *)line->content, (*quote)->state);
-		if (is_maximum_operator(last_tok->next->type))
+		if (IS_MAX_OPE(last_tok->next->type))
 			last_tok->next->last_letter = line;
 	}
 
-	if (is_maximum_operator(last_tok->type) && !last_tok->last_letter)
+	if (IS_MAX_OPE(last_tok->type) && !last_tok->last_letter)
 	{
 		last_tok->last_letter = line;
-		if (*(char *)line->next->content == '-' && (last_tok->type == LESSAND || last_tok->type == GREATAND))
+		if (*(char *)line->next->content == '-' && (last_tok->type & (LESSAND | GREATAND)))
 			create_dash_token(last_tok, line);
 	}
 
@@ -320,7 +299,7 @@ void	delete_following_redir(t_token *toklist)
 {
 	while (toklist)
 	{
-		if (toklist->type & (LESS | GREAT | DLESS | DGREAT | LESSAND | GREATAND | TLESS | ANDGREAT))
+		if (ISREDIR(toklist->type))
 			toklist->type = WORD;
 		toklist = toklist->next;
 	}
@@ -328,7 +307,7 @@ void	delete_following_redir(t_token *toklist)
 
 void	requalify_tokens(t_token **toklist)
 {
-	t_keyval	tok[24];
+	t_keyval	tok[25];
 	t_token		*ret;
 	int			i;
 

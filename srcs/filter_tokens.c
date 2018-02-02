@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/29 18:00:24 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/02 14:07:07 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,12 @@ static void	filter_assignment_word(t_token *toklist)
 	tmp = toklist->first_letter;
 	if (ft_isdigit(*(char *)tmp->content) == true || *(char *)tmp->content == '=')
 			toklist->type = WORD;
-	while (*(char *)tmp->content != '=' && toklist->type == ASSIGNMENT_WORD)
+	while (*(char *)tmp->content != '=' && (toklist->type & ASSIGNMENT_WORD))
 	{
 		if (ft_isalnum(*(char *)tmp->content) == false && *(char *)tmp->content != '_')
 			toklist->type = WORD;
 		tmp = tmp->next;
 	}
-}
-
-static void	get_right_op(t_redir *newtok, t_token *right_op)
-{
-	newtok->s_right_op = token_str(right_op);
-	newtok->fd_right_op = 0;
-	newtok->dash = false;
-
-	if (is_number(newtok->s_right_op) == true)
-		newtok->fd_right_op = ft_atoi(newtok->s_right_op);
-	else if (is_number_w_dash(newtok->s_right_op) == true)
-	{
-		newtok->fd_right_op = ft_atoi(newtok->s_right_op);
-		newtok->dash = true;
-	}
-	else if (*(char *)newtok->last_letter->content == '-')
-		newtok->dash = true;
 }
 
 static int	filter_redir(t_token *toklist, t_token *prev)
@@ -61,12 +44,15 @@ static int	filter_redir(t_token *toklist, t_token *prev)
 	tmp->last_letter = toklist->next->last_letter;
 	tmp->next = toklist->next->next;
 	tmp->type = toklist->type;
-	if (tmp->type & (LESS | DLESS | LESSAND | TLESS))
-		tmp->left_op = STDIN_FILENO;
-	else if (tmp->type & (GREAT | DGREAT | GREATAND | ANDGREAT))
-		tmp->left_op = STDOUT_FILENO;
-	get_right_op(tmp, toklist->next);
-//	printf("left:%d|fd:%d|s:%s|dash:%d\n", tmp->left_op, tmp->fd_right_op, tmp->s_right_op, tmp->dash);
+	if (IS_LESS_REDIR(tmp->type))
+		tmp->lhs = STDIN_FILENO;
+	else if (IS_GREAT_REDIR(tmp->type))
+		tmp->lhs = STDOUT_FILENO;
+	tmp->s_rhs = token_str(toklist->next);
+	tmp->fd_rhs = -1;
+	tmp->dash = false;
+//	get_right_op(tmp);
+	printf("left:%d|fd:%d|s:%s|dash:%d\n", tmp->lhs, tmp->fd_rhs, tmp->s_rhs, tmp->dash);
 	free(toklist->next);
 	free(toklist);
 	return (SUCCESS);
@@ -89,11 +75,13 @@ static int	filter_io_number(t_token *toklist, t_token *prev)
 	tmp->next = toklist->next->next->next;
 	tmp->type = toklist->next->type;
 	s = token_str(toklist);
-	tmp->left_op = ft_atoi(s);
+	tmp->lhs = ft_atoi(s);
 	free(s);
-
-	get_right_op(tmp, toklist->next->next);
-//	printf("left:%d|fd:%d|s:%s|dash:%d\n", tmp->left_op, tmp->fd_right_op, tmp->s_right_op, tmp->dash);
+	tmp->s_rhs = token_str(toklist->next->next);
+	tmp->fd_rhs = -1;
+	tmp->dash = false;
+//	get_right_op(tmp);
+//	printf("left:%d|fd:%d|s:%s|dash:%d\n", tmp->lhs, tmp->fd_rhs, tmp->s_rhs, tmp->dash);
 	free(toklist->next->next);
 	free(toklist->next);
 	free(toklist);
@@ -106,7 +94,7 @@ static void filter_bang(t_token *toklist)
 
 	if (toklist->last_letter->next != toklist->next->first_letter)
 			toklist->type = WORD;
-	else if (toklist->next->type == WORD || toklist->next->type == ASSIGNMENT_WORD || toklist->next->type == BANG)
+	else if (toklist->next->type & (WORD | ASSIGNMENT_WORD | BANG))
 	{
 		tmp = toklist->next;
 		toklist->last_letter = tmp->last_letter;
@@ -162,6 +150,7 @@ static void	filter_dollar(t_token *toklist)
 ** GREATAND	
 ** TLESS	
 ** ANDGREAT	
+** ANDDGREAT
 
 ** DOLLAR	
 
@@ -190,9 +179,9 @@ t_token	*filter_tokens(t_token *toklist)
 		else if (toklist->type & IO_NUMBER)
 		{
 			if (filter_io_number(toklist, prev) == -1)
-				return (toklist);
+				return (toklist->next);
 		}
-		else if (toklist->type & (LESS | GREAT | DLESS | DGREAT | LESSAND | GREATAND | TLESS | ANDGREAT))
+		else if (ISREDIR(toklist->type))
 		{
 			if (filter_redir(toklist, prev) == -1)
 				return (toklist);

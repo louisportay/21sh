@@ -1,4 +1,19 @@
-vpath %.c ft_string/ ft_stdio/ ft_stdlib/ lst/ dlst/ buffer/ ft_ctype/ ft_wchar/ other/ ft_printf/ ft_hash/ ft_btree/ utest/ stack/ kvp/
+SRCDIR= ft_string/ \
+		ft_stdio/ \
+		ft_stdlib/ \
+		lst/ \
+		dlst/ \
+		buffer/ \
+		ft_ctype/ \
+		ft_wchar/ \
+		other/ \
+		ft_printf/ \
+		ft_hash/ \
+		ft_btree/ \
+		utest/ \
+		stack/ \
+		kvp/
+vpath %.c $(SRCDIR) 
 vpath %.h includes/
 
 INCLUDE= includes/
