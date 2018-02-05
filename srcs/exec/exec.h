@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/31 20:54:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/05 17:22:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <signal.h>
 # include <fcntl.h>
 
-# include "tokens.h"
+# include "token.h"
 # include "ft_mem.h"
 # include "ft_string.h"
 # include "environ.h"
@@ -41,18 +41,17 @@ struct					s_proc
 	struct s_proc		*next;
 	char				**argv;
 	pid_t				pid;
-//	char				run_stat;			
+	char				**env;
 	char				completed;
 	char				stopped;
 	int					status;
-	void				*RDR_LST;
+	t_redir				*redirs;
 //	int					std[3];
 //	int					*other;
 };
 
 struct					s_job
 {
-	struct s_job		*next;
 	char				*command;
 	t_proc				*procs;
 	pid_t				pgid;
