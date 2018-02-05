@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/02 14:07:07 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/05 22:57:34 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,34 @@ static void	filter_assignment_word(t_token *toklist)
 	}
 }
 
+static int	filter_heredoc(t_token *toklist, t_token *prev)
+{
+	t_heredoc *tmp;
+
+	if (!(toklist->next->type & (WORD | ASSIGNMENT_WORD)) || !(tmp = (t_heredoc *)malloc(sizeof(t_heredoc))))
+		return (-1);
+	prev->next = (t_token *)tmp;
+	tmp->first_letter = toklist->first_letter;
+	tmp->last_letter = toklist->next->last_letter;
+	tmp->next = toklist->next->next;
+	tmp->type = toklist->type;
+	tmp->lhs = STDIN_FILENO;
+	tmp->s_rhs = token_str(toklist->next);
+	free(toklist->next);
+	free(toklist);
+	return (SUCCESS);
+}
+
 static int	filter_redir(t_token *toklist, t_token *prev)
 {
 	t_redir *tmp;
 
+	if (toklist->type == DLESS)
+		return (filter_heredoc(toklist, prev));
 	if (!(toklist->next->type & (WORD | ASSIGNMENT_WORD)) || !(tmp = (t_redir *)malloc(sizeof(t_redir))))
 		return (-1);
 	prev->next = (t_token *)tmp;
 	tmp->first_letter = toklist->first_letter;
-
 	tmp->last_letter = toklist->next->last_letter;
 	tmp->next = toklist->next->next;
 	tmp->type = toklist->type;
@@ -52,7 +71,7 @@ static int	filter_redir(t_token *toklist, t_token *prev)
 	tmp->fd_rhs = -1;
 	tmp->dash = false;
 //	get_right_op(tmp);
-	printf("left:%d|fd:%d|s:%s|dash:%d\n", tmp->lhs, tmp->fd_rhs, tmp->s_rhs, tmp->dash);
+//	printf("left:%d|fd:%d|s:%s|dash:%d\n", tmp->lhs, tmp->fd_rhs, tmp->s_rhs, tmp->dash);
 	free(toklist->next);
 	free(toklist);
 	return (SUCCESS);

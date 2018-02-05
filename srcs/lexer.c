@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/02 14:00:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/05 23:00:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,7 +317,7 @@ void	requalify_tokens(t_token **toklist)
 		init_token_table(tok);
 		while ((unsigned)tok[i].key != ret->type && tok[i].key)
 				i++;
-		ft_putstr_fd(STDERR_FILENO, "syntax error near unexpected token `");
+		ft_putstr_fd(STDERR_FILENO, "syntax error near token `");
 		ft_putstr_fd(STDERR_FILENO, tok[i].val);
 		ft_putstr_fd(STDERR_FILENO, "'\n");
 		delete_following_redir(ret);

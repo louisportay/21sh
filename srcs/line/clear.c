@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:52:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/26 15:00:58 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/05 18:16:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,31 @@
 ** Redraw the whole line with the prompt
 */
 
-void	redraw_line(t_21sh *env)
+void	redraw_line(t_21sh *env, t_line *l)
 {
-	env->line.cursor_offset = 0;
+	l->cursor_offset = 0;
 	print_prompt(env);
-	if (env->line.line)
+	if (l->line)
 	{
-		ft_dlsthead(&env->line.line);
-		print_line_cursor(env, env->line.line->next);
-		ft_dlstend(&env->line.line);
+		ft_dlsthead(&l->line);
+		print_line_cursor(l, l->line->next);
+		ft_dlstend(&l->line);
 	}
 	else
-		print_line_cursor(env, T_HISTENTRY(env->hist.list->content)->line->next);
-	if (!(env->line.cursor_offset % env->line.ws.ws_col))
-		tputs(env->line.tc.dow, 1, &ft_putchar_stdin);
+		print_line_cursor(l, T_HISTENTRY(env->hist.list->content)->line->next);
+	if (!(l->cursor_offset % env->ws.ws_col))
+		tputs(env->tc.dow, 1, &ft_putchar_stdin);
 }
 
-void clear_line(t_21sh *env)
+void clear_line(t_21sh *env, t_line *l)
 {
-	tputs(env->line.tc.cr, 1, &ft_putchar_stdin);
-	move_cursor_n_lines(-env->line.cursor_line);
-	tputs(env->line.tc.cd, 1, &ft_putchar_stdin);
+	tputs(env->tc.cr, 1, &ft_putchar_stdin);
+	move_cursor_n_lines(-l->cursor_line);
+	tputs(env->tc.cd, 1, &ft_putchar_stdin);
 }
 
-void	clear_screen_(t_21sh *env)
+void	clear_screen_(t_21sh *env, t_line *l)
 {
-	tputs(env->line.tc.cl, 1, &ft_putchar_stdin);
-	redraw_line(env);
+	tputs(env->tc.cl, 1, &ft_putchar_stdin);
+	redraw_line(env, l);
 }

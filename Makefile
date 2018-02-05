@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/01/31 15:24:15 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/05 19:19:23 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,9 +29,9 @@ ifeq ($(ARCH), Darwin)
 endif
 
 ifeq ($(DEBUG), yes)
-	CFLAGS+= -g
+	CFLAGS+= -g3
 else ifeq ($(DEBUG), sanitize)
-	CFLAGS+= -fsanitize=address
+	CFLAGS+= -g3 -fsanitize=address
 endif
 
 INCLUDE= includes/
@@ -49,6 +49,7 @@ SRCS=	main.c\
 		prompt.c\
 		history.c\
 		rawline.c\
+		quote.c\
 		\
 		line.c\
 		lineread.c\

@@ -6,39 +6,36 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 12:04:12 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/29 20:40:41 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/05 17:26:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
 /*
-** Définir les comportements pour chaque signal
-** SIGINT reaffiche le prompt et kill les process en cours
+** Définit les comportements pour chaque signal
+** SIGINT réaffiche le prompt et kill les process en cours
 */
-
-void		sig_switch(int signum, t_21sh *envaddr)
-{
-	static t_21sh *env;
-
-	if (signum == SIGWINCH && env->line_edition)
-	{
-		ioctl(STDIN_FILENO, TIOCGWINSZ, &env->line.ws);
-		update_linemode(&env->line);
-		clear_line(env);
-		redraw_line(env);
-	}
-	if (signum == SIGINT)
-	{
-
-	}
-	if (envaddr != NULL)
-		env = envaddr;
-}
 
 static void	sighandler(int signum)
 {
-	sig_switch(signum, NULL);
+	t_21sh *env;
+	
+	env = get_envaddr(NULL);
+	if (signum == SIGWINCH && env->line_edition)
+	{
+		ioctl(STDIN_FILENO, TIOCGWINSZ, &env->ws);
+		if (env->cur_line)
+		{
+			update_line(env, env->cur_line);
+			clear_line(env, env->cur_line);
+			redraw_line(env, env->cur_line);
+		}
+	}
+	if (signum == SIGINT)
+	{
+		//
+	}
 }
 
 int		wrap_signal(void)

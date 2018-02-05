@@ -6,20 +6,26 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/02 14:13:17 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/05 22:51:38 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKEN_H
 # define TOKEN_H
 
+
+# define R_LESS (LESS | DLESS | TLESS | LESSAND)
+# define R_GREAT (GREAT | DGREAT | GREATAND)
+# define R_AND (ANDGREAT | ANDDGREAT)
+
+# define REDIR (R_LESS | R_GREAT | R_AND)
+
 # define IS_LESS_REDIR(n) (n & (LESS | DLESS | TLESS | LESSAND))
 # define IS_GREAT_REDIR(n) (n & (GREAT | DGREAT | GREATAND))
 # define IS_AND_REDIR(n) (n & (ANDGREAT | ANDDGREAT))
-
 # define ISREDIR(n) (IS_LESS_REDIR(n) | IS_GREAT_REDIR(n) | IS_AND_REDIR(n))
 
-//c'est pas trop a la norme cette macro
+//c'est pas trop a la norme cette macro, a changer apres
 # define IS_MAX_OPE(n) (n & (OR_IF | AND_IF | DGREAT | LESSAND | GREATAND | ANDDGREAT | TLESS | DOLLAR | BANG | NEWLINE | SEMICOL))
 
 # define IS_NOT_MAX_OPE(n) (n & (OR | AND | LESS | GREAT | DLESS | ANDGREAT))
@@ -74,10 +80,22 @@ typedef struct		s_redir
 	enum e_toktype	type;
 
 	int				lhs;
-	int				fd_rhs;
 	char			*s_rhs;
+	int				fd_rhs;
 	bool			dash;
 }					t_redir;
+
+typedef struct		s_heredoc
+{
+	t_dlist 		*first_letter;
+	t_dlist 		*last_letter;
+	struct s_token	*next;
+	enum e_toktype	type;
+
+	int				lhs;
+	char			*s_rhs;
+	t_line			hdoc;
+}					t_heredoc;
 
 char	*token_str(t_token *tok);
 void	delete_toklist(t_token **toklist);

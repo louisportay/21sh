@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/29 10:02:10 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/05 22:56:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,21 +100,21 @@ static int	init_environ(t_21sh *env, char **av, char **environ)
 	return (SUCCESS);
 }
 
-static void init_termcaps(t_line *line, t_21sh *env)
+void init_termcaps(t_21sh *env)
 {
-		line->tc.le = tgetstr("le", NULL);//		cursor go one character left
-		line->tc.nd = tgetstr("nd", NULL);//		cursor go one character right
-		line->tc.im = tgetstr("im", NULL);//		enter insert mode
-		line->tc.ei = tgetstr("ei", NULL);//		exit insert mode
-		line->tc.dc = tgetstr("dc", NULL);//		delete one character
-		line->tc.cr = tgetstr("cr", NULL);//		cursor go to the beginning of the line
-		line->tc.up = tgetstr("up", NULL);//		cursor go one line up
-		line->tc.dow = tgetstr("do", NULL);//		cursor go one line down
-		line->tc.cl = tgetstr("cl", NULL);//		clear the screen
-		line->tc.cd = tgetstr("cd", NULL);//		clear the line from the cursor until the end of screen
-		line->tc.sc = tgetstr("sc", NULL);//		save cursor position
-		line->tc.rc = tgetstr("rc", NULL);//		restore cursor position
-		if (!line->tc.le || !line->tc.nd || !line->tc.im || !line->tc.ei || !line->tc.dc || !line->tc.cr || !line->tc.up || !line->tc.dow || !line->tc.cl || !line->tc.cd)
+		env->tc.le = tgetstr("le", NULL);//		cursor go one character left
+		env->tc.nd = tgetstr("nd", NULL);//		cursor go one character right
+		env->tc.im = tgetstr("im", NULL);//		enter insert mode
+		env->tc.ei = tgetstr("ei", NULL);//		exit insert mode
+		env->tc.dc = tgetstr("dc", NULL);//		delete one character
+		env->tc.cr = tgetstr("cr", NULL);//		cursor go to the beginning of the line
+		env->tc.up = tgetstr("up", NULL);//		cursor go one line up
+		env->tc.dow = tgetstr("do", NULL);//		cursor go one line down
+		env->tc.cl = tgetstr("cl", NULL);//		clear the screen
+		env->tc.cd = tgetstr("cd", NULL);//		clear the line from the cursor until the end of screen
+		env->tc.sc = tgetstr("sc", NULL);//		save cursor position
+		env->tc.rc = tgetstr("rc", NULL);//		restore cursor position
+		if (!env->tc.le || !env->tc.nd || !env->tc.im || !env->tc.ei || !env->tc.dc || !env->tc.cr || !env->tc.up || !env->tc.dow || !env->tc.cl || !env->tc.cd)
 			env->line_edition = false;
 }
 
@@ -127,13 +127,16 @@ static void	init_termios(t_21sh *env)
 		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &env->tios) == -1)
 			env->line_edition = false;
 		else
-			init_termcaps(&env->line, env);
+			init_termcaps(env);
 }
 
-//mettre les variables dans l'ordre dans lequel elles ont ete declarees
+//mettre les variables dans l'ordre dans lequel elles ont ete declarees (les declarer dans un ordre logique)
 
 static void	init_env_values(t_21sh *env)
 {
+	env->cur_line = NULL;
+	env->heredoc_eof = NULL;
+
 	env->line.line = NULL;
 	env->line.lastline = NULL;
 	env->line.yank = NULL;
@@ -152,11 +155,21 @@ static void	init_env_values(t_21sh *env)
 
 }
 
+t_21sh *get_envaddr(t_21sh *envaddr)
+{
+	static t_21sh *env = NULL;
+
+	if (envaddr)
+		env = envaddr;
+	return (env);
+}
+
 static int	init(t_21sh *env, char **av, char **environ)
 {
 	char	*tmp;
 	int		ret;
 
+	get_envaddr(env);
 	init_env_values(env);
 	if (tcgetattr(STDIN_FILENO, &env->oldtios) == -1 || tcgetattr(STDIN_FILENO,
 &env->tios) == -1 || !(env->istty) || (tmp = getenv("TERM")) == NULL ||
@@ -164,7 +177,7 @@ ft_strcmp(tmp, "xterm-256color") ||tgetent(NULL, tmp) == ERR)
 		env->line_edition = false;
 	else
 		init_termios(env);
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &env->line.ws) == -1)
+	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &env->ws) == -1)
 		env->line_edition = false;
 	if (wrap_signal() == FAILSETSIGHDLR)
 		return (FAILSETSIGHDLR);
@@ -174,7 +187,6 @@ ft_strcmp(tmp, "xterm-256color") ||tgetent(NULL, tmp) == ERR)
 		return (ret);
 	if (env->history)
 		init_hist(env);
-	sig_switch(0, env);
 	return (SUCCESS);
 }
 
@@ -188,7 +200,7 @@ void	vingtetunsh(char **av, char  **environ)
 
 	while (1)//
 	{
-		wrap_lineread(&env);
+		wrap_lineread(&env, &env.line, PS1);
 
 		if (env.line.split_line)
 			env.toklist = tokenizer(env.line.split_line);

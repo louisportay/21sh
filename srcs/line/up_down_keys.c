@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 17:42:27 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/26 15:00:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/05 18:06:02 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@
 ** Clear the line, print the prompt and will eventually update the history entry
 */
 
-static void	load_histentry(t_21sh *env)
+static void	load_histentry(t_21sh *env, t_line *l)
 {
-	clear_line(env);
-	env->line.cursor_offset = 0;
+	clear_line(env, l);
+	l->cursor_offset = 0;
 	print_prompt(env);
-	env->line.line_len = env->line.cursor_offset;
-	if (env->line.line)
-		ft_dlsthead(&env->line.line);
-	if (env->hist.list->previous && env->line.line && env->line.line != env->line.lastline)
+	l->line_len = l->cursor_offset;
+	if (l->line)
+		ft_dlsthead(&l->line);
+	if (env->hist.list->previous && l->line && l->line != l->lastline)
 	{
 		ft_dlstdel(&T_HISTENTRY(env->hist.list->content)->line, &delvoid);
-		T_HISTENTRY(env->hist.list->content)->line = env->line.line;
+		T_HISTENTRY(env->hist.list->content)->line = l->line;
 	}
 }
 
@@ -37,31 +37,31 @@ static void	load_histentry(t_21sh *env)
 ** and DOWN KEYS. (See `user_input' first condition which call `load_line')
 */
 
-void	up_key(t_21sh *env)
+void	up_key(t_21sh *env, t_line *l)
 {
-	load_histentry(env);
+	load_histentry(env, l);
 	env->hist.list = env->hist.list->next;
-	print_line_cursor_len(env, T_HISTENTRY(env->hist.list->content)->line->next);
-	env->line.line = NULL;
-	if (!(env->line.cursor_offset % env->line.ws.ws_col))
-		tputs(env->line.tc.dow, 1, &ft_putchar_stdin);
+	print_line_cursor_len(l, T_HISTENTRY(env->hist.list->content)->line->next);
+	l->line = NULL;
+	if (!(env->line.cursor_offset % env->ws.ws_col))
+		tputs(env->tc.dow, 1, &ft_putchar_stdin);
 }
 
-void	down_key(t_21sh *env)
+void	down_key(t_21sh *env, t_line *l)
 {
-	load_histentry(env);
+	load_histentry(env, l);
 	env->hist.list = env->hist.list->previous;
 	if (!env->hist.list->previous)
 	{
-		env->line.line = env->line.lastline;
-		print_line_cursor_len(env, env->line.line->next);
-		ft_dlstend(&env->line.line);
+		l->line = l->lastline;
+		print_line_cursor_len(l, l->line->next);
+		ft_dlstend(&l->line);
 	}
 	else
 	{
-		print_line_cursor_len(env, T_HISTENTRY(env->hist.list->content)->line->next);
-		env->line.line = NULL;
+		print_line_cursor_len(l, T_HISTENTRY(env->hist.list->content)->line->next);
+		l->line = NULL;
 	}
-	if (!(env->line.cursor_offset % env->line.ws.ws_col))
-		tputs(env->line.tc.dow, 1, &ft_putchar_stdin);
+	if (!(l->cursor_offset % env->ws.ws_col))
+		tputs(env->tc.dow, 1, &ft_putchar_stdin);
 }

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/02 13:17:03 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/05 19:24:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,23 @@ enum				e_errcode
 
 struct			s_21sh
 {
+
 	t_line				line;
 	t_hist				hist;
+	t_line				*cur_line;//line currently modified
+
+	struct s_termcaps	tc;
+	struct winsize		ws;
+	struct termios		tios;
+	struct termios		oldtios;
 
 	t_kvp				*environ;
 	t_kvp				*local;
 	
-	struct termios		tios;
-	struct termios		oldtios;
-
 	t_token				*toklist;
 
 
+	char				*heredoc_eof;//current EOF
 	char 				prompt_mode[4];
 	bool				emacs_mode;
 	bool				line_edition;
@@ -106,6 +111,7 @@ void	wrap_exit(int status, t_21sh *env);
 
 int		wrap_signal(void);
 void	sig_switch(int signum, t_21sh *env);
+t_21sh *get_envaddr(t_21sh *envaddr);
 
 /*
 ** Tools

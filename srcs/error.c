@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/27 17:19:39 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/05 22:54:08 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,10 @@ void	wrap_exit(int status, t_21sh *env)
 	if (env->line.yank)
 	//ft_dlsthead(&env->yank);//
 		ft_dlstdel(&env->line.yank, &delvoid);
-	if (env->line.linestate)
-		stack_del(&env->line.linestate);
+
+//	if (env->line.linestate)
+//		stack_del(&env->line.linestate);
+
 	if (env->hist.list)//faire une fonction dédiée
 	{
 	////ft_dlsthead(&env->histlist);//

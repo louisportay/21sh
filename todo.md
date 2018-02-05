@@ -119,3 +119,5 @@ builtin fc
 Others
 ======
 
+For future improvements, make the whole line edition library work on a single pointer called "Current Line"
+See signal.c

@@ -6,245 +6,186 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/29 20:34:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/05 23:01:15 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void	init_line_funcs(t_line_func *funcs)
+static void	init_line_funcs(t_line_pair *p)
 {
-	funcs[0] = LINE_FUNC(&test_upkey, &up_key);
-	funcs[1] = LINE_FUNC(&test_downkey, &down_key);
-	funcs[2] = LINE_FUNC(&test_lkey, &lkey);
-	funcs[3] = LINE_FUNC(&test_rkey, &rkey);
-	funcs[4] = LINE_FUNC(&test_del_current_char, &del_current_char);
-	funcs[5] = LINE_FUNC(&test_del_previous_char, &del_previous_char);
-	funcs[6] = LINE_FUNC(&test_line_beginning, &go_to_line_beginning);
-	funcs[7] = LINE_FUNC(&test_line_end, &go_to_line_end);
-	funcs[8] = LINE_FUNC(&test_lower_line, &go_lower_line);
-	funcs[9] = LINE_FUNC(&test_upper_line, &go_upper_line);
-	funcs[10] = LINE_FUNC(&test_go_prev_word, &go_to_previous_word);
-	funcs[11] = LINE_FUNC(&test_go_next_word, &go_to_next_word);
-	funcs[12] = LINE_FUNC(&test_kill_beginline, &kill_line_beginning);
-	funcs[13] = LINE_FUNC(&test_kill_endline, &kill_line_end);
-	funcs[14] = LINE_FUNC(&test_clear_screen, &clear_screen_);
-	funcs[15] = LINE_FUNC(&test_yank, &yank);
-	funcs[16] = LINE_FUNC(&test_emacs_mode, &reverse_emacs_mode);
-	funcs[17] = LINE_FUNC(&test_killprevword, &kill_prev_word);
-	//funcs[18] = LINE_FUNC(&test_killnextword, &kill_next_word);
-	funcs[18] = LINE_FUNC(NULL, NULL);
+	p[0] = TEST_FUNC(&test_upkey, &up_key);
+	p[1] = TEST_FUNC(&test_downkey, &down_key);
+	p[2] = TEST_FUNC(&test_lkey, &lkey);
+	p[3] = TEST_FUNC(&test_rkey, &rkey);
+	p[4] = TEST_FUNC(&test_del_current_char, &del_current_char);
+	p[5] = TEST_FUNC(&test_del_previous_char, &del_previous_char);
+	p[6] = TEST_FUNC(&test_line_beginning, &go_to_line_beginning);
+	p[7] = TEST_FUNC(&test_line_end, &go_to_line_end);
+	p[8] = TEST_FUNC(&test_lower_line, &go_lower_line);
+	p[9] = TEST_FUNC(&test_upper_line, &go_upper_line);
+	p[10] = TEST_FUNC(&test_go_prev_word, &go_to_previous_word);
+	p[11] = TEST_FUNC(&test_go_next_word, &go_to_next_word);
+	p[12] = TEST_FUNC(&test_kill_beginline, &kill_line_beginning);
+	p[13] = TEST_FUNC(&test_kill_endline, &kill_line_end);
+	p[14] = TEST_FUNC(&test_clear_screen, &clear_screen_);
+	p[15] = TEST_FUNC(&test_yank, &yank);
+	p[16] = TEST_FUNC(&test_emacs_mode, &reverse_emacs_mode);
+	p[17] = TEST_FUNC(&test_killprevword, &kill_prev_word);
+	//p[18] = LINE_FUNC(&test_killnextword, &kill_next_word);
+	p[18] = TEST_FUNC(NULL, NULL);
 }
 
-int	user_input(t_21sh *env, char *buf, int *bufi)
+int	read_state(t_21sh *env, t_line *l, t_key *key)
 {
-	t_line_func	funcs[19];
-	int			i;
-
-	i = 0;
-	init_line_funcs(funcs);	
-	update_linemode(&env->line);
-	if (test_load_line(env, buf) == true)
-		load_line(env);
-	if (*buf == NEWLINE_ || (env->emacs_mode && *buf == C_O))
+	if (*key->buf == NEWLINE_ || (env->emacs_mode && *key->buf == C_O))
 	{
-		if (env->line.line && ft_dlstaddr(env->line.line, 0) != env->line.lastline)
-			ft_dlstdel(&env->line.lastline, &delvoid);
+		if (l->line && ft_dlstaddr(l->line, 0) != l->lastline)
+			ft_dlstdel(&l->lastline, &delvoid);
 		return (FINISHREAD);
 	}
-	else if (*buf == C_D && !ft_dlstcount(env->line.line))
+	else if (*key->buf == C_D && !ft_dlstcount(l->line))
 	{
-		if (env->line.linestate->state == UNQUOTED)
+		if (l->linestate->state == UNQUOTED)
 			return (EXITSHELL);
 		else
 			return (ERR_QUOTE);
 	}
-	else if (ft_isprint(*buf))
-		insert_char(buf, env);
+	return (READON);
+}
+
+void	linefunc_switch(t_21sh *env, t_line *l, t_key *key)
+{
+	t_line_pair	p[19];
+	int			i;
+
+	i = 0;
+	init_line_funcs(p);
+	while (p[i].test && !(p[i].test(env, l, key)))
+		i++;
+	if (p[i].test)
+		p[i].func(env, l);
+}
+
+int	user_input(t_21sh *env, t_line *l, t_key *key)
+{
+	int ret;
+
+	update_line(env, &env->line);
+
+	if (test_load_line(env, l, key) == true)
+		load_line(env, l);
+
+	if ((ret = read_state(env, l, key)) != READON)
+		return (ret);
+
+	if (ft_isprint(*key->buf))
+		insert_char(key->buf, env, l);
 	else
-	{
-		while (funcs[i].test && funcs[i].test(env, buf, bufi) == false)
-			i++;
-		if (funcs[i].test)
-			funcs[i].f(env);
-	}
-	if ((buf[0] && buf[0] != ESC) || (buf[1] && buf[1] != '[') || *bufi == READLEN)
-	{
-		ft_bzero(buf, *bufi);
-		*bufi = 0;
-	}
+		linefunc_switch(env, l, key);
 
-////	else if (!ft_strncmp(buf, M_D, ft_strlen(M_D)) && env->line->next && env->emacs_mode)
-////		kill_next_word(env);
-
+	if ((key->buf[0] && key->buf[0] != ESC) || (key->buf[1] && key->buf[1] != '[') || key->i == READLEN)
+	{
+		ft_bzero(key->buf, key->i);
+		key->i = 0;
+	}
 //	else if (buf == C_R && env->history)
 //		recherche dans l'historique (C_G + C_J + C_O)
 //	else if (buf == TAB && env->autocomplete)
 //		autocompletion
 	return (READON);
 }
-/*static*/ void	handle_bslash(t_stack **line)
-{
-	if ((*line)->state == BSLASH)
-		stack_pop(line);
-	else if ((*line)->state != SQUOTE)
-		stack_push(line, stack_create(BSLASH));
-}
-
-/*static*/ void	handle_squote(t_stack **line)
-{
-	if ((*line)->state == SQUOTE)
-		stack_pop(line);
-	else if ((*line)->state != DQUOTE && (*line)->state != BSLASH)
-		stack_push(line, stack_create(SQUOTE));
-}
-
-/*static*/ void	handle_dquote(t_stack **line)
-{
-	if ((*line)->state == DQUOTE)
-		stack_pop(line);
-	else if ((*line)->state != SQUOTE && (*line)->state != BSLASH)
-		stack_push(line, stack_create(DQUOTE));
-}
-
-/*static*/ void	handle_paren(t_stack **line, char c)
-{
-	if ((*line)->state == PAREN && c == ')')
-		stack_pop(line);
-	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE && (*line)->state != DQUOTE && c == '(')
-		stack_push(line, stack_create(PAREN));
-}
-
-void	handle_brace(t_stack **line, char c)
-{
-	if ((*line)->state == BRACE && c == '}')
-		stack_pop(line);
-	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE && (*line)->state != DQUOTE && c == '{')
-		stack_push(line, stack_create(BRACE));
-}
-
-void	handle_bracket(t_stack **line, char c)
-{
-	if ((*line)->state == BRACKET && c == ']')
-		stack_pop(line);
-	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE && (*line)->state != DQUOTE && c == '[')
-		stack_push(line, stack_create(BRACKET));
-}
-
-void handle_hash(t_stack **line)
-{
-	if ((*line)->state == UNQUOTED || (*line)->state == PAREN || (*line)->state == BRACE || (*line)->state == BRACKET)
-		stack_push(line, stack_create(HASH));
-}
-
-/*
-** 42SH
-*/
-
-/*
-void	handle_bquote(t_stack **line)
-{
-	if ((*line)->state == BQUOTE)
-		stack_pop(line);
-	else if ((*line)->state != SQUOTE && (*line)->state != BSLASH)
-		stack_push(line, stack_create(BQUOTE));
-}
-*/
-
-void	update_linestate(t_stack **state, char c)
-{
-	if (c == '#')
-		handle_hash(state);
-	else if (c == '\\')
-		handle_bslash(state);
-	else if (c == '\'')
-		handle_squote(state);
-	else if (c == '\"')
-		handle_dquote(state);
-//	else if (c == '`')
-//		handle_bquote(state);
-	else if (c == '(' || c == ')')
-		handle_paren(state, c);
-	else if (c == '{' || c == '}')
-		handle_brace(state, c);
-	else if (c == '[' || c == ']')
-		handle_bracket(state, c);
-}
 
 void	query_linestate(t_dlist *dlst, t_stack **linestate)
 {
+	if ((*linestate)->state == BSLASH)
+		stack_pop(linestate);
 	while (dlst && (*linestate)->state != HASH)
 	{
 		update_linestate(linestate, *(char *)(dlst->content));
 		if (*(char *)(dlst->content) != '\\' && (*linestate)->state == BSLASH)
 			stack_pop(linestate);
 		dlst = dlst->next;
-		}
+	}
+	if ((*linestate)->state == HASH)
+		stack_pop(linestate);
 }
 
-void	join_split_lines(t_line *line)
+void	query_hdocstate(t_dlist *dlst, t_stack **linestate, char *eof)
+{
+	char *s;
+
+	if (!(s = dlst_to_str(dlst)))
+		return ;
+	if (!ft_strcmp(s, eof))
+		stack_pop(linestate);
+	free(s);
+}
+
+void	join_split_lines(t_line *l)
 {
 	t_dlist *tmp;
 
-	if (line->split_line && line->line->next)
+	if (l->split_line && l->line->next)
 	{
-		tmp = line->split_line;
-		ft_dlstend(&line->split_line);
-		if (*(char *)line->split_line->content == '\\')
-			ft_dlstremove(&line->split_line, &delvoid);
-		line->line = line->line->next;
-		ft_dlstdelone(&line->line->previous, &delvoid);
-		line->line->previous = line->split_line;
-		line->split_line->next = line->line;
-		line->split_line = tmp;
+		tmp = l->split_line;
+		ft_dlstend(&l->split_line);
+		if (*(char *)l->split_line->content == '\\')
+			ft_dlstremove(&l->split_line, &delvoid);
+		l->line = l->line->next;
+		ft_dlstdelone(&l->line->previous, &delvoid);
+		l->line->previous = l->split_line;
+		l->split_line->next = l->line;
+		l->split_line = tmp;
 	}
-	else if (line->split_line && !line->line->next)
+	else if (l->split_line && !l->line->next)
 	{
-		ft_dlstdelone(&line->line, &delvoid);
-		tmp = line->split_line;
-		ft_dlstend(&line->split_line);
-		if (*(char *)line->split_line->content == '\\')
-			ft_dlstremove(&line->split_line, &delvoid);
-		line->split_line = tmp;
+		ft_dlstdelone(&l->line, &delvoid);
+		tmp = l->split_line;
+		ft_dlstend(&l->split_line);
+		if (*(char *)l->split_line->content == '\\')
+			ft_dlstremove(&l->split_line, &delvoid);
+		l->split_line = tmp;
 	}
-	else if (!line->split_line)
-		line->split_line = line->line;
+	else if (!l->split_line)
+		l->split_line = l->line;
 }
 
-void	err_quotes(t_line *line)
+void	err_quotes(t_line *l)
 {
-		write(STDIN_FILENO, "\n", 1);
-		dump_err(BADQUOTES);
-		ft_dlstdel(&line->split_line, &delvoid);
-		ft_dlstdel(&line->line, &delvoid);
-		stack_del(&line->linestate);
+	write(STDIN_FILENO, "\n", 1);//
+	dump_err(BADQUOTES);
+	ft_dlstdel(&l->split_line, &delvoid);
+	ft_dlstdel(&l->line, &delvoid);
+	stack_del(&l->linestate);
 }
 
-void	wrap_lineread(t_21sh *env)
+void	wrap_lineread(t_21sh *env, t_line *l, char *prompt_mode)
 {
-	env->line.split_line = NULL;
-	env->line.line_saved = false;
-	ft_strcpy(env->prompt_mode, PS1);
-	stack_push(&env->line.linestate, stack_create(UNQUOTED));
-	
-	if (env->line_edition == true)
+	l->split_line = NULL;
+	l->line_saved = false;
+	ft_strcpy(env->prompt_mode, prompt_mode);
+	stack_push(&l->linestate, stack_create(UNQUOTED));
+
+	if (env->line_edition)
 	{
 		lineread(env, &env->line);
-		while (env->line.linestate && env->line.linestate->state != UNQUOTED)
+		while (l->linestate && l->linestate->state != UNQUOTED)
 			lineread(env, &env->line);
 	}
 	else
-		wrap_getrawline(env);
-
-	if (env->line.linestate)
-		stack_del(&env->line.linestate);
+	{
+		getrawline(env, &env->line);
+		while (l->linestate && l->linestate->state != UNQUOTED)
+			getrawline(env, &env->line);
+	}
+	if (l->linestate)
+		stack_del(&l->linestate);
 
 	//DEBUG//
-	write(1, "\n", 1);//
-
-	if (env->line.split_line)
-		print_line(env->line.split_line->next);//print what's retrieved
-	write(1, "\n", 1);//
+//	if (env->line.split_line)//
+//		print_line(env->line.split_line->next);//print what's retrieved
+//	write(1, "\n", 1);//
 	/////////
 }
 
