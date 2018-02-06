@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/05 23:00:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 14:12:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ bool	is_quote_hash_paren(char c)
 ** POSIX blank
 */
 
-bool 	ft_isblank(char c)
+int 	ft_isblank(char c)
 {
 	if (c == ' ' || c == '\t')
 		return (true);

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/05 23:01:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 14:44:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,9 @@ int	user_input(t_21sh *env, t_line *l, t_key *key)
 {
 	int ret;
 
-	update_line(env, &env->line);
-
 	if (test_load_line(env, l, key) == true)
 		load_line(env, l);
+	update_line(env, l);
 
 	if ((ret = read_state(env, l, key)) != READON)
 		return (ret);

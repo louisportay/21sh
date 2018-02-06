@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/25 17:01:50 by lportay           #+#    #+#              #
-#    Updated: 2018/01/27 16:38:16 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/06 14:06:53 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,9 @@ ifeq ($(ARCH), Darwin)
 endif
 
 ifeq ($(DEBUG),yes)
-	CFLAGS+= -g
+	CFLAGS+= -g3
 else ifeq ($(DEBUG),sanitize)
-	CFLAGS+= -fsanitize=address
+	CFLAGS+= -g3 -fsanitize=address
 endif
 
 include libfiles.mk
