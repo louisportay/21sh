@@ -69,6 +69,8 @@ SRCS=	main.c\
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
 
+#LIB= lib21sh.a
+#LIBDIR= lib21sh/
 LIB= libft.a
 LIBDIR= libft/
 

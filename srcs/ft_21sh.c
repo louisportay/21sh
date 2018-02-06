@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/05 22:56:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 18:10:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ static void	init_termios(t_21sh *env)
 		env->tios.c_lflag &= ~(ICANON | ECHO);
 		env->tios.c_cc[VMIN] &= 1;
 		env->tios.c_cc[VTIME] &= 0;
+		env->tios.c_cc[VDSUSP] = _POSIX_VDISABLE;
+		env->tios.c_cc[VDISCARD] = _POSIX_VDISABLE;
 
 		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &env->tios) == -1)
 			env->line_edition = false;
@@ -163,6 +165,8 @@ t_21sh *get_envaddr(t_21sh *envaddr)
 		env = envaddr;
 	return (env);
 }
+
+//on garde la comparaison avec xterm-256color ?
 
 static int	init(t_21sh *env, char **av, char **environ)
 {

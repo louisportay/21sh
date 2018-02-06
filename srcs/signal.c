@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 12:04:12 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/05 17:26:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 18:19:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,15 @@ static void	sighandler(int signum)
 			redraw_line(env, env->cur_line);
 		}
 	}
-	if (signum == SIGINT)
+	else if (signum == SIGINT)
 	{
 		//
 	}
+	else if (signum == SIGTSTP)
+	{
+		//
+	}
+	// SIGTERM + SIGQUIT
 }
 
 int		wrap_signal(void)

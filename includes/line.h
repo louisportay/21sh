@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/05 22:52:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 18:10:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 # define C_E '\005'
 # define C_F '\006'
 # define C_H '\b'	// '\008'
-# define C_I '\t'	// '\011'
+# define C_I '\t'	// '\011'	//== TAB_INSERT Not implemented
 # define C_J '\n'	// '\012'
 # define C_K '\v'	// '\013'
 # define C_L '\f'	// '\014'
 # define C_N '\016'
 # define C_O '\017'
 # define C_P '\020'
-# define C_R '\022'
+# define C_R '\022' //Not Implemented
 # define C_U '\025'
 # define C_W '\027'
 # define C_Y '\031'
@@ -37,7 +37,7 @@
 # define BACKSPACE	127
 
 # define M_B "\Eb"
-# define M_D "\Ed"
+# define M_D "\Ed"//Not implemented
 # define M_E "\Ee"
 # define M_F "\Ef"
 
@@ -48,14 +48,23 @@
 # define RIGHT_KEY "\E[C"
 # define LEFT_KEY "\E[D"
 
-# define END  "\E[F"//70 MAC
-# define HOME "\E[H"//72 MAC
-# define DELETE "\E[3~"//51 MAC
-# define PAGE_UP "\E[5~" //MAC ?
-# define PAGE_DOWN "\E[6~" //MAC ?
+# define END  "\E[F"
+# define HOME "\E[H"
+# define DELETE "\E[3~"
 
+#ifdef __linux__
 # define C_UP "\E[1;5A"
+#elif __APPLE__
+#define C_UP "\E[5~"//Shift+PageUp
+#endif
+
+#ifdef __linux__
 # define C_DOWN "\E[1;5B"
+#elif __APPLE__
+# define C_DOWN "\E[6~"//Shift+PageDown
+#endif
+
+
 # define C_RIGHT "\E[1;5C"
 # define C_LEFT "\E[1;5D"
 
