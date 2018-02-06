@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 19:26:21 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 11:28:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/06 16:02:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 **	Renvoie une chaîne mallocé de "size" caracteres + 1 ('\0' final)
 */
 
-#include "libft.h"
+#include "ft_string.h"
 
 char	*ft_strnew(size_t size)
 {

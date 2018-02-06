@@ -28,7 +28,7 @@ struct					s_env
 
 int						env_setup(t_env *env, char **environ);
 
-char					*env_path_get(char *exe, t_env *env);
+char					*env_path_get(char *exe, char **pathes);
 int						get_path(char *exe, t_env *env, char **path);
 
 

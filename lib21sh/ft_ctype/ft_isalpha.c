@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnew.c                                        :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/07 19:26:21 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 11:28:05 by vbastion         ###   ########.fr       */
+/*   Created: 2016/11/09 19:41:34 by lportay           #+#    #+#             */
+/*   Updated: 2017/04/24 15:51:16 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-**	Renvoie une chaîne mallocé de "size" caracteres + 1 ('\0' final)
-*/
-
 #include "libft.h"
 
-char	*ft_strnew(size_t size)
+int		ft_isalpha(int c)
 {
-	char	*str;
-	char	*tmp;
-
-	if (!(str = (char *)malloc(sizeof(char) * (size + 1))))
-		return (NULL);
-	tmp = str;
-	while (size--)
-		*str++ = '\0';
-	*str = '\0';
-	return (tmp);
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
 }

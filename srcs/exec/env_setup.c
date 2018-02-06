@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 17:17:41 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/31 14:44:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/06 11:49:58 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,16 @@ int						env_setup(t_env *env, char **environ)
 	return (1);
 }
 
-char					*env_path_get(char *exe, t_env *env)
+char					*env_path_get(char *exe, char **pathes)
 {
 	static char			buffer[PATH_MAX + 1];
 	size_t				i;
 
 	i = 0;
-	while (env->path[i] != NULL)
+	while (pathes[i] != NULL)
 	{
 		ft_bzero(buffer, PATH_MAX + 1);
-		ft_strcat(buffer, env->path[i]);
+		ft_strcat(buffer, pathes[i]);
 		ft_strcat(buffer, "/");
 		ft_strcat(buffer, exe);
 		if (access(buffer, X_OK) == 0)
@@ -67,7 +67,7 @@ int						get_path(char *exe, t_env *env, char **path)
 	}
 	else if ((e = ft_hashset_lookup(env->hash, exe)) != NULL)
 		*path = (char *)e->content;
-	else if ((*path = env_path_get(exe, env)) != NULL)
+	else if ((*path = env_path_get(exe, env->path)) != NULL)
 		;
 	if (*path != NULL)
 	{
