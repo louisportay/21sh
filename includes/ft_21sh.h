@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/05 19:24:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 19:37:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,67 @@ enum				e_errcode
 */
 
 //padder correctement la struct
+
+truct					s_ctxt
+{
+	/*
+	**	JOB CONTROL - Might miss a lot of variables
+	*/
+	
+	pid_t				pid;
+	pid_t				pgid;
+	int					fd;
+	char				**path;
+	t_list				*running_processes;
+	
+	/*
+	**	EXECUTION HASH (for HASH builtin)
+	*/
+	
+	t_hash_dict			*hash;
+	t_hash_dict			*builtins;
+	
+	/*
+	**	SHELL VARIABLES
+	*/
+	
+	char				**env;
+	char				**locals;
+	
+	/*
+	**	LINE EDITION
+	*/
+	
+	t_line				line;
+	t_line				*cur_line;//line currently modified
+	t_hist				hist;
+	char                *heredoc_eof;//current EOF
+	char				prompt_mode[4];
+	
+	/*
+	**	SHOPT BOOLS
+	*/
+	
+	int					emacs_mode;
+	int	                line_edition;
+	int	                history;
+	
+	/*
+	**	TERMINAL CONTEXT
+	*/
+	
+	struct s_termcaps	tc;
+	struct winsize		ws;
+	int	                istty;
+	struct termios		tios;
+	struct termios		oldtios;
+	
+	/*
+	**	TBD
+	*/
+	
+	t_token				*toklist; // Do we keep it here?
+};
 
 struct			s_21sh
 {
