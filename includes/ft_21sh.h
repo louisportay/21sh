@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 19:35:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/06 19:37:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ truct					s_ctxt
 	*/
 	
 	t_hash_dict			*hash;
+	t_hash_dict			*builtins;
 	
 	/*
 	**	SHELL VARIABLES
