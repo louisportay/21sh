@@ -111,7 +111,6 @@ DLST=   ft_dlstadd.c\
 	ft_dlstdel.c\
 	ft_dlstdelone.c\
 	ft_dlstnew.c\
-	ft_dlstnewaddr.c\
 	ft_dlstcount.c\
 	ft_dlstindex.c\
 	ft_dlstremove.c\

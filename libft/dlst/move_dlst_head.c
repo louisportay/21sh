@@ -6,27 +6,27 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/13 19:49:37 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 09:49:08 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 20:27:20 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		move_dlst_head(t_dlist **dlist, int movement)
+int		move_dlst_head(t_dlist **dlist, int mov)
 {
-	if (!movement)
-		return (movement);
-	if (movement > 0)
-		while ((*dlist)->next && movement)
+	if (!mov)
+		return (mov);
+	if (mov > 0)
+		while ((*dlist)->next && mov)
 		{
 			*dlist = (*dlist)->next;
-			movement--;
+			mov--;
 		}
 	else
-		while ((*dlist)->previous && movement)
+		while ((*dlist)->prev && mov)
 		{
-			*dlist = (*dlist)->previous;
-			movement++;
+			*dlist = (*dlist)->prev;
+			mov++;
 		}
-	return (movement);
+	return (mov);
 }

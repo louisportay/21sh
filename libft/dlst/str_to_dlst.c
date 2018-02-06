@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 11:40:48 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/27 13:28:51 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 20:26:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ t_dlist	*str_to_dlst(char *str)
 		buf = (char *)malloc(sizeof(char) + 1);
 		buf[0] = str[len];
 		buf[1] = '\0';
-		ft_dlstadd(&lst, ft_dlstnewaddr(buf, 1));
+		ft_dlstadd(&lst, ft_dlstnew(buf));
 	}
-	ft_dlstadd(&lst, ft_dlstnew("HEAD", 5));
+	ft_dlstadd(&lst, ft_dlstnew(ft_strdup("HEAD")));
 	return (lst);
 }

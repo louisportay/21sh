@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 21:05:10 by lportay           #+#    #+#             */
-/*   Updated: 2017/03/17 12:19:18 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 19:39:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_dlstindex(t_dlist *dlst)
 	size_t i;
 
 	i = 0;
-	while ((dlst = dlst->previous))
+	while ((dlst = dlst->prev))
 		i++;
 	return (i);
 }

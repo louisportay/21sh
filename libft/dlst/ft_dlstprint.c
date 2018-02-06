@@ -6,18 +6,18 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/13 10:58:56 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/17 17:41:26 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 20:22:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_dlstprint(t_dlist *list, char *separator)
+void	ft_dlstprint(t_dlist *dlst, char *sep, void	(*p)(void *data))
 {
-	while (list)
+	while (dlst)
 	{
-		ft_putstr(list->content);
-		ft_putstr(separator);
-		list = list->next;
+		p(dlst->data);
+		ft_putstr(sep);
+		dlst = dlst->next;
 	}
 }
