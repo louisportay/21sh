@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/25 17:01:50 by lportay           #+#    #+#              #
-#    Updated: 2018/02/06 16:50:09 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/07 12:39:27 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,14 +36,8 @@ include ft_ctype/ctype.mk
 include ft_stdio/stdio.mk
 include qbuf/qbuf.mk
 include stack/stack.mk
-HEADERS:=\
-	ft_string.h\
-	ft_astr.h\
-	ft_hashset.h\
-	ft_ctype.h\
-	ft_stdio.h\
-	qbuf.h\
-	stack.h
+include ft_list/list.mk
+
 OBJ:=$(addprefix $(OBJ_D)/, $(ITEMS))
 
 vpath %.c $(SRC_D)

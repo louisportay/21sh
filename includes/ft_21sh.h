@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_21sh.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 19:37:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/07 12:51:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <time.h>
 # include <limits.h>
 # include <pwd.h>
-typedef struct s_21sh t_21sh;
+
 # include "line.h"
 # include "prompt.h"
 # include "history.h"
@@ -51,7 +51,7 @@ typedef struct s_21sh t_21sh;
 # define ERROR 		write(STDOUT_FILENO, "ERROR\n", 6)
 
 
-enum				e_errcode
+enum					e_errcode
 {
 	SUCCESS,
 	NOENVIRON,
@@ -67,8 +67,9 @@ enum				e_errcode
 */
 
 //padder correctement la struct
+typedef struct s_ctx	t_ctx;
 
-truct					s_ctxt
+struct					s_ctx
 {
 	/*
 	**	JOB CONTROL - Might miss a lot of variables
@@ -129,32 +130,6 @@ truct					s_ctxt
 	t_token				*toklist; // Do we keep it here?
 };
 
-struct			s_21sh
-{
-
-	t_line				line;
-	t_hist				hist;
-	t_line				*cur_line;//line currently modified
-
-	struct s_termcaps	tc;
-	struct winsize		ws;
-	struct termios		tios;
-	struct termios		oldtios;
-
-	t_kvp				*environ;
-	t_kvp				*local;
-	
-	t_token				*toklist;
-
-
-	char				*heredoc_eof;//current EOF
-	char 				prompt_mode[4];
-	bool				emacs_mode;
-	bool				line_edition;
-	bool				history;
-	bool				istty;
-};
-
 
 /*
 typedef struct			s_typefunc
@@ -164,26 +139,26 @@ typedef struct			s_typefunc
 }
 */
 
-void	vingtetunsh(char **av, char **env);
+void					vingtetunsh(char **av, char **env);
 
-void	dump_err(char errcode);
-void	fatal_err(char errcode, t_21sh *env);
-void	wrap_exit(int status, t_21sh *env);
+void					dump_err(char errcode);
+void					fatal_err(char errcode, t_21sh *env);
+void					wrap_exit(int status, t_21sh *env);
 
-int		wrap_signal(void);
-void	sig_switch(int signum, t_21sh *env);
-t_21sh *get_envaddr(t_21sh *envaddr);
+int						wrap_signal(void);
+void					sig_switch(int signum, t_21sh *env);
+t_21sh					*get_envaddr(t_21sh *envaddr);
 
 /*
 ** Tools
 */
 
-int		ft_putchar_stdin(int c);
-bool	str_isblank(char *str);
-bool	dlst_isblank(t_dlist *dlst);
-bool	is_number(char *str);
-bool	is_number_w_dash(char *str);
-bool	is_redir(int type);
+int						ft_putchar_stdin(int c);
+bool					str_isblank(char *str);
+bool					dlst_isblank(t_dlist *dlst);
+bool					is_number(char *str);
+bool					is_number_w_dash(char *str);
+bool					is_redir(int type);
 
 // Shell script stuff
 

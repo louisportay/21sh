@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/05 19:19:23 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/07 12:19:48 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ vpath %.c $(SRCDIR)
 vpath %.h includes/
 
 CC= gcc-7 
-CFLAGS= -Wall -Wextra -Werror -I $(INCLUDE) -I $(LIBDIR)$(INCLUDE)
+CFLAGS= -Wall -Wextra -Werror $(INCLUDE)#-I $(INCLUDE) -I $(LIBDIR)$(INCLUDE)
 DEBUG=sanitize
 OPT=LIB
 ARCH:= $(shell uname)
@@ -34,7 +34,9 @@ else ifeq ($(DEBUG), sanitize)
 	CFLAGS+= -g3 -fsanitize=address
 endif
 
-INCLUDE= includes/
+INCLUDE=\
+-Iincludes\
+-Ilib21sh/inc
 HEADERS= ft_21sh.h\
 		 history.c\
 		 line.h\
@@ -86,7 +88,7 @@ $(NAME): $(LIBDIR)$(LIB) $(OBJ)
 	@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
 
 $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
-	$(COMPILE.c) $< -o $@
+	$(COMPILE.c) $< -o $@ $(INCLUDE)
 
 $(OBJDIR):
 	-mkdir -p $@

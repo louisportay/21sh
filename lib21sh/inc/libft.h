@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 14:36:38 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/06 16:45:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/07 12:29:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 # include "ft_hashset.h"
 # include "ft_string.h"
 # include "ft_stdio.h"
-# include "libft.h"
 # include "qbuf.h"
 # include "stack.h"
+# include "ft_dlst.h"
+# include "ft_list.h"
+
 
 # define BUFF_SIZE 512
 # define RESET			"\e[0m"
