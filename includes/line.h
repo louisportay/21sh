@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 18:10:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 13:07:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,9 @@
 
 #define READLEN 6
 
-enum		e_readcode
+typedef struct s_ctx	t_ctx;
+
+enum					e_readcode
 {
 	READON,
 	READERROR,
@@ -85,7 +87,7 @@ enum		e_readcode
 	ERR_QUOTE,
 };
 
-enum		e_linestate
+enum					e_linestate
 {
 	UNQUOTED,	
 	BSLASH,		
@@ -143,8 +145,8 @@ typedef struct	s_key
 
 # define TEST_FUNC(TEST, FUNC)		(t_line_pair){.test = TEST, .func = FUNC}
 
-typedef bool	(*t_line_test)(t_21sh *env, t_line *l, t_key *key);
-typedef void	(*t_line_func)(t_21sh *env, t_line *l);
+typedef bool	(*t_line_test)(t_ctx *env, t_line *l, t_key *key);
+typedef void	(*t_line_func)(t_ctx *env, t_line *l);
 
 typedef struct	s_line_pair
 {
@@ -152,75 +154,75 @@ typedef struct	s_line_pair
 	t_line_func func;
 }				t_line_pair;
 
-void	wrap_lineread(t_21sh *env, t_line *l, char *prompt_mode);
-void	lineread(t_21sh *env, t_line *l);
-void	getrawline(t_21sh *env, t_line *l);
-int		user_input(t_21sh *env, t_line *l, t_key *key);
+void	wrap_lineread(t_ctx *env, t_line *l, char *prompt_mode);
+void	lineread(t_ctx *env, t_line *l);
+void	getrawline(t_ctx *env, t_line *l);
+int		user_input(t_ctx *env, t_line *l, t_key *key);
 
-void	clear_line(t_21sh *env, t_line *l);
-void	redraw_line(t_21sh *env, t_line *l);
-void	clear_screen_(t_21sh *env, t_line *l);
+void	clear_line(t_ctx *env, t_line *l);
+void	redraw_line(t_ctx *env, t_line *l);
+void	clear_screen_(t_ctx *env, t_line *l);
 
 void	move_cursor_n_columns(int n);
 void	move_cursor_n_lines(int n);
-void	move_cursor_forward(t_21sh *env, t_line *l);
-void	move_cursor_backward(t_21sh *env, t_line *l);
-void	move_cursor_end_of_line(t_21sh *env, t_line *l);
+void	move_cursor_forward(t_ctx *env, t_line *l);
+void	move_cursor_backward(t_ctx *env, t_line *l);
+void	move_cursor_end_of_line(t_ctx *env, t_line *l);
 
-void	go_upper_line(t_21sh *env, t_line *l);
-void	go_lower_line(t_21sh *env, t_line *l);
-void	go_to_line_beginning(t_21sh *env, t_line *l);
-void	go_to_line_end(t_21sh *env, t_line *l);
-void	go_to_previous_word(t_21sh *env, t_line *l);
-void	go_to_next_word(t_21sh *env, t_line *l);
+void	go_upper_line(t_ctx *env, t_line *l);
+void	go_lower_line(t_ctx *env, t_line *l);
+void	go_to_line_beginning(t_ctx *env, t_line *l);
+void	go_to_line_end(t_ctx *env, t_line *l);
+void	go_to_previous_word(t_ctx *env, t_line *l);
+void	go_to_next_word(t_ctx *env, t_line *l);
 
 void	print_line_cursor_len(t_line *l, t_dlist *list);
 void	print_line_cursor(t_line *l, t_dlist *list);
 void	print_line(t_dlist *list);
 
-void	up_key(t_21sh *env, t_line *l);
-void	down_key(t_21sh *env, t_line *l);
-void	lkey(t_21sh *env, t_line *l);
-void	rkey(t_21sh *env, t_line *l);
+void	up_key(t_ctx *env, t_line *l);
+void	down_key(t_ctx *env, t_line *l);
+void	lkey(t_ctx *env, t_line *l);
+void	rkey(t_ctx *env, t_line *l);
 
-void	insert_char(char *buf, t_21sh *env, t_line *l);
-void	del_previous_char(t_21sh *env, t_line *l);
-void	del_current_char(t_21sh *env, t_line *l);
+void	insert_char(char *buf, t_ctx *env, t_line *l);
+void	del_previous_char(t_ctx *env, t_line *l);
+void	del_current_char(t_ctx *env, t_line *l);
 
-void	kill_line_end(t_21sh *env, t_line *l);
-void	kill_line_beginning(t_21sh *env, t_line *l);
-void	kill_prev_word(t_21sh *env, t_line *l);
-//void	kill_next_word(t_21sh *env, t_line *l);
-void	yank(t_21sh *env, t_line *l);
+void	kill_line_end(t_ctx *env, t_line *l);
+void	kill_line_beginning(t_ctx *env, t_line *l);
+void	kill_prev_word(t_ctx *env, t_line *l);
+//void	kill_next_word(t_ctx *env, t_line *l);
+void	yank(t_ctx *env, t_line *l);
 
-bool	test_kill_beginline(t_21sh *env, t_line *l, t_key *key);
-bool	test_kill_endline(t_21sh *env, t_line *l, t_key *key);
-bool	test_killprevword(t_21sh *env, t_line *l, t_key *key);
-//bool	test_killnextword(t_21sh *env, t_line *l, t_key *key);
-bool	test_clear_screen(t_21sh *env, t_line *l, t_key *key);
-bool	test_yank(t_21sh *env, t_line *l, t_key *key);
-bool	test_go_next_word(t_21sh *env, t_line *l, t_key *key);
-bool	test_go_prev_word(t_21sh *env, t_line *l, t_key *key);
-bool	test_upper_line(t_21sh *env, t_line *l, t_key *key);
-bool	test_lower_line(t_21sh *env, t_line *l, t_key *key);
-bool	test_line_end(t_21sh *env, t_line *l, t_key *key);
-bool	test_line_beginning(t_21sh *env, t_line *l, t_key *key);
-bool	test_upkey(t_21sh *env, t_line *l, t_key *key);
-bool	test_downkey(t_21sh *env, t_line *l, t_key *key);
-bool	test_rkey(t_21sh *env, t_line *l, t_key *key);
-bool	test_lkey(t_21sh *env, t_line *l, t_key *key);
-bool	test_del_current_char(t_21sh *env, t_line *l, t_key *key);
-bool 	test_del_previous_char(t_21sh *env, t_line *l, t_key *key);
-bool	test_emacs_mode(t_21sh *env, t_line *l, t_key *key);
+bool	test_kill_beginline(t_ctx *env, t_line *l, t_key *key);
+bool	test_kill_endline(t_ctx *env, t_line *l, t_key *key);
+bool	test_killprevword(t_ctx *env, t_line *l, t_key *key);
+//bool	test_killnextword(t_ctx *env, t_line *l, t_key *key);
+bool	test_clear_screen(t_ctx *env, t_line *l, t_key *key);
+bool	test_yank(t_ctx *env, t_line *l, t_key *key);
+bool	test_go_next_word(t_ctx *env, t_line *l, t_key *key);
+bool	test_go_prev_word(t_ctx *env, t_line *l, t_key *key);
+bool	test_upper_line(t_ctx *env, t_line *l, t_key *key);
+bool	test_lower_line(t_ctx *env, t_line *l, t_key *key);
+bool	test_line_end(t_ctx *env, t_line *l, t_key *key);
+bool	test_line_beginning(t_ctx *env, t_line *l, t_key *key);
+bool	test_upkey(t_ctx *env, t_line *l, t_key *key);
+bool	test_downkey(t_ctx *env, t_line *l, t_key *key);
+bool	test_rkey(t_ctx *env, t_line *l, t_key *key);
+bool	test_lkey(t_ctx *env, t_line *l, t_key *key);
+bool	test_del_current_char(t_ctx *env, t_line *l, t_key *key);
+bool 	test_del_previous_char(t_ctx *env, t_line *l, t_key *key);
+bool	test_emacs_mode(t_ctx *env, t_line *l, t_key *key);
 
-bool	test_load_line(t_21sh *env, t_line *l, t_key *key);
+bool	test_load_line(t_ctx *env, t_line *l, t_key *key);
 
-void	load_line(t_21sh *env, t_line *l);
-void	update_line(t_21sh *env, t_line *l);
+void	load_line(t_ctx *env, t_line *l);
+void	update_line(t_ctx *env, t_line *l);
 void	update_linestate(t_stack **state, char c);
 void	query_linestate(t_dlist *dlst, t_stack **linestate);
 void	query_hdocstate(t_dlist *dlst, t_stack **linestate, char *eof);
-void	reverse_emacs_mode(t_21sh *env, t_line *l);
+void	reverse_emacs_mode(t_ctx *env, t_line *l);
 void	join_split_lines(t_line *l);
 void	err_quotes(t_line *l);
 

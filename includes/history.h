@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:04:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/27 17:24:57 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 13:39:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 ** dlist		(histentry)
 */
 
+typedef struct s_ctx	t_ctx;
+
 typedef struct			s_hist
 {
 	t_dlist				*list;
@@ -42,18 +44,18 @@ typedef struct			s_hist
 
 typedef struct			s_histentry
 {
-	t_dlist		*line;
-	unsigned	index;
+	t_dlist				*line;
+	unsigned			index;
 }						t_histentry;
 
-void		init_hist(t_21sh *env);
-char		*get_histfile(t_21sh *env);
-void		del_history(t_dlist	**history);
-t_histentry	*new_histentry(t_dlist *line, unsigned index);
-void		dump_history(t_dlist *histlist);
-void		trim_history(t_dlist **histlist, char *histsize);
-void		save_history(t_kvp *local, t_dlist *histlist);
-void		del_histentry(void *histentry, size_t histentrysize);
-void		add_histentry(t_21sh *env);
+void					init_hist(t_ctx *env);
+char					*get_histfile(t_ctx *env);
+void					del_history(t_dlist	**history);
+t_histentry				*new_histentry(t_dlist *line, unsigned index);
+void					dump_history(t_dlist *histlist);
+void					trim_history(t_dlist **histlist, char *histsize);
+void					save_history(char **local, t_dlist *histlist);
+void					del_histentry(void *histentry, size_t histentrysize);
+void					add_histentry(t_ctx *env);
 
 #endif

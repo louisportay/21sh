@@ -6,10 +6,9 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 12:51:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/07 13:38:24 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef FT_21SH_H
 # define FT_21SH_H
@@ -26,7 +25,6 @@
 # include <time.h>
 # include <limits.h>
 # include <pwd.h>
-
 # include "line.h"
 # include "prompt.h"
 # include "history.h"
@@ -50,6 +48,7 @@
 # define DEBUG2 	write(STDOUT_FILENO, "DEBUG2\n", 7)
 # define ERROR 		write(STDOUT_FILENO, "ERROR\n", 6)
 
+typedef struct s_ctx	t_ctx;
 
 enum					e_errcode
 {
@@ -67,7 +66,6 @@ enum					e_errcode
 */
 
 //padder correctement la struct
-typedef struct s_ctx	t_ctx;
 
 struct					s_ctx
 {
@@ -142,12 +140,12 @@ typedef struct			s_typefunc
 void					vingtetunsh(char **av, char **env);
 
 void					dump_err(char errcode);
-void					fatal_err(char errcode, t_21sh *env);
-void					wrap_exit(int status, t_21sh *env);
+void					fatal_err(char errcode, t_ctx *env);
+void					wrap_exit(int status, t_ctx *env);
 
 int						wrap_signal(void);
-void					sig_switch(int signum, t_21sh *env);
-t_21sh					*get_envaddr(t_21sh *envaddr);
+void					sig_switch(int signum, t_ctx *env);
+t_ctx					*get_envaddr(t_ctx *envaddr);
 
 /*
 ** Tools

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:03:42 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/27 17:02:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 13:37:44 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,15 @@
 # define SHELLNAME "21sh"
 
 # define PROMPT_FLAG(FUNC, FLAG)	(t_prompt_flag){.func = FUNC, .flag = FLAG}
-typedef struct	s_prompt_flag
-{
-	void		(*func)(t_21sh *env);
-	char		flag;
-}				t_prompt_flag;
 
-void	print_prompt(t_21sh *env);
+typedef struct s_ctx	t_ctx;
+
+typedef struct			s_prompt_flag
+{
+	void				(*func)(t_ctx *env);
+	char				flag;
+}						t_prompt_flag;
+
+void					print_prompt(t_ctx *env);
 
 #endif
