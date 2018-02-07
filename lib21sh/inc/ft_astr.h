@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 14:00:33 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/06 15:38:04 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/07 15:28:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,8 @@ char		*ft_astr_findn(char **astr, char *str, size_t n);
 char		*ft_astr_findpart(char **astr, char *str, char *(*mapper)(char *));
 
 char		*ft_env_find(char **env, char *key);
+
+int			ft_astr_getkey(char **env, char *key, int pos);
+char		*ft_astr_getval(char **env, char *key);
 
 #endif

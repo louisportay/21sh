@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 12:40:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/06 15:37:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/07 15:28:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,15 @@ int					ft_astr_getkey(char **env, char *key, int pos)
 		i++;
 	}
 	return (-1);
+}
+
+char				*ft_astr_getval(char **env, char *key)
+{
+	int				pos;
+	int				ind;
+
+	pos = ft_strlen(key);
+	if ((ind = ft_astr_getkey(env, key, pos)) == -1)
+		return (NULL);
+	return (env[ind] + pos + 1);
 }
