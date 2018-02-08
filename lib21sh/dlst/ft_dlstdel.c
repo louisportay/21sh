@@ -6,13 +6,13 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 20:24:29 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 19:36:12 by lportay          ###   ########.fr       */
+/*   Updated: 2018/01/02 10:33:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_dlstdel(t_dlist **alst, void (*del)(void **))
+void	ft_dlstdel(t_dlist **alst, void (*del)(void *, size_t))
 {
 	t_dlist *tmp;
 
@@ -20,7 +20,7 @@ void	ft_dlstdel(t_dlist **alst, void (*del)(void **))
 	while (tmp)
 	{
 		*alst = (*alst)->next;
-		(*del)(tmp->data);
+		(*del)(tmp->content, tmp->content_size);
 		free(tmp);
 		tmp = *alst;
 	}

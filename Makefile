@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/07 12:19:48 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/08 17:51:42 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,9 +72,9 @@ OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
 
 #LIB= lib21sh.a
-#LIBDIR= lib21sh/
+LIBDIR= lib21sh/
 LIB= libft.a
-LIBDIR= libft/
+#LIBDIR= libft/
 
 NAME= 21sh
 
