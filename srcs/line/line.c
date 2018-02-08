@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 14:44:09 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 19:38:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static void	init_line_funcs(t_line_pair *p)
 	p[18] = TEST_FUNC(NULL, NULL);
 }
 
-int	read_state(t_21sh *env, t_line *l, t_key *key)
+int	read_state(t_ctx *ctx, t_line *l, t_key *key)
 {
-	if (*key->buf == NEWLINE_ || (env->emacs_mode && *key->buf == C_O))
+	if (*key->buf == NEWLINE_ || (ctx->emacs_mode && *key->buf == C_O))
 	{
 		if (l->line && ft_dlstaddr(l->line, 0) != l->lastline)
 			ft_dlstdel(&l->lastline, &delvoid);
@@ -54,43 +54,43 @@ int	read_state(t_21sh *env, t_line *l, t_key *key)
 	return (READON);
 }
 
-void	linefunc_switch(t_21sh *env, t_line *l, t_key *key)
+void	linefunc_switch(t_ctx *ctx, t_line *l, t_key *key)
 {
 	t_line_pair	p[19];
 	int			i;
 
 	i = 0;
 	init_line_funcs(p);
-	while (p[i].test && !(p[i].test(env, l, key)))
+	while (p[i].test && !(p[i].test(ctx, l, key)))
 		i++;
 	if (p[i].test)
-		p[i].func(env, l);
+		p[i].func(ctx, l);
 }
 
-int	user_input(t_21sh *env, t_line *l, t_key *key)
+int	user_input(t_ctx *ctx, t_line *l, t_key *key)
 {
 	int ret;
 
-	if (test_load_line(env, l, key) == true)
-		load_line(env, l);
-	update_line(env, l);
+	if (test_load_line(ctx, l, key) == true)
+		load_line(ctx, l);
+	update_line(ctx, l);
 
-	if ((ret = read_state(env, l, key)) != READON)
+	if ((ret = read_state(ctx, l, key)) != READON)
 		return (ret);
 
 	if (ft_isprint(*key->buf))
-		insert_char(key->buf, env, l);
+		insert_char(key->buf, ctx, l);
 	else
-		linefunc_switch(env, l, key);
+		linefunc_switch(ctx, l, key);
 
 	if ((key->buf[0] && key->buf[0] != ESC) || (key->buf[1] && key->buf[1] != '[') || key->i == READLEN)
 	{
 		ft_bzero(key->buf, key->i);
 		key->i = 0;
 	}
-//	else if (buf == C_R && env->history)
+//	else if (buf == C_R && ctx->history)
 //		recherche dans l'historique (C_G + C_J + C_O)
-//	else if (buf == TAB && env->autocomplete)
+//	else if (buf == TAB && ctx->autocomplete)
 //		autocompletion
 	return (READON);
 }
@@ -101,8 +101,8 @@ void	query_linestate(t_dlist *dlst, t_stack **linestate)
 		stack_pop(linestate);
 	while (dlst && (*linestate)->state != HASH)
 	{
-		update_linestate(linestate, *(char *)(dlst->content));
-		if (*(char *)(dlst->content) != '\\' && (*linestate)->state == BSLASH)
+		update_linestate(linestate, *(char *)(dlst->data));
+		if (*(char *)(dlst->data) != '\\' && (*linestate)->state == BSLASH)
 			stack_pop(linestate);
 		dlst = dlst->next;
 	}
@@ -129,11 +129,11 @@ void	join_split_lines(t_line *l)
 	{
 		tmp = l->split_line;
 		ft_dlstend(&l->split_line);
-		if (*(char *)l->split_line->content == '\\')
+		if (*(char *)l->split_line->data == '\\')
 			ft_dlstremove(&l->split_line, &delvoid);
 		l->line = l->line->next;
-		ft_dlstdelone(&l->line->previous, &delvoid);
-		l->line->previous = l->split_line;
+		ft_dlstdelone(&l->line->prev, &delvoid);
+		l->line->prev = l->split_line;
 		l->split_line->next = l->line;
 		l->split_line = tmp;
 	}
@@ -142,7 +142,7 @@ void	join_split_lines(t_line *l)
 		ft_dlstdelone(&l->line, &delvoid);
 		tmp = l->split_line;
 		ft_dlstend(&l->split_line);
-		if (*(char *)l->split_line->content == '\\')
+		if (*(char *)l->split_line->data == '\\')
 			ft_dlstremove(&l->split_line, &delvoid);
 		l->split_line = tmp;
 	}
@@ -159,31 +159,33 @@ void	err_quotes(t_line *l)
 	stack_del(&l->linestate);
 }
 
-void	wrap_lineread(t_21sh *env, t_line *l, char *prompt_mode)
+void	wrap_lineread(t_ctx *ctx, t_line *l, char *prompt_mode)
 {
 	l->split_line = NULL;
 	l->line_saved = false;
-	ft_strcpy(env->prompt_mode, prompt_mode);
+	ctx->cur_line = l;
+	ft_strcpy(ctx->prompt_mode, prompt_mode);
 	stack_push(&l->linestate, stack_create(UNQUOTED));
 
-	if (env->line_edition)
+	if (ctx->line_edition)
 	{
-		lineread(env, &env->line);
+		lineread(ctx, &ctx->line);
 		while (l->linestate && l->linestate->state != UNQUOTED)
-			lineread(env, &env->line);
+			lineread(ctx, &ctx->line);
 	}
 	else
 	{
-		getrawline(env, &env->line);
+		getrawline(ctx, &ctx->line);
 		while (l->linestate && l->linestate->state != UNQUOTED)
-			getrawline(env, &env->line);
+			getrawline(ctx, &ctx->line);
 	}
+	ctx->cur_line = NULL;
 	if (l->linestate)
 		stack_del(&l->linestate);
 
 	//DEBUG//
-//	if (env->line.split_line)//
-//		print_line(env->line.split_line->next);//print what's retrieved
+//	if (ctx->line.split_line)//
+//		print_line(ctx->line.split_line->next);//print what's retrieved
 //	write(1, "\n", 1);//
 	/////////
 }

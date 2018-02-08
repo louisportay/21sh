@@ -6,15 +6,18 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 17:59:26 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/09 12:43:24 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 16:46:02 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	del_array(void **tab)
+void				del_array(void ***a, void (*del)(void **))
 {
-	if (tab != NULL)
-		while (*tab != NULL)
-			ft_memdel(&(*tab++));
+	void	**p;
+
+	p = *a;
+	while (*p)
+		del(p++);
+	ft_memdel((void **)a);
 }

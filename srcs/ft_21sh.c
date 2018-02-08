@@ -6,215 +6,279 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 18:10:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 20:07:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int	init_local(t_21sh *env)
+static int	create_locals(char ***locals)
 {
 	char	hostname[CUSTOM_HOST_NAME_MAX];
-	t_kvp 	local[7];
 
 	gethostname(hostname, CUSTOM_HOST_NAME_MAX);
-	local[0] = KVP(PS1, PS1_VAL);
-	local[1] = KVP(PS2, PS2_VAL);
-	local[2] = KVP(PS4, PS4_VAL);
-	local[3] = KVP("HISTSIZE", HISTSIZE);
-	local[4] = KVP("HISTFILESIZE", HISTFILESIZE);
-	local[5] = KVP("HOSTNAME", hostname);
-	local[6] = KVP(NULL, NULL);
+	*locals = NULL;
 
-	if (!(env->local = copy_stack_kvp(local, 6)))
-		return (NOMEM);
-	set_kvp(ft_strdup("HISTFILE"), get_histfile(env), &env->local);
+	ft_astr_append(locals, ft_strjoinc(PS1, PS1_VAL, '='));
+	ft_astr_append(locals, ft_strjoinc(PS2, PS2_VAL, '='));
+	ft_astr_append(locals, ft_strjoinc(PS4, PS4_VAL, '='));
+	ft_astr_append(locals, ft_strjoinc("HISTSIZE", HISTSIZE, '='));
+	ft_astr_append(locals, ft_strjoinc("HISTFILESIZE", HISTFILESIZE, '='));
+	ft_astr_append(locals, ft_strjoinc("HOSTNAME", hostname, '='));
+
 	return (SUCCESS);
 }
 
-static int	init_env_var(t_kvp *env_var, char *exec_file, t_21sh *env)
+//SHELL var
+
+//	if (*exec_file == '/')
+//		tmp = ft_strdup(exec_file);
+//	else if (*exec_file == '.')
+//		tmp = ft_strexpand(exec_file, '.', tmp);
+//	else if ((path = get_kvp("PATH", ctx->environ)))
+//		tmp = getpath(path, exec_file);
+//	else
+//		tmp = NULL;
+
+/*
+** Complete the environ variable with HOME, USER, PATH (if not present)
+** and set SHLVL and PWD
+*/
+
+static void	complete_environ(char ***environ)
 {
-	char *tmp;
-	char *path;
-
-	if ((tmp = getcwd(NULL, 0)) == NULL)
-		return (NODIR);
-	env_var[0] = KVP(ft_strdup("PWD"), tmp);
-
-	if (*exec_file == '/')
-		tmp = ft_strdup(exec_file);
-	else if (*exec_file == '.')
-		tmp = ft_strexpand(exec_file, '.', tmp);
-	else if ((path = get_kvp("PATH", env->environ)))
-		tmp = getpath(path, exec_file);
-	else
-		tmp = NULL;
-	env_var[1] = KVP(ft_strdup("SHELL"), tmp);
-
-	if ((tmp = get_kvp("SHLVL", env->environ)))
-		tmp = ft_itoa(ft_atoi(tmp) + 1);
-	else
-		tmp = ft_strdup("1");
-	env_var[2] = KVP(ft_strdup("SHLVL"), tmp);
-
-	env_var[3] = KVP(NULL, NULL);
-	return (SUCCESS);
-}
-
-static void	complete_existing_environ(t_kvp **environ)
-{
-	struct passwd *pw;
+	struct passwd	*pw;
+	char			*tmp;
 
 	pw = NULL;
-	if (!(get_kvp("HOME", *environ)))
+	if ((ft_astr_getkey(*environ, "HOME", 4)) == -1)
 	{
 		pw = getpwuid(getuid());
-		set_kvp(ft_strdup("HOME"), ft_strdup(pw->pw_dir), environ);
+		ft_astr_append(environ, ft_strjoinc("HOME", pw->pw_dir, '='));
 	}
-	if (!(get_kvp("USER", *environ)))
+	if ((ft_astr_getkey(*environ, "USER", 4)) == -1)
 	{
 		if (!pw)
 			pw = getpwuid(getuid());
-		set_kvp(ft_strdup("USER"), ft_strdup(pw->pw_name), environ);
+		ft_astr_append(environ, ft_strjoinc("USER", pw->pw_name, '='));
 	}
-	if (!(get_kvp("PATH", *environ)))
-		set_kvp(ft_strdup("PATH"), ft_strdup(PATH), environ);
+	if ((ft_astr_getkey(*environ, "PATH", 4)) == -1)
+		ft_astr_append(environ, ft_strjoinc("PATH", PATH, '='));
+
+	if (!(tmp = ft_astr_getval(*environ, "SHLVL")))
+		ft_astr_append(environ, ft_strjoinc("SHLVL", "1", '='));
+	else
+	{
+		tmp = ft_itoa(ft_atoi(tmp) + 1);
+		ft_astr_append(environ, ft_strjoinc("SHLVL", tmp, '='));
+		free(tmp);
+	}
+	if ((tmp = getcwd(NULL, 0)))
+	{
+		ft_astr_append(environ, ft_strjoinc("PWD", tmp, '='));
+		free(tmp);
+	}
 }
 
-static int	init_environ(t_21sh *env, char **av, char **environ)
+/*
+** returns an array composed of the different paths to look for binary files
+*/
+
+char	**getpath(char **environ)
 {
-	t_kvp 	var[4];
+	char	**path;
 	int		i;
 
-	env->environ = copy_kvp_env(environ);
-	if (init_env_var(var, *av, env) != SUCCESS)
-		return (NODIR);
-	i = 0;
-	while (var[i].val != NULL)
+	if ((i = ft_astr_getkey(environ, "PATH", 4)) == -1)
+		return (NULL);
+	if (!(path = ft_strsplit(environ[i], ':')))
+		return (NULL);
+	if (astr_rmdup(&path) == -1)
 	{
-		if (set_kvp(var[i].key, var[i].val, &env->environ) == -1)
-			return (NOMEM);
-		i++;
-	}
-	complete_existing_environ(&env->environ);
-	return (SUCCESS);
+		ft_astr_clear(&path);
+		return (NULL);
+	}	
+	return (path);
 }
 
-void init_termcaps(t_21sh *env)
+
+
+
+
+
+
+
+
+
+
+
+
+
+void init_termcaps(t_ctx *ctx)
 {
-		env->tc.le = tgetstr("le", NULL);//		cursor go one character left
-		env->tc.nd = tgetstr("nd", NULL);//		cursor go one character right
-		env->tc.im = tgetstr("im", NULL);//		enter insert mode
-		env->tc.ei = tgetstr("ei", NULL);//		exit insert mode
-		env->tc.dc = tgetstr("dc", NULL);//		delete one character
-		env->tc.cr = tgetstr("cr", NULL);//		cursor go to the beginning of the line
-		env->tc.up = tgetstr("up", NULL);//		cursor go one line up
-		env->tc.dow = tgetstr("do", NULL);//		cursor go one line down
-		env->tc.cl = tgetstr("cl", NULL);//		clear the screen
-		env->tc.cd = tgetstr("cd", NULL);//		clear the line from the cursor until the end of screen
-		env->tc.sc = tgetstr("sc", NULL);//		save cursor position
-		env->tc.rc = tgetstr("rc", NULL);//		restore cursor position
-		if (!env->tc.le || !env->tc.nd || !env->tc.im || !env->tc.ei || !env->tc.dc || !env->tc.cr || !env->tc.up || !env->tc.dow || !env->tc.cl || !env->tc.cd)
-			env->line_edition = false;
+		ctx->tc.le = tgetstr("le", NULL);//		cursor go one character left
+		ctx->tc.nd = tgetstr("nd", NULL);//		cursor go one character right
+		ctx->tc.im = tgetstr("im", NULL);//		enter insert mode
+		ctx->tc.ei = tgetstr("ei", NULL);//		exit insert mode
+		ctx->tc.dc = tgetstr("dc", NULL);//		delete one character
+		ctx->tc.cr = tgetstr("cr", NULL);//		cursor go to the beginning of the line
+		ctx->tc.up = tgetstr("up", NULL);//		cursor go one line up
+		ctx->tc.dow = tgetstr("do", NULL);//		cursor go one line down
+		ctx->tc.cl = tgetstr("cl", NULL);//		clear the screen
+		ctx->tc.cd = tgetstr("cd", NULL);//		clear the line from the cursor until the end of screen
+		ctx->tc.sc = tgetstr("sc", NULL);//		save cursor position
+		ctx->tc.rc = tgetstr("rc", NULL);//		restore cursor position
+		if (!ctx->tc.le || !ctx->tc.nd || !ctx->tc.im || !ctx->tc.ei ||
+		!ctx->tc.dc || !ctx->tc.cr || !ctx->tc.up || !ctx->tc.dow ||
+		!ctx->tc.cl || !ctx->tc.cd)
+			ctx->line_edition = false;
 }
 
-static void	init_termios(t_21sh *env)
+static void	init_termios(t_ctx *ctx)
 {
-		env->tios.c_lflag &= ~(ICANON | ECHO);
-		env->tios.c_cc[VMIN] &= 1;
-		env->tios.c_cc[VTIME] &= 0;
-		env->tios.c_cc[VDSUSP] = _POSIX_VDISABLE;
-		env->tios.c_cc[VDISCARD] = _POSIX_VDISABLE;
+		ctx->tios.c_lflag &= ~(ICANON | ECHO);
+		ctx->tios.c_cc[VMIN] &= 1;
+		ctx->tios.c_cc[VTIME] &= 0;
+#ifdef __APPLE__
+		ctx->tios.c_cc[VDSUSP] = _POSIX_VDISABLE;
+		ctx->tios.c_cc[VDISCARD] = _POSIX_VDISABLE;
+#endif
 
-		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &env->tios) == -1)
-			env->line_edition = false;
+		if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws) == -1)
+			ctx->line_edition = false;
+		else if (tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->tios) == -1)
+			ctx->line_edition = false;
 		else
-			init_termcaps(env);
+			init_termcaps(ctx);
 }
 
 //mettre les variables dans l'ordre dans lequel elles ont ete declarees (les declarer dans un ordre logique)
 
-static void	init_env_values(t_21sh *env)
+static void	init_ctx(t_ctx *ctx, char **av, char **environ)
 {
-	env->cur_line = NULL;
-	env->heredoc_eof = NULL;
+	(void)av;//
+	ctx->cur_line = NULL;
+	ctx->heredoc_eof = NULL;
 
-	env->line.line = NULL;
-	env->line.lastline = NULL;
-	env->line.yank = NULL;
-	env->line.linestate = NULL;
+	ctx->line.line = NULL;
+	ctx->line.lastline = NULL;
+	ctx->line.yank = NULL;
+	ctx->line.linestate = NULL;
+	ctx->hist.file = 0;
+	ctx->hist.list = NULL;
+	ctx->hist.index = 1;
 
-	env->hist.file = 0;
-	env->hist.list = NULL;
-	env->hist.index = 1;
+	ctx->toklist = NULL;//
 
-	env->toklist = NULL;
+	//editer les options en fonction de *av
+	ctx->emacs_mode = 1;
+	ctx->line_edition = 1;
+	ctx->history = 1;
+	ctx->job_control = 1;
 
-	env->history = true;
-	env->line_edition = true;
-	env->emacs_mode = true;
-	env->istty = isatty(STDIN_FILENO);
+	ctx->fd = STDIN_FILENO;
+	ctx->istty = isatty(ctx->fd);
 
+	ctx->path = getpath(environ);
+	ctx->environ = ft_astr_dup(environ);
+	ctx->hash = ft_hashset_create(HASH_SIZE, HASH_PRIME);
 }
 
-t_21sh *get_envaddr(t_21sh *envaddr)
+t_ctx *get_ctxaddr(t_ctx *ctxaddr)
 {
-	static t_21sh *env = NULL;
+	static t_ctx *ctx = NULL;
 
-	if (envaddr)
-		env = envaddr;
-	return (env);
+	if (ctxaddr)
+		ctx = ctxaddr;
+	return (ctx);
+}
+
+void	init_job_control(t_ctx *ctx)
+{
+	while (tcgetpgrp (ctx->fd) != (ctx->pid = getpgrp ()))
+		kill (- ctx->pgid, SIGTTIN);
+	ctx->pgid = getpid ();
+	if (setpgid (ctx->pgid, ctx->pgid) < 0)
+		ctx->job_control = 0;
+	tcsetpgrp (ctx->fd, ctx->pgid);
+}
+
+t_hash_dict *getbuiltins(void)
+{
+	t_hash_dict *dict;
+
+	dict = ft_hashset_create(HASH_SIZE, HASH_PRIME); 
+//	ft_hashset_add(dict, "bang", &);
+//	ft_hashset_add(dict, "cd", &);
+//	ft_hashset_add(dict, "echo", &);
+//	ft_hashset_add(dict, "env", &);
+//	ft_hashset_add(dict, "hash", &);
+//	ft_hashset_add(dict, "history", &);
+//	ft_hashset_add(dict, "export", &);
+//	ft_hashset_add(dict, "set", &);
+//	ft_hashset_add(dict, "setenv", &);
+//	ft_hashset_add(dict, "unsetenv", &);
+//	ft_hashset_add(dict, "shopt", &);// on le garde ?
+	return (dict);
 }
 
 //on garde la comparaison avec xterm-256color ?
 
-static int	init(t_21sh *env, char **av, char **environ)
+static int	init(t_ctx *ctx, char **av, char **environ)
 {
 	char	*tmp;
 	int		ret;
 
-	get_envaddr(env);
-	init_env_values(env);
-	if (tcgetattr(STDIN_FILENO, &env->oldtios) == -1 || tcgetattr(STDIN_FILENO,
-&env->tios) == -1 || !(env->istty) || (tmp = getenv("TERM")) == NULL ||
-ft_strcmp(tmp, "xterm-256color") ||tgetent(NULL, tmp) == ERR)
-		env->line_edition = false;
+	get_ctxaddr(ctx);
+
+	init_ctx(ctx, av, environ);
+	complete_environ(&ctx->environ);
+	if (ctx->istty)
+		init_job_control(ctx);
+
+	ret = tcgetattr(ctx->fd, &ctx->oldtios);
+	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
+
+	if (ret == -1 || !(ctx->istty) || (tmp = getenv("TERM")) == NULL ||/*ft_strcmp(tmp, "xterm-256color") ||*/
+			tgetent(NULL, tmp) == ERR)
+		ctx->line_edition = false;
 	else
-		init_termios(env);
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &env->ws) == -1)
-		env->line_edition = false;
-	if (wrap_signal() == FAILSETSIGHDLR)
+		init_termios(ctx);
+
+	if (set_sighandler() == FAILSETSIGHDLR)
 		return (FAILSETSIGHDLR);
-	if ((ret = init_environ(env, av, environ)) != SUCCESS)
-		return (ret);
-	if ((ret = init_local(env)) != SUCCESS)
-		return (ret);
-	if (env->history)
-		init_hist(env);
+
+
+	create_locals(&ctx->locals);
+	ft_astr_append(&ctx->locals, ft_strjoinc("HISTFILE", tmp = get_histfile(ctx), '='));
+	if (ft_strlen(tmp))
+		free(tmp);
+//	ctx->builtins = getbuiltins();
+	init_hist(ctx);
 	return (SUCCESS);
 }
 
 void	vingtetunsh(char **av, char  **environ)
 {
-	t_21sh	env;
+	t_ctx	ctx;
 	char	ret;
 
-	if ((ret = init(&env, av, environ)) != SUCCESS)
-		fatal_err(ret, &env);
+	if ((ret = init(&ctx, av, environ)) != SUCCESS)
+		fatal_err(ret, &ctx);
 
 	while (1)//
 	{
-		wrap_lineread(&env, &env.line, PS1);
+		wrap_lineread(&ctx, &ctx.line, PS1);
 
-		if (env.line.split_line)
-			env.toklist = tokenizer(env.line.split_line);
+		if (ctx.line.split_line)
+			ctx.toklist = tokenizer(ctx.line.split_line);
 
-		delete_toklist(&env.toklist);
+		delete_toklist(&ctx.toklist);
 
-		if (env.line.line_saved == false)
-			ft_dlstdel(&env.line.split_line, &delvoid);
+		if (ctx.line.line_saved == false)
+			ft_dlstdel(&ctx.line.split_line, &delvoid);
 		else//
-			ft_dlstremove(&env.line.final_newline, &delvoid);
+			ft_dlstremove(&ctx.line.final_newline, &delvoid);
 	}
-	wrap_exit(EXIT_SUCCESS, &env);
+	wrap_exit(EXIT_SUCCESS, &ctx);
 }

@@ -6,13 +6,13 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 19:18:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/14 15:19:26 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 20:26:51 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_dlist	*ft_dlstnew(void const *content, size_t content_size)
+t_dlist	*ft_dlstnew(void const *data, size_t content_size)
 {
 	t_dlist	*maillon;
 	char	*s;
@@ -21,17 +21,17 @@ t_dlist	*ft_dlstnew(void const *content, size_t content_size)
 		return (NULL);
 	maillon->previous = NULL;
 	maillon->next = NULL;
-	if (!content)
+	if (!data)
 	{
-		maillon->content = NULL;
+		maillon->data = NULL;
 		maillon->content_size = 0;
 		return (maillon);
 	}
-	if (!(s = (char *)malloc(sizeof(char) * content_size + 1)))
+	if (!(s = (char *)malloc(sizeof(char) * (content_size + 1))))
 		return (NULL);
-	ft_memcpy(s, content, content_size);
+	ft_memcpy(s, data, content_size);
 	s[content_size] = '\0';
-	maillon->content = s;
+	maillon->data = s;
 	maillon->content_size = content_size;
 	return (maillon);
 }

@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   other.h                                            :+:      :+:    :+:   */
+/*   ft_ctype.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/24 18:22:24 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/17 16:35:43 by lportay          ###   ########.fr       */
+/*   Created: 2017/04/24 15:47:03 by lportay           #+#    #+#             */
+/*   Updated: 2017/10/10 19:45:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OTHER_H
-# define OTHER_H
+#ifndef FT_CTYPE_H
+# define FT_CTYPE_H
 
-void	fill_array(int *array, int width, int i);
-void	fill_darray(int **tab, int lin, int col, int val);
-void	del_array(void **tab);
-void	delvoid(void *as, size_t len);
+int		ft_isalnum(int c);
+int		ft_isalpha(int c);
+int		ft_isascii(int c);
+int		ft_isdigit(int c);
+int		ft_isprint(int c);
+int		ft_tolower(int c);
+int		ft_toupper(int c);
+int		ft_isunicode(wchar_t a);
+int		ft_isspace(int c);
 
 #endif

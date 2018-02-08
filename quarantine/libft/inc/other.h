@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dlstadd.c                                       :+:      :+:    :+:   */
+/*   other.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 11:36:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/08 20:29:20 by lportay          ###   ########.fr       */
+/*   Created: 2017/04/24 18:22:24 by lportay           #+#    #+#             */
+/*   Updated: 2018/02/07 16:45:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef OTHER_H
+# define OTHER_H
 
-void	ft_dlstadd(t_dlist **alst, t_dlist *new)
-{
-	new->next = *alst;
-	if (*alst)
-		(*alst)->prev = new;
-	new->prev = NULL;
-	*alst = new;
+void	fill_array(int *array, int width, int i);
+void	fill_darray(int **tab, int lin, int col, int val);
+int		free_array(void ***a, void (*del)(void **));
 
-}
+#endif

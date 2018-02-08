@@ -1,23 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dlstadd.c                                       :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 11:36:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/08 20:29:20 by lportay          ###   ########.fr       */
+/*   Created: 2016/11/04 19:03:35 by lportay           #+#    #+#             */
+/*   Updated: 2017/12/09 19:09:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_dlstadd(t_dlist **alst, t_dlist *new)
-{
-	new->next = *alst;
-	if (*alst)
-		(*alst)->prev = new;
-	new->prev = NULL;
-	*alst = new;
+/*
+** man 3 strstr
+*/
 
+char	*ft_strstr(const char *big, const char *little)
+{
+	char *tmp_b;
+	char *tmp_l;
+
+	if (!ft_strlen(little) || big == little)
+		return ((char *)big);
+	while (*big)
+	{
+		tmp_b = (char *)big;
+		tmp_l = (char *)little;
+		while (*tmp_b++ == *tmp_l && *tmp_l != '\0')
+			tmp_l++;
+		if (*tmp_l == '\0')
+			return ((char *)big);
+		big++;
+	}
+	return (NULL);
 }

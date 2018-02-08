@@ -6,31 +6,29 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/27 17:22:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 20:03:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-char	*get_histfile(t_21sh *env)
+char	*get_histfile(t_ctx *ctx)
 {
-	char	*path;
+	char	*path_to_file;
 
-	if (!(path = get_kvp("HOME", env->environ)))
-		env->hist.file = open(HISTFILE, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR);
+	if (!(path_to_file = ft_astr_getval(ctx->environ, "HOME")))
+		ctx->hist.file = open(HISTFILE, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR);
 	else
-		env->hist.file = open((path = fullpath(path, HISTFILE)), O_CREAT | O_RDWR,
+		ctx->hist.file = open((path_to_file = fullpath(path_to_file, HISTFILE)), O_CREAT | O_RDWR,
 		S_IWUSR | S_IRUSR);
-
-	if (env->hist.file == -1)
-		env->history = false;
-
-	if (path)
-		return (path);
-	else if (env->history == true)
+	if (ctx->hist.file == -1)
+		ctx->history = false;
+	if (path_to_file)
+		return (path_to_file);
+	else if (ctx->history == true)
 		return (ft_strdup(HISTFILE));
 	else
-		return (NULL);
+		return ("");
 }
 
 t_histentry		*new_histentry(t_dlist *line, unsigned index)
@@ -44,13 +42,12 @@ t_histentry		*new_histentry(t_dlist *line, unsigned index)
 	return (he);
 }
 
-void	del_histentry(void *histentry, size_t histentrysize)
+void	del_histentry(void *histentry, size_t histentry_size)
 {
-	(void)histentrysize;
+	(void)histentry_size;
 //	ft_dlsthead(&T_HISTENTRY(histentry)->line);//
 	ft_dlstdel(&T_HISTENTRY(histentry)->line, &delvoid);
-	free(histentry);
-
+	ft_memdel(&histentry);
 }
 
 /*
@@ -62,9 +59,9 @@ void	dump_history(t_dlist *histlist)
 {
 	while (histlist)
 	{
-		ft_putnbr(T_HISTENTRY(histlist->content)->index);
+		ft_putnbr(T_HISTENTRY(histlist->data)->index);
 		write(STDOUT_FILENO, "  ", 2);
-		ft_dlstprint(T_HISTENTRY(histlist->content)->line->next, "");
+		ft_dlstprint(T_HISTENTRY(histlist->data)->line->next, "", (void (*)(void *))&ft_putstr);
 		write(STDOUT_FILENO, "\n", 2);
 		histlist = histlist->next;
 	}
@@ -87,18 +84,18 @@ void	trim_history(t_dlist **histlist, char *s_histsize)
 	}
 	if (*histlist)
 	{
-		(*histlist)->previous->next = NULL;
+		(*histlist)->prev->next = NULL;
 		ft_dlstdel(histlist, &del_histentry);
 	}
 	*histlist = tmp;
 }
 
-void	save_history(t_kvp *local, t_dlist *histlist)
+void	save_history(char **locals, t_dlist *histlist)
 {
 	char	*tmp;
 	int		histfile;
 
-	if ((tmp = get_kvp("HISTFILE", local)))
+	if ((tmp = ft_astr_getval(locals, "HISTFILE")))
 		histfile = open(tmp, O_CREAT | O_TRUNC | O_RDWR, S_IWUSR | S_IRUSR);
 	else
 		histfile = open(HISTFILE, O_CREAT | O_TRUNC | O_RDWR, S_IWUSR | S_IRUSR);
@@ -106,50 +103,50 @@ void	save_history(t_kvp *local, t_dlist *histlist)
 		return ;
 
 	ft_dlstend(&histlist);
-	while (histlist->previous)
+	while (histlist->prev)
 	{
-		tmp = dlst_to_str(T_HISTENTRY(histlist->content)->line);
+		tmp = dlst_to_str(T_HISTENTRY(histlist->data)->line);
 		if (tmp && !str_isblank(tmp))
 		{
 			write(histfile, tmp, ft_strlen(tmp));
 			write(histfile, "\n", 1);
 		}
 		ft_strdel(&tmp);
-		histlist = histlist->previous;
+		histlist = histlist->prev;
 	}
 	close(histfile);
 }
 
-void	add_histentry(t_21sh *env)
+void	add_histentry(t_ctx *ctx)
 {
-		ft_dlstinsert(env->hist.list, ft_dlstnewaddr(new_histentry(env->line.split_line, env->hist.index++), sizeof(t_histentry *)));
-		trim_history(&env->hist.list->next, get_kvp("HISTSIZE", env->local));
+		ft_dlstinsert(ctx->hist.list, ft_dlstnewaddr(new_histentry(ctx->line.split_line, ctx->hist.index++), sizeof(t_histentry)));
+		trim_history(&ctx->hist.list->next, ft_astr_getval(ctx->locals, "HISTSIZE"));
 }
 
-void	init_hist(t_21sh *env)
+void	init_hist(t_ctx *ctx)
 {
 	char	*histentry;
 
-	if (get_next_line(env->hist.file, &histentry) == -1)
+	if (get_next_line(ctx->hist.file, &histentry) == -1)
 	{
-		env->history = false;
-		close(env->hist.file);
+		ctx->history = false;
+		close(ctx->hist.file);
 		return ;
 	}
 	while (histentry)
 	{
 		if (ft_strlen(histentry))
-				ft_dlstadd(&env->hist.list, ft_dlstnewaddr(new_histentry(str_to_dlst(histentry), env->hist.index++), sizeof(t_histentry *)));
+				ft_dlstadd(&ctx->hist.list, ft_dlstnewaddr(new_histentry(str_to_dlst(histentry), ctx->hist.index++), sizeof(t_histentry)));
 			free(histentry);
-		if (get_next_line(env->hist.file, &histentry) == -1)
+		if (get_next_line(ctx->hist.file, &histentry) == -1)
 		{
-			close(env->hist.file);
-			ft_dlstdel(&env->hist.list, &del_histentry);
-			env->history = false;
+			close(ctx->hist.file);
+			ft_dlstdel(&ctx->hist.list, &del_histentry);
+			ctx->history = false;
 			return ;
 		}
 	}
-	close(env->hist.file);
-	trim_history(&env->hist.list, get_kvp("HISTSIZE", env->local));
-	ft_dlstadd(&env->hist.list, ft_dlstnew("HEAD", 5));
+	close(ctx->hist.file);
+	trim_history(&ctx->hist.list, ft_astr_getval(ctx->locals, "HISTSIZE"));
+	ft_dlstadd(&ctx->hist.list, ft_dlstnew("HEAD", 4));
 }

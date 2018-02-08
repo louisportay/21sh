@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/05 22:57:34 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 18:57:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static void	filter_assignment_word(t_token *toklist)
 	t_dlist *tmp;
 
 	tmp = toklist->first_letter;
-	if (ft_isdigit(*(char *)tmp->content) == true || *(char *)tmp->content == '=')
+	if (ft_isdigit(*(char *)tmp->data) == true || *(char *)tmp->data == '=')
 			toklist->type = WORD;
-	while (*(char *)tmp->content != '=' && (toklist->type & ASSIGNMENT_WORD))
+	while (*(char *)tmp->data != '=' && (toklist->type & ASSIGNMENT_WORD))
 	{
-		if (ft_isalnum(*(char *)tmp->content) == false && *(char *)tmp->content != '_')
+		if (ft_isalnum(*(char *)tmp->data) == false && *(char *)tmp->data != '_')
 			toklist->type = WORD;
 		tmp = tmp->next;
 	}
@@ -124,13 +124,13 @@ static void filter_bang(t_token *toklist)
 
 static int get_exp_token_type(t_token *tok)
 {
-	if (*(char *)tok->first_letter->content == '{')
+	if (*(char *)tok->first_letter->data == '{')
 		return (PARAM_EXP);
-	else if (*(char *)tok->first_letter->content == '[')
+	else if (*(char *)tok->first_letter->data == '[')
 		return (ARI_EXP);
-	else if (*(char *)tok->first_letter->content == '(' && *(char *)tok->first_letter->next->content == '(')
+	else if (*(char *)tok->first_letter->data == '(' && *(char *)tok->first_letter->next->data == '(')
 		return (ARI_EXP);
-	else if (*(char *)tok->first_letter->content == '(')
+	else if (*(char *)tok->first_letter->data == '(')
 		return (CMD_SUB);
 	else
 		return (PARAM_EXP);

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/24 21:53:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/01 23:18:49 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 20:18:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 
 typedef struct		s_dlist
 {
-	void			*content;
+	void			*data;
 	size_t			content_size;
-	struct s_dlist	*previous;
+	struct s_dlist	*prev;
 	struct s_dlist	*next;
 }					t_dlist;
 
@@ -37,11 +37,12 @@ void				ft_dlstend(t_dlist **dlst);
 size_t				ft_dlstcount(t_dlist *dlst);
 size_t				ft_dlstindex(t_dlist *dlst);
 t_dlist				*ft_dlstaddr(t_dlist *dlst, size_t rank);
-void				ft_dlstprint(t_dlist *list, char *separator);
+void				ft_dlstprint(t_dlist *list, char *sep, void (*p)(void *));
 void				ft_dlstinsert(t_dlist *previous, t_dlist *between);
 t_dlist				*str_to_dlst(char *str);
 char				*dlst_to_str(t_dlist *dlst);
 t_dlist				*ft_dlstdup(t_dlist *dlst);
 int					move_dlst_head(t_dlist **dlist, int movement);
+void				delvoid(void *as, size_t len);
 
 #endif

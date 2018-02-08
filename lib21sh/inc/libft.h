@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 14:36:38 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/07 12:29:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/07 17:17:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <signal.h>
+# include <stdint.h>
 # include <stdbool.h>
 
 # include "ft_astr.h"
@@ -26,6 +27,7 @@
 # include "stack.h"
 # include "ft_dlst.h"
 # include "ft_list.h"
+# include "ft_ctype.h"
 
 
 # define BUFF_SIZE 512

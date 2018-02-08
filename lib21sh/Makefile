@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/25 17:01:50 by lportay           #+#    #+#              #
-#    Updated: 2018/02/08 18:28:39 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/08 20:14:06 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 CC= gcc-7
 CFLAGS= -Wall -Wextra -Werror
-DEBUG=no
+DEBUG=sanitize
 ARCH:= $(shell uname)
 
 OBJ_D:=obj

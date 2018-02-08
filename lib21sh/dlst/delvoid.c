@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 12:04:59 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/28 16:20:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 19:30:18 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	delvoid(void *as, size_t len)
 {
-	ft_bzero(as, len);
+	(void)len;
+//	ft_bzero(as, len);
 	free(as);
 	as = NULL;
 }

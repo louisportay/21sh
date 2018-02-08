@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/08 17:51:42 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/08 20:13:33 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ endif
 
 INCLUDE=\
 -Iincludes\
--Ilib21sh/inc
+-I$(LIBDIR)/inc
 HEADERS= ft_21sh.h\
 		 history.c\
 		 line.h\
@@ -71,10 +71,8 @@ SRCS=	main.c\
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
 
-#LIB= lib21sh.a
 LIBDIR= lib21sh/
 LIB= libft.a
-#LIBDIR= libft/
 
 NAME= 21sh
 

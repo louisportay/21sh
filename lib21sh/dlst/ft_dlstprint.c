@@ -6,18 +6,22 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/13 10:58:56 by lportay           #+#    #+#             */
-/*   Updated: 2017/11/17 17:41:26 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 20:27:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_dlstprint(t_dlist *list, char *separator)
+/*
+** Print the 'data' field with the given printing function
+*/
+
+void	ft_dlstprint(t_dlist *list, char *sep, void (*p)(void *))
 {
 	while (list)
 	{
-		ft_putstr(list->content);
-		ft_putstr(separator);
+		p(list->data);
+		ft_putstr(sep);
 		list = list->next;
 	}
 }
