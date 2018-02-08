@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/24 21:53:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 20:13:29 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 16:26:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 
 typedef struct		s_dlist
 {
-	void			*data;
 	struct s_dlist	*prev;
 	struct s_dlist	*next;
+	void			*data;
 }					t_dlist;
 
 t_dlist				*ft_dlstnew(void const *data);

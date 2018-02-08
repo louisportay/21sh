@@ -17,7 +17,13 @@ ft_strlen.o\
 ft_strncmp.o\
 ft_strncpy.o\
 ft_strnew.o\
-fullpath.o
+fullpath.o\
+ft_itoa.o\
+ft_atoi.o\
+ft_strsplit.o\
+ft_strstr.o\
+ft_strdel.o\
+ft_stroccur.o
 
 SRC_D+=ft_string
 HEADERS+=ft_string.h

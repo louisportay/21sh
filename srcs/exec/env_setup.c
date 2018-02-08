@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 17:17:41 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/06 11:49:58 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/07 14:30:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int						env_setup(t_env *env, char **environ)
 
 	ft_bzero(env, sizeof(t_env));
 	env->env = ft_env_copy(environ);
-	if ((path = ft_env_get_value(env->env, "PATH")) != NULL)
+	if ((path = ft_env_get_value(env->env, "PATH")) != NULL)//
 	{
 		if ((env->path = ft_strsplit(path, ':')) == NULL)
 			return (0);

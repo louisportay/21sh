@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/25 17:01:50 by lportay           #+#    #+#              #
-#    Updated: 2018/02/07 12:39:27 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/08 16:21:50 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 CC= gcc-7
 CFLAGS= -Wall -Wextra -Werror
-DEBUG=no
+DEBUG=sanitize
 ARCH:= $(shell uname)
 
 OBJ_D:=obj
@@ -37,6 +37,7 @@ include ft_stdio/stdio.mk
 include qbuf/qbuf.mk
 include stack/stack.mk
 include ft_list/list.mk
+include dlst/dlst.mk
 
 OBJ:=$(addprefix $(OBJ_D)/, $(ITEMS))
 

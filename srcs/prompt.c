@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/27 17:31:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 16:16:23 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ char	ispromptflag(char c)
 ** Print the prompt and move the cursor_offset according to the cursor length
 */
 
-static void	print_flag(t_21sh *env, char *s)
+static void	print_flag(t_ctx *ctx, char *s)
 {
-	env->line.cursor_offset += ft_strlen(s);
+	ctx->line.cursor_offset += ft_strlen(s);
 	ft_putstr(s);
 }
 
@@ -38,7 +38,7 @@ static void	print_flag(t_21sh *env, char *s)
 ** Date flag
 */
 
-static void	d_flag(t_21sh *env)
+static void	d_flag(t_ctx *ctx)
 {
 	char 		*time_str;
 	struct tm	*tm;
@@ -48,7 +48,7 @@ static void	d_flag(t_21sh *env)
 	tm = localtime(&t);
 	time_str = asctime(tm);
 	time_str[10] = '\0';
-	env->line.cursor_offset += ft_strlen(time_str);//10
+	ctx->line.cursor_offset += ft_strlen(time_str);//10
 	ft_putstr(time_str);
 }
 
@@ -56,12 +56,12 @@ static void	d_flag(t_21sh *env)
 ** Hostname flag (not truncated)
 */
 
-static void	cap_h_flag(t_21sh *env)
+static void	cap_h_flag(t_ctx *ctx)
 {
 	char	hostname[CUSTOM_HOST_NAME_MAX];
 
 	if (gethostname(hostname, CUSTOM_HOST_NAME_MAX) == 0)
-		print_flag(env, hostname);
+		print_flag(ctx, hostname);
 }
 
 
@@ -69,13 +69,13 @@ static void	cap_h_flag(t_21sh *env)
 ** TTY name flag
 */
 
-static void	l_flag(t_21sh *env)
+static void	l_flag(t_ctx *ctx)
 {
 	char *s;
 
 	s = NULL;
 	if (isatty(STDIN_FILENO) && (s = ttyname(STDIN_FILENO)) && (s = ft_basename(s)))
-		print_flag(env, s);
+		print_flag(ctx, s);
 	free(s);
 }
 
@@ -83,12 +83,12 @@ static void	l_flag(t_21sh *env)
 ** Shell name flag
 */
 
-static void	s_flag(t_21sh *env)
+static void	s_flag(t_ctx *ctx)
 {
 	size_t	len;
 
 	len = ft_strlen(SHELLNAME);
-	env->line.cursor_offset += len;
+	ctx->line.cursor_offset += len;
 	write(STDOUT_FILENO, SHELLNAME, len);
 }
 
@@ -96,34 +96,34 @@ static void	s_flag(t_21sh *env)
 ** Username flag
 */
 
-static void	u_flag(t_21sh *env)
+static void	u_flag(t_ctx *ctx)
 {
 	struct passwd *pw;
 
 	if ((pw = getpwuid(getuid())))
-		print_flag(env, pw->pw_name);
+		print_flag(ctx, pw->pw_name);
 }
 
 /*
 ** Fullpath Current directory flag
 */
 
-static void	w_flag(t_21sh *env)
+static void	w_flag(t_ctx *ctx)
 {
 	char *cwd;
 	char *homedir;
 	char *tmp;
 
-	homedir = get_kvp("HOME", env->environ);
+	homedir = ft_astr_getval(ctx->environ, "HOME");
 	cwd = getcwd(NULL, 0);
 	if (cwd && homedir && (tmp = ft_strstr(cwd, homedir)) && tmp == cwd && cwd[ft_strlen(homedir)] == '/')
 	{
-		env->line.cursor_offset += ft_strlen(cwd) - ft_strlen(homedir) + 1;
+		ctx->line.cursor_offset += ft_strlen(cwd) - ft_strlen(homedir) + 1;
 		write(STDOUT_FILENO, "~", 1);
 		ft_putstr(cwd + ft_strlen(homedir));
 	}
 	else if (cwd)
-		print_flag(env, cwd);
+		print_flag(ctx, cwd);
 	free(cwd);
 }
 
@@ -131,26 +131,26 @@ static void	w_flag(t_21sh *env)
 ** Current directory flag
 */
 
-static void	cap_w_flag(t_21sh *env)
+static void	cap_w_flag(t_ctx *ctx)
 {
 	char *cwd;
 	char *basename_cwd;
 
 	if ((cwd = getcwd(NULL, 0)) && (basename_cwd = ft_basename(cwd)))
 	{
-		print_flag(env, basename_cwd);
+		print_flag(ctx, basename_cwd);
 		free(basename_cwd);
 	}
 	free(cwd);
 }
 
-static void	bang_flag(t_21sh *env)
+static void	bang_flag(t_ctx *ctx)
 {
 	char *histnum;
 
-	histnum = ft_itoa(env->hist.index);
+	histnum = ft_itoa(ctx->hist.index);
 	if (histnum)
-		print_flag(env, histnum);
+		print_flag(ctx, histnum);
 	free(histnum);
 }
 
@@ -168,14 +168,14 @@ static void	init_flags(t_prompt_flag *flags)
 
 }
 
-void	print_prompt(t_21sh *env)
+void	print_prompt(t_ctx *ctx)
 {
 	t_prompt_flag	flags[9];
 	char			*prompt;
 	int				i;
 	char			c;
 
-	if (!(prompt = get_kvp(env->prompt_mode, env->local)))
+	if (!(prompt = ft_astr_getval(ctx->locals, ctx->prompt_mode)))
 		return ;
 	i = 0;
 	init_flags(flags);
@@ -185,12 +185,12 @@ void	print_prompt(t_21sh *env)
 		{
 			while (flags[i].flag != c)
 				i++;
-			flags[i].func(env);
+			flags[i].func(ctx);
 			prompt++;
 		}
 		else
 		{
-			env->line.cursor_offset++;
+			ctx->line.cursor_offset++;
 			write(STDOUT_FILENO, prompt, 1);
 		}
 		prompt++;

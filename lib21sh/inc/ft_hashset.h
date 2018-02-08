@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:47:35 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/06 16:01:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/07 18:04:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include <sys/types.h>
 # include "libft.h"
+
+# define HASH_SIZE 91
+# define HASH_PRIME 17
 
 typedef struct s_hash_entry	t_hash_entry;
 typedef struct s_hash_dict	t_hash_dict;

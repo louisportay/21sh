@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 12:04:12 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 19:06:55 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 18:12:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@
 
 static void	sighandler(int signum)
 {
-	t_21sh *env;
+	t_ctx *ctx;
 	
-	env = get_envaddr(NULL);
-	if (signum == SIGWINCH && env->line_edition)
+	ctx = get_ctxaddr(NULL);
+	if (signum == SIGWINCH && ctx->line_edition)
 	{
-		ioctl(STDIN_FILENO, TIOCGWINSZ, &env->ws);
-		if (env->cur_line)
+		ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws);
+		if (ctx->cur_line)
 		{
-			update_line(env, env->cur_line);
-			clear_line(env, env->cur_line);
-			redraw_line(env, env->cur_line);
+			update_line(ctx, ctx->cur_line);
+			clear_line(ctx, ctx->cur_line);
+			redraw_line(ctx, ctx->cur_line);
 		}
 	}
 	else if (signum == SIGINT)
@@ -43,7 +43,7 @@ static void	sighandler(int signum)
 	// SIGTERM + SIGQUIT
 }
 
-int		wrap_signal(void)
+int		set_sighandler(void)
 {
 	if (signal(SIGWINCH, &sighandler) == SIG_ERR) // Window size change
 		return (FAILSETSIGHDLR);

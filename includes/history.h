@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:04:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 13:39:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/07 18:12:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_histentry				*new_histentry(t_dlist *line, unsigned index);
 void					dump_history(t_dlist *histlist);
 void					trim_history(t_dlist **histlist, char *histsize);
 void					save_history(char **local, t_dlist *histlist);
-void					del_histentry(void *histentry, size_t histentrysize);
+void					del_histentry(void **histentry);
 void					add_histentry(t_ctx *env);
 
 #endif

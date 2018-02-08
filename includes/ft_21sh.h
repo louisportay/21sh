@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 13:38:24 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/07 14:55:18 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@
 # include "history.h"
 # include "token.h"
 
-
-# define NOENVIRON_STR			"Invalid Environment to use this program.\n"
 # define NOMEM_STR				"No memory available for dynamic allocation\n"
 # define NODIR_STR				"Error retrieving current directory\n"
 # define FAILREAD_STR			"Can't read from STDIN\n"
@@ -76,6 +74,7 @@ struct					s_ctx
 	pid_t				pid;
 	pid_t				pgid;
 	int					fd;
+	int	                istty;
 	char				**path;
 	t_list				*running_processes;
 	
@@ -90,7 +89,7 @@ struct					s_ctx
 	**	SHELL VARIABLES
 	*/
 	
-	char				**env;
+	char				**environ;
 	char				**locals;
 	
 	/*
@@ -98,8 +97,8 @@ struct					s_ctx
 	*/
 	
 	t_line				line;
-	t_line				*cur_line;//line currently modified
 	t_hist				hist;
+	t_line				*cur_line;//line currently modified
 	char                *heredoc_eof;//current EOF
 	char				prompt_mode[4];
 	
@@ -110,6 +109,7 @@ struct					s_ctx
 	int					emacs_mode;
 	int	                line_edition;
 	int	                history;
+	int					job_control;
 	
 	/*
 	**	TERMINAL CONTEXT
@@ -117,7 +117,6 @@ struct					s_ctx
 	
 	struct s_termcaps	tc;
 	struct winsize		ws;
-	int	                istty;
 	struct termios		tios;
 	struct termios		oldtios;
 	
@@ -137,15 +136,14 @@ typedef struct			s_typefunc
 }
 */
 
-void					vingtetunsh(char **av, char **env);
+void					vingtetunsh(char **av, char **environ);
 
 void					dump_err(char errcode);
-void					fatal_err(char errcode, t_ctx *env);
-void					wrap_exit(int status, t_ctx *env);
+void					fatal_err(char errcode, t_ctx *ctx);
+void					wrap_exit(int status, t_ctx *ctx);
 
-int						wrap_signal(void);
-void					sig_switch(int signum, t_ctx *env);
-t_ctx					*get_envaddr(t_ctx *envaddr);
+int						set_sighandler(void);
+t_ctx					*get_ctxaddr(t_ctx *ctxaddr);
 
 /*
 ** Tools
@@ -156,7 +154,6 @@ bool					str_isblank(char *str);
 bool					dlst_isblank(t_dlist *dlst);
 bool					is_number(char *str);
 bool					is_number_w_dash(char *str);
-bool					is_redir(int type);
 
 // Shell script stuff
 

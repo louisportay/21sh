@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 20:16:16 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 19:37:00 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 19:22:51 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_dlstdelone(t_dlist **alst, void (*del)(void **))
 {
-	(*del)((*alst)->data);
+	(*del)(&(*alst)->data);
 	free(*alst);
 	*alst = NULL;
 }

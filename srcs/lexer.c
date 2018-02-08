@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 14:12:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 18:49:51 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ char	*token_str(t_token *tok)
 	head = s;
 	while (tok->first_letter != tok->last_letter)
 	{
-		*s++ = *(char *)tok->first_letter->content;
+		*s++ = *(char *)tok->first_letter->data;
 		tok->first_letter = tok->first_letter->next;
 	}
-	*s++ = *(char *)tmp->content;
+	*s++ = *(char *)tmp->data;
 	*s = '\0';
 	return (head);
 }
@@ -46,10 +46,10 @@ void	dump_token(t_token *tok)
 	tmp = tok->first_letter;
 	while (tmp != tok->last_letter)
 	{
-		write(STDOUT_FILENO, tmp->content, 1);
+		write(STDOUT_FILENO, tmp->data, 1);
 		tmp = tmp->next;
 	}
-	write(STDOUT_FILENO, tmp->content, 1);
+	write(STDOUT_FILENO, tmp->data, 1);
 }
 
 void	init_token_table(t_keyval *tok)
@@ -249,7 +249,7 @@ void		apply_tokrules(t_token *last_tok, t_dlist *line, t_stack **quote)
 	if (!line->next)
 	{
 		if (!last_tok->last_letter)
-			last_tok->last_letter = line->previous;
+			last_tok->last_letter = line->prev;
 		if (last_tok->type == IO_NUMBER)
 			last_tok->type = WORD;
 		last_tok->next = new_token(line);
@@ -258,28 +258,28 @@ void		apply_tokrules(t_token *last_tok, t_dlist *line, t_stack **quote)
 		return ;
 	}
 
-	if (is_quote_hash_paren(*(char *)line->content) == true)
-		update_linestate(quote, *(char *)line->content);
+	if (is_quote_hash_paren(*(char *)line->data) == true)
+		update_linestate(quote, *(char *)line->data);
 
-	if (*(char *)line->content == '\n' && ((*quote)->state != BSLASH && (*quote)->state != DQUOTE && (*quote)->state != SQUOTE))
+	if (*(char *)line->data == '\n' && ((*quote)->state != BSLASH && (*quote)->state != DQUOTE && (*quote)->state != SQUOTE))
 	{
-		last_tok->last_letter = line->previous;
+		last_tok->last_letter = line->prev;
 		if (last_tok->type == COMMENT)
 			stack_pop(quote);
 	}
 
 	if (!last_tok->last_letter && IS_WORD_IO_NUMBER(last_tok->type))
-		if (!(extend_word(last_tok, *(char *)line->content, (*quote)->state)))
-				last_tok->last_letter = line->previous;
+		if (!(extend_word(last_tok, *(char *)line->data, (*quote)->state)))
+				last_tok->last_letter = line->prev;
 
 	if (!last_tok->last_letter && IS_NOT_MAX_OPE(last_tok->type))
-		if (!(extend_operator(last_tok, *(char *)line->content, (*quote)->state)))
-				last_tok->last_letter = line->previous;
+		if (!(extend_operator(last_tok, *(char *)line->data, (*quote)->state)))
+				last_tok->last_letter = line->prev;
 
-	if (last_tok->last_letter && (!(ft_isblank(*(char *)line->content)) || (*quote)->state != UNQUOTED) && last_tok->last_letter != line)
+	if (last_tok->last_letter && (!(ft_isblank(*(char *)line->data)) || (*quote)->state != UNQUOTED) && last_tok->last_letter != line)
 	{
 		last_tok->next = new_token(line);
-		last_tok->next->type = basic_token_type(*(char *)line->content, (*quote)->state);
+		last_tok->next->type = basic_token_type(*(char *)line->data, (*quote)->state);
 		if (IS_MAX_OPE(last_tok->next->type))
 			last_tok->next->last_letter = line;
 	}
@@ -287,11 +287,11 @@ void		apply_tokrules(t_token *last_tok, t_dlist *line, t_stack **quote)
 	if (IS_MAX_OPE(last_tok->type) && !last_tok->last_letter)
 	{
 		last_tok->last_letter = line;
-		if (*(char *)line->next->content == '-' && (last_tok->type & (LESSAND | GREATAND)))
+		if (*(char *)line->next->data == '-' && (last_tok->type & (LESSAND | GREATAND)))
 			create_dash_token(last_tok, line);
 	}
 
-	if ((*quote)->state == BSLASH && *(char *)line->content != '\\')
+	if ((*quote)->state == BSLASH && *(char *)line->data != '\\')
 			stack_pop(quote);
 }
 
@@ -317,9 +317,9 @@ void	requalify_tokens(t_token **toklist)
 		init_token_table(tok);
 		while ((unsigned)tok[i].key != ret->type && tok[i].key)
 				i++;
-		ft_putstr_fd(STDERR_FILENO, "syntax error near token `");
-		ft_putstr_fd(STDERR_FILENO, tok[i].val);
-		ft_putstr_fd(STDERR_FILENO, "'\n");
+		ft_putstr_fd("syntax error near token `", STDERR_FILENO);
+		ft_putstr_fd(tok[i].val, STDERR_FILENO);
+		ft_putstr_fd("'\n", STDERR_FILENO);
 		delete_following_redir(ret);
 		delete_toklist(toklist);
 	}

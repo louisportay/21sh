@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/05 23:02:30 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 16:17:37 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ int		r_less(t_redir *r)
 int		r_dless(t_redir *r)
 {
 	(void)r;//
-	t_21sh *env;
+	t_ctx *ctx;
 	
-	env = get_envaddr(NULL);
-	env->heredoc_eof = r->rhs;
-	wrap_lineread(env, r->hdoc, PS2);
-	env->heredoc_eof = NULL;
+	ctx = get_envaddr(NULL);
+	ctx->heredoc_eof = r->rhs;
+	wrap_lineread(ctx, r->hdoc, PS2);
+	ctx->heredoc_eof = NULL;
 //faire la redirection tout ca + free le heredoc
 	return (0);
 }

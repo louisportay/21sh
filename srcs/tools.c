@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 10:48:13 by lportay           #+#    #+#             */
-/*   Updated: 2018/01/25 18:43:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/07 18:12:55 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	dlst_isblank(t_dlist *dlst)
 {
 	while (dlst)
 	{
-		if (str_isblank(dlst->content) == false)
+		if (str_isblank(dlst->data) == false)
 			return (false);
 		dlst = dlst->next;
 	}
@@ -69,11 +69,4 @@ bool	is_number_w_dash(char *str)
 			str++;
 		}
 		return (false);
-}
-
-bool	is_redir(int type)
-{
-	if (type == LESS || type == GREAT || type == DLESS || type == DGREAT || type == LESSAND || type == GREATAND || type == TLESS)
-		return (true);
-	return (false);
 }
