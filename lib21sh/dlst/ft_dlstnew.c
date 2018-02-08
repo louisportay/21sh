@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 19:18:14 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/08 20:26:51 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 20:32:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_dlist	*ft_dlstnew(void const *data, size_t content_size)
 
 	if (!(maillon = malloc(sizeof(t_dlist))))
 		return (NULL);
-	maillon->previous = NULL;
+	maillon->prev = NULL;
 	maillon->next = NULL;
 	if (!data)
 	{
