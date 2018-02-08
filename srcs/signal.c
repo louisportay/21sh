@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 12:04:12 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 19:06:55 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/06 18:19:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ int		wrap_signal(void)
 {
 	if (signal(SIGWINCH, &sighandler) == SIG_ERR) // Window size change
 		return (FAILSETSIGHDLR);
-	if (signal(SIGTSTP, &sighandler) == SIG_ERR)//C-z
+	if (signal(SIGTSTP, &sighandler) == SIG_ERR)
 		return (FAILSETSIGHDLR);
-	if (signal(SIGINT, &sighandler) == SIG_ERR)// C-c
+	if (signal(SIGINT, &sighandler) == SIG_ERR)
 		return (FAILSETSIGHDLR);
-//	if (signal(SIGQUIT, &sighandler) == SIG_ERR) // "C-\"
+//	if (signal(SIGQUIT, &sighandler) == SIG_ERR) // "CTRL-\"
 //		return (FAILSETSIGHDLR);
-	if (signal(SIGTERM, &sighandler) == SIG_ERR) // "kill command"
+	if (signal(SIGTERM, &sighandler) == SIG_ERR) // "kill"
 		return (FAILSETSIGHDLR);
 	return (SUCCESS);
 }

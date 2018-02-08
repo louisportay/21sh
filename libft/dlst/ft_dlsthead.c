@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/13 10:22:30 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 19:38:02 by lportay          ###   ########.fr       */
+/*   Updated: 2017/03/16 22:44:30 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void	ft_dlsthead(t_dlist **dlst)
 {
-	while ((*dlst)->prev)
-		*dlst = (*dlst)->prev;
+	while ((*dlst)->previous)
+		*dlst = (*dlst)->previous;
 }
