@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 17:42:27 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:35:49 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 19:36:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	load_histentry(t_ctx *ctx, t_line *l)
 		ft_dlsthead(&l->line);
 	if (ctx->hist.list->prev && l->line && l->line != l->lastline)
 	{
-		ft_dlstdel(&T_HISTENTRY(ctx->hist.list->data)->line, &ft_memdel);
+		ft_dlstdel(&T_HISTENTRY(ctx->hist.list->data)->line, &delvoid);
 		T_HISTENTRY(ctx->hist.list->data)->line = l->line;
 	}
 }

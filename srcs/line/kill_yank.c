@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:48:21 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:40:14 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 19:38:21 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	kill_line_end(t_ctx *ctx, t_line *l)
 {
 	if (l->yank)
-		ft_dlstdel(&l->yank, &ft_memdel);
+		ft_dlstdel(&l->yank, &delvoid);
 	l->yank = l->line->next;
 	l->line->next = NULL;
 	l->yank->prev = NULL;
@@ -42,7 +42,7 @@ void	kill_line_beginning(t_ctx *ctx, t_line *l)
 	t_dlist		*tmp;
 
 	if (l->yank)
-		ft_dlstdel(&l->yank, &ft_memdel);
+		ft_dlstdel(&l->yank, &delvoid);
 	tmp = l->line->next;
 	l->line->next = NULL;
 	ft_dlsthead(&l->line);
@@ -62,7 +62,7 @@ void	kill_prev_word(t_ctx *ctx, t_line *l)
 	t_dlist *tmp;
 
 	if (l->yank)
-		ft_dlstdel(&l->yank, &ft_memdel);
+		ft_dlstdel(&l->yank, &delvoid);
 	tmp = l->line->next;
 	l->line->next = NULL;
 	if (tmp)

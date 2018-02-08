@@ -6,14 +6,14 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/04 16:17:34 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 19:37:50 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 19:22:15 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /*
-** This function only works for a 'string' content 
+** This function only works for a 'string' data 
 */
 
 t_dlist *ft_dlstdup(t_dlist *dlst)
@@ -26,7 +26,7 @@ t_dlist *ft_dlstdup(t_dlist *dlst)
 	ft_dlstend(&dlst);
 	while (dlst)
 	{
-		ft_dlstadd(&dup, ft_dlstnew(dlst->data));
+		ft_dlstadd(&dup, ft_dlstnew(dlst->data, dlst->content_size));
 		dlst = dlst->prev;
 	}
 	return (dup);

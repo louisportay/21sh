@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:30:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 19:38:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	read_state(t_ctx *ctx, t_line *l, t_key *key)
 	if (*key->buf == NEWLINE_ || (ctx->emacs_mode && *key->buf == C_O))
 	{
 		if (l->line && ft_dlstaddr(l->line, 0) != l->lastline)
-			ft_dlstdel(&l->lastline, &ft_memdel);
+			ft_dlstdel(&l->lastline, &delvoid);
 		return (FINISHREAD);
 	}
 	else if (*key->buf == C_D && !ft_dlstcount(l->line))
@@ -130,20 +130,20 @@ void	join_split_lines(t_line *l)
 		tmp = l->split_line;
 		ft_dlstend(&l->split_line);
 		if (*(char *)l->split_line->data == '\\')
-			ft_dlstremove(&l->split_line, &ft_memdel);
+			ft_dlstremove(&l->split_line, &delvoid);
 		l->line = l->line->next;
-		ft_dlstdelone(&l->line->prev, &ft_memdel);
+		ft_dlstdelone(&l->line->prev, &delvoid);
 		l->line->prev = l->split_line;
 		l->split_line->next = l->line;
 		l->split_line = tmp;
 	}
 	else if (l->split_line && !l->line->next)
 	{
-		ft_dlstdelone(&l->line, &ft_memdel);
+		ft_dlstdelone(&l->line, &delvoid);
 		tmp = l->split_line;
 		ft_dlstend(&l->split_line);
 		if (*(char *)l->split_line->data == '\\')
-			ft_dlstremove(&l->split_line, &ft_memdel);
+			ft_dlstremove(&l->split_line, &delvoid);
 		l->split_line = tmp;
 	}
 	else if (!l->split_line)
@@ -154,8 +154,8 @@ void	err_quotes(t_line *l)
 {
 	write(STDIN_FILENO, "\n", 1);//
 	dump_err(BADQUOTES);
-	ft_dlstdel(&l->split_line, &ft_memdel);
-	ft_dlstdel(&l->line, &ft_memdel);
+	ft_dlstdel(&l->split_line, &delvoid);
+	ft_dlstdel(&l->line, &delvoid);
 	stack_del(&l->linestate);
 }
 

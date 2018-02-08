@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/11 10:26:30 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:27:21 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 19:36:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	getrawline(t_ctx *ctx, t_line *l)
 		ft_strcpy(ctx->prompt_mode, PS2);
 	join_split_lines(l);
 	if (l->linestate->state == UNQUOTED || l->linestate->state == SQUOTE || l->linestate->state == DQUOTE)
-		ft_dlstaddend(l->split_line, (l->final_newline = ft_dlstnew(ft_strdup("\n"))));
+		ft_dlstaddend(l->split_line, (l->final_newline = ft_dlstnew("\n", 1)));
 
 	free(tmp);
 	l->line = NULL;

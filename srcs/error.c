@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:10:57 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 18:55:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ void	wrap_exit(int status, t_ctx *ctx)
 {
 	if (ctx->line.line)
 	//ft_dlsthead(&ctx->line);//
-		ft_dlstdel(&ctx->line.line, &ft_memdel);
+		ft_dlstdel(&ctx->line.line, &delvoid);
 	if (ctx->line.yank)
 	//ft_dlsthead(&ctx->yank);//
-		ft_dlstdel(&ctx->line.yank, &ft_memdel);
+		ft_dlstdel(&ctx->line.yank, &delvoid);
 
 //	if (ctx->line.linestate)
 //		stack_del(&ctx->line.linestate);
@@ -68,11 +68,11 @@ void	wrap_exit(int status, t_ctx *ctx)
 			trim_history(&ctx->hist.list->next, ft_astr_getval(ctx->locals, "HISTFILESIZE"));
 			save_history(ctx->locals, ctx->hist.list->next);
 			ctx->hist.list = ctx->hist.list->next;
-			ft_dlstdelone(&ctx->hist.list->prev, &ft_memdel);
+			ft_dlstdelone(&ctx->hist.list->prev, &delvoid);
 			ft_dlstdel(&ctx->hist.list, &del_histentry);
 		}
 		else
-			ft_dlstdelone(&ctx->hist.list, &ft_memdel);
+			ft_dlstdelone(&ctx->hist.list, &delvoid);
 	}
 	if (ctx->environ)
 		ft_astr_clear(&ctx->environ);

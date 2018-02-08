@@ -15,7 +15,9 @@ ft_dlstnew.o\
 ft_dlstprint.o\
 ft_dlstremove.o\
 move_dlst_head.o\
-str_to_dlst.o
+str_to_dlst.o\
+delvoid.o\
+ft_dlstnewaddr.o
 
 SRC_D+=dlst
 HEADERS+=ft_dlst.h

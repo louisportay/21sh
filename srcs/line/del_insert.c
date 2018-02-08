@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:44:52 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:37:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 19:38:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void del_char(t_ctx *ctx, t_line *l)
 {
 	l->line_len--;
-	ft_dlstremove(&l->line, &ft_memdel);
+	ft_dlstremove(&l->line, &delvoid);
 	if (l->multiline)
 	{
 		tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
@@ -45,7 +45,7 @@ void	insert_char(char *buf, t_ctx *ctx, t_line *l)
 {
 	l->line_len++;
 	l->num_lines = l->line_len / ctx->ws.ws_col;
-	ft_dlstinsert(l->line, ft_dlstnew(ft_strdup(buf)));
+	ft_dlstinsert(l->line, ft_dlstnew(buf, 1));
 	l->line = l->line->next;
 	if (l->multiline)
 	{

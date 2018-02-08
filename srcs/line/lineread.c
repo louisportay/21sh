@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:32:03 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 19:35:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	init_line(t_ctx *ctx, t_line *line, t_key *key, int *status)
 	ft_bzero(key->buf, READLEN);
 	key->i = 0;
 	*status = READON;
-	line->line = ft_dlstnew(ft_strdup("HEAD"));
+	line->line = ft_dlstnew("HEAD", 4);
 	line->lastline = line->line;
 	line->cursor_offset = 0;
 	line->multiline = false;
@@ -78,5 +78,5 @@ void		lineread(t_ctx *ctx, t_line *line)
 	}
 
 	if (line->linestate->state == UNQUOTED || line->linestate->state == SQUOTE || line->linestate->state == DQUOTE)
-		ft_dlstaddend(line->split_line, (line->final_newline = ft_dlstnew(ft_strdup("\n"))));
+		ft_dlstaddend(line->split_line, (line->final_newline = ft_dlstnew("\n", 1)));
 }

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 19:19:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 20:07:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ t_hash_dict *getbuiltins(void)
 
 static int	init(t_ctx *ctx, char **av, char **environ)
 {
-	char	*term;
+	char	*tmp;
 	int		ret;
 
 	get_ctxaddr(ctx);
@@ -239,8 +239,8 @@ static int	init(t_ctx *ctx, char **av, char **environ)
 	ret = tcgetattr(ctx->fd, &ctx->oldtios);
 	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 
-	if (ret == -1 || !(ctx->istty) || (term = getenv("TERM")) == NULL ||/*ft_strcmp(term, "xterm-256color") ||*/
-			tgetent(NULL, term) == ERR)
+	if (ret == -1 || !(ctx->istty) || (tmp = getenv("TERM")) == NULL ||/*ft_strcmp(tmp, "xterm-256color") ||*/
+			tgetent(NULL, tmp) == ERR)
 		ctx->line_edition = false;
 	else
 		init_termios(ctx);
@@ -250,7 +250,9 @@ static int	init(t_ctx *ctx, char **av, char **environ)
 
 
 	create_locals(&ctx->locals);
-	ft_astr_append(&ctx->locals, ft_strjoinc("HISTFILE", get_histfile(ctx), '='));
+	ft_astr_append(&ctx->locals, ft_strjoinc("HISTFILE", tmp = get_histfile(ctx), '='));
+	if (ft_strlen(tmp))
+		free(tmp);
 //	ctx->builtins = getbuiltins();
 	init_hist(ctx);
 	return (SUCCESS);
@@ -274,9 +276,9 @@ void	vingtetunsh(char **av, char  **environ)
 		delete_toklist(&ctx.toklist);
 
 		if (ctx.line.line_saved == false)
-			ft_dlstdel(&ctx.line.split_line, &ft_memdel);
+			ft_dlstdel(&ctx.line.split_line, &delvoid);
 		else//
-			ft_dlstremove(&ctx.line.final_newline, &ft_memdel);
+			ft_dlstremove(&ctx.line.final_newline, &delvoid);
 	}
 	wrap_exit(EXIT_SUCCESS, &ctx);
 }

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:26:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 20:03:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_histfile(t_ctx *ctx)
 	if (path_to_file)
 		return (path_to_file);
 	else if (ctx->history == true)
-		return (HISTFILE);
+		return (ft_strdup(HISTFILE));
 	else
 		return ("");
 }
@@ -42,11 +42,12 @@ t_histentry		*new_histentry(t_dlist *line, unsigned index)
 	return (he);
 }
 
-void	del_histentry(void **histentry)
+void	del_histentry(void *histentry, size_t histentry_size)
 {
+	(void)histentry_size;
 //	ft_dlsthead(&T_HISTENTRY(histentry)->line);//
-	ft_dlstdel(&T_HISTENTRY(*histentry)->line, &ft_memdel);
-	ft_memdel(histentry);
+	ft_dlstdel(&T_HISTENTRY(histentry)->line, &delvoid);
+	ft_memdel(&histentry);
 }
 
 /*
@@ -118,7 +119,7 @@ void	save_history(char **locals, t_dlist *histlist)
 
 void	add_histentry(t_ctx *ctx)
 {
-		ft_dlstinsert(ctx->hist.list, ft_dlstnew(new_histentry(ctx->line.split_line, ctx->hist.index++)));
+		ft_dlstinsert(ctx->hist.list, ft_dlstnewaddr(new_histentry(ctx->line.split_line, ctx->hist.index++), sizeof(t_histentry)));
 		trim_history(&ctx->hist.list->next, ft_astr_getval(ctx->locals, "HISTSIZE"));
 }
 
@@ -135,7 +136,7 @@ void	init_hist(t_ctx *ctx)
 	while (histentry)
 	{
 		if (ft_strlen(histentry))
-				ft_dlstadd(&ctx->hist.list, ft_dlstnew(new_histentry(str_to_dlst(histentry), ctx->hist.index++)));
+				ft_dlstadd(&ctx->hist.list, ft_dlstnewaddr(new_histentry(str_to_dlst(histentry), ctx->hist.index++), sizeof(t_histentry)));
 			free(histentry);
 		if (get_next_line(ctx->hist.file, &histentry) == -1)
 		{
@@ -147,5 +148,5 @@ void	init_hist(t_ctx *ctx)
 	}
 	close(ctx->hist.file);
 	trim_history(&ctx->hist.list, ft_astr_getval(ctx->locals, "HISTSIZE"));
-	ft_dlstadd(&ctx->hist.list, ft_dlstnew(ft_strdup("HEAD")));
+	ft_dlstadd(&ctx->hist.list, ft_dlstnew("HEAD", 4));
 }

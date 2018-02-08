@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dlsthead.c                                      :+:      :+:    :+:   */
+/*   ft_dlstnewaddr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/13 10:22:30 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/08 19:01:08 by lportay          ###   ########.fr       */
+/*   Created: 2016/11/11 19:18:14 by lportay           #+#    #+#             */
+/*   Updated: 2018/02/08 19:46:08 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_dlsthead(t_dlist **dlst)
+t_dlist	*ft_dlstnewaddr(void const *data, size_t content_size)
 {
-	while ((*dlst)->prev)
-		*dlst = (*dlst)->prev;
+	t_dlist	*maillon;
+
+	if (!(maillon = malloc(sizeof(t_dlist))))
+		return (NULL);
+	maillon->prev = NULL;
+	maillon->next = NULL;
+	maillon->data = (void *)data;
+	if (!data)
+		maillon->content_size = 0;
+	else
+		maillon->content_size = content_size;
+	return (maillon);
 }
