@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/13 19:49:37 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/08 20:27:54 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/08 20:36:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int		move_dlst_head(t_dlist **dlist, int movement)
 			movement--;
 		}
 	else
-		while ((*dlist)->previous && movement)
+		while ((*dlist)->prev && movement)
 		{
-			*dlist = (*dlist)->previous;
+			*dlist = (*dlist)->prev;
 			movement++;
 		}
 	return (movement);
