@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 14:55:18 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/10 17:54:35 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@
 # include <time.h>
 # include <limits.h>
 # include <pwd.h>
+
 # include "line.h"
 # include "prompt.h"
 # include "history.h"
 # include "token.h"
+# include "parser.h"
+# include "exec.h"
 
 # define NOMEM_STR				"No memory available for dynamic allocation\n"
 # define NODIR_STR				"Error retrieving current directory\n"
@@ -142,6 +145,8 @@ void					dump_err(char errcode);
 void					fatal_err(char errcode, t_ctx *ctx);
 void					wrap_exit(int status, t_ctx *ctx);
 
+void					on_emem(int status);
+
 int						set_sighandler(void);
 t_ctx					*get_ctxaddr(t_ctx *ctxaddr);
 
@@ -154,6 +159,8 @@ bool					str_isblank(char *str);
 bool					dlst_isblank(t_dlist *dlst);
 bool					is_number(char *str);
 bool					is_number_w_dash(char *str);
+
+t_ptok					*parse(t_token *tok);
 
 // Shell script stuff
 

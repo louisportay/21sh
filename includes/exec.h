@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/06 18:38:54 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/10 17:51:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@
 # include <fcntl.h>
 
 # include "ft_21sh.h"
-# include "ft_mem.h"
-# include "ft_string.h"
-# include "environ.h"
 # include "qbuf.h"
 
 # define EXE_LCHD ("launched")
@@ -40,14 +37,14 @@ struct					s_proc
 {
 	struct s_proc		*next;
 	char				**argv;
-	pid_t				pid;
 	char				**env;
+	t_asmt				*asmts;
+	pid_t				pid;
+	char				**ctx;
 	char				completed;
 	char				stopped;
 	int					status;
 	t_redir				*redirs;
-//	int					std[3];
-//	int					*other;
 };
 
 struct					s_job
@@ -62,12 +59,13 @@ struct					s_job
 	int					stderr;
 };
 
+t_proc					*proc_cr(void);
 t_proc					*proc_new(char **argv);
 void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
 void					proc_clear(t_proc **proc);
 
 void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
-									t_env *env);
+									t_ctx *ctx);
 int						proc_chgstat(t_job *job, pid_t pid, int status);
 
 t_job					*job_new(char *cmd, t_proc *plist);
@@ -78,11 +76,11 @@ t_job					*job_find(pid_t pid, t_job *job_list);
 int						job_stopped(t_job *job);
 int						job_completed(t_job *job);
 
-int						job_exec(t_job *j, int fg, t_env *env);
+int						job_exec(t_job *j, int fg, t_ctx *ctx);
 
 void					job_wait(t_job *j);
 void					job_putbg(t_job *j, int cont);
-void					job_putfg(t_job *j, int cont, t_env *env);
+void					job_putfg(t_job *j, int cont, t_ctx *ctx);
 
 void					job_fmtinfo(t_job *j, char *status);
 

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/08 18:55:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/10 13:14:10 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,33 @@
 ** Function which print the right error message
 */
 
+/*
+**	void	dump_err(char errcode)
+**	{
+**		if (errcode == BADQUOTES)
+**			ft_putstr_fd(BADQUOTES, STDERR_FILENO);
+**		if (errcode == NOMEM)
+**			ft_putstr_fd(NOMEM, STDERR_FILENO);
+**		if (errcode == NODIR)
+**			ft_putstr_fd(NODIR, STDERR_FILENO);
+**		if (errcode == FAILSETSIGHDLR)
+**			ft_putstr_fd(FAILSETSIGHDLR, STDERR_FILENO);
+**		if (errcode == FAILREAD)
+**			ft_putstr_fd(FAILREAD, STDERR_FILENO);
+**	}
+*/
+
 void	dump_err(char errcode)
 {
 	t_keyval err[6];
 	int 	i;
 
-	err[0] = KEY_VAL(BADQUOTES, BADQUOTES_STR);
-	err[1] = KEY_VAL(NOMEM, NOMEM_STR);
-	err[2] = KEY_VAL(NODIR, NODIR_STR);
-	err[3] = KEY_VAL(FAILSETSIGHDLR, FAILSETSIGHDLR_STR);
-	err[4] = KEY_VAL(FAILREAD, FAILREAD_STR);
-	err[5] = KEY_VAL(0, NULL);
+	err[0] = KEY_VAL(BADQUOTES, BADQUOTES_STR);					// NORME
+	err[1] = KEY_VAL(NOMEM, NOMEM_STR);							// NORME
+	err[2] = KEY_VAL(NODIR, NODIR_STR);							// NORME
+	err[3] = KEY_VAL(FAILSETSIGHDLR, FAILSETSIGHDLR_STR);		// NORME
+	err[4] = KEY_VAL(FAILREAD, FAILREAD_STR);					// NORME
+	err[5] = KEY_VAL(0, NULL);									// NORME
 	i = 0;
 	while (errcode != err[i].key && err[i].key)
 		i++;

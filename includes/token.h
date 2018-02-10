@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/05 23:09:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/10 14:36:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,13 @@ typedef struct		s_heredoc
 	t_line			hdoc;
 }					t_heredoc;
 
-char	*token_str(t_token *tok);
-void	delete_toklist(t_token **toklist);
-void	dump_token(t_token *tok);
-t_token	*tokenizer(t_dlist *line);
+char				*token_str(t_token *tok);
+void				delete_toklist(t_token **toklist);
+void				dump_token(t_token *tok);
+t_token				*tokenizer(t_dlist *line);
 
-t_token	*filter_tokens(t_token *toklist);// static ?
+t_token				*filter_tokens(t_token *toklist);// static ?
 
+void    			print_toklist(t_token *toklist);
 
 #endif

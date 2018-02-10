@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/08 20:13:33 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/10 17:56:45 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@
 
 SRCDIR= srcs/ \
 		srcs/line \
+		srcs/parser
 
 vpath %.c $(SRCDIR)
 vpath %.h includes/
@@ -48,6 +49,7 @@ SRCS=	main.c\
 		error.c\
 		signal.c\
 		tools.c\
+		utils.c\
 		prompt.c\
 		history.c\
 		rawline.c\
@@ -67,8 +69,14 @@ SRCS=	main.c\
 		\
 		lexer.c\
 		filter_tokens.c\
+		parser.c\
+		ptok_print.c\
+		asmt.c\
+		bridge_token.c\
+		dlist_bridge.c\
 
 OBJDIR= obj
+#include srcs/parser/parser.mk
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
 
 LIBDIR= lib21sh/

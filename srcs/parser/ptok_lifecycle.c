@@ -1,23 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_parser.c                                      :+:      :+:    :+:   */
+/*   ptok_lifecycle.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/05 18:32:10 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/05 18:35:39 by vbastion         ###   ########.fr       */
+/*   Created: 2018/02/10 12:56:30 by vbastion          #+#    #+#             */
+/*   Updated: 2018/02/10 13:19:01 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "ft_21sh.h"
 
-extern char **environ;
-
-int main(int ac, char **av)
+t_ptok				*ptok_new(void)
 {
-	char		**env;
+	t_ptok			*ptok;
 
-	env = ft_astr_dup(environ);
-	ft21_parse(
+	if ((ptok = (t_ptok *)ft_memalloc(sizeof(t_ptok))) == NULL)
+	{
+		fatal_err(NOMEM, get_ctxaddr(NULL));
+		return (NULL);
+	}
+	return (ptok);
+}
+
+void				ptok_free(t_ptok **tok)
+{
+	*tok = NULL;
+	return ;
+}
+
+void				ptok_clear(t_ptok **tokens)
+{
+	*tokens = NULL;
+	return ;
 }
