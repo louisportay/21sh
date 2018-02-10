@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/10 17:56:45 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/10 20:09:48 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,10 +70,11 @@ SRCS=	main.c\
 		lexer.c\
 		filter_tokens.c\
 		parser.c\
-		ptok_print.c\
+		printers.c\
 		asmt.c\
 		bridge_token.c\
-		dlist_bridge.c\
+		bridge_dlist.c\
+		bridge_astr.c
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

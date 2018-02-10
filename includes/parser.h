@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/10 18:37:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/10 20:11:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,14 @@ t_dlist					*dlst_findc(t_dlist *elem, char c);
 void					token_insert(t_token **head, t_token **curr,
 										t_token *e);
 size_t					token_count(t_token *tok);
+
+char					**astr_fromlist(t_list *list);
+
+/*
+ *						DEBUG ONLY | COMMENT SYNTAX ON PURPOSE
+ */
+
+void					asmt_print(t_asmt *asmt);
+void					astr_print(char **astr);
 
 #endif

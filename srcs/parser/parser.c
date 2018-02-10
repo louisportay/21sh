@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/10 19:05:12 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/10 20:26:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,111 +15,71 @@
 #define TK_ASN (REDIR | ASSIGNMENT_WORD)
 #define TK_WORD (REDIR | WORD)
 
-//	void					get(t_proc *p, t_token *tokens,  t_token *ts,
-//								enum e_toktype enums[2])
-//	{
-//		while (t != NULL && (t->type & TK_ASN) != 0)
-//		{
-//			if (t->type == ASSIGNMENT_WORD)
-//				token_insert(asmt, asmt + 1, t);
-//			else
-//				token_insert((t_token **)&p->redir, (t_token **)&rdr, t);
-//			t = t->next;
-//		}
-//	}
-
-void					asmt_print(t_asmt *asmt)
+char					**get_args(t_token **toks, t_redir **rdr)
 {
-	while (asmt != NULL)
-	{
-		printf("%s=%s\n", asmt->key, asmt->value);
-		asmt = asmt->next;
-	}
-}
-
-void					astr_print(char **astr)
-{
-	int					i;
-
-	i = 0;
-	while (astr[i] != NULL)
-	{
-		printf("argv[%d]: %s\n", i, astr[i]);
-		i++;
-	}
-}
-
-void					arguments(t_proc *proc, t_token *args)
-{
-	size_t				cnt;
-	size_t				i;
-
-	cnt = token_count(args);
-	proc->argv = (char **)ft_pmemalloc(sizeof(char *) * (cnt + 1),
-										&on_emem, NOMEM);
-	i = 0;
-	while (args != NULL)
-	{
-		proc->argv[i] = dlst_pstr(args->first_letter, args->last_letter->next);
-		args = args->next;
-		i++;
-	}
-	astr_print(proc->argv);
-}
-
-void					assign(t_proc *proc, t_token *asmt)
-{
-	t_asmt				*curr;
-	t_asmt				*kv;
-	t_asmt				*tmp;
-
-	while (asmt != NULL)
-	{
-		kv = asmt_fromtoken(asmt);
-		if ((tmp = asmt_find(proc->asmts, kv->key)) != NULL)
-			asmt_update(tmp, &kv);
-		else
-			asmt_insert(&proc->asmts, &curr, kv);
-		asmt = asmt->next;
-	}
-	asmt_print(proc->asmts);
-}
-
-void					 get(t_proc *p, t_token **toklist, enum e_toktype tar,
-								t_token **tar_toklist, t_token **curr_rdr)
-{
+	t_list				*lsts[3];
 	t_token				*t;
 	t_token				*tmp;
-	enum e_toktype		mask;
+	char				*word;
+	char				**av;
 
-	mask = tar | REDIR;
-	t = *toklist;
-	while (t != NULL && (t->type & mask) != 0)
+	lsts[0] = NULL;
+	t = *toks;
+	while (t != NULL && (t->type & TK_WORD) != 0)
 	{
 		tmp = t;
 		t = t->next;
-		if (tmp->type == tar)
-			token_insert(tar_toklist, tar_toklist + 1, tmp);
+		if (tmp->type == WORD)
+		{
+			word = dlst_pstr(tmp->first_letter, tmp->last_letter->next);
+			lsts[2] = list_create(word);
+			ft_list_insert(lsts, lsts + 1, lsts[2]);
+		}
 		else
-			token_insert((t_token **)&p->redirs, curr_rdr, tmp);
+			token_insert((t_token **)rdr, (t_token **)rdr + 1, tmp);
 	}
-	*toklist = t;
+	av = astr_fromlist(lsts[0]);
+	ft_memdel((void **)lsts);
+	*toks = t;
+	return (av);
+}
+
+t_asmt					*get_asmt(t_token **toks, t_redir **rdr)
+{
+	t_token				*t;
+	t_token				*tmp;
+	t_asmt				*asmt[3];
+	t_asmt				*exist;
+
+	t = *toks;
+	asmt[0] = NULL;
+	while (t != NULL && (t->type & TK_ASN) != 0)
+	{
+		tmp = t;
+		t = t->next;
+		if (tmp->type == ASSIGNMENT_WORD)
+		{
+			asmt[2] = asmt_fromtoken(tmp);
+			if ((exist = asmt_find(asmt[0], asmt[2]->key)) != NULL)
+				asmt_update(exist, asmt + 2);
+			else
+				asmt_insert(asmt + 0, asmt + 1, asmt[2]);
+		}
+		else
+			token_insert((t_token **)rdr, (t_token **)rdr + 1, tmp);
+	}
+	*toks = t;
+	return (asmt[0]);
 }
 
 t_proc					*proc_next(t_token **tokz)
 {
-	t_token				*asmt[2];
-	t_token				*word[2];
-	t_redir				*rdr;
+	t_redir				*rdr[2];
 	t_proc				*p;
 
 	p = (t_proc *)ft_pmemalloc(sizeof(t_proc), &on_emem, NOMEM);
-	asmt[0] = NULL;
-	word[0] = NULL;
-	get(p, tokz, ASSIGNMENT_WORD, asmt, (t_token **)&rdr);
-	get(p, tokz, WORD, word, (t_token **)&rdr);
-	assign(p, asmt[0]);
-	arguments(p, word[0]);
+	p->asmts = get_asmt(tokz, rdr);
+	p->argv = get_args(tokz, rdr);
 	return (p);
 }
 
@@ -130,5 +90,7 @@ t_ptok					*parse(struct s_token *tokens)
 
 	tokz = tokens->next;
 	proc = proc_next(&tokz);
-	return (NULL);		// Later when working I will return sth else
+	asmt_print(proc->asmts);
+	astr_print(proc->argv);
+	return (NULL);// Later when working I will return sth else
 }
