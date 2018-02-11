@@ -6,11 +6,11 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 13:35:22 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 17:03:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 13:24:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_string.h"
 
 static int		ft_lwidth(long nb)
 {

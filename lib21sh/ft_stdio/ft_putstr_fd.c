@@ -6,11 +6,11 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 16:56:50 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/11 18:37:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/11 15:26:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_string.h"
+#include "ft_stdio.h"
 
 void		ft_putstr_fd(char const *s, int fd)
 {

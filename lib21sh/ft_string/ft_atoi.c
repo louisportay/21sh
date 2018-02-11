@@ -6,11 +6,12 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 19:41:12 by lportay           #+#    #+#             */
-/*   Updated: 2017/03/30 13:44:57 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 13:32:57 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_string.h"
+#include "ft_ctype.h"
 
 int			ft_atoi(const char *str)
 {

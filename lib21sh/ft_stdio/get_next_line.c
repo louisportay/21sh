@@ -6,11 +6,11 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/21 11:24:47 by lportay           #+#    #+#             */
-/*   Updated: 2017/09/27 10:44:33 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 15:25:16 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_stdio.h"
 
 static void	join_gnl(char **rest, char *buf)
 {

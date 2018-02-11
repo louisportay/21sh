@@ -1,16 +1,29 @@
-ITEMS+=\
-ft_list_add.o\
-ft_list_count.o\
-ft_list_create.o\
-ft_list_delete.o\
-ft_list_foreach.o\
-ft_list_insert.o\
-ft_list_last.o\
-ft_list_merge.o\
-ft_list_next.o\
-ft_list_prepend.o\
-ft_list_push.o\
-ft_list_split.o
+LIST=\
+ft_list_add.c\
+ft_list_count.c\
+ft_list_create.c\
+ft_list_delete.c\
+ft_list_foreach.c\
+ft_list_insert.c\
+ft_list_last.c\
+ft_list_merge.c\
+ft_list_next.c\
+ft_list_prepend.c\
+ft_list_push.c\
+ft_list_split.c\
 
-SRC_D+=ft_list
-HEADER+=ft_list.h
+LIST_DIR=ft_list
+
+OBJ+=$(addprefix $(OBJDIR)/$(LIST_DIR)/, $(LIST:%.c=%.o))
+
+SRCDIR+=$(LIST_DIR)/
+
+INCLUDE+=-I$(LIST_DIR)/
+
+HEADER=ft_list.h
+
+$(OBJDIR)/$(LIST_DIR)/%.o: %.c $(HEADER) | $(OBJDIR)/$(LIST_DIR)
+	$(COMPILE.c) $< -o $@
+
+$(OBJDIR)/$(LIST_DIR):
+	mkdir -p $(OBJDIR)/$(LIST_DIR)

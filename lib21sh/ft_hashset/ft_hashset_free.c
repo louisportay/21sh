@@ -6,11 +6,12 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:49:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/06 15:58:21 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/11 15:08:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_hashset.h"
+#include "ft_string.h"
 
 void				ft_hashset_free(t_hash_dict **dict,
 									void (*ptr_free)(void **))

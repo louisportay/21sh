@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 15:30:13 by vbastion          #+#    #+#             */
-/*   Updated: 2017/08/09 19:11:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/09 15:53:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	size_t	l2;
 	char	*ret;
 
-	if (s1 == NULL || s2 == NULL)
+	if (s1 == NULL && s2 == NULL)
 		return (NULL);
 	if (s1 == NULL && s2 != NULL)
 		return (ft_strdup(s2));

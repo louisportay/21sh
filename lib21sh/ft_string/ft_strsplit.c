@@ -6,11 +6,12 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/16 19:16:38 by lportay           #+#    #+#             */
-/*   Updated: 2017/08/24 21:25:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 13:35:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_string.h"
+#include "ft_ctype.h"
 
 static void	str_nb(char const *s, int c, int *str_nb)
 {

@@ -6,11 +6,12 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 11:14:19 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 16:43:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/11 15:25:46 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_stdio.h"
+#include "ft_string.h"
 
 // Ptet le remplacer par un truc plus efficient...?
 

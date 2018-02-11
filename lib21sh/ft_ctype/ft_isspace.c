@@ -6,11 +6,11 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/28 19:15:52 by lportay           #+#    #+#             */
-/*   Updated: 2017/08/28 19:15:53 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 15:00:51 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_ctype.h"
 
 int	ft_isspace(int c)
 {

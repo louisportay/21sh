@@ -1,13 +1,26 @@
-ITEMS+=\
-ft_isalnum.o\
-ft_isalpha.o\
-ft_isascii.o\
-ft_isdigit.o\
-ft_isprint.o\
-ft_isspace.o\
-ft_isunicode.o\
-ft_tolower.o\
-ft_toupper.o
+CTYPE=\
+ft_isalnum.c\
+ft_isalpha.c\
+ft_isascii.c\
+ft_isdigit.c\
+ft_isprint.c\
+ft_isspace.c\
+ft_isunicode.c\
+ft_tolower.c\
+ft_toupper.c\
 
-SRC_D+=ft_ctype
-HEADERS+=ft_ctype.h 
+CTYPE_DIR=ft_ctype
+
+OBJ+=$(addprefix $(OBJDIR)/$(CTYPE_DIR)/, $(CTYPE:%.c=%.o))
+
+SRCDIR+=$(CTYPE_DIR)/
+
+INCLUDE+=-I$(CTYPE_DIR)/
+
+HEADER=ft_ctype.h
+
+$(OBJDIR)/$(CTYPE_DIR)/%.o: %.c $(HEADER) | $(OBJDIR)/$(CTYPE_DIR)
+	$(COMPILE.c) $< -o $@
+
+$(OBJDIR)/$(CTYPE_DIR):
+	mkdir -p $(OBJDIR)/$(CTYPE_DIR)

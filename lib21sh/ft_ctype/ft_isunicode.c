@@ -6,11 +6,12 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:31:28 by lportay           #+#    #+#             */
-/*   Updated: 2017/04/24 18:56:49 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 15:01:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
+#include "ft_ctype.h"
 
 int		ft_isunicode(wchar_t a)
 {

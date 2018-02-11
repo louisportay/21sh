@@ -6,11 +6,11 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/22 11:24:46 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/22 16:24:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 16:13:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "stack.h"
 
 void	stack_del(t_stack **stack)
 {
