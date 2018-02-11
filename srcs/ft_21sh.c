@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/10 12:54:40 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/11 20:04:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,6 +262,7 @@ void	vingtetunsh(char **av, char  **environ)
 {
 	t_ctx	ctx;
 	char	ret;
+	t_ptok *extree;
 
 	if ((ret = init(&ctx, av, environ)) != SUCCESS)
 		fatal_err(ret, &ctx);
@@ -272,8 +273,8 @@ void	vingtetunsh(char **av, char  **environ)
 
 		if (ctx.line.split_line)
 			ctx.toklist = tokenizer(ctx.line.split_line);
-
-		t_ptok *extree = parse(ctx.toklist);
+		if (ctx.toklist != NULL)
+			extree = parse(ctx.toklist);
 		ptok_print(extree);
 
 		delete_toklist(&ctx.toklist);

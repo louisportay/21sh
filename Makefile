@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/11 11:36:53 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/11 19:32:54 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,9 @@ SRCS=	main.c\
 		bridge_token.c\
 		bridge_dlist.c\
 		bridge_astr.c\
-		proc_next.c
+		proc_next.c\
+		ptok_lifecycle.c\
+		clearers.c
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

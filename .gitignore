@@ -25,3 +25,4 @@ test
 TODAY
 REMAIN
 err.log
+*.swo

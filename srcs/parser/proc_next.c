@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 11:28:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/11 13:12:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/11 19:54:10 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,11 @@ t_proc					*proc_next(t_token **tokz)
 	t_proc				*p;
 
 	rdr[0] = NULL;
+	if (token_issep(*tokz))
+	{
+		token_dumperror(*tokz);
+		return (NULL);
+	}
 	p = (t_proc *)ft_pmemalloc(sizeof(t_proc), &on_emem, NOMEM);
 	p->asmts = get_asmt(tokz, rdr);
 	p->argv = get_args(tokz, rdr);
