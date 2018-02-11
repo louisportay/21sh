@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/10 18:27:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/11 13:15:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,21 @@ size_t					token_count(t_token *tok)
 		tok = tok->next;
 	}
 	return (len);
+}
+
+t_redir					*redir_dup(t_redir *redir)
+{
+	t_redir				*rdr;
+
+	rdr = (t_redir *)ft_pmemalloc(sizeof(t_redir), &on_emem, NOMEM);
+	rdr->type = redir->type;
+	if ((rdr->s_rhs = ft_strdup(redir->s_rhs)) == NULL)
+	{
+		on_emem(NOMEM);
+		return (NULL);
+	}
+	rdr->lhs = redir->lhs;
+	rdr->fd_rhs = redir->fd_rhs;
+	rdr->dash = redir->dash;
+	return (rdr);
 }

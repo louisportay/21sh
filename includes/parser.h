@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/10 20:11:22 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/11 13:09:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,37 @@ void					ptok_print(struct s_ptok *tokens);
 
 struct s_ptok			*parser(struct s_token *tokens);
 
-t_asmt					*asmt_fromtoken(t_token *asmt);
-void					asmt_update(t_asmt *asmt, t_asmt **new);
-void					asmt_insert(t_asmt **head, t_asmt **curr, t_asmt *e);
-t_asmt					*asmt_find(t_asmt *asmt, char *key);
-void					asmt_print(t_asmt *asmt);
+struct s_proc			*proc_next(struct s_token **tokens);
+
+struct s_asmt			*asmt_fromtoken(struct s_token *asmt);
+void					asmt_update(struct s_asmt *asmt, struct s_asmt **new);
+void					asmt_insert(struct s_asmt **head, struct s_asmt **curr,
+									struct s_asmt *e);
+struct s_asmt			*asmt_find(struct s_asmt *asmt, char *key);
 
 /*
 **	BRIDGES
 */
 
-char					*dlst_pstr(t_dlist *beg, t_dlist *end);
-size_t					dlst_pcount(t_dlist *beg, t_dlist *end);
-t_dlist					*dlst_findc(t_dlist *elem, char c);
+char					*dlst_pstr(struct s_dlist *beg, struct s_dlist *end);
+size_t					dlst_pcount(struct s_dlist *beg, struct s_dlist *end);
+struct s_dlist			*dlst_findc(struct s_dlist *elem, char c);
 
-void					token_insert(t_token **head, t_token **curr,
-										t_token *e);
-size_t					token_count(t_token *tok);
+void					token_insert(struct s_token **head,
+										struct s_token **curr,
+										struct s_token *e);
+size_t					token_count(struct s_token *tok);
+t_redir					*redir_dup(struct s_redir *redir);
 
-char					**astr_fromlist(t_list *list);
+char					**astr_fromlist(struct s_list *list);
 
 /*
  *						DEBUG ONLY | COMMENT SYNTAX ON PURPOSE
  */
 
-void					asmt_print(t_asmt *asmt);
+void					asmt_print(struct s_asmt *asmt);
 void					astr_print(char **astr);
+void					job_print(struct s_job *job);
+void					redir_print(struct s_redir *redir);
 
 #endif

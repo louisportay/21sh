@@ -6,91 +6,57 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/11 10:50:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/11 12:26:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-#define TK_ASN (REDIR | ASSIGNMENT_WORD)
-#define TK_WORD (REDIR | WORD)
-
-char					**get_args(t_token **toks, t_redir **rdr)
+void					assert_next_token(t_token *tok)
 {
-	t_list				*lsts[3];
-	t_token				*t;
-	t_token				*tmp;
-	char				*word;
-	char				**av;
-
-	lsts[0] = NULL;
-	t = *toks;
-	while (t != NULL && (t->type & TK_WORD) != 0)
-	{
-		tmp = t;
-		t = t->next;
-		if (tmp->type & WORD)
-		{
-			word = dlst_pstr(tmp->first_letter, tmp->last_letter->next);
-			lsts[2] = list_create(word);
-			ft_list_insert(lsts, lsts + 1, lsts[2]);
-		}
-		else
-			token_insert((t_token **)rdr, (t_token **)rdr + 1, tmp);
-	}
-	av = astr_fromlist(lsts[0]);
-	ft_memdel((void **)lsts);
-	*toks = t;
-	return (av);
+	if (tok->type == NEWLINE)
+		ft_putstr("NEWLINE: end of parse\n");
+	else if (tok->type == AND)
+		ft_putstr("AND: Background job\n");
+	else if (tok->type == SEMICOL)
+		ft_putstr("SEMICOL: Need a proc after, else parse error\n");
+	else if (tok->type == COMMENT)
+		ft_putstr("COMMENT: end of parse\n");
+	else if (tok->type == OR)
+		ft_putstr("OR: pipeline\n");
+	else if (tok->type == OR_IF)
+		ft_putstr("OR_IF: Conditional execution of next\n");
+	else if (tok->type == AND_IF)
+		ft_putstr("AND_IF: Conditional execution of next\n");
 }
 
-t_asmt					*get_asmt(t_token **toks, t_redir **rdr)
+void					proc_insert(t_proc **head, t_proc **curr, t_proc *e)
 {
-	t_token				*t;
-	t_token				*tmp;
-	t_asmt				*asmt[3];
-	t_asmt				*exist;
-
-	t = *toks;
-	asmt[0] = NULL;
-	while (t != NULL && (t->type & TK_ASN) != 0)
-	{
-		tmp = t;
-		t = t->next;
-		if (tmp->type == ASSIGNMENT_WORD)
-		{
-			asmt[2] = asmt_fromtoken(tmp);
-			if ((exist = asmt_find(asmt[0], asmt[2]->key)) != NULL)
-				asmt_update(exist, asmt + 2);
-			else
-				asmt_insert(asmt + 0, asmt + 1, asmt[2]);
-		}
-		else
-			token_insert((t_token **)rdr, (t_token **)rdr + 1, tmp);
-	}
-	*toks = t;
-	return (asmt[0]);
-}
-
-t_proc					*proc_next(t_token **tokz)
-{
-	t_redir				*rdr[2];
-	t_proc				*p;
-
-	p = (t_proc *)ft_pmemalloc(sizeof(t_proc), &on_emem, NOMEM);
-	p->asmts = get_asmt(tokz, rdr);
-	p->argv = get_args(tokz, rdr);
-	return (p);
+	if (*head == NULL)
+		*head = e;
+	else
+		(*curr)->next = e;
+	*curr = e;
 }
 
 t_ptok					*parse(struct s_token *tokens)
 {
 	t_proc				*proc;
+	t_proc				*cproc;
 	t_token				*tokz;
+	t_ptok				*ptok;
 
 	tokz = tokens->next;
 	proc = proc_next(&tokz);
-	asmt_print(proc->asmts);
-	astr_print(proc->argv);
+	ptok = (t_ptok *)ft_pmemalloc(sizeof(t_ptok), &on_emem, NOMEM);
+	ptok->job = (t_job *)ft_pmemalloc(sizeof(t_job), &on_emem, NOMEM);
+	proc_insert(&ptok->job->procs, &cproc, proc);
+	while (tokz->type == OR)
+	{
+		tokz = tokz->next;
+		proc = proc_next(&tokz);
+		proc_insert(&ptok->job->procs, &cproc, proc);
+	}
+	job_print(ptok->job);
 	return (NULL);// Later when working I will return sth else
 }
