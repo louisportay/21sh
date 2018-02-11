@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/10 20:26:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/11 10:50:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char					**get_args(t_token **toks, t_redir **rdr)
 	{
 		tmp = t;
 		t = t->next;
-		if (tmp->type == WORD)
+		if (tmp->type & WORD)
 		{
 			word = dlst_pstr(tmp->first_letter, tmp->last_letter->next);
 			lsts[2] = list_create(word);
