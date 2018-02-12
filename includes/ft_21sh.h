@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 14:35:50 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 16:12:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,12 @@ typedef struct			s_typefunc
 */
 
 void					vingtetunsh(char **av, char **environ);
+
+int						init(t_ctx *ctx, char **av, char **environ);
+t_hash_dict				*getbuiltins(void);
+void					init_termcaps(t_ctx *ctx);
+void					complete_environ(char ***environ);
+int						create_locals(char ***locals);
 
 void					dump_err(char errcode);
 void					fatal_err(char errcode, t_ctx *ctx);

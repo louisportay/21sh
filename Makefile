@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/12 15:23:40 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/12 16:11:42 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,6 +98,8 @@ SRCS=	main.c\
 		job_wait.c\
 		proc_chgstat.c\
 		job_lifecycle.c\
+		initvar.c\
+		initshell.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk
