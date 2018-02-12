@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 16:21:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 17:57:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static void			init_termios(t_ctx *ctx)
 #ifdef __APPLE__
 	ctx->tios.c_cc[VDSUSP] = _POSIX_VDISABLE;
 	ctx->tios.c_cc[VDISCARD] = _POSIX_VDISABLE;
+	ctx->tios.c_cc[VINTR] = _POSIX_VDISABLE;
 #endif
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws) == -1)
 		ctx->line_edition = false;
