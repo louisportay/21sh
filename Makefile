@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
+#    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/11 21:09:47 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/12 14:04:18 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@
 
 SRCDIR= srcs/ \
 		srcs/line \
+		srcs/parser
 
 vpath %.c $(SRCDIR)
 vpath %.h includes/
@@ -58,6 +59,7 @@ SRCS=	main.c\
 		error.c\
 		signal.c\
 		tools.c\
+		utils.c\
 		prompt.c\
 		history.c\
 		rawline.c\
@@ -78,8 +80,18 @@ SRCS=	main.c\
 		lexer.c\
 		filter_tokens.c\
 		redir.c\
+		parser.c\
+		printers.c\
+		asmt.c\
+		bridge_token.c\
+		bridge_dlist.c\
+		bridge_astr.c\
+		proc_next.c\
+		ptok_lifecycle.c\
+		clearers.c
 
 OBJDIR= obj
+#include srcs/parser/parser.mk
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
 
 LIBDIR= lib21sh/

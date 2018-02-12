@@ -24,3 +24,5 @@ hist
 test
 TODAY
 REMAIN
+err.log
+*.swo

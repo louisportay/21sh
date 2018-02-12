@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_21sh.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 18:05:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/12 14:05:16 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,19 +100,6 @@ char	**getpath(char **environ)
 	}	
 	return (path);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void init_termcaps(t_ctx *ctx)
 {
@@ -261,6 +248,7 @@ void	vingtetunsh(char **av, char  **environ)
 {
 	t_ctx	ctx;
 	char	ret;
+	t_ptok *extree;
 
 	if ((ret = init(&ctx, av, environ)) != SUCCESS)
 		fatal_err(ret, &ctx);
@@ -271,9 +259,16 @@ void	vingtetunsh(char **av, char  **environ)
 
 		if (ctx.line.split_line)
 			ctx.toklist = tokenizer(ctx.line.split_line);
-
+		write(1, "\n", 1);
+		if (ctx.toklist != NULL)
+			extree = parse(ctx.toklist);
+		if (extree != NULL)
+		{
+			ptok_print(extree);
+			ptok_clear(&extree);
+		}
+		// HERE WILL THE EXEC BE
 		delete_toklist(&ctx.toklist);
-
 		if (ctx.line.line_saved == false)
 			ft_dlstdel(&ctx.line.split_line, &delvoid);
 		else//

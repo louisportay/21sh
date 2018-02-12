@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 20:10:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/12 14:06:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,11 +349,11 @@ t_token		*tokenizer(t_dlist *line)
 			last_tok = last_tok->next;
 	}
 
-	print_toklist(toklist->next);//
-	write(STDOUT_FILENO, "\n", 1);//
+//	print_toklist(toklist->next);//
+//	write(STDOUT_FILENO, "\n", 1);//
 	requalify_tokens(&toklist);
-	if (toklist)//
-		print_toklist(toklist->next);//
+//	if (toklist)//
+//		print_toklist(toklist->next);//
 	stack_del(&quote_state);
 
 	return (toklist);

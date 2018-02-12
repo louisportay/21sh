@@ -5,98 +5,114 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/05 14:42:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/05 18:34:58 by vbastion         ###   ########.fr       */
+/*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
+/*   Updated: 2018/02/12 12:44:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
- #include "parser.h"
+#include "ft_21sh.h"
 
-int						panic_exit(int code, char *msg)
+void					assert_next_token(t_token *tok)
 {
-	ft_putstr_fd(STDERR_FILENO, msg);
-	exit(code);
-	return (code);
+	if (tok->type == NEWLINE)
+		ft_putstr("NEWLINE: end of parse\n");
+	else if (tok->type == AND)
+		ft_putstr("AND: Background job\n");
+	else if (tok->type == SEMICOL)
+		ft_putstr("SEMICOL: Need a proc after, else parse error\n");
+	else if (tok->type == COMMENT)
+		ft_putstr("COMMENT: end of parse\n");
+	else if (tok->type == OR)
+		ft_putstr("OR: pipeline\n");
+	else if (tok->type == OR_IF)
+		ft_putstr("OR_IF: Conditional execution of next\n");
+	else if (tok->type == AND_IF)
+		ft_putstr("AND_IF: Conditional execution of next\n");
 }
 
-/*
-**	UNSAFE IMPLEMENTATION VALID IN CURRENT CONTEXT
-**	DO NOT USE OTHERWISE OR PROTECT IT
-*/
-
-static int				l_hand_redirs(t_token **token, t_redir *redirs[2])
+void					proc_insert(t_proc **head, t_proc **curr, t_proc *e)
 {
-	if (redirs[0] == NULL)
-		redirs[0] = (t_redir *)*token;
+	if (*head == NULL)
+		*head = e;
 	else
-		redirs[1]->next = *token;
-	redirs[1] = (t_redir *)*token;
-	*token = (*token)->next;
-	return (1);
+		(*curr)->next = e;
+	*curr = e;
 }
 
-static int				l_hand_assign(t_token **token, t_token *assign[2])
+t_proc					*get_pipe(t_token **tokz)
 {
-	if (assign[0] == NULL)
-		assign[0] = *token;
-	else
-		assign[1]->next = *token;
-	assign[1] = *token;
-	*token = (*token)->next;
-	return (1);
-}
+	t_proc				*p[3];
+	t_token				*t;
 
-static int				get_next(t_token **token,
-									t_token *assign[2],
-									t_redir *redirs[2])
-{
-	if (*token == NULL)
-		return (0);
-	else if ((*token)->type == ASSIGNMENT_WORD)
-		return (l_hand_assign(token, assign));
-	else if (((*token)->type & REDIRS) != 0)
-		return (l_hand_redirs(token, redirs));
-	else
-		return (0);
-}
-
-static void				get_assigns(t_token **token,
-									t_token *assign[2],
-									t_redir *redirs[2])
-{
-	while (get_next(token, assign, redirs) != 0)
-		;
-}
-
-#include <stdio.h>//
-void ft_astr_print(char **env)
-{
-	int i = 0;
-	while (env[i] != NULL)
-		printf("env[%d]: '%s'\n", i, env[i]);
-}
-
-int						ft21_parse(t_token *token, char **env)
-{
-	t_proc				*proc;
-	t_token				*assign[2];
-	t_redir				*redirs[2];
-
-	ft_astr_print(env);
-	while (token != NULL)
+	t = *tokz;
+	p[2] = proc_next(&t);
+	p[0] = NULL;
+	proc_insert(p, p + 1, p[2]);
+	while (t->type == OR)
 	{
-		if ((proc = (t_proc *)ft_memalloc(sizeof(t_proc))) != NULL)
-			return (panic_exit(MALLOC_FAILURE, MALLOC_FAILMSG));
-		proc->env = ft_astr_dup(env);
-		redirs[0] = NULL;
-		assign[0] = NULL;
-		get_assigns(&token, assign, redirs);
-		update_env(&proc->env, assign[0]);
-		proc->redirs = redirs[0];
-		ft_astr_print(proc->env);
-		break ;
+		if (t->next == NULL || token_issep(t->next))
+		{
+			token_dumperror(t);
+			proc_clear(p);
+			return (NULL);
+		}
+		t = t->next;
+		p[2] = proc_next(&t);
+		proc_insert(p, p + 1, p[2]);
 	}
-	return (1);
+	*tokz = t;
+	return (p[0]);
 }
 
+t_ptok					*get_ands(t_token **toks)
+{
+	t_token				*t;
+	t_proc				*p;
+	t_ptok				*pt[3];
 
+	t = *toks;
+	pt[0] = NULL;
+	while (t->type == AND_IF)
+	{
+		t = t->next;
+		if ((p = get_pipe(&t)) == NULL)
+			return (ptok_clear(pt));
+		pt[2] = (t_ptok *)ft_pmemalloc(sizeof(t_ptok), &on_emem, NOMEM);
+		pt[2]->job = (t_job *)ft_pmemalloc(sizeof(t_job), &on_emem, NOMEM);
+		pt[2]->job->procs = p;
+		ptok_insert(pt, pt + 1, pt[2]);
+	}
+	*toks = t;
+	return (pt[0]);
+}
+
+t_ptok					*ptok_next(t_token **tokens)
+{
+	t_token				*tokz;
+	t_ptok				*ptok;
+
+	if (*tokens == NULL || token_issep(tokz = (*tokens)->next))
+		return (token_dumperror(*tokens == NULL ? NULL : tokz));
+	ptok = (t_ptok *)ft_pmemalloc(sizeof(t_ptok), &on_emem, NOMEM);
+	ptok->job = (t_job *)ft_pmemalloc(sizeof(t_job), &on_emem, NOMEM);
+	if ((ptok->job->procs = get_pipe(&tokz)) == NULL)
+		return (ptok_clear(&ptok));
+	if (tokz->type == AND_IF && (ptok->ok = get_ands(&tokz)) == NULL)
+		return (ptok_clear(&ptok));
+	if (tokz->type == OR_IF)
+	{
+		if ((ptok->err = ptok_next(&tokz)) == NULL)
+			return (ptok_clear(&ptok));
+	}
+	*tokens = tokz;
+	return (ptok);
+}
+
+t_ptok					*parse(struct s_token *tokens)
+{
+	t_ptok				*ret;
+
+	if ((ret = ptok_next(&tokens)) == NULL)
+		return (NULL);
+	return (ret);
+}

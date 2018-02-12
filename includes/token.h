@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/05 23:09:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 10:53:45 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,12 @@ enum	e_toktype
 		BANG = 1 << 19,					// !
 
 		COMMENT = 1 << 20,				// # *ANY_TOKEN NEWLINE
-		PARAM_EXP = DOLLAR | 1 << 0,	// ${} | $VAR
-		CMD_SUB = DOLLAR | 1 << 2,		// $() |	bquotes+grouping --> 42SH
-		ARI_EXP = DOLLAR | 1 << 3,		// $[] | $((MATHS))
+		PARAM_EXP = DOLLAR | WORD,		// ${} | $VAR
+//		PARAM_EXP = DOLLAR | 1 << 0,	// ${} | $VAR
+		CMD_SUB = DOLLAR | WORD,		// $() |	bquotes+grouping --> 42SH
+//		CMD_SUB = DOLLAR | 1 << 2,		// $() |	bquotes+grouping --> 42SH
+		ARI_EXP = DOLLAR | WORD,		// $[] | $((MATHS))
+//		ARI_EXP = DOLLAR | 1 << 3,		// $[] | $((MATHS))
 };
 
 typedef struct		s_token
@@ -97,12 +100,13 @@ typedef struct		s_heredoc
 	t_line			hdoc;
 }					t_heredoc;
 
-char	*token_str(t_token *tok);
-void	delete_toklist(t_token **toklist);
-void	dump_token(t_token *tok);
-t_token	*tokenizer(t_dlist *line);
+char				*token_str(t_token *tok);
+void				delete_toklist(t_token **toklist);
+void				dump_token(t_token *tok);
+t_token				*tokenizer(t_dlist *line);
 
-t_token	*filter_tokens(t_token *toklist);// static ?
+t_token				*filter_tokens(t_token *toklist);// static ?
 
+void    			print_toklist(t_token *toklist);
 
 #endif
