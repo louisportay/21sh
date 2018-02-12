@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/11 19:33:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 10:22:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ struct					s_ptok
 };
 
 void					ptok_free(struct s_ptok **tok);
-void					ptok_clear(struct s_ptok **tokens);
+void					*ptok_clear(struct s_ptok **tokens);
 void					ptok_insert(struct s_ptok **head, struct s_ptok **curr,
 									struct s_ptok *e);
 

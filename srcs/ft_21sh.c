@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 20:04:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 12:42:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,10 +273,15 @@ void	vingtetunsh(char **av, char  **environ)
 
 		if (ctx.line.split_line)
 			ctx.toklist = tokenizer(ctx.line.split_line);
+		write(1, "\n", 1);
 		if (ctx.toklist != NULL)
 			extree = parse(ctx.toklist);
-		ptok_print(extree);
-
+		if (extree != NULL)
+		{
+			ptok_print(extree);
+			ptok_clear(&extree);
+		}
+		// HERE WILL THE EXEC BE
 		delete_toklist(&ctx.toklist);
 		if (ctx.line.line_saved == false)
 			ft_dlstdel(&ctx.line.split_line, &delvoid);

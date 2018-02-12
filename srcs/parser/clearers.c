@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/11 19:54:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 10:24:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void				asmt_clear(t_asmt **asmt)
 	ft_memdel((void **)asmt);
 }
 
-void				ptok_clear(t_ptok **ptok)
+void				*ptok_clear(t_ptok **ptok)
 {
 	if ((*ptok)->job != NULL)
 		job_clear(&(*ptok)->job);
@@ -45,6 +45,7 @@ void				ptok_clear(t_ptok **ptok)
 	if ((*ptok)->next != NULL)
 		ptok_clear(&(*ptok)->next);
 	ft_memdel((void **)ptok);
+	return (NULL);
 }
 
 void				job_clear(t_job **job)

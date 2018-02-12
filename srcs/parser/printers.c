@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/11 13:23:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 11:10:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,20 @@
 
 void					ptok_print(struct s_ptok *tokens)
 {
-	(void)tokens;
-	return ;
+	if (tokens->job != NULL)
+		job_print(tokens->job);
+	if (tokens->ok != NULL)
+	{
+		printf("-- && --\n");
+		ptok_print(tokens->ok);
+	}
+	if (tokens->err != NULL)
+	{
+		printf("-- || --\n");
+		ptok_print(tokens->err);
+	}
+	if (tokens->next != NULL)
+		ptok_print(tokens->next);
 }
 
 void					asmt_print(t_asmt *asmt)
