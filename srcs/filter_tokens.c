@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:57:36 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 21:19:04 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ static void filter_bang(t_token *toklist)
 		toklist->next = tmp->next;
 		free(tmp);
 	}
+	else
+		toklist->type = WORD;
 }
 
 static int get_exp_token_type(t_token *tok)

@@ -6,15 +6,25 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 14:55:18 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 19:42:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_21SH_H
 # define FT_21SH_H
 
-# include "libft.h"
-
+# include "ft_dlst.h"
+# include "stack.h"
+# include "ft_list.h"
+# include "ft_string.h"
+# include "ft_stdio.h"
+# include "qbuf.h"
+# include "ft_astr.h"
+# include "ft_ctype.h"
+# include "ft_hashset.h"
+# include "kvp.h"
+//# include ""
+# include <signal.h>
 # include <sys/ioctl.h>
 # include <sys/types.h>
 # include <sys/stat.h>

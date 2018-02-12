@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/08 20:13:33 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/11 21:09:47 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,17 @@ endif
 
 INCLUDE=\
 -Iincludes\
--I$(LIBDIR)/inc
+-I$(LIBDIR)stack\
+-I$(LIBDIR)qbuf\
+-I$(LIBDIR)ft_stdio\
+-I$(LIBDIR)ft_string\
+-I$(LIBDIR)ft_astr\
+-I$(LIBDIR)ft_ctype\
+-I$(LIBDIR)ft_hashset\
+-I$(LIBDIR)ft_list\
+-I$(LIBDIR)ft_dlst\
+-I$(LIBDIR)kvp
+
 HEADERS= ft_21sh.h\
 		 history.c\
 		 line.h\
@@ -67,6 +77,7 @@ SRCS=	main.c\
 		\
 		lexer.c\
 		filter_tokens.c\
+		redir.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))

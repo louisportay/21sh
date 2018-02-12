@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/08 20:03:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 20:51:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	dump_history(t_dlist *histlist)
 		ft_putnbr(T_HISTENTRY(histlist->data)->index);
 		write(STDOUT_FILENO, "  ", 2);
 		ft_dlstprint(T_HISTENTRY(histlist->data)->line->next, "", (void (*)(void *))&ft_putstr);
-		write(STDOUT_FILENO, "\n", 2);
+		write(STDOUT_FILENO, "\n", 1);
 		histlist = histlist->next;
 	}
 }

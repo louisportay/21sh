@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:49:51 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 20:10:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,38 +52,38 @@ void	dump_token(t_token *tok)
 	write(STDOUT_FILENO, tmp->data, 1);
 }
 
-void	init_token_table(t_keyval *tok)
+void	init_token_table(t_kvp *tok)
 {
-	tok[0] = KEY_VAL(NEWLINE, "NEWLINE");
-	tok[1] = KEY_VAL(SEMICOL, "SEMICOL");
-	tok[2] = KEY_VAL(IO_NUMBER, "IO_NUMBER");
-	tok[3] = KEY_VAL(WORD, "WORD");
-	tok[4] = KEY_VAL(ASSIGNMENT_WORD, "ASSIGNMENT_WORD");
-	tok[5] = KEY_VAL(OR, "OR");
-	tok[6] = KEY_VAL(AND, "AND");
-	tok[7] = KEY_VAL(LESS, "LESS");
-	tok[8] = KEY_VAL(GREAT, "GREAT");
-	tok[9] = KEY_VAL(OR_IF, "OR_IF");
-	tok[10] = KEY_VAL(AND_IF, "AND_IF");
-	tok[11] = KEY_VAL(DLESS, "DLESS");
-	tok[12] = KEY_VAL(DGREAT, "DGREAT");
-	tok[13] = KEY_VAL(LESSAND, "LESSAND");
-	tok[14] = KEY_VAL(GREATAND, "GREATAND");
-	tok[15] = KEY_VAL(TLESS, "TLESS");
-	tok[16] = KEY_VAL(ANDGREAT, "ANDGREAT");
-	tok[17] = KEY_VAL(ANDDGREAT, "ANDDGREAT");
-	tok[18] = KEY_VAL(DOLLAR, "DOLLAR");
-	tok[19] = KEY_VAL(BANG, "BANG");
-	tok[20] = KEY_VAL(PARAM_EXP, "PARAM_EXP");
-	tok[21] = KEY_VAL(CMD_SUB, "CMD_SUB");
-	tok[22] = KEY_VAL(ARI_EXP, "ARI_EXP");
-	tok[23] = KEY_VAL(COMMENT, "COMMENT");
-	tok[24] = KEY_VAL(0, NULL);
+	tok[0] = (t_kvp){.key=(void *)NEWLINE, .val=(char *)"NEWLINE", .typ=INT_STR};
+	tok[1] = (t_kvp){.key=(void *)SEMICOL, .val=(char *)"SEMICOL", .typ=INT_STR};
+	tok[2] = (t_kvp){.key=(void *)IO_NUMBER, .val=(char *)"IO_NUMBER", .typ=INT_STR};
+	tok[3] = (t_kvp){.key=(void *)WORD, .val=(char *)"WORD", .typ=INT_STR};
+	tok[4] = (t_kvp){.key=(void *)ASSIGNMENT_WORD, .val=(char *)"ASSIGNMENT_WORD", .typ=INT_STR};
+	tok[5] = (t_kvp){.key=(void *)OR, .val=(char *)"OR", .typ=INT_STR};
+	tok[6] = (t_kvp){.key=(void *)AND, .val=(char *)"AND", .typ=INT_STR};
+	tok[7] = (t_kvp){.key=(void *)LESS, .val=(char *)"LESS", .typ=INT_STR};
+	tok[8] = (t_kvp){.key=(void *)GREAT, .val=(char *)"GREAT", .typ=INT_STR};
+	tok[9] = (t_kvp){.key=(void *)OR_IF, .val=(char *)"OR_IF", .typ=INT_STR};
+	tok[10] =(t_kvp){.key=(void *)AND_IF, .val=(char *)"AND_IF", .typ=INT_STR};
+	tok[11] =(t_kvp){.key=(void *)DLESS, .val=(char *)"DLESS", .typ=INT_STR};
+	tok[12] =(t_kvp){.key=(void *)DGREAT, .val=(char *)"DGREAT", .typ=INT_STR};
+	tok[13] =(t_kvp){.key=(void *)LESSAND, .val=(char *)"LESSAND", .typ=INT_STR};
+	tok[14] =(t_kvp){.key=(void *)GREATAND, .val=(char *)"GREATAND", .typ=INT_STR};
+	tok[15] =(t_kvp){.key=(void *)TLESS, .val=(char *)"TLESS", .typ=INT_STR};
+	tok[16] =(t_kvp){.key=(void *)ANDGREAT, .val=(char *)"ANDGREAT", .typ=INT_STR};
+	tok[17] =(t_kvp){.key=(void *)ANDDGREAT, .val=(char *)"ANDDGREAT", .typ=INT_STR};
+	tok[18] =(t_kvp){.key=(void *)DOLLAR, .val=(char *)"DOLLAR", .typ=INT_STR};
+	tok[19] =(t_kvp){.key=(void *)BANG, .val=(char *)"BANG", .typ=INT_STR};
+	tok[20] =(t_kvp){.key=(void *)PARAM_EXP, .val=(char *)"PARAM_EXP", .typ=INT_STR};
+	tok[21] =(t_kvp){.key=(void *)CMD_SUB, .val=(char *)"CMD_SUB", .typ=INT_STR};
+	tok[22] =(t_kvp){.key=(void *)ARI_EXP, .val=(char *)"ARI_EXP", .typ=INT_STR};
+	tok[23] =(t_kvp){.key=(void *)COMMENT, .val=(char *)"COMMENT", .typ=INT_STR};
+	tok[24] =(t_kvp){.key=(void *)0, .val=NULL, .typ=INT_STR};
 }
 
 void	print_toklist(t_token *toklist)
 {
-	t_keyval	tok[25];
+	t_kvp	tok[25];
 	int			i;
 
 	init_token_table(tok);
@@ -92,7 +92,7 @@ void	print_toklist(t_token *toklist)
 		dump_token(toklist);
 		ft_putstr(" Type: ");
 		i = 0;
-		while ((unsigned)tok[i].key != toklist->type && tok[i].key)
+		while ((unsigned long)tok[i].key != toklist->type && tok[i].key)
 				i++;
 		ft_putstr(tok[i].val);
 		write(STDOUT_FILENO, "\n", 1);
@@ -307,7 +307,7 @@ void	delete_following_redir(t_token *toklist)
 
 void	requalify_tokens(t_token **toklist)
 {
-	t_keyval	tok[25];
+	t_kvp	tok[25];
 	t_token		*ret;
 	int			i;
 
@@ -315,7 +315,7 @@ void	requalify_tokens(t_token **toklist)
 	{
 		i = 0;
 		init_token_table(tok);
-		while ((unsigned)tok[i].key != ret->type && tok[i].key)
+		while ((unsigned long)tok[i].key != ret->type && tok[i].key)
 				i++;
 		ft_putstr_fd("syntax error near token `", STDERR_FILENO);
 		ft_putstr_fd(tok[i].val, STDERR_FILENO);

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 16:17:37 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 21:16:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,38 +52,61 @@ int		r_less(t_redir *r)
 	return (0);
 }
 
-int		r_dless(t_redir *r)
+int		r_dless(t_heredoc *r)
 {
-	(void)r;//
-	t_ctx *ctx;
+	char	*hdoc;
+	t_ctx	*ctx;
+	FILE	*f;
+	int		fd;
 	
-	ctx = get_envaddr(NULL);
-	ctx->heredoc_eof = r->rhs;
-	wrap_lineread(ctx, r->hdoc, PS2);
+	ctx = get_ctxaddr(NULL);
+	ctx->heredoc_eof = r->s_rhs;
+	wrap_lineread(ctx, &r->hdoc, PS2);
 	ctx->heredoc_eof = NULL;
-//faire la redirection tout ca + free le heredoc
+	if (!(hdoc = dlst_to_str(r->hdoc.line)))
+	if (!(f = tmpfile()))
+		return (-1);
+	fd = fileno(f);
+	if (write(fd, hdoc, ft_strlen(hdoc)) == -1)
+		return (-1);
+	if (lseek(fd, 0, SEEK_SET) == -1)
+		return (-1);
+	if (dup2(fd, r->lhs) == -1)
+		return (-1);
+	fclose(f);
+	free(hdoc);
+	if (r->hdoc.yank)
+		ft_dlstdel(&r->hdoc.yank, &delvoid);
+	if (r->hdoc.split_line)
+		ft_dlstdel(&r->hdoc.split_line, &delvoid);
+
 	return (0);
 }
 
 int		r_tless(t_redir *r)
 {
-	char	*filepath;
-	time_t	t;
-	int		tmpfile;
+	FILE	*f;
+	int		fd;
 
-	t = time(NULL);
-	filepath = fullpath("/tmp", ctime(&t));
-	if ((tmpfile = open(filepath, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1)
-		return (tmpfile);
-	write(tmpfile, r->s_rhs, ft_strlen(r->s_rhs) + 1);
-	close(tmpfile);
-	if ((tmpfile = open(filepath, O_RDONLY)) == -1)
-		return (tmpfile);
-	unlink(filepath);
-	free(filepath);
-	if (dup2(tmpfile, r->lhs) == -1)
+//	t = time(NULL);
+//	filepath = fullpath("/tmp", ctime(&t));
+//	if ((tmpfile = open(filepath, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1)
+//		return (-1);
+	if (!(f = tmpfile()))
 		return (-1);
-	close(tmpfile);
+	fd = fileno(f);
+	if (write(fd, r->s_rhs, ft_strlen(r->s_rhs)) == -1)
+		return (-1);
+	if (lseek(fd, 0, SEEK_SET) == -1)
+		return (-1);
+//	close(tmpfile);
+//	if ((tmpfile = open(filepath, O_RDONLY)) == -1)
+//		return (-1);
+//	unlink(filepath);
+//	free(filepath);
+	if (dup2(fd, r->lhs) == -1)
+		return (-1);
+	fclose(f);
 	return (0);
 }
 
@@ -125,7 +148,7 @@ int		do_redir(t_redir *r)
 	else if (r->type & LESS)
 		return (r_less(r));
 	else if (r->type & DLESS)
-		return (r_dless(r));
+		return (r_dless((t_heredoc *)r));
 	else if (r->type & TLESS)
 		return (r_tless(r));
 	else if (IS_AND_REDIR(r->type))

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/08 19:35:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 21:01:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init_line(t_ctx *ctx, t_line *line, t_key *key, int *status)
 	*status = READON;
 	line->line = ft_dlstnew("HEAD", 4);
 	line->lastline = line->line;
+	line->yank = NULL;
 	line->cursor_offset = 0;
 	line->multiline = false;
 	print_prompt(ctx);
@@ -60,6 +61,7 @@ void		lineread(t_ctx *ctx, t_line *line)
 		query_hdocstate(line->line->next, &line->linestate, ctx->heredoc_eof);
 	else
 		query_linestate(line->line->next, &line->linestate);
+
 	if (line->linestate->state != UNQUOTED)
 	{
 		ft_strcpy(ctx->prompt_mode, PS2);

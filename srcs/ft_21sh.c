@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/08 20:07:00 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 18:05:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,6 @@ static void	init_ctx(t_ctx *ctx, char **av, char **environ)
 
 	ctx->line.line = NULL;
 	ctx->line.lastline = NULL;
-	ctx->line.yank = NULL;
 	ctx->line.linestate = NULL;
 	ctx->hist.file = 0;
 	ctx->hist.list = NULL;

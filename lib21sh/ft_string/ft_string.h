@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:39:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/11 13:34:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/11 19:01:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char		*ft_itoa(long n);
 int			ft_atoi(const char *str);
 char		**ft_strsplit(char const *s, char c);
 char	*ft_strstr(const char *big, const char *little);
+char 	*randstring(int len);
 
 
 #endif
