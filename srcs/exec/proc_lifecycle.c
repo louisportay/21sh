@@ -6,11 +6,11 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 13:38:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/29 17:42:08 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 18:51:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "ft_21sh.h"
 
 t_proc					*proc_new(char **argv)
 {
