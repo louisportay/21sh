@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 21:16:35 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/12 13:05:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,36 +52,36 @@ int		r_less(t_redir *r)
 	return (0);
 }
 
-int		r_dless(t_heredoc *r)
-{
-	char	*hdoc;
-	t_ctx	*ctx;
-	FILE	*f;
-	int		fd;
-	
-	ctx = get_ctxaddr(NULL);
-	ctx->heredoc_eof = r->s_rhs;
-	wrap_lineread(ctx, &r->hdoc, PS2);
-	ctx->heredoc_eof = NULL;
-	if (!(hdoc = dlst_to_str(r->hdoc.line)))
-	if (!(f = tmpfile()))
-		return (-1);
-	fd = fileno(f);
-	if (write(fd, hdoc, ft_strlen(hdoc)) == -1)
-		return (-1);
-	if (lseek(fd, 0, SEEK_SET) == -1)
-		return (-1);
-	if (dup2(fd, r->lhs) == -1)
-		return (-1);
-	fclose(f);
-	free(hdoc);
-	if (r->hdoc.yank)
-		ft_dlstdel(&r->hdoc.yank, &delvoid);
-	if (r->hdoc.split_line)
-		ft_dlstdel(&r->hdoc.split_line, &delvoid);
-
-	return (0);
-}
+//	int		r_dless(t_heredoc *r)
+//	{
+//		char	*hdoc;
+//		t_ctx	*ctx;
+//		FILE	*f;
+//		int		fd;
+//		
+//		ctx = get_ctxaddr(NULL);
+//		ctx->heredoc_eof = r->s_rhs;
+//		wrap_lineread(ctx, &r->hdoc, PS2);
+//		ctx->heredoc_eof = NULL;
+//		if (!(hdoc = dlst_to_str(r->hdoc.line)))
+//		if (!(f = tmpfile()))
+//			return (-1);
+//		fd = fileno(f);
+//		if (write(fd, hdoc, ft_strlen(hdoc)) == -1)
+//			return (-1);
+//		if (lseek(fd, 0, SEEK_SET) == -1)
+//			return (-1);
+//		if (dup2(fd, r->lhs) == -1)
+//			return (-1);
+//		fclose(f);
+//		free(hdoc);
+//		if (r->hdoc.yank)
+//			ft_dlstdel(&r->hdoc.yank, &delvoid);
+//		if (r->hdoc.split_line)
+//			ft_dlstdel(&r->hdoc.split_line, &delvoid);
+//	
+//		return (0);
+//	}
 
 int		r_tless(t_redir *r)
 {
@@ -147,8 +147,8 @@ int		do_redir(t_redir *r)
 		return (r_great_dgreat(r));
 	else if (r->type & LESS)
 		return (r_less(r));
-	else if (r->type & DLESS)
-		return (r_dless((t_heredoc *)r));
+//	else if (r->type & DLESS)
+//		return (r_dless((t_heredoc *)r));
 	else if (r->type & TLESS)
 		return (r_tless(r));
 	else if (IS_AND_REDIR(r->type))
