@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/12 14:04:18 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/12 15:23:40 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@
 
 SRCDIR= srcs/ \
 		srcs/line \
-		srcs/parser
+		srcs/parser \
+		srcs/exec \
 
 vpath %.c $(SRCDIR)
 vpath %.h includes/
@@ -88,7 +89,15 @@ SRCS=	main.c\
 		bridge_astr.c\
 		proc_next.c\
 		ptok_lifecycle.c\
-		clearers.c
+		clearers.c\
+		exec.c\
+		job_exec.c\
+		proc_exec.c\
+		get_path.c\
+		job_utils.c\
+		job_wait.c\
+		proc_chgstat.c\
+		job_lifecycle.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

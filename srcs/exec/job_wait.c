@@ -6,11 +6,11 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/31 14:46:43 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 15:19:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "ft_21sh.h"
 
 void					job_wait(t_job *j)
 {
@@ -41,7 +41,7 @@ void					job_putbg(t_job *j, int continued)
 	}
 }
 
-void					job_putfg(t_job *j, int continued, t_env *env)
+void					job_putfg(t_job *j, int continued, t_ctx *env)
 {
 	tcsetpgrp(env->fd, j->pgid);
 	if (continued != 0)
@@ -53,5 +53,5 @@ void					job_putfg(t_job *j, int continued, t_env *env)
 	job_wait(j);
 	tcsetpgrp(env->fd, env->pgid);
 	tcgetattr(env->fd, &j->tmodes);
-	tcsetattr(env->fd, TCSADRAIN, &env->tnew);
+	tcsetattr(env->fd, TCSADRAIN, &env->tios);
 }

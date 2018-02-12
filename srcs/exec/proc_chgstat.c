@@ -6,11 +6,11 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:13:57 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/30 18:04:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 15:20:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "ft_21sh.h"
 
 static int				update_status(t_job *job, pid_t pid, int status)
 {

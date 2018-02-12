@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 14:06:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 14:35:50 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ bool					is_number(char *str);
 bool					is_number_w_dash(char *str);
 
 t_ptok					*parse(t_token *tok);
+int						exec(t_ptok *extree);
 
 // Shell script stuff
 

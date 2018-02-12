@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 12:44:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 15:25:42 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ t_ptok					*get_ands(t_token **toks)
 		if ((p = get_pipe(&t)) == NULL)
 			return (ptok_clear(pt));
 		pt[2] = (t_ptok *)ft_pmemalloc(sizeof(t_ptok), &on_emem, NOMEM);
-		pt[2]->job = (t_job *)ft_pmemalloc(sizeof(t_job), &on_emem, NOMEM);
-		pt[2]->job->procs = p;
+		pt[2]->job = job_new(p);
+//		pt[2]->job->procs = p;
 		ptok_insert(pt, pt + 1, pt[2]);
 	}
 	*toks = t;

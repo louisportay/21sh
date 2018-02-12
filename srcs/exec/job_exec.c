@@ -6,19 +6,19 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/31 14:49:08 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 14:54:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "ft_21sh.h"
 
 int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
-								t_env *env)
+								t_ctx *ctx)
 {
 	pid_t				pid;
 
 	if ((pid = fork()) == 0)
-		proc_exec(p, j->pgid, (int[3]){fd[0], fd[1], j->stderr}, fg, env);
+		proc_exec(p, j->pgid, (int[3]){fd[0], fd[1], j->stderr}, fg, ctx);
 	else if (pid < 0)
 	{
 		ft_putstr_fd("fork error\n", STDERR_FILENO);
@@ -27,7 +27,7 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 	else
 	{
 		p->pid = pid;
-		if (env->istty != 0)
+		if (ctx->istty != 0)
 		{
 			if (j->pgid == 0)
 				j->pgid = pid;
@@ -52,12 +52,12 @@ void					do_pipe(t_job *job, t_proc *p, int fd[2], int *outfile)
 		*outfile = job->stdout;
 }
 
-void					do_postloop(t_job *j, int fg, t_env *env)
+void					do_postloop(t_job *j, int fg, t_ctx *ctx)
 {
-	if (env->istty == 0)
+	if (ctx->istty == 0)
 		job_wait(j);
 	else if (fg != 0)
-		job_putfg(j, 0, env);
+		job_putfg(j, 0, ctx);
 	else
 		job_putbg(j, 0);
 }
@@ -86,7 +86,7 @@ void					astr_to_buf(char **argv, t_qbuf *buf, int last)
 	}
 }
 
-int						job_exec(t_job *j, int fg, t_env *env)
+int						job_exec(t_job *j, int fg, t_ctx *ctx)
 {
 	t_proc				*p;
 	int					jpipe[2];
@@ -101,7 +101,7 @@ int						job_exec(t_job *j, int fg, t_env *env)
 	while (p != NULL)
 	{
 		do_pipe(j, p, jpipe, jfd + 1);
-		if (do_fork(p, j, jfd, fg, env) == 1)
+		if (do_fork(p, j, jfd, fg, ctx) == 1)
 			return (1);
 		clear_pipe(j, jfd, jpipe[0]);
 		astr_to_buf(p->argv, buf, p->next == NULL);
@@ -109,6 +109,6 @@ int						job_exec(t_job *j, int fg, t_env *env)
 	}
 	j->command = qbuf_del(&buf);
 	job_fmtinfo(j, EXE_LCHD);
-	do_postloop(j, fg, env);
+	do_postloop(j, fg, ctx);
 	return (0);
 }

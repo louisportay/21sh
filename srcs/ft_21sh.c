@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 14:05:16 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 15:33:33 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,9 @@ void	vingtetunsh(char **av, char  **environ)
 			extree = parse(ctx.toklist);
 		if (extree != NULL)
 		{
-			ptok_print(extree);
+//			ptok_print(extree);
+			// HERE WILL THE EXPANSION GO IN NEAR FUTURE
+			exec(extree);
 			ptok_clear(&extree);
 		}
 		// HERE WILL THE EXEC BE

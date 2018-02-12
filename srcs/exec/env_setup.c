@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 17:17:41 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/07 14:30:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/12 14:52:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,49 +30,4 @@ int						env_setup(t_env *env, char **environ)
 	}
 	env->hash = ft_hashset_create(HASH_SIZE, HASH_PRIME);
 	return (1);
-}
-
-char					*env_path_get(char *exe, char **pathes)
-{
-	static char			buffer[PATH_MAX + 1];
-	size_t				i;
-
-	i = 0;
-	while (pathes[i] != NULL)
-	{
-		ft_bzero(buffer, PATH_MAX + 1);
-		ft_strcat(buffer, pathes[i]);
-		ft_strcat(buffer, "/");
-		ft_strcat(buffer, exe);
-		if (access(buffer, X_OK) == 0)
-			return (buffer);
-		i++;
-	}
-	return (NULL);
-}
-
-int						get_path(char *exe, t_env *env, char **path)
-{
-	t_hash_entry		*e;
-
-	*path = NULL;
-	if (ft_strindex(exe, '/') != -1)
-	{
-		if (access(exe, X_OK) == 0)
-		{
-			*path = exe;
-			return (1);
-		}
-		return (0);
-	}
-	else if ((e = ft_hashset_lookup(env->hash, exe)) != NULL)
-		*path = (char *)e->content;
-	else if ((*path = env_path_get(exe, env->path)) != NULL)
-		;
-	if (*path != NULL)
-	{
-		ft_hashset_add(env->hash, exe, (void *)*path);
-		return (1);
-	}
-	return (0);
 }
