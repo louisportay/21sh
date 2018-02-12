@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 15:33:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 15:49:47 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,6 @@ void	vingtetunsh(char **av, char  **environ)
 
 		if (ctx.line.split_line)
 			ctx.toklist = tokenizer(ctx.line.split_line);
-		write(1, "\n", 1);
 		if (ctx.toklist != NULL)
 			extree = parse(ctx.toklist);
 		if (extree != NULL)
