@@ -16,13 +16,19 @@ INC_D:=inc
 
 INCLUDES:=\
 -I../../includes\
--I../../lib21sh/inc\
--I$(LIB_D)/ft_dlist/$(INC_D)\
--I$(LIB_D)/qbuf/$(INC_D)
+-I../../lib21sh/ft_astr\
+-I../../lib21sh/ft_ctype\
+-I../../lib21sh/ft_dlst\
+-I../../lib21sh/ft_hashset\
+-I../../lib21sh/ft_list\
+-I../../lib21sh/ft_string\
+-I../../lib21sh/ft_stdio\
+-I../../lib21sh/stack\
+-I../../lib21sh/qbuf\
+-I../../lib21sh/kvp\
 
 LIBRARIES:=\
-$(LIB_D)/ft_hashset/libfthashset.a\
-$(LIB_D)/qbuf/libqbuf.a\
+../../lib21sh/libft.a\
 -lcurses
 
 ITEM:=\
@@ -33,6 +39,7 @@ proc_exec.o\
 job_exec.o\
 job_lifecycle.o\
 job_utils.o\
+get_path.o\
 job_wait.o
 OBJ:=$(addprefix $(OBJ_D)/, $(ITEM))
 

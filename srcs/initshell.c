@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 17:57:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 20:47:18 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->line_edition = 1;
 	ctx->history = 1;
 	ctx->job_control = 1;
+//	ctx->fd = open("/dev/tty", O_WRONLY);
 	ctx->fd = STDIN_FILENO;
 	ctx->istty = isatty(ctx->fd);
 	ctx->path = getpath(environ);
@@ -65,7 +66,9 @@ static void			init_job_control(t_ctx *ctx)
 	ctx->pgid = getpid();
 	if (setpgid(ctx->pgid, ctx->pgid) < 0)
 		ctx->job_control = 0;
-	tcsetpgrp(ctx->fd, ctx->pgid);
+	int ret = tcsetpgrp(ctx->fd, ctx->pgid);
+	if (ret != 0)
+		perror("tcsetpgrp init");
 }
 
 static void			init_termios(t_ctx *ctx)

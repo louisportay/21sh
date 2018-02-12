@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 14:56:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 20:32:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char *ft_astr_cat(char **argv)
 	return (qbuf_del(&buf));
 }
 
+#include <errno.h>
+
 void					set_pid_data(t_ctx *ctx, pid_t pgid,
 										int fg)
 {
@@ -70,7 +72,14 @@ void					set_pid_data(t_ctx *ctx, pid_t pgid,
 		pgid = pid;
 	setpgid(pid, pgid);
 	if (fg)
-		tcsetpgrp(ctx->fd, pgid);
+	{
+		int ret = tcsetpgrp(ctx->fd, pgid);
+		if (ret != 0)
+		{
+			printf("%d\n", errno);
+			perror ("tcsetpgrp");
+		}
+	}
 }
 
 void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,

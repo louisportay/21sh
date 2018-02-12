@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 14:54:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 20:53:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,17 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 	else
 	{
 		p->pid = pid;
+		printf("launched (\033[32m%d\033[0m)", pid);
+		for (int i = 0; p->argv[i] != NULL; i++)
+			printf(" %s", p->argv[i]);
+		printf("\n");
 		if (ctx->istty != 0)
 		{
 			if (j->pgid == 0)
 				j->pgid = pid;
-			setpgid(pid, j->pgid);
+			int ret = setpgid(pid, j->pgid);
+			if (ret != 0)
+				perror ("setpgid");
 		}
 	}
 	return (0);
@@ -54,6 +60,7 @@ void					do_pipe(t_job *job, t_proc *p, int fd[2], int *outfile)
 
 void					do_postloop(t_job *j, int fg, t_ctx *ctx)
 {
+	printf("\033[55mdo postloop\n\033[0m");
 	if (ctx->istty == 0)
 		job_wait(j);
 	else if (fg != 0)
