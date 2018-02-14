@@ -2,7 +2,7 @@ HANDLE BG/FG
 Free at the end
 Get next extree
 Do assignment
-Do redir
+--	Do redir \\ DONE
 add bg jobs to job list
 collect exit status (complete it and test)
 handle async tree execution and continuation

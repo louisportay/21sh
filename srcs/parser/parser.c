@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 18:00:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 19:11:12 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ t_ptok					*parse(struct s_token *tokens)
 {
 	t_ptok				*ret;
 
+	if (tokens == NULL || tokens->type == NEWLINE
+		|| (tokens->next != NULL && tokens->next->type == NEWLINE))
+		return (NULL);
 	if ((ret = ptok_next(&tokens)) == NULL)
 		return (NULL);
 	return (ret);

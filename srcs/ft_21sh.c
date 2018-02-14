@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 16:22:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 19:10:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	vingtetunsh(char **av, char  **environ)
 			ctx.toklist = tokenizer(ctx.line.split_line);
 		if (ctx.toklist != NULL)
 			extree = parse(ctx.toklist);
+		delete_toklist(&ctx.toklist);
 		if (extree != NULL)
 		{
 //			ptok_print(extree);
@@ -56,7 +57,6 @@ void	vingtetunsh(char **av, char  **environ)
 			exec(extree);
 			ptok_clear(&extree);
 		}
-		delete_toklist(&ctx.toklist);
 		if (ctx.line.line_saved == false)
 			ft_dlstdel(&ctx.line.split_line, &delvoid);
 		else//
