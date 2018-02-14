@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 20:32:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 15:47:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,25 +62,30 @@ char *ft_astr_cat(char **argv)
 
 #include <errno.h>
 
-void					set_pid_data(t_ctx *ctx, pid_t pgid,
-										int fg)
-{
-	pid_t				pid;
-
-	pid = getpid();
-	if (pgid == 0)
-		pgid = pid;
-	setpgid(pid, pgid);
-	if (fg)
-	{
-		int ret = tcsetpgrp(ctx->fd, pgid);
-		if (ret != 0)
-		{
-			printf("%d\n", errno);
-			perror ("tcsetpgrp");
-		}
-	}
-}
+//	void					set_pid_data(t_ctx *ctx, pid_t pgid,
+//											int fg)
+//	{
+//		(void)pgid;
+//		pid_t				pid;
+//	//
+//			pid = getpid();
+//			if (pgid == 0)
+//				pgid = pid;
+//			int ret = setpgid(pid, pgid);
+//			if (ret != 0)
+//				perror("setpgid in child");
+//		(void)ctx;
+//		(void)fg;
+//		if (fg)
+//		{
+//			int ret = tcsetpgrp(ctx->fd, pgid != 0 ? pgid : getpid());
+//			if (ret != 0)
+//			{
+//				printf("ret: %d - errno: %d\n", ret, errno);
+//				perror ("tcsetpgrp");
+//			}
+//		}
+//	}
 
 void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 									t_ctx *ctx)
@@ -88,27 +93,31 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	char				*path;
 	int					(*builtin)();
 	char				**astrenv;
-	char				**argv;
 
+	(void)pgid;
+	(void)fg;
+	printf("STDIN_FILENO: %d - STDOUT_FILENO: %d - STDERR_FILENO: %d\n",
+			fd[0], fd[1], fd[2]);
 	path = NULL;
-	argv = p->argv;
-	set_pid_data(ctx, pgid, fg);
+//	set_pid_data(ctx, pgid, fg);
 	builtin = PH_GET_BUILTIN(p->argv[0]);
-	if (builtin == NULL && get_path(argv[0], ctx, &path) == 0)
+	if (builtin == NULL && get_path(p->argv[0], ctx, &path) == 0)
 	{
 		printf("%s: %s: %s\n", "21sh", p->argv[0], "Command not found");
 		exit(1);
 	}
-	if (ctx->istty)
+//	if (ctx->istty)
 		setup_signals(SIG_DFL);
 	setup_fd(fd[0], STDIN_FILENO);
 	setup_fd(fd[1], STDOUT_FILENO);
 	setup_fd(fd[2], STDERR_FILENO);
 	// LPORTAY'S REDIRECTIONS
-	if (builtin != NULL)
-		exit(builtin(p->argv, ctx));
 	if ((astrenv = ft_astr_dup(ctx->environ)) == NULL)
 		exit_err("Not enough memory\n"); // BIG BIG ERROR BUT MIGHT BE UNESCAPBLE
-	execve(path, argv, astrenv);
+	// DO ASSIGNMENT IF NOT ONLY ASSIGNMENTS
+	// IF ONLY ASSIGNMENT, ASSIGN ENV OR LOCALS THEN DO SIMPLE EXIT <- in ctx
+	if (builtin != NULL)
+		exit(builtin(p->argv, ctx));
+	execve(path, p->argv, astrenv);
 	exit_err("Could not exec...\n");
 }

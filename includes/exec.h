@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 15:25:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 15:38:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ struct					s_proc
 	char				**env;
 	t_asmt				*asmts;
 	pid_t				pid;
-	char				**ctx;
+	char				**ctx;		// Candidate for deletion
 	char				completed;
 	char				stopped;
 	int					status;
@@ -55,6 +55,7 @@ struct					s_job
 	pid_t				pgid;
 	char				notified;
 	struct termios		tmodes;
+	int					status;
 	int					stdin;
 	int					stdout;
 	int					stderr;
