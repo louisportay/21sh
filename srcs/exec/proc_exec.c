@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 17:37:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 18:00:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	setup_fd(fd[0], STDIN_FILENO);
 	setup_fd(fd[1], STDOUT_FILENO);
 	setup_fd(fd[2], STDERR_FILENO);
+	if (p->redirs != NULL)
+		do_redir(p->redirs);
 	// LPORTAY'S REDIRECTIONS
 	if ((astrenv = ft_astr_dup(ctx->environ)) == NULL)
 		exit_err("Not enough memory\n"); // BIG BIG ERROR BUT MIGHT BE UNESCAPBLE

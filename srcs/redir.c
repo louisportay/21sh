@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 13:05:57 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 17:53:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,8 @@ int		do_redir(t_redir *r)
 		return (r_less(r));
 //	else if (r->type & DLESS)
 //		return (r_dless((t_heredoc *)r));
-	else if (r->type & TLESS)
-		return (r_tless(r));
+//	else if (r->type & TLESS)
+//		return (r_tless(r));
 	else if (IS_AND_REDIR(r->type))
 		return (r_andgreat_anddgreat(r));
 	else if (r->type == (GREATAND | LESSAND))

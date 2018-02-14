@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 10:53:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 17:59:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,7 @@ t_token				*tokenizer(t_dlist *line);
 t_token				*filter_tokens(t_token *toklist);// static ?
 
 void    			print_toklist(t_token *toklist);
+
+int					do_redir(t_redir *r);
 
 #endif
