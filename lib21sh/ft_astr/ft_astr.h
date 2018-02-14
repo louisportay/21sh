@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 14:00:33 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/11 13:38:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/14 18:53:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,7 @@ char		*ft_env_find(char **env, char *key);
 
 int			ft_astr_getkey(char **env, char *key, int pos);
 char		*ft_astr_getval(char **env, char *key);
+
+void		ft_astr_replace(char **astr, int i, char *new_val);
 
 #endif
