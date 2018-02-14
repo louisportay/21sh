@@ -59,6 +59,10 @@ struct					s_job
 	int					stdin;
 	int					stdout;
 	int					stderr;
+	int                                     fg;
+	t_job                                   *ok;
+	t_job                                   *err;
+	t_job                                   *next;
 };
 
 t_proc					*proc_cr(void);
@@ -72,7 +76,7 @@ int						proc_chgstat(t_job *job, pid_t pid, int status);
 
 t_job					*job_new(t_proc *plist);
 void					job_insert(t_job **head, t_job **curr, t_job *j);
-void					job_clear(t_job **jobs);
+void					*job_clear(t_job **jobs);
 
 t_job					*job_find(pid_t pid, t_job *job_list);
 int						job_stopped(t_job *job);

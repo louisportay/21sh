@@ -34,23 +34,7 @@ void				asmt_clear(t_asmt **asmt)
 	ft_memdel((void **)asmt);
 }
 
-void				*ptok_clear(t_ptok **ptok)
-{
-	if (ptok == NULL || *ptok == NULL)
-		return (NULL);
-	if ((*ptok)->job != NULL)
-		job_clear(&(*ptok)->job);
-	if ((*ptok)->ok != NULL)
-		ptok_clear(&(*ptok)->ok);
-	if ((*ptok)->err != NULL)
-		ptok_clear(&(*ptok)->err);
-	if ((*ptok)->next != NULL)
-		ptok_clear(&(*ptok)->next);
-	ft_memdel((void **)ptok);
-	return (NULL);
-}
-
-void				job_clear(t_job **job)
+void				*job_clear(t_job **job)
 {
 	t_job			*j;
 
@@ -59,5 +43,12 @@ void				job_clear(t_job **job)
 		ft_strdel(&j->command);
 	if (j->procs != NULL)
 		proc_clear(&j->procs);
+	if (j->ok != NULL)
+	    job_clear(&j->ok);
+	if (j->err != NULL)
+	    job_clear(&j->err);
+	if (j->next != NULL)
+	    job_clear(&j->next);
 	ft_memdel((void **)job);
+	return (NULL);
 }

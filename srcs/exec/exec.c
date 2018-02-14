@@ -12,7 +12,7 @@
 
 #include "ft_21sh.h"
 
-int						exec(t_ptok *extree)
+int						exec(t_job *extree)
 {
 	t_ctx				*ctx;
 	int					ret;
@@ -22,8 +22,7 @@ int						exec(t_ptok *extree)
 		perror("tcsetattr");
 	while (extree != NULL)
 	{
-		if (extree->job != NULL)
-			job_exec(extree->job, 1, get_ctxaddr(NULL));
+		job_exec(extree, 1, get_ctxaddr(NULL));
 		extree = extree->next;
 	}
 	if ((ret = tcsetattr(ctx->fd, TCSADRAIN, &ctx->tios)) != 0)

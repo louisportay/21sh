@@ -12,24 +12,6 @@
 
 #include "ft_21sh.h"
 
-void					ptok_print(struct s_ptok *tokens)
-{
-	if (tokens->job != NULL)
-		job_print(tokens->job);
-	if (tokens->ok != NULL)
-	{
-		printf("-- && --\n");
-		ptok_print(tokens->ok);
-	}
-	if (tokens->err != NULL)
-	{
-		printf("-- || --\n");
-		ptok_print(tokens->err);
-	}
-	if (tokens->next != NULL)
-		ptok_print(tokens->next);
-}
-
 void					asmt_print(t_asmt *asmt)
 {
 	while (asmt != NULL)

@@ -11,18 +11,3 @@
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-void				ptok_free(t_ptok **tok)
-{
-	*tok = NULL;
-	return ;
-}
-
-void				ptok_insert(t_ptok **head, t_ptok **curr, t_ptok *e)
-{
-	if (*head == NULL)
-		*head = e;
-	else
-		(*curr)->next = e;
-	*curr = e;
-}
