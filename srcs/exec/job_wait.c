@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 17:36:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 20:57:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,51 @@ void					job_wait(t_job *j)
 {
 	int					status;
 	pid_t				pid;
+	t_proc				*p;
 
-	while (1)
+	p = j->procs;
+	while (p != NULL)
 	{
-		pid = waitpid(WAIT_ANY, &status, WUNTRACED);
+		pid = waitpid(p->pid, &status, WUNTRACED);
 		if (pid == -1)
 		{
 			perror("waitpid");
 			return ;
 		}
-		if (proc_chgstat(j, pid, status)
-			|| job_stopped(j)
-			|| job_completed(j))
+		p->status = status;
+		if (WIFEXITED(status))
 		{
-			// EXECUTE NEXT IN TREE
-			break ;
+			p->stopped = 1;
+			j->status = WEXITSTATUS(status);
 		}
+		else if (WIFSIGNALED(status))
+		{
+			p->completed = 1;
+			dprintf(STDERR_FILENO, "%s (%d) stopped by sig(%d)\n",
+					p->argv[0], pid, WTERMSIG(status));
+		}
+		p = p->next;
 	}
+//	if (j->parent != NULL)
+//		j->parent->status = j->parent;
+//	if (j->status == 0)
+
+//	while (1)
+//	{
+//		pid = waitpid(WAIT_ANY, &status, WUNTRACED);
+//		if (pid == -1)
+//		{
+//			perror("waitpid");
+//			return ;
+//		}
+//		if (proc_chgstat(j, pid, status)
+//			|| job_stopped(j)
+//			|| job_completed(j))
+//		{
+//			// EXECUTE NEXT IN TREE
+//			break ;
+//		}
+//	}
 }
 
 void					job_putbg(t_job *j, int continued)

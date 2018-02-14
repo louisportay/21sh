@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 15:38:46 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 20:57:01 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ struct					s_job
 	int					stdin;
 	int					stdout;
 	int					stderr;
-	struct s_job		*next;
 };
 
 t_proc					*proc_cr(void);
