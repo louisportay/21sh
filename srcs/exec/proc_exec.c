@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 19:04:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 19:26:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,7 @@ void					set_pid_data(t_ctx *ctx, pid_t pgid,
 	{
 		int ret = tcsetpgrp(ctx->fd, pgid != 0 ? pgid : getpid());
 		if (ret != 0)
-		{
-			printf("ret: %d - errno: %d\n", ret, errno);
 			perror ("tcsetpgrp");
-		}
 	}
 }
 

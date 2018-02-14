@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 10:24:57 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 20:30:29 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void				asmt_clear(t_asmt **asmt)
 
 void				*ptok_clear(t_ptok **ptok)
 {
+	if (ptok == NULL || *ptok == NULL)
+		return (NULL);
 	if ((*ptok)->job != NULL)
 		job_clear(&(*ptok)->job);
 	if ((*ptok)->ok != NULL)

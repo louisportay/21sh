@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 16:16:23 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/14 19:28:01 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,8 @@ void	print_prompt(t_ctx *ctx)
 	int				i;
 	char			c;
 
+	if (ctx->istty == 0)
+		return ;
 	if (!(prompt = ft_astr_getval(ctx->locals, ctx->prompt_mode)))
 		return ;
 	i = 0;

@@ -1,6 +1,6 @@
 HANDLE BG/FG
-Free at the end
-Get next extree
+Free at the end -- CHECK IF THE WHOLE TREE IS FREED
+Get next extree -- CHECK FOR EXCEPTIONS
 Do assignment
 --	Do redir \\ DONE
 add bg jobs to job list
