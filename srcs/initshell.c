@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 15:32:32 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 16:41:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,21 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->hash = ft_hashset_create(HASH_SIZE, HASH_PRIME);
 }
 
-//	static void			init_job_control(t_ctx *ctx)
-//	{
-//		while (tcgetpgrp(ctx->fd) != (ctx->pid = getpgrp()))
-//			kill(-ctx->pgid, SIGTTIN);
-//		ctx->pgid = getpid();
-//		if (setpgid(ctx->pgid, ctx->pgid) < 0)
-//		{
-//			ctx->job_control = 0;
-//			perror("setpgid");
-//		}
-//		printf("shell pid: %d - pgid: %d - read pgid: %d\n", ctx->pid, ctx->pgid, getpgid(ctx->pid));
-//		int ret = tcsetpgrp(ctx->fd, ctx->pgid);
-//		if (ret != 0)
-//			perror("tcsetpgrp init");
-//	}
+	static void			init_job_control(t_ctx *ctx)
+	{
+		while (tcgetpgrp(ctx->fd) != (ctx->pid = getpgrp()))
+			kill(-ctx->pgid, SIGTTIN);
+		ctx->pgid = getpid();
+		if (setpgid(ctx->pgid, ctx->pgid) < 0)
+		{
+			ctx->job_control = 0;
+			perror("setpgid");
+		}
+		printf("shell pid: %d - pgid: %d - read pgid: %d\n", ctx->pid, ctx->pgid, getpgid(ctx->pid));
+		int ret = tcsetpgrp(ctx->fd, ctx->pgid);
+		if (ret != 0)
+			perror("tcsetpgrp init");
+	}
 
 static void			init_termios(t_ctx *ctx)
 {
@@ -101,8 +101,8 @@ int					init(t_ctx *ctx, char **av, char **environ)
 	get_ctxaddr(ctx);
 	init_ctx(ctx, av, environ);
 	complete_environ(&ctx->environ);
-//	if (ctx->istty)
-//		init_job_control(ctx);
+	if (ctx->istty)
+		init_job_control(ctx);
 	ret = tcgetattr(ctx->fd, &ctx->oldtios);
 	if (ret != 0) perror("tcgetattr");
 	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 15:47:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 17:37:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,30 +62,30 @@ char *ft_astr_cat(char **argv)
 
 #include <errno.h>
 
-//	void					set_pid_data(t_ctx *ctx, pid_t pgid,
-//											int fg)
-//	{
-//		(void)pgid;
-//		pid_t				pid;
-//	//
-//			pid = getpid();
-//			if (pgid == 0)
-//				pgid = pid;
-//			int ret = setpgid(pid, pgid);
-//			if (ret != 0)
-//				perror("setpgid in child");
-//		(void)ctx;
-//		(void)fg;
-//		if (fg)
-//		{
-//			int ret = tcsetpgrp(ctx->fd, pgid != 0 ? pgid : getpid());
-//			if (ret != 0)
-//			{
-//				printf("ret: %d - errno: %d\n", ret, errno);
-//				perror ("tcsetpgrp");
-//			}
-//		}
-//	}
+	void					set_pid_data(t_ctx *ctx, pid_t pgid,
+											int fg)
+	{
+		(void)pgid;
+		pid_t				pid;
+	//
+			pid = getpid();
+			if (pgid == 0)
+				pgid = pid;
+			int ret = setpgid(pid, pgid);
+			if (ret != 0)
+				perror("setpgid in child");
+		(void)ctx;
+		(void)fg;
+		if (fg)
+		{
+			int ret = tcsetpgrp(ctx->fd, pgid != 0 ? pgid : getpid());
+			if (ret != 0)
+			{
+				printf("ret: %d - errno: %d\n", ret, errno);
+				perror ("tcsetpgrp");
+			}
+		}
+	}
 
 void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 									t_ctx *ctx)
@@ -96,17 +96,15 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 
 	(void)pgid;
 	(void)fg;
-	printf("STDIN_FILENO: %d - STDOUT_FILENO: %d - STDERR_FILENO: %d\n",
-			fd[0], fd[1], fd[2]);
 	path = NULL;
-//	set_pid_data(ctx, pgid, fg);
+	set_pid_data(ctx, pgid, fg);
 	builtin = PH_GET_BUILTIN(p->argv[0]);
 	if (builtin == NULL && get_path(p->argv[0], ctx, &path) == 0)
 	{
 		printf("%s: %s: %s\n", "21sh", p->argv[0], "Command not found");
 		exit(1);
 	}
-//	if (ctx->istty)
+//	if (ctx->istty) IF CTX IS FG DO SIG_DFL ELSE LOOK UP DFL BEHAVIOUR
 		setup_signals(SIG_DFL);
 	setup_fd(fd[0], STDIN_FILENO);
 	setup_fd(fd[1], STDOUT_FILENO);

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 16:26:46 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 17:38:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 	pid_t				pid;
 
 	if ((pid = fork()) == 0)
-	{
-		printf("fd[0]: %d - fd[1]: %d\n",fd[0], fd[1]);
 		proc_exec(p, j->pgid, (int[3]){fd[0], fd[1], j->stderr}, fg, ctx);
-	}
 	else if (pid < 0)
 	{
 		ft_putstr_fd("fork error\n", STDERR_FILENO);
@@ -30,19 +27,14 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 	else
 	{
 		p->pid = pid;
-//		waitpid(pid, &j->status, WUNTRACED);
-//		printf("launched (\033[32m%d\033[0m)", pid);
-//		for (int i = 0; p->argv[i] != NULL; i++)
-//			printf(" %s", p->argv[i]);
-//		printf("\n");
-//		if (ctx->istty != 0)
-//		{
-//			if (j->pgid == 0)
-//				j->pgid = pid;
-//			int ret = setpgid(pid, j->pgid);
-//			if (ret != 0)
-//				perror ("setpgid");
-//		}
+		if (ctx->istty != 0)
+		{
+			if (j->pgid == 0)
+				j->pgid = pid;
+			int ret = setpgid(pid, j->pgid);
+			if (ret != 0)
+				perror ("setpgid");
+		}
 	}
 	return (0);
 }
@@ -65,16 +57,12 @@ void					do_pipe(t_job *job, t_proc *p, int mypipe[2],
 
 void					do_postloop(t_job *j, int fg, t_ctx *ctx)
 {
-	(void)j;
-	(void)fg;
-	(void)ctx;
-//	printf("\033[55mdo postloop\n\033[0m");
-//	if (ctx->istty == 0)
-//		job_wait(j);
-//	else if (fg != 0)
-//		job_putfg(j, 0, ctx);
-//	else
-//		job_putbg(j, 0);
+	if (ctx->istty == 0)
+		job_wait(j);
+	else if (fg != 0)
+		job_putfg(j, 0, ctx);
+	else
+		job_putbg(j, 0);
 }
 
 void					clear_pipe(t_job *j, int *infile, int *outfile,
@@ -91,11 +79,6 @@ void					clear_pipe(t_job *j, int *infile, int *outfile,
 		*outfile = -1;
 	}
 	*infile = new_in;
-//	if (jfd[0] != j->stdin)
-//		close(jfd[0]);
-//	else if (jfd[1] != j->stdout)
-//		close(jfd[1]);
-//	jfd[0] = new_in;
 }
 
 void					astr_to_buf(char **argv, t_qbuf *buf, int last)
@@ -136,8 +119,7 @@ int						job_exec(t_job *j, int fg, t_ctx *ctx)
 		p = p->next;
 	}
 	j->command = qbuf_del(&buf);
-	job_wait(j);
 	job_fmtinfo(j, EXE_LCHD);
-//	do_postloop(j, fg, ctx);
+	do_postloop(j, fg, ctx);
 	return (0);
 }
