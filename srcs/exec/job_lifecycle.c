@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:03:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 15:25:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 09:15:16 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_job					*job_new(t_proc *plist)
 	job->stdin = STDIN_FILENO;
 	job->stdout = STDOUT_FILENO;
 	job->stderr = STDERR_FILENO;
+	job->parent = job;
 	return (job);
 }
 

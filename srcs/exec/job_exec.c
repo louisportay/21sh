@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 17:38:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 10:02:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ int						job_exec(t_job *j, int fg, t_ctx *ctx)
 	int					outfile;
 	t_qbuf				*buf;
 
+	if (j == NULL)
+		return (0);
 	mypipe[0] = j->stdin;
 	mypipe[1] = j->stdout;
 	infile = j->stdin;
@@ -119,7 +121,9 @@ int						job_exec(t_job *j, int fg, t_ctx *ctx)
 		p = p->next;
 	}
 	j->command = qbuf_del(&buf);
+	if (fg)
+		return (job_next(j, ctx));
 	job_fmtinfo(j, EXE_LCHD);
-	do_postloop(j, fg, ctx);
+	job_putbg(j, 0);
 	return (0);
 }

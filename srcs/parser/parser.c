@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 20:35:18 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 10:10:44 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void					proc_insert(t_proc **head, t_proc **curr, t_proc *e)
 	*curr = e;
 }
 
-t_proc					*get_pipe(t_token **tokz)
+static t_proc			*get_pipe(t_token **tokz)
 {
 	t_proc				*p[3];
 	t_token				*t;
@@ -64,7 +64,7 @@ t_proc					*get_pipe(t_token **tokz)
 	return (p[0]);
 }
 
-t_job					*get_ands(t_token **toks)
+static t_job			*get_ands(t_token **toks, t_job *parent)
 {
 	t_token				*t;
 	t_proc				*p;
@@ -72,19 +72,26 @@ t_job					*get_ands(t_token **toks)
 
 	t = *toks;
 	j[0] = NULL;
+	j[1] = NULL;
+	printf("parent: %p\n", parent);
 	while (t->type == AND_IF)
 	{
 		t = t->next;
 		if ((p = get_pipe(&t)) == NULL)
 			return (job_clear(j));
 		j[2] = job_new(p);
-		job_insert(j, j + 1, j[2]);
+		j[2]->parent = parent;
+		if (j[1] != NULL)	
+			j[1]->ok = j[2];
+		if (j[0] == NULL)
+			j[0] = j[2];
+		j[1] = j[2];
 	}
 	*toks = t;
 	return (j[0]);
 }
 
-t_job					*job_next(t_token **tokens)
+static t_job			*job_getnext(t_token **tokens, t_job *parent)
 {
 	t_token				*tokz;
 	t_job				*job;
@@ -92,13 +99,15 @@ t_job					*job_next(t_token **tokens)
 	if (*tokens == NULL || token_issep(tokz = (*tokens)->next))
 		return (token_dumperror(*tokens == NULL ? NULL : tokz));
 	job = job_new(NULL);
+	job->parent = (parent == NULL) ? job : parent;
 	if ((job->procs = get_pipe(&tokz)) == NULL)
 		return (job_clear(&job));
-	if (tokz->type == AND_IF && (job->ok = get_ands(&tokz)) == NULL)
+	if (tokz->type == AND_IF
+		&& (job->ok = get_ands(&tokz, parent == NULL ? job : parent)) == NULL)
 		return (job_clear(&job));
 	if (tokz->type == OR_IF)
 	{
-		if ((job->err = job_next(&tokz)) == NULL)
+		if ((job->err = job_getnext(&tokz, parent)) == NULL)
 			return (job_clear(&job));
 	}
 	*tokens = tokz;
@@ -115,7 +124,7 @@ t_job					*parse(struct s_token *tokens)
 		return (NULL);
 	while (1)
 	{
-		if ((job[2] = job_next(&tokens)) == NULL)
+		if ((job[2] = job_getnext(&tokens, NULL)) == NULL)
 			return (job_clear(job));
 		if (tokens->type == NEWLINE)
 		{
