@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 11:51:08 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 11:59:40 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,6 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	if (p->argv != NULL)
 		handle_assign(astrenv, p->asmts, &locpath);
 	builtin = PH_GET_BUILTIN(p->argv[0]);
-	if (builtin == NULL && get_path(p->argv[0], astrenv, &path, locpath) == 0)
-	{
-		printf("%s: %s: %s\n", "21sh", p->argv[0], "Command not found");
-		exit(1);
-	}
 //	if (ctx->istty) IF CTX IS FG DO SIG_DFL ELSE LOOK UP DFL BEHAVIOUR
 		setup_signals(SIG_DFL);
 	setup_fd(fd[0], STDIN_FILENO);
@@ -133,6 +128,11 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	setup_fd(fd[2], STDERR_FILENO);
 	if (p->redirs != NULL)
 		do_redir(p->redirs);
+	if (builtin == NULL && get_path(p->argv[0], astrenv, &path, locpath) == 0)
+	{
+		dprintf(STDERR_FILENO, "%s: %s: %s\n", "21sh", p->argv[0], "Command not found");
+		exit(1);
+	}
 	// DO ASSIGNMENT IF NOT ONLY ASSIGNMENTS
 	// IF ONLY ASSIGNMENT, ASSIGN ENV OR LOCALS THEN DO SIMPLE EXIT <- in ctx
 	if (builtin != NULL)
