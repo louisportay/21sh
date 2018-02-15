@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 20:51:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/15 10:53:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_histfile(t_ctx *ctx)
 	else if (ctx->history == true)
 		return (ft_strdup(HISTFILE));
 	else
-		return ("");
+		return (ft_strdup(""));
 }
 
 t_histentry		*new_histentry(t_dlist *line, unsigned index)

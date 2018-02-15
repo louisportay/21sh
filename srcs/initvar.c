@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 16:28:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 11:06:07 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int					create_locals(char ***locals)
 ** Complete the environ variable with HOME, USER, PATH (if not present)
 ** and set SHLVL and PWD
 */
+
+//remove astr_append by astr_replace
 
 void				complete_environ(char ***environ)
 {
@@ -98,7 +100,10 @@ void				init_termcaps(t_ctx *ctx)
 	if (!ctx->tc.le || !ctx->tc.nd || !ctx->tc.im || !ctx->tc.ei
 		|| !ctx->tc.dc || !ctx->tc.cr || !ctx->tc.up || !ctx->tc.dow
 		|| !ctx->tc.cl || !ctx->tc.cd)
+	{
 		ctx->line_edition = false;
+		ctx->history = false;
+	}
 }
 
 t_hash_dict			*getbuiltins(void)
@@ -118,4 +123,25 @@ t_hash_dict			*getbuiltins(void)
 //	ft_hashset_add(dict, "unsetenv", &);
 //	ft_hashset_add(dict, "shopt", &);// on le garde ?
 	return (dict);
+}
+
+/*
+** returns an array composed of the different paths to look for binary files
+*/
+
+char			**getpath(char **environ)
+{
+	char			**path;
+	int				i;
+
+	if ((i = ft_astr_getkey(environ, "PATH", 4)) == -1)
+		return (NULL);
+	if (!(path = ft_strsplit(environ[i], ':')))
+		return (NULL);
+	if (astr_rmdup(&path) == -1)
+	{
+		ft_astr_clear(&path);
+		return (NULL);
+	}
+	return (path);
 }

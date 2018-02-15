@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/12 16:11:42 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/15 11:06:48 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,8 @@ HEADERS= ft_21sh.h\
 
 SRCS=	main.c\
 		ft_21sh.c\
+		initvar.c\
+		initshell.c\
 		error.c\
 		signal.c\
 		tools.c\
@@ -98,8 +100,6 @@ SRCS=	main.c\
 		job_wait.c\
 		proc_chgstat.c\
 		job_lifecycle.c\
-		initvar.c\
-		initshell.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

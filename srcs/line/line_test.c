@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/20 18:34:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 19:11:12 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/14 17:37:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,6 +289,8 @@ bool	test_load_line(t_ctx *ctx, t_line *l, t_key *key)
 		return (false);
 	else if (ctx->emacs_mode && (*key->buf == C_P || *key->buf == C_N))
 		return (false);
+	else if (*key->buf == C_C)	//
+		return (false);			//
 	else
 		return (true);
 }

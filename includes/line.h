@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 13:07:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 18:04:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define C_A '\001'
 # define C_B '\002'
+# define C_C '\003'
 # define C_D '\004'
 # define C_E '\005'
 # define C_F '\006'
@@ -158,6 +159,7 @@ void	wrap_lineread(t_ctx *env, t_line *l, char *prompt_mode);
 void	lineread(t_ctx *env, t_line *l);
 void	getrawline(t_ctx *env, t_line *l);
 int		user_input(t_ctx *env, t_line *l, t_key *key);
+void	init_line(t_ctx *ctx, t_line *line);
 
 void	clear_line(t_ctx *env, t_line *l);
 void	redraw_line(t_ctx *env, t_line *l);

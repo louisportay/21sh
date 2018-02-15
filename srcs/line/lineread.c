@@ -6,21 +6,17 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 21:01:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/13 15:38:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
 
-void	init_line(t_ctx *ctx, t_line *line, t_key *key, int *status)
+void	init_line(t_ctx *ctx, t_line *line)
 {
-	ft_bzero(key->buf, READLEN);
-	key->i = 0;
-	*status = READON;
 	line->line = ft_dlstnew("HEAD", 4);
 	line->lastline = line->line;
-	line->yank = NULL;
 	line->cursor_offset = 0;
 	line->multiline = false;
 	print_prompt(ctx);
@@ -32,7 +28,11 @@ void		lineread(t_ctx *ctx, t_line *line)
 	t_key	key;
 	int		status;
 
-	init_line(ctx, line, &key, &status);	
+	ft_bzero(key.buf, READLEN);
+	key.i = 0;
+	status = READON;
+	line->yank = NULL;
+	init_line(ctx, line);
 	
 	tputs(ctx->tc.im, 1, &ft_putchar_stdin);
 	while (status == READON)

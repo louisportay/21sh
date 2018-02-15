@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 16:12:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 11:17:51 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/ioctl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 # include <termios.h>
 # include <term.h>
 # include <curses.h>
@@ -156,6 +157,8 @@ t_hash_dict				*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);
 void					complete_environ(char ***environ);
 int						create_locals(char ***locals);
+char					**getpath(char **environ);
+
 
 void					dump_err(char errcode);
 void					fatal_err(char errcode, t_ctx *ctx);

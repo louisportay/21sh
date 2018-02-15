@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 14:08:37 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 10:05:04 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,18 @@ void		fatal_err(char errcode, t_ctx *ctx)
 
 void	wrap_exit(int status, t_ctx *ctx)
 {
+//	if (ctx->istty)
+//	{
 	if (ctx->line.line)
 	//ft_dlsthead(&ctx->line);//
 		ft_dlstdel(&ctx->line.line, &delvoid);
 	if (ctx->line.yank)
 	//ft_dlsthead(&ctx->yank);//
 		ft_dlstdel(&ctx->line.yank, &delvoid);
+	if (ctx->line.linestate)
+		stack_del(&ctx->line.linestate);
+//	}
+
 
 //	if (ctx->line.linestate)
 //		stack_del(&ctx->line.linestate);
@@ -70,6 +76,10 @@ void	wrap_exit(int status, t_ctx *ctx)
 		else
 			ft_dlstdelone(&ctx->hist.list, &delvoid);
 	}
+	if (ctx->path)
+		ft_astr_clear(&ctx->path);
+	if (ctx->hash)
+		ft_hashset_free(&ctx->hash, &ft_memdel);
 	if (ctx->environ)
 		ft_astr_clear(&ctx->environ);
 	if (ctx->locals)

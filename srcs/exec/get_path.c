@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 11:51:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 11:55:10 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int						ctx_path(char *exe, t_ctx *ctx, char **path)
 	else if ((e = ft_hashset_lookup(ctx->hash, exe)) != NULL)
 		*path = (char *)e->content;
 	else if ((*path = env_path_get(exe, ctx->path)) != NULL)
-		;
+	{
+	}	
 	if (*path != NULL)
 	{
 		ft_hashset_add(ctx->hash, exe, (void *)*path);

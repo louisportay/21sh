@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 18:07:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/15 10:20:34 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,34 @@ void	linefunc_switch(t_ctx *ctx, t_line *l, t_key *key)
 		p[i].func(ctx, l);
 }
 
+void	reset_line(t_ctx *ctx, t_line *l)
+{
+
+	write(STDOUT_FILENO, "\n", 1);
+
+	if (l->split_line)
+		ft_dlstdel(&l->split_line, &delvoid);
+
+	if (l->line)
+	{
+		ft_dlsthead(&l->line);
+		ft_dlstdel(&l->line, &delvoid);
+	}
+	else
+		ft_dlstdel(&l->lastline, &delvoid);
+	l->line = ft_dlstnew("HEAD", 4);
+	l->lastline = l->line;
+	l->cursor_offset = 0;
+
+	stack_del(&l->linestate);
+	stack_push(&l->linestate, stack_create(UNQUOTED));
+
+	l->multiline = false;
+	ft_strcpy(ctx->prompt_mode, PS1);
+	print_prompt(ctx);
+	l->line_len = l->cursor_offset;
+}
+
 int	user_input(t_ctx *ctx, t_line *l, t_key *key)
 {
 	int ret;
@@ -80,6 +108,8 @@ int	user_input(t_ctx *ctx, t_line *l, t_key *key)
 
 	if (ft_isprint(*key->buf))
 		insert_char(key->buf, ctx, l);
+	else if (*key->buf == C_C)
+		reset_line(ctx, l);
 	else
 		linefunc_switch(ctx, l, key);
 
@@ -180,7 +210,7 @@ void	wrap_lineread(t_ctx *ctx, t_line *l, char *prompt_mode)
 			getrawline(ctx, &ctx->line);
 	}
 	ctx->cur_line = NULL;
-	if (l->linestate)
+//	if (l->linestate)
 		stack_del(&l->linestate);
 
 	//DEBUG//
