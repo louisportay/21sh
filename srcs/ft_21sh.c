@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 14:05:16 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 10:16:45 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static int	create_locals(char ***locals)
 ** Complete the environ variable with HOME, USER, PATH (if not present)
 ** and set SHLVL and PWD
 */
+
+//remove astr_append by astr_replace
 
 static void	complete_environ(char ***environ)
 {
@@ -130,6 +132,7 @@ static void	init_termios(t_ctx *ctx)
 		ctx->tios.c_cc[VDSUSP] = _POSIX_VDISABLE;
 		ctx->tios.c_cc[VDISCARD] = _POSIX_VDISABLE;
 #endif
+		ctx->tios.c_cc[VINTR] = _POSIX_VDISABLE;
 
 		if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws) == -1)
 			ctx->line_edition = false;
@@ -148,6 +151,7 @@ static void	init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->heredoc_eof = NULL;
 
 	ctx->line.line = NULL;
+	ctx->line.yank = NULL;
 	ctx->line.lastline = NULL;
 	ctx->line.linestate = NULL;
 	ctx->hist.file = 0;
@@ -210,37 +214,52 @@ t_hash_dict *getbuiltins(void)
 
 //on garde la comparaison avec xterm-256color ?
 
+static int	init_terminal(t_ctx *ctx)
+{
+	char *tmp;
+
+	if (ctx->istty)
+	{
+		init_job_control(ctx);
+		if (tcgetattr(ctx->fd, &ctx->oldtios) == -1 || (tmp = getenv("TERM")) == NULL
+				|| tgetent(NULL, tmp) == ERR)/*ft_strcmp(tmp, "xterm-256color") ||*/
+		{
+			ctx->line_edition = false;
+			ctx->history = false;
+			return (-1);
+		}
+		ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
+		init_termios(ctx);
+	}
+	else
+	{
+		ctx->line_edition = false;
+		ctx->history = false;
+	//	ctx->job_control = false;
+	}
+	return (0);
+}
+
 static int	init(t_ctx *ctx, char **av, char **environ)
 {
 	char	*tmp;
-	int		ret;
 
 	get_ctxaddr(ctx);
 
 	init_ctx(ctx, av, environ);
 	complete_environ(&ctx->environ);
-	if (ctx->istty)
-		init_job_control(ctx);
-
-	ret = tcgetattr(ctx->fd, &ctx->oldtios);
-	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
-
-	if (ret == -1 || !(ctx->istty) || (tmp = getenv("TERM")) == NULL ||/*ft_strcmp(tmp, "xterm-256color") ||*/
-			tgetent(NULL, tmp) == ERR)
-		ctx->line_edition = false;
-	else
-		init_termios(ctx);
+	init_terminal(ctx);
 
 	if (set_sighandler() == FAILSETSIGHDLR)
 		return (FAILSETSIGHDLR);
-
 
 	create_locals(&ctx->locals);
 	ft_astr_append(&ctx->locals, ft_strjoinc("HISTFILE", tmp = get_histfile(ctx), '='));
 	if (ft_strlen(tmp))
 		free(tmp);
 //	ctx->builtins = getbuiltins();
-	init_hist(ctx);
+	if (ctx->history)
+		init_hist(ctx);
 	return (SUCCESS);
 }
 
