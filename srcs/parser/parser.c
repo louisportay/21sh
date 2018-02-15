@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 12:44:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 20:35:18 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,7 @@ t_ptok					*get_ands(t_token **toks)
 		if ((p = get_pipe(&t)) == NULL)
 			return (ptok_clear(pt));
 		pt[2] = (t_ptok *)ft_pmemalloc(sizeof(t_ptok), &on_emem, NOMEM);
-		pt[2]->job = (t_job *)ft_pmemalloc(sizeof(t_job), &on_emem, NOMEM);
-		pt[2]->job->procs = p;
+		pt[2]->job = job_new(p);
 		ptok_insert(pt, pt + 1, pt[2]);
 	}
 	*toks = t;
@@ -94,7 +93,7 @@ t_ptok					*ptok_next(t_token **tokens)
 	if (*tokens == NULL || token_issep(tokz = (*tokens)->next))
 		return (token_dumperror(*tokens == NULL ? NULL : tokz));
 	ptok = (t_ptok *)ft_pmemalloc(sizeof(t_ptok), &on_emem, NOMEM);
-	ptok->job = (t_job *)ft_pmemalloc(sizeof(t_job), &on_emem, NOMEM);
+	ptok->job = job_new(NULL);
 	if ((ptok->job->procs = get_pipe(&tokz)) == NULL)
 		return (ptok_clear(&ptok));
 	if (tokz->type == AND_IF && (ptok->ok = get_ands(&tokz)) == NULL)
@@ -110,9 +109,33 @@ t_ptok					*ptok_next(t_token **tokens)
 
 t_ptok					*parse(struct s_token *tokens)
 {
-	t_ptok				*ret;
+	t_ptok				*ptok[3];
 
-	if ((ret = ptok_next(&tokens)) == NULL)
+	ptok[0] = NULL;
+	if (tokens == NULL || tokens->type == NEWLINE
+		|| (tokens->next != NULL && tokens->next->type == NEWLINE))
 		return (NULL);
-	return (ret);
+	while (1)
+	{
+		if ((ptok[2] = ptok_next(&tokens)) == NULL)
+			return (ptok_clear(ptok));
+		if (tokens->type == NEWLINE)
+		{
+			ptok_insert(ptok, ptok + 1, ptok[2]);
+			break ;
+		}
+		else if ((tokens->type & (SEMICOL | AND)) != 0)
+		{
+			ptok[2]->fg = tokens->type == AND;
+			ptok_insert(ptok, ptok + 1, ptok[2]);
+			if (tokens->next == NULL || tokens->next->type == NEWLINE)
+				break ;
+		}
+		else
+		{
+			dprintf(STDERR_FILENO, "It's and error, for sure\n");
+			return (ptok_clear(ptok));
+		}
+	}
+	return (ptok[0]);
 }

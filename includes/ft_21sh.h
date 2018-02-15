@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 14:06:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 11:05:51 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,14 @@ typedef struct			s_typefunc
 
 void					vingtetunsh(char **av, char **environ);
 
+int						init(t_ctx *ctx, char **av, char **environ);
+t_hash_dict				*getbuiltins(void);
+void					init_termcaps(t_ctx *ctx);
+void					complete_environ(char ***environ);
+int						create_locals(char ***locals);
+char					**getpath(char **environ);
+
+
 void					dump_err(char errcode);
 void					fatal_err(char errcode, t_ctx *ctx);
 void					wrap_exit(int status, t_ctx *ctx);
@@ -171,6 +179,7 @@ bool					is_number(char *str);
 bool					is_number_w_dash(char *str);
 
 t_ptok					*parse(t_token *tok);
+int						exec(t_ptok *extree);
 
 // Shell script stuff
 

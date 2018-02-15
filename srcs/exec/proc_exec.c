@@ -6,11 +6,11 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/31 18:43:58 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 19:26:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "ft_21sh.h"
 
 void					exit_err(char *msg)
 {
@@ -60,7 +60,9 @@ char *ft_astr_cat(char **argv)
 	return (qbuf_del(&buf));
 }
 
-void					set_pid_data(t_env *env, pid_t pgid,
+#include <errno.h>
+
+void					set_pid_data(t_ctx *ctx, pid_t pgid,
 										int fg)
 {
 	pid_t				pid;
@@ -68,38 +70,48 @@ void					set_pid_data(t_env *env, pid_t pgid,
 	pid = getpid();
 	if (pgid == 0)
 		pgid = pid;
-	setpgid(pid, pgid);
+	int ret = setpgid(pid, pgid);
+	if (ret != 0)
+		perror("setpgid in child");
 	if (fg)
-		tcsetpgrp(env->fd, pgid);
+	{
+		int ret = tcsetpgrp(ctx->fd, pgid != 0 ? pgid : getpid());
+		if (ret != 0)
+			perror ("tcsetpgrp");
+	}
 }
 
 void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
-									t_env *env)
+									t_ctx *ctx)
 {
 	char				*path;
 	int					(*builtin)();
 	char				**astrenv;
-	char				**argv;
 
+	(void)pgid;
+	(void)fg;
 	path = NULL;
-	argv = p->argv;
-	set_pid_data(env, pgid, fg);
+	set_pid_data(ctx, pgid, fg);
 	builtin = PH_GET_BUILTIN(p->argv[0]);
-	if (builtin == NULL && get_path(argv[0], env, &path) == 0)
+	if (builtin == NULL && get_path(p->argv[0], ctx, &path) == 0)
 	{
 		printf("%s: %s: %s\n", "21sh", p->argv[0], "Command not found");
 		exit(1);
 	}
-	if (env->istty)
+//	if (ctx->istty) IF CTX IS FG DO SIG_DFL ELSE LOOK UP DFL BEHAVIOUR
 		setup_signals(SIG_DFL);
 	setup_fd(fd[0], STDIN_FILENO);
 	setup_fd(fd[1], STDOUT_FILENO);
 	setup_fd(fd[2], STDERR_FILENO);
+	if (p->redirs != NULL)
+		do_redir(p->redirs);
 	// LPORTAY'S REDIRECTIONS
-	if (builtin != NULL)
-		exit(builtin(p->argv, env));
-	if ((astrenv = ft_env_toastr(env->env)) == NULL)
+	if ((astrenv = ft_astr_dup(ctx->environ)) == NULL)
 		exit_err("Not enough memory\n"); // BIG BIG ERROR BUT MIGHT BE UNESCAPBLE
-	execve(path, argv, astrenv);
+	// DO ASSIGNMENT IF NOT ONLY ASSIGNMENTS
+	// IF ONLY ASSIGNMENT, ASSIGN ENV OR LOCALS THEN DO SIMPLE EXIT <- in ctx
+	if (builtin != NULL)
+		exit(builtin(p->argv, ctx));
+	execve(path, p->argv, astrenv);
 	exit_err("Could not exec...\n");
 }

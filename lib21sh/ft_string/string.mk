@@ -15,6 +15,7 @@ ft_strcmp.c\
 ft_strcpy.c\
 ft_strdel.c\
 ft_strdup.c\
+ft_strindex.c\
 ft_strjoin.c\
 ft_strlen.c\
 ft_strncat.c\

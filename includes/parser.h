@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 10:22:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/14 17:08:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ struct					s_asmt
 
 struct					s_ptok
 {
+	int					fg;
 	struct s_job		*job;
 	struct s_ptok		*ok;
 	struct s_ptok		*err;

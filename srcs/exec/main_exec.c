@@ -6,13 +6,12 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 13:45:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/31 14:43:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 18:58:58 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //	#include "exec.h"
-#include "environ.h"
-#include "exec.h"
+#include "ft_21sh.h"
 
 #define CMD ("ls -l | cat -e")
 
@@ -44,10 +43,9 @@ void job_print(t_job *j)
 	printf("END OF DEBUGGING\n");
 }
 
-
 int			main(int ac, char **av)
 {
-	t_env	env;
+	t_ctx	ctx;
 	t_proc	*proc[3];
 	t_job	*job;
 	char	*cmd;
@@ -55,11 +53,10 @@ int			main(int ac, char **av)
 
 	if (ac < 2)
 		return (1);
-	env_setup(&env, environ);
 	char *term = getenv("TERM");
 	tgetent(0, term);
-	tcgetattr(STDIN_FILENO, &env.told);
-	ft_memcpy(&env.tnew, &env.told, sizeof(struct termios));
+	tcgetattr(STDIN_FILENO, &ctx.oldtios);
+	ft_memcpy(&ctx.tios, &ctx.oldtios, sizeof(struct termios));
 	cmd = NULL;
 	proc[0] = NULL;
 	for (int i = 1; i  < ac; i++)
@@ -73,13 +70,15 @@ int			main(int ac, char **av)
 			proc_insert(proc, proc + 1, proc[2]);
 		argv = NULL;
 	}
-	job = job_new(cmd, proc[0]);
-	env.istty = isatty(env.fd);
-	if (env.istty)
+	job = job_new(proc[0]);
+	job->command = cmd;
+	ctx.environ = ft_astr_dup(environ);
+	ctx.istty = isatty(ctx.fd);
+	if (ctx.istty)
 	{
 		/* Loop until we are in the foreground.  */
-		while (tcgetpgrp (env.fd) != (env.pid = getpgrp ()))
-			kill (- env.pgid, SIGTTIN);
+		while (tcgetpgrp (ctx.fd) != (ctx.pid = getpgrp ()))
+			kill (- ctx.pgid, SIGTTIN);
 	
 		/* Ignore interactive and job-control signals.  */
 		signal (SIGINT, SIG_IGN);
@@ -90,19 +89,19 @@ int			main(int ac, char **av)
 		signal (SIGCHLD, SIG_IGN);
 	
 		/* Put ourselves in our own process group.  */
-		env.pgid = getpid ();
-		if (setpgid (env.pgid, env.pgid) < 0)
+		ctx.pgid = getpid ();
+		if (setpgid (ctx.pgid, ctx.pgid) < 0)
 		{
 			perror ("Couldn't put the shell in its own process group");
 			exit (1);
 		}
 	
 		/* Grab control of the terminal.  */
-		tcsetpgrp (env.fd, env.pgid);
+		tcsetpgrp (ctx.fd, ctx.pgid);
 	
 		/* Save default terminal attributes for shell.  */
-		tcgetattr (env.fd, &env.told);
+		tcgetattr (ctx.fd, &ctx.oldtios);
 	}
-	job_exec(job, 1, &env);
+	job_exec(job, 1, &ctx);
 	return (0);
 }

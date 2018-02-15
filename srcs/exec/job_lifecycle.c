@@ -6,13 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:03:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/29 19:34:10 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/12 15:25:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "ft_21sh.h"
 
-t_job					*job_new(char *cmd, t_proc *plist)
+t_job					*job_new(t_proc *plist)
 {
 	t_job				*job;
 
@@ -20,7 +20,6 @@ t_job					*job_new(char *cmd, t_proc *plist)
 		return (NULL);
 	job->procs = plist;
 	job->stdin = STDIN_FILENO;
-	job->command = cmd;
 	job->stdout = STDOUT_FILENO;
 	job->stderr = STDERR_FILENO;
 	return (job);
@@ -35,19 +34,19 @@ void					job_insert(t_job **head, t_job **curr, t_job *j)
 	*curr = j;
 }
 
-void					job_clear(t_job **jobs)
-{
-	t_job				*j;
-	t_job				*tmp;
-
-	j = *jobs;
-	*jobs = NULL;
-	while (j != NULL)
-	{
-		proc_clear(&j->procs);
-		ft_strdel(&j->command);
-		tmp = j;
-		j = j->next;
-		ft_memdel((void **)&tmp);
-	}
-}
+//	void					job_clear(t_job **jobs)
+//	{
+//		t_job				*j;
+//		t_job				*tmp;
+//	
+//		j = *jobs;
+//		*jobs = NULL;
+//		while (j != NULL)
+//		{
+//			proc_clear(&j->procs);
+//			ft_strdel(&j->command);
+//			tmp = j;
+//			j = j->next;
+//			ft_memdel((void **)&tmp);
+//		}
+//	}
