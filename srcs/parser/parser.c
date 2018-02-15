@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 20:35:18 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 10:37:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void					proc_insert(t_proc **head, t_proc **curr, t_proc *e)
 	*curr = e;
 }
 
-t_proc					*get_pipe(t_token **tokz)
+static t_proc			*get_pipe(t_token **tokz)
 {
 	t_proc				*p[3];
 	t_token				*t;
@@ -64,78 +64,84 @@ t_proc					*get_pipe(t_token **tokz)
 	return (p[0]);
 }
 
-t_ptok					*get_ands(t_token **toks)
+static t_job			*get_ands(t_token **toks, t_job *parent)
 {
 	t_token				*t;
 	t_proc				*p;
-	t_ptok				*pt[3];
+	t_job				*j[3];
 
 	t = *toks;
-	pt[0] = NULL;
+	j[0] = NULL;
+	j[1] = NULL;
 	while (t->type == AND_IF)
 	{
 		t = t->next;
 		if ((p = get_pipe(&t)) == NULL)
-			return (ptok_clear(pt));
-		pt[2] = (t_ptok *)ft_pmemalloc(sizeof(t_ptok), &on_emem, NOMEM);
-		pt[2]->job = job_new(p);
-		ptok_insert(pt, pt + 1, pt[2]);
+			return (job_clear(j));
+		j[2] = job_new(p);
+		j[2]->parent = parent;
+		if (j[1] != NULL)	
+			j[1]->ok = j[2];
+		if (j[0] == NULL)
+			j[0] = j[2];
+		j[1] = j[2];
 	}
 	*toks = t;
-	return (pt[0]);
+	return (j[0]);
 }
 
-t_ptok					*ptok_next(t_token **tokens)
+static t_job			*job_getnext(t_token **tokens, t_job *parent)
 {
 	t_token				*tokz;
-	t_ptok				*ptok;
+	t_job				*job;
 
 	if (*tokens == NULL || token_issep(tokz = (*tokens)->next))
 		return (token_dumperror(*tokens == NULL ? NULL : tokz));
-	ptok = (t_ptok *)ft_pmemalloc(sizeof(t_ptok), &on_emem, NOMEM);
-	ptok->job = job_new(NULL);
-	if ((ptok->job->procs = get_pipe(&tokz)) == NULL)
-		return (ptok_clear(&ptok));
-	if (tokz->type == AND_IF && (ptok->ok = get_ands(&tokz)) == NULL)
-		return (ptok_clear(&ptok));
+	job = job_new(NULL);
+	job->parent = (parent == NULL) ? job : parent;
+	if ((job->procs = get_pipe(&tokz)) == NULL)
+		return (job_clear(&job));
+	if (tokz->type == AND_IF
+		&& (job->ok = get_ands(&tokz, parent == NULL ? job : parent)) == NULL)
+		return (job_clear(&job));
 	if (tokz->type == OR_IF)
 	{
-		if ((ptok->err = ptok_next(&tokz)) == NULL)
-			return (ptok_clear(&ptok));
+		if ((job->err = job_getnext(&tokz, parent)) == NULL)
+			return (job_clear(&job));
 	}
 	*tokens = tokz;
-	return (ptok);
+	return (job);
 }
 
-t_ptok					*parse(struct s_token *tokens)
+t_job					*parse(struct s_token *tokens)
 {
-	t_ptok				*ptok[3];
+	t_job				*job[3];
 
-	ptok[0] = NULL;
+	job[0] = NULL;
 	if (tokens == NULL || tokens->type == NEWLINE
 		|| (tokens->next != NULL && tokens->next->type == NEWLINE))
 		return (NULL);
 	while (1)
 	{
-		if ((ptok[2] = ptok_next(&tokens)) == NULL)
-			return (ptok_clear(ptok));
+		if ((job[2] = job_getnext(&tokens, NULL)) == NULL)
+			return (job_clear(job));
 		if (tokens->type == NEWLINE)
 		{
-			ptok_insert(ptok, ptok + 1, ptok[2]);
+			job_insert(job, job + 1, job[2]);
 			break ;
 		}
 		else if ((tokens->type & (SEMICOL | AND)) != 0)
 		{
-			ptok[2]->fg = tokens->type == AND;
-			ptok_insert(ptok, ptok + 1, ptok[2]);
+			job[2]->fg = tokens->type == AND;
+			job_insert(job, job + 1, job[2]);
 			if (tokens->next == NULL || tokens->next->type == NEWLINE)
 				break ;
 		}
 		else
 		{
 			dprintf(STDERR_FILENO, "It's and error, for sure\n");
-			return (ptok_clear(ptok));
+			return (job_clear(job));
 		}
 	}
-	return (ptok[0]);
+	return (job[0]);
 }

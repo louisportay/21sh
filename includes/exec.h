@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 20:57:01 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 10:13:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,11 @@ struct					s_job
 	int					stdin;
 	int					stdout;
 	int					stderr;
+	int					fg;
+	t_job				*ok;
+	t_job				*err;
+	t_job				*next;
+	t_job				*parent;
 };
 
 t_proc					*proc_cr(void);
@@ -72,7 +77,7 @@ int						proc_chgstat(t_job *job, pid_t pid, int status);
 
 t_job					*job_new(t_proc *plist);
 void					job_insert(t_job **head, t_job **curr, t_job *j);
-void					job_clear(t_job **jobs);
+void					*job_clear(t_job **jobs);
 
 t_job					*job_find(pid_t pid, t_job *job_list);
 int						job_stopped(t_job *job);
@@ -80,11 +85,13 @@ int						job_completed(t_job *job);
 
 int						job_exec(t_job *j, int fg, t_ctx *ctx);
 
-void					job_wait(t_job *j);
+int						job_wait(t_job *j);
 void					job_putbg(t_job *j, int cont);
-void					job_putfg(t_job *j, int cont, t_ctx *ctx);
+int						job_putfg(t_job *j, int cont, t_ctx *ctx);
 
 void					job_fmtinfo(t_job *j, char *status);
+
+int						job_next(t_job *j, t_ctx *ctx);
 
 void					setup_signals(void (*sig)()); 
 

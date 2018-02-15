@@ -36,7 +36,7 @@ void	vingtetunsh(char **av, char  **environ)
 {
 	t_ctx	ctx;
 	char	ret;
-	t_ptok *extree;
+	t_job *extree;
 
 	if ((ret = init(&ctx, av, environ)) != SUCCESS)
 		fatal_err(ret, &ctx);
@@ -52,10 +52,9 @@ void	vingtetunsh(char **av, char  **environ)
 		delete_toklist(&ctx.toklist);
 		if (extree != NULL)
 		{
-//			ptok_print(extree);
 			// HERE WILL THE EXPANSION GO IN NEAR FUTURE
 			exec(extree);
-			ptok_clear(&extree);
+		        job_clear(&extree);
 		}
 		if (ctx.line.line_saved == false)
 			ft_dlstdel(&ctx.line.split_line, &delvoid);

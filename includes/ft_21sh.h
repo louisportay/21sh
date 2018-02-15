@@ -178,8 +178,8 @@ bool					dlst_isblank(t_dlist *dlst);
 bool					is_number(char *str);
 bool					is_number_w_dash(char *str);
 
-t_ptok					*parse(t_token *tok);
-int						exec(t_ptok *extree);
+t_job					*parse(t_token *tok);
+int						exec(t_job *extree);
 
 // Shell script stuff
 

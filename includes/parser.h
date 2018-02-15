@@ -15,7 +15,7 @@
 
 # include "ft_21sh.h"
 
-typedef struct s_ptok	t_ptok;
+//typedef struct s_job	t_job;;
 typedef struct s_asmt	t_asmt;
 
 struct					s_asmt
@@ -25,23 +25,7 @@ struct					s_asmt
 	struct s_asmt		*next;
 };
 
-struct					s_ptok
-{
-	int					fg;
-	struct s_job		*job;
-	struct s_ptok		*ok;
-	struct s_ptok		*err;
-	struct s_ptok		*next;
-};
-
-void					ptok_free(struct s_ptok **tok);
-void					*ptok_clear(struct s_ptok **tokens);
-void					ptok_insert(struct s_ptok **head, struct s_ptok **curr,
-									struct s_ptok *e);
-
-void					ptok_print(struct s_ptok *tokens);
-
-struct s_ptok			*parser(struct s_token *tokens);
+struct s_job			*parser(struct s_token *tokens);
 
 struct s_proc			*proc_next(struct s_token **tokens);
 
