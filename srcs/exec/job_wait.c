@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 10:16:17 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 10:36:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,6 @@ int						job_wait(t_job *j)
 		{
 			p->stopped = 1;
 			j->status = WEXITSTATUS(status);
-			printf("job (");
-			for (int i = 0; p->argv[i] != NULL; i++)
-				printf("%s%s", p->argv[i], p->argv[i + 1] == NULL ? "" : " ");
-			printf(") ended with status %d\n", j->status);
 		}
 		else if (WIFSIGNALED(status))
 		{
@@ -76,7 +72,7 @@ int						job_next(t_job *j, t_ctx *ctx)
 	if (ret == 0)
 	{
 		ret = job_exec(j->ok, 1, ctx);
-		if (ret == 0)
+		if (ret == 0 && j->parent->status == 0)
 			return (0);
 		else
 			return (job_exec(j->err, 1, ctx));

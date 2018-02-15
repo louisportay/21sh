@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 10:10:44 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 10:37:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static t_job			*get_ands(t_token **toks, t_job *parent)
 	t = *toks;
 	j[0] = NULL;
 	j[1] = NULL;
-	printf("parent: %p\n", parent);
 	while (t->type == AND_IF)
 	{
 		t = t->next;
