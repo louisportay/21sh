@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/15 14:39:08 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/15 19:49:43 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRCDIR= srcs/ \
 		srcs/line \
 		srcs/parser \
 		srcs/exec \
+		srcs/builtins \
 
 vpath %.c $(SRCDIR)
 vpath %.h includes/
@@ -102,6 +103,10 @@ SRCS=	main.c\
 		job_lifecycle.c\
 		bridge_exec_astr.c\
 		exec_assignments.c\
+		\
+		builtin_echo.c\
+		builtin_printenv.c\
+		builtin_hash.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

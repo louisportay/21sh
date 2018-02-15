@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 14:38:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 14:42:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 16:54:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void					prefork_assign(t_ctx *ctx, t_asmt *asmt)
 {
 	int					pmod;
-	char				*path;
 
 	handle_assign(&ctx->environ, asmt, &pmod);
 	if (pmod)
@@ -23,10 +22,7 @@ void					prefork_assign(t_ctx *ctx, t_asmt *asmt)
 /*
 **	UPDATE HASH
 */
-		if (ctx->path != NULL)
-			ft_astr_clear(&ctx->path);
-		if ((path = ft_astr_getval(ctx->environ, "PATH")) != NULL)
-			ctx->path = ft_strsplit(path, ':');
+		ctx->path = getpath(ctx->environ);
 	}
 }
 

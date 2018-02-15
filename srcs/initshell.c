@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 11:06:11 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/15 18:58:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ static void			init_job_control(t_ctx *ctx)
 		ctx->job_control = 0;
 		perror("setpgid");
 	}
-	printf("shell pid: %d - pgid: %d - read pgid: %d\n", ctx->pid, ctx->pgid, getpgid(ctx->pid));
-	int ret = tcsetpgrp(ctx->fd, ctx->pgid);
-	if (ret != 0)
-		perror("tcsetpgrp init");
+	if (tcsetpgrp(ctx->fd, ctx->pgid) != 0)
+		dprintf(STDERR_FILENO, "init job ctrl tcsetgrp error\n");
 }
 
 static void			init_termios(t_ctx *ctx)
@@ -116,7 +114,7 @@ int	init(t_ctx *ctx, char **av, char **environ)
 
 	ft_astr_append(&ctx->locals, ft_strjoinc("HISTFILE", tmp = get_histfile(ctx), '='));
 	free(tmp);
-//	ctx->builtins = getbuiltins();
+	ctx->builtins = getbuiltins();
 	if (ctx->history)
 		init_hist(ctx);
 	return (SUCCESS);

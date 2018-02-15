@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:47:35 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/11 15:07:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/15 20:07:23 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,8 @@ t_hash_entry				*ft_hashset_lookup(t_hash_dict *dict, char *str);
 u_int						ft_hashset_hash(t_hash_dict *dict, char *str);
 void						ft_hashset_free(t_hash_dict **dict,
 											void (*ptr_free)(void **));
+void						hash_foreach_data(t_hash_dict *dict,
+												void (*func)(),
+												void *data);
 
 #endif

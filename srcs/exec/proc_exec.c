@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 14:47:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 19:13:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void					setup_signals(void (*sig)())
 
 void					*PH_GET_BUILTIN(char *name)
 {
-	(void)name;
+	t_hash_entry		*e;
+
+	if ((e = ft_hashset_lookup(get_ctxaddr(NULL)->builtins, name)) != NULL)
+		return (e->content);
 	return (NULL);
 }
 
@@ -95,8 +98,9 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 		dprintf(STDERR_FILENO, "%s: %s: %s\n", "21sh", p->argv[0], ENOCMD);
 		exit(1);
 	}
+	printf("Builtin: %p\n", builtin);
 	if (builtin != NULL)
-		exit(builtin(p->argv, ctx));
+		exit(builtin(p->argv + 1, ctx));
 	execve(path, p->argv, astrenv);
 	exit_err("Could not exec...\n");
 }
