@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 11:44:02 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 14:41:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,12 @@ void					job_fmtinfo(t_job *j, char *status);
 int						job_next(t_job *j, t_ctx *ctx);
 
 void					setup_signals(void (*sig)()); 
+
+void					prefork_assign(t_ctx *ctx, t_asmt *asmt);
+void					handle_assign(char ***astrenv, t_asmt *asmts,
+										int *locpath);
+
+void					astr_to_buf(char **argv, t_qbuf *buf, int last);
 
 int						get_path(char *exe, char **env, char **path,
 									int locpath);

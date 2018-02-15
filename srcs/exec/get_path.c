@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 11:55:10 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 14:30:29 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char					*env_path_get(char *exe, char **pathes)
 	static char			buffer[PATH_MAX + 1];
 	size_t				i;
 
+	if (pathes == NULL)
+		return (NULL);
 	i = 0;
 	while (pathes[i] != NULL)
 	{
@@ -49,7 +51,7 @@ int						ctx_path(char *exe, t_ctx *ctx, char **path)
 		*path = (char *)e->content;
 	else if ((*path = env_path_get(exe, ctx->path)) != NULL)
 	{
-	}	
+	}
 	if (*path != NULL)
 	{
 		ft_hashset_add(ctx->hash, exe, (void *)*path);
@@ -62,14 +64,12 @@ int						loc_path(char *exe, char **env, char **path)
 {
 	char				*lpath;
 	size_t				len;
-	int					i;
 	char				**pathes;
 
 	len = ft_strlen("PATH");
-	i = ft_astr_getkey(env, PATH, len);
-	if (i == -1)
+	lpath = ft_astr_getval(env, "PATH");
+	if (lpath == NULL)
 		return (0);
-	lpath = env[i] + len + 1;
 	if ((pathes = ft_strsplit(lpath, ':')) == NULL)
 		return (0);
 	*path = env_path_get(exe, pathes);

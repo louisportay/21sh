@@ -1,36 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_lifecycle.c                                    :+:      :+:    :+:   */
+/*   bridge_astr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/24 15:03:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 14:31:03 by vbastion         ###   ########.fr       */
+/*   Created: 2018/02/15 14:23:36 by vbastion          #+#    #+#             */
+/*   Updated: 2018/02/15 14:29:42 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-t_job					*job_new(t_proc *plist)
+void					astr_to_buf(char **argv, t_qbuf *buf, int last)
 {
-	t_job				*job;
+	int					i;
 
-	if ((job = (t_job *)ft_memalloc(sizeof(t_job))) == NULL)
-		return (NULL);
-	job->procs = plist;
-	job->stdin = STDIN_FILENO;
-	job->stdout = STDOUT_FILENO;
-	job->stderr = STDERR_FILENO;
-	job->parent = job;
-	return (job);
-}
-
-void					job_insert(t_job **head, t_job **curr, t_job *j)
-{
-	if (*head == NULL)
-		*head = j;
-	else
-		(*curr)->next = j;
-	*curr = j;
+	i = 0;
+	while (argv[i] != NULL)
+	{
+		qbuf_add(buf, argv[i]);
+		if (argv[i + 1] != NULL)
+			qbuf_addc(buf, ' ');
+		else
+			qbuf_add(buf, last ? "" : " | ");
+		i++;
+	}
 }

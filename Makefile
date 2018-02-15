@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/15 11:06:48 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/15 14:39:08 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,6 +100,8 @@ SRCS=	main.c\
 		job_wait.c\
 		proc_chgstat.c\
 		job_lifecycle.c\
+		bridge_exec_astr.c\
+		exec_assignments.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

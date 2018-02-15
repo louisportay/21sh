@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 10:02:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 14:40:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 								t_ctx *ctx)
 {
 	pid_t				pid;
+	int					ret;
 
 	if ((pid = fork()) == 0)
 		proc_exec(p, j->pgid, (int[3]){fd[0], fd[1], j->stderr}, fg, ctx);
@@ -31,9 +32,8 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 		{
 			if (j->pgid == 0)
 				j->pgid = pid;
-			int ret = setpgid(pid, j->pgid);
-			if (ret != 0)
-				perror ("setpgid");
+			if ((ret = setpgid(pid, j->pgid)) != 0)
+				dprintf(STDERR_FILENO, "No pid set in 'do_fork'\n");
 		}
 	}
 	return (0);
@@ -55,15 +55,17 @@ void					do_pipe(t_job *job, t_proc *p, int mypipe[2],
 		*outfile = job->stdout;
 }
 
-void					do_postloop(t_job *j, int fg, t_ctx *ctx)
-{
-	if (ctx->istty == 0)
-		job_wait(j);
-	else if (fg != 0)
-		job_putfg(j, 0, ctx);
-	else
-		job_putbg(j, 0);
-}
+/*
+**	void					do_postloop(t_job *j, int fg, t_ctx *ctx)
+**	{
+**		if (ctx->istty == 0)
+**			job_wait(j);
+**		else if (fg != 0)
+**			job_putfg(j, 0, ctx);
+**		else
+**			job_putbg(j, 0);
+**	}
+*/
 
 void					clear_pipe(t_job *j, int *infile, int *outfile,
 									int new_in)
@@ -79,20 +81,6 @@ void					clear_pipe(t_job *j, int *infile, int *outfile,
 		*outfile = -1;
 	}
 	*infile = new_in;
-}
-
-void					astr_to_buf(char **argv, t_qbuf *buf, int last)
-{
-	int i = 0;
-	while (argv[i] != NULL)
-	{
-		qbuf_add(buf, argv[i]);
-		if (argv[i + 1] != NULL)
-			qbuf_addc(buf, ' ');
-		else
-			qbuf_add(buf, last ? "" : " | ");
-		i++;
-	}
 }
 
 int						job_exec(t_job *j, int fg, t_ctx *ctx)
@@ -114,6 +102,8 @@ int						job_exec(t_job *j, int fg, t_ctx *ctx)
 	while (p != NULL)
 	{
 		do_pipe(j, p, mypipe, &outfile);
+		if (p->asmts != NULL && p->argv[0] == NULL && fg)
+			prefork_assign(ctx, p->asmts);
 		if (do_fork(p, j, (int[]){infile, outfile}, fg, ctx) == 1)
 			return (1);
 		clear_pipe(j, &infile, &outfile, mypipe[0]);
