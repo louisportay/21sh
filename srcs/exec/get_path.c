@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 14:53:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 11:51:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char					*env_path_get(char *exe, char **pathes)
 	return (NULL);
 }
 
-int						get_path(char *exe, t_ctx *ctx, char **path)
+int						ctx_path(char *exe, t_ctx *ctx, char **path)
 {
 	t_hash_entry		*e;
 
@@ -55,4 +55,31 @@ int						get_path(char *exe, t_ctx *ctx, char **path)
 		return (1);
 	}
 	return (0);
+}
+
+int						loc_path(char *exe, char **env, char **path)
+{
+	char				*lpath;
+	size_t				len;
+	int					i;
+	char				**pathes;
+
+	len = ft_strlen("PATH");
+	i = ft_astr_getkey(env, PATH, len);
+	if (i == -1)
+		return (0);
+	lpath = env[i] + len + 1;
+	if ((pathes = ft_strsplit(lpath, ':')) == NULL)
+		return (0);
+	*path = env_path_get(exe, pathes);
+	ft_astr_clear(&pathes);
+	return (*path != NULL);
+}
+
+int						get_path(char *exe, char **env, char **path,
+									int locpath)
+{
+	if (locpath)
+		return (loc_path(exe, env, path));
+	return (ctx_path(exe, get_ctxaddr(NULL), path));
 }

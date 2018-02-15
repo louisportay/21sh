@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 20:30:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 11:35:37 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void				*job_clear(t_job **job)
 {
 	t_job			*j;
 
+	if (job == NULL || *job == NULL)
+		return (NULL);
 	j = *job;
 	if (j->command != NULL)
 		ft_strdel(&j->command);

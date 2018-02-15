@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 10:13:41 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 11:44:02 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <unistd.h>
 # include <signal.h>
 # include <fcntl.h>
+
+# include "ft_21sh.h"
 
 # define EXE_LCHD ("launched")
 
@@ -95,6 +97,9 @@ int						job_next(t_job *j, t_ctx *ctx);
 
 void					setup_signals(void (*sig)()); 
 
-int						get_path(char *exe, t_ctx *ctx, char **path);
+int						get_path(char *exe, char **env, char **path,
+									int locpath);
+int						ctx_path(char *exe, t_ctx *ctx, char **path);
+int						loc_path(char *exe, char **env, char **path);
 
 #endif

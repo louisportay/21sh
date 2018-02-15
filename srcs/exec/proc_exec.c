@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 19:26:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/15 11:51:08 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,47 @@ void					set_pid_data(t_ctx *ctx, pid_t pgid,
 	}
 }
 
+static void				handle_assign(char **astrenv, t_asmt *asmts,
+										int *locpath)
+{
+	int					i;
+	char				*str;
+
+	*locpath = 0;
+	while (asmts != NULL)
+	{
+		*locpath |= ft_strcmp("PATH", asmts->key) == 0;
+		str = ft_strjoinc(asmts->key, asmts->value, '=');
+		if ((i = ft_astr_getkey(astrenv, asmts->key,
+								ft_strlen(asmts->key))) != -1)
+		{
+			ft_strdel(astrenv + i);
+			astrenv[i] = str;
+		}
+		else
+			ft_astr_append(&astrenv, str);
+		asmts = asmts->next;
+	}
+
+}
+
 void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 									t_ctx *ctx)
 {
 	char				*path;
 	int					(*builtin)();
 	char				**astrenv;
+	int					locpath;
 
-	(void)pgid;
-	(void)fg;
+	locpath = 0;
 	path = NULL;
 	set_pid_data(ctx, pgid, fg);
+	if ((astrenv = ft_astr_dup(ctx->environ)) == NULL)
+		exit_err("Not enough memory\n"); // BIG BIG ERROR BUT MIGHT BE UNESCAPBLE
+	if (p->argv != NULL)
+		handle_assign(astrenv, p->asmts, &locpath);
 	builtin = PH_GET_BUILTIN(p->argv[0]);
-	if (builtin == NULL && get_path(p->argv[0], ctx, &path) == 0)
+	if (builtin == NULL && get_path(p->argv[0], astrenv, &path, locpath) == 0)
 	{
 		printf("%s: %s: %s\n", "21sh", p->argv[0], "Command not found");
 		exit(1);
@@ -105,9 +133,6 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	setup_fd(fd[2], STDERR_FILENO);
 	if (p->redirs != NULL)
 		do_redir(p->redirs);
-	// LPORTAY'S REDIRECTIONS
-	if ((astrenv = ft_astr_dup(ctx->environ)) == NULL)
-		exit_err("Not enough memory\n"); // BIG BIG ERROR BUT MIGHT BE UNESCAPBLE
 	// DO ASSIGNMENT IF NOT ONLY ASSIGNMENTS
 	// IF ONLY ASSIGNMENT, ASSIGN ENV OR LOCALS THEN DO SIMPLE EXIT <- in ctx
 	if (builtin != NULL)

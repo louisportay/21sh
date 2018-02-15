@@ -1,9 +1,9 @@
 HANDLE BG/FG
-Free at the end -- CHECK IF THE WHOLE TREE IS FREED
-Get next extree -- CHECK FOR EXCEPTIONS
+Free at the end																	--	CHECK IF THE WHOLE TREE IS FREED
+Get next extree																	--	CHECK FOR EXCEPTIONS
 Do assignment
---	Do redir \\ DONE
+Add redir																		--	DONE
 add bg jobs to job list
-collect exit status (complete it and test)
+collect exit status (complete it and test)										--	MOSTLY DONE, CHECK EXTENSIVELY
 handle async tree execution and continuation
 
