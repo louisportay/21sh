@@ -9,3 +9,4 @@ handle async tree execution and continuation
 look for path before fork to be sure 
 add error handling for ASSIGNMENTS (check _key_ sanity)
 Update tcsetpgrp, tcgetattr for uninteractive actions
+Do some free and cleanup, it's really messy
