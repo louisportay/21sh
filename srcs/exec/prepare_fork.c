@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 14:05:13 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 17:50:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 20:39:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int						prepare_fork(t_proc *p, t_ctx *ctx)
 	p->env = ft_astr_dup(ctx->environ);
 	pmod = (p->asmts != NULL && p->argv[0] != NULL) ? proc_update_env(p) : 0;
 	if ((blt = get_proc_blt(p->argv[0], ctx->builtins)) != NULL)
-		blt(p, ctx);
+		p->status = blt(p, ctx);
 	else
 	{
 		if ((p->data.path = proc_path(p, ctx, pmod)) == NULL)
