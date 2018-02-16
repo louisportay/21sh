@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/15 19:49:43 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/16 17:27:19 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,6 +103,8 @@ SRCS=	main.c\
 		job_lifecycle.c\
 		bridge_exec_astr.c\
 		exec_assignments.c\
+		prepare_fork.c\
+		blt_output.c\
 		\
 		builtin_echo.c\
 		builtin_printenv.c\

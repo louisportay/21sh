@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 19:48:50 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 18:08:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,15 @@
 # define SH_ENOOPW ("cd: Variable $OLDPWD not set\n")
 
 typedef struct s_ctx	t_ctx;
+typedef struct s_proc	t_proc;
 
 int						ft_cd(char **args, t_ctx *ctx);
-int						ft_echo(char **args, t_ctx *ctx);
+int						ft_echo(t_proc *p, t_ctx *ctx);
 int						ft_exit(char **args, t_ctx *ctx);
 int						ft_env(char **args, t_ctx *ctx);
 int						ft_printenv(char **args, t_ctx *ctx);
 int						ft_setenv(char **argv, t_ctx *ctx);
 int						ft_unsetenv(char **argv, t_ctx *ctx);
-int						ft_hash(char **argv, t_ctx *ctx);
+int						ft_hash(t_proc *proc, t_ctx *ctx);
 
 #endif

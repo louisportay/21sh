@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 19:13:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 17:25:05 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,19 +69,7 @@ void					set_pid_data(t_ctx *ctx, pid_t pgid,
 void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 									t_ctx *ctx)
 {
-	char				*path;
-	int					(*builtin)();
-	char				**astrenv;
-	int					locpath;
-
-	locpath = 0;
-	path = NULL;
 	set_pid_data(ctx, pgid, fg);
-	if ((astrenv = ft_astr_dup(ctx->environ)) == NULL)
-		exit_err("Not enough memory\n");
-	if (p->argv != NULL)
-		handle_assign(&astrenv, p->asmts, &locpath);
-	builtin = PH_GET_BUILTIN(p->argv[0]);
 /*
 **	if (ctx->istty) IF CTX IS FG DO SIG_DFL ELSE LOOK UP DFL BEHAVIOUR
 */
@@ -89,18 +77,17 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	setup_fd(fd[0], STDIN_FILENO);
 	setup_fd(fd[1], STDOUT_FILENO);
 	setup_fd(fd[2], STDERR_FILENO);
-	if (p->redirs != NULL)
-		do_redir(p->redirs);
+	if (p->redirs != NULL && do_redir(p->redirs) == -1)
+		exit(1);
 	if (p->argv[0] == NULL)
 		exit(0);
-	if (builtin == NULL && get_path(p->argv[0], astrenv, &path, locpath) == 0)
+	if (p->type == EXERR)
 	{
 		dprintf(STDERR_FILENO, "%s: %s: %s\n", "21sh", p->argv[0], ENOCMD);
 		exit(1);
 	}
-	printf("Builtin: %p\n", builtin);
-	if (builtin != NULL)
-		exit(builtin(p->argv + 1, ctx));
-	execve(path, p->argv, astrenv);
+	if (p->type == BUILTIN)
+		exit(blt_output(p));
+	execve(p->data.path, p->argv, p->env);
 	exit_err("Could not exec...\n");
 }

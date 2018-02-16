@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 14:41:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 17:25:56 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,24 +36,40 @@ typedef struct s_ctx	t_ctx;
 typedef struct s_proc	t_proc;
 typedef struct s_job	t_job;
 
+typedef int				(*t_blt)(t_proc *p, t_ctx *ctx);
+
+enum					e_extype
+{
+	BINARY,
+	BUILTIN,
+	EXERR
+};
+
+union					u_ebin
+{
+	char				*path;
+	struct s_list		*out;
+};
+
 struct					s_proc
 {
 	struct s_proc		*next;
 	char				**argv;
 	char				**env;
-	t_asmt				*asmts;
+	struct s_asmt		*asmts;
 	pid_t				pid;
-	char				**ctx;		// Candidate for deletion
 	char				completed;
 	char				stopped;
 	int					status;
-	t_redir				*redirs;
+	struct s_redir		*redirs;
+	enum e_extype		type;
+	union u_ebin		data;
 };
 
 struct					s_job
 {
 	char				*command;
-	t_proc				*procs;
+	struct s_proc		*procs;
 	pid_t				pgid;
 	char				notified;
 	struct termios		tmodes;
@@ -62,14 +78,14 @@ struct					s_job
 	int					stdout;
 	int					stderr;
 	int					fg;
-	t_job				*ok;
-	t_job				*err;
-	t_job				*next;
-	t_job				*parent;
+	struct s_job		*ok;
+	struct s_job		*err;
+	struct s_job		*next;
+	struct s_job		*parent;
 };
 
-t_proc					*proc_cr(void);
-t_proc					*proc_new(char **argv);
+struct s_proc			*proc_cr(void);
+struct s_proc			*proc_new(char **argv);
 void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
 void					proc_clear(t_proc **proc);
 
@@ -77,11 +93,11 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 									t_ctx *ctx);
 int						proc_chgstat(t_job *job, pid_t pid, int status);
 
-t_job					*job_new(t_proc *plist);
+struct s_job			*job_new(t_proc *plist);
 void					job_insert(t_job **head, t_job **curr, t_job *j);
 void					*job_clear(t_job **jobs);
 
-t_job					*job_find(pid_t pid, t_job *job_list);
+struct s_job			*job_find(pid_t pid, t_job *job_list);
 int						job_stopped(t_job *job);
 int						job_completed(t_job *job);
 
@@ -98,7 +114,8 @@ int						job_next(t_job *j, t_ctx *ctx);
 void					setup_signals(void (*sig)()); 
 
 void					prefork_assign(t_ctx *ctx, t_asmt *asmt);
-void					handle_assign(char ***astrenv, t_asmt *asmts,
+int						proc_update_env(t_proc *p);
+void					handle_assign(char ***astrenv, t_asmt *asmt,
 										int *locpath);
 
 void					astr_to_buf(char **argv, t_qbuf *buf, int last);
@@ -107,5 +124,10 @@ int						get_path(char *exe, char **env, char **path,
 									int locpath);
 int						ctx_path(char *exe, t_ctx *ctx, char **path);
 int						loc_path(char *exe, char **env, char **path);
+
+char					*proc_path(t_proc *p, t_ctx *ctx, int locpath);
+int						prepare_fork(t_proc *p, t_ctx *ctx);
+
+int						blt_output(t_proc *p);
 
 #endif

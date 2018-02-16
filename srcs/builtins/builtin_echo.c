@@ -6,31 +6,37 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:18:08 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 18:33:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 17:59:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int				ft_echo(char **args, t_ctx *ctx)
+int				ft_echo(t_proc *p, t_ctx *ctx)
 {
-	size_t		i;
+	int			i;
 	int			nl;
+	t_qbuf		*buf;
 
 	(void)ctx;
-	if (*args == NULL)
-		return (write(STDOUT_FILENO, "\n", 1));
-	nl = (ft_strcmp("-n", *args) != 0);
-	args += nl ? 0 : 1;
-	i = 0;
-	while (args[i] != NULL)
+	p->type = BUILTIN;
+	if (p->argv[1] == NULL)
 	{
-		ft_putstr(args[i]);
-		i++;
-		if (args[i] != NULL)
-			write(STDOUT_FILENO, " ", 1);
+		p->data.out = list_create(ft_strdup("1\n"));
+		return (0);
+	}
+	nl = (ft_strcmp("-n", p->argv[1]) != 0);
+	i = (nl ? 0 : 1) + 1;
+	buf = qbuf_new(1 << 8);
+	qbuf_addc(buf, '1');
+	while (p->argv[i] != NULL)
+	{
+		qbuf_add(buf, p->argv[i++]);
+		if (p->argv[i] != NULL)
+			qbuf_addc(buf, ' ');
 	}
 	if (nl)
-		write(STDOUT_FILENO, "\n", 1);
+		qbuf_addc(buf, '\n');
+	p->data.out = list_create(qbuf_del(&buf));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 14:30:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 15:45:26 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ int						ctx_path(char *exe, t_ctx *ctx, char **path)
 	}
 	else if ((e = ft_hashset_lookup(ctx->hash, exe)) != NULL)
 		*path = (char *)e->content;
-	else if ((*path = env_path_get(exe, ctx->path)) != NULL)
-	{
-	}
+	else 
+		*path = env_path_get(exe, ctx->path);
 	if (*path != NULL)
 	{
+		printf("Added '%s' to hash with path: '%s'\n", exe, *path);
 		ft_hashset_add(ctx->hash, exe, (void *)*path);
 		return (1);
 	}
@@ -83,4 +83,74 @@ int						get_path(char *exe, char **env, char **path,
 	if (locpath)
 		return (loc_path(exe, env, path));
 	return (ctx_path(exe, get_ctxaddr(NULL), path));
+}
+
+static char				*lnpath(char *exe, t_ctx *ctx)
+{
+	char				*dkey;
+	char				*dpath;
+	char				*path;
+
+	if ((path = env_path_get(exe, ctx->path)) == NULL)
+		return (NULL);
+	if ((path = ft_strdup(path)) == NULL)
+		on_emem(NOMEM);
+	dkey = ft_strdup(exe);
+	if ((dpath = ft_strdup(path)) == NULL || dkey == NULL)
+	{
+		ft_strdel(&dkey);
+		ft_strdel(&dpath);
+		on_emem(NOMEM);
+		return (NULL);
+	}
+	ft_hashset_add(ctx->hash, dkey, dpath);
+	return (path);
+}
+
+static char				*lctxpath(char *exe, t_ctx *ctx)
+{
+	t_hash_entry		*e;
+	char				*path;
+
+	path = NULL;
+	if (ft_strindex(exe, '/') != -1)
+	{
+		if (access(exe, X_OK) == 0)
+		{
+			if ((path = ft_strdup(exe)) == NULL)
+				on_emem(NOMEM);
+			return (path);
+		}
+		return (NULL);
+	}
+	else if ((e = ft_hashset_lookup(ctx->hash, exe)) != NULL)
+	{
+		if ((path = ft_strdup((char *)e->content)) == NULL)
+			on_emem(NOMEM);
+		return (path);
+	}
+	else 
+		return (lnpath(exe, ctx));
+}
+
+static char 			*llocpath(t_proc *p)
+{
+	char				*lpath;
+	char				**pathes;
+	char				*path;
+
+	if ((lpath = ft_astr_getval(p->env, "PATH")) == NULL)
+		return (NULL);
+	if ((pathes = ft_strsplit(lpath, ':')) == NULL)
+		return (NULL);
+	path = env_path_get(p->argv[0], pathes);
+	ft_astr_clear(&pathes);
+	if ((path = ft_strdup(path)) == NULL)
+		on_emem(NOMEM);
+	return (path);
+}
+
+char					*proc_path(t_proc *p, t_ctx *ctx, int locpath)
+{
+	return (locpath == 0 ? lctxpath(p->argv[0], ctx) : llocpath(p));
 }

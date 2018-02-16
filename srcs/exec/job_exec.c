@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 14:40:54 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 15:42:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int						job_exec(t_job *j, int fg, t_ctx *ctx)
 		do_pipe(j, p, mypipe, &outfile);
 		if (p->asmts != NULL && p->argv[0] == NULL && fg)
 			prefork_assign(ctx, p->asmts);
+		prepare_fork(p, ctx);
 		if (do_fork(p, j, (int[]){infile, outfile}, fg, ctx) == 1)
 			return (1);
 		clear_pipe(j, &infile, &outfile, mypipe[0]);
