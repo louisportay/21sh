@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 17:25:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 20:24:21 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void					handle_assign(char ***astrenv, t_asmt *asmt,
 										int *locpath);
 
 void					astr_to_buf(char **argv, t_qbuf *buf, int last);
+void					astr_env_replace(char ***env, char *key, char *new_v);
 
 int						get_path(char *exe, char **env, char **path,
 									int locpath);

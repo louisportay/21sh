@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 19:48:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 20:25:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_hash_dict			*getbuiltins(void)
 
 	dict = ft_hashset_create(HASH_SIZE, HASH_PRIME);
 //	ft_hashset_add(dict, "bang", &);
-//	ft_hashset_add(dict, "cd", &);
+	ft_hashset_add(dict, "cd", &ft_cd);
 	ft_hashset_add(dict, "echo", &ft_echo);
 	ft_hashset_add(dict, "printenv", &ft_printenv);
 	ft_hashset_add(dict, "hash", &ft_hash);

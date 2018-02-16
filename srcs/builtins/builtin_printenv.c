@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 13:03:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 19:05:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 20:34:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static int		traverse(t_proc *p, t_ctx *ctx)
 		ft_list_insert(lsts, lsts + 1, list_create(ret));
 		i++;
 	}
+	p->data.out = lsts[0];
 	return (err);
 }
 

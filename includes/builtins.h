@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 18:39:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 20:22:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,16 @@
 # define SH_PENV ("printenv")
 # define SH_EXIT ("exit")
 
-# define SH_ENOFOD ("cd: No such file or directory\n")
-# define SH_ERIGHT ("cd: Permission denied\n")
-# define SH_EARGTO ("cd: Too much arguments\n")
-# define SH_ENOHOM ("cd: Variable $HOME not set\n")
-# define SH_ENOOPW ("cd: Variable $OLDPWD not set\n")
+# define SH_ENOFOD ("2cd: No such file or directory\n")
+# define SH_ERIGHT ("2cd: Permission denied\n")
+# define SH_EARGTO ("2cd: Too much arguments\n")
+# define SH_ENOHOM ("2cd: Variable $HOME not set\n")
+# define SH_ENOOPW ("2cd: Variable $OLDPWD not set\n")
 
 typedef struct s_ctx	t_ctx;
 typedef struct s_proc	t_proc;
 
-int						ft_cd(char **args, t_ctx *ctx);
+int						ft_cd(t_proc *p, t_ctx *ctx);
 int						ft_echo(t_proc *p, t_ctx *ctx);
 int						ft_exit(char **args, t_ctx *ctx);
 int						ft_env(char **args, t_ctx *ctx);
