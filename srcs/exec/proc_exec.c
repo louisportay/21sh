@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 17:25:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 18:34:47 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,6 @@ void					setup_signals(void (*sig)())
 	signal(SIGTTOU, sig);
 	signal(SIGTTIN, sig);
 	signal(SIGCHLD, sig);
-}
-
-void					*PH_GET_BUILTIN(char *name)
-{
-	t_hash_entry		*e;
-
-	if ((e = ft_hashset_lookup(get_ctxaddr(NULL)->builtins, name)) != NULL)
-		return (e->content);
-	return (NULL);
 }
 
 void					set_pid_data(t_ctx *ctx, pid_t pgid,

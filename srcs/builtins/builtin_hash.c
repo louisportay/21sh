@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 19:27:34 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 18:22:55 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 19:13:18 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,18 @@ static int		print_hash(t_proc *p, t_hash_dict *dict)
 	size_t		len[2];
 	t_qbuf		*buf;
 	void		*arg;
+	char		*str;
 
 	len[0] = 4;
-	len[1] = 6;
+	len[1] = 5;
 	hash_foreach_data(dict, &largest, (void *)len);
 	buf = qbuf_new(1 << 8);
 	max(len, 4);
-	max(len + 1, 6);
-	qbuf_add(buf, ("1key:    value:\n"));
+	max(len + 1, 5);
+	asprintf(&str, "1%-*s    %-*s\n", (int)len[0], "bin:", (int)len[1],
+				"path:");
+	qbuf_add(buf, str);
+	ft_strdel(&str);
 	arg = (void *)((void *[]){(void *)len, (void *)buf});
 	hash_foreach_data(dict, &hashprint, arg);
 	p->data.out = list_create(qbuf_del(&buf));

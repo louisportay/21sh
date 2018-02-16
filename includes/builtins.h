@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 18:08:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 18:39:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int						ft_cd(char **args, t_ctx *ctx);
 int						ft_echo(t_proc *p, t_ctx *ctx);
 int						ft_exit(char **args, t_ctx *ctx);
 int						ft_env(char **args, t_ctx *ctx);
-int						ft_printenv(char **args, t_ctx *ctx);
+int						ft_printenv(t_proc *p, t_ctx *ctx);
 int						ft_setenv(char **argv, t_ctx *ctx);
 int						ft_unsetenv(char **argv, t_ctx *ctx);
 int						ft_hash(t_proc *proc, t_ctx *ctx);
