@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 20:24:21 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 20:33:47 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ int						get_path(char *exe, char **env, char **path,
 int						ctx_path(char *exe, t_ctx *ctx, char **path);
 int						loc_path(char *exe, char **env, char **path);
 
+char					*path_fromctx(char *exe, t_ctx *ctx);
 char					*proc_path(t_proc *p, t_ctx *ctx, int locpath);
 int						prepare_fork(t_proc *p, t_ctx *ctx);
 

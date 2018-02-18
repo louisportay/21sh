@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 18:23:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 20:33:35 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static char				*lnpath(char *exe, t_ctx *ctx)
 	return (path);
 }
 
-static char				*lctxpath(char *exe, t_ctx *ctx)
+char					*path_fromctx(char *exe, t_ctx *ctx)
 {
 	t_hentry			*e;
 	char				*path;
@@ -152,5 +152,5 @@ static char				*llocpath(t_proc *p)
 
 char					*proc_path(t_proc *p, t_ctx *ctx, int locpath)
 {
-	return (locpath == 0 ? lctxpath(p->argv[0], ctx) : llocpath(p));
+	return (locpath == 0 ? path_fromctx(p->argv[0], ctx) : llocpath(p));
 }

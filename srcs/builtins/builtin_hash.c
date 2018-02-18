@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 19:27:34 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 18:19:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 20:42:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,28 @@
 #define BU_H_EPREQU ("221sh: hash: -p: option requires two arguments\n")
 #define BU_H_USAGE_ ("21sh: usage: hash [-lr] [-p pathname] [-dt] [name ...]\n")
 
+static int			l_isdir(char *path, t_proc *p)
+{
+	struct stat		stats;
+	char			*str;
+	t_list			*l;
+
+	if (stat(path, &stats) != -1)
+	{
+		if (S_ISDIR(stats.st_mode))
+		{
+			asprintf(&str, "221sh: hash: %s is a directory\n", path);
+			l = list_create(str);
+			if (p->data.out != NULL)
+				ft_list_last(p->data.out)->next = l;
+			else
+				p->data.out = l;
+			return (1);
+		}
+	}
+	return (0);
+}
+
 static int			lhash_inh(t_proc *p, t_ctx *ctx, int i, int j)
 {
 	char			*key;
@@ -35,31 +57,35 @@ static int			lhash_inh(t_proc *p, t_ctx *ctx, int i, int j)
 		if (p->argv[i + 1] == NULL)
 		{
 			p->data.out = list_create(ft_strdup(BU_H_EPREQU));
-			return (-1);
+			return (1);
 		}
 		k = i + 1;
-		key = ft_strdup(p->argv[i] + j + 1);
+		if (l_isdir(p->argv[i] + j + 1, p))
+			return (1);
+		value = ft_strdup(p->argv[i] + j + 1);
 	}
 	else
 	{
 		if (p->argv[i + 1] == NULL || p->argv[i + 2] == NULL)
 		{
 			p->data.out = list_create(ft_strdup(BU_H_EPREQU));
-			return (-1);
+			return (1);
 		}
-		key = ft_strdup(p->argv[i + 1]);
+		if (l_isdir(p->argv[i + 1], p))
+			return (1);
+		value = ft_strdup(p->argv[i + 1]);
 		k = i + 2;
 	}
 	while (p->argv[k + 1] != NULL)
 		k++;
-	value = ft_strdup(p->argv[k]);
+	key = ft_strdup(p->argv[k]);
 	hash_add_or_mod(ctx->hash, key, value, &ft_memdel);
 	return (0);
 }
 
 static int			lhash_del(t_proc *p, t_ctx *ctx, int i)
 {
-	t_hentry	*e;
+	t_hentry		*e;
 	t_list			*lsts[2];
 	char			*str;
 	int				ret;
@@ -90,7 +116,7 @@ static int			lhash_prt(t_proc *p, t_ctx *ctx, int i)
 {
 	int				ret;
 	char			*str;
-	t_hentry	*e;
+	t_hentry		*e;
 	t_list			*lsts[2];
 
 	if (p->argv[i] == NULL)
@@ -113,21 +139,13 @@ static int			lhash_prt(t_proc *p, t_ctx *ctx, int i)
 	return (ret);
 }
 
-
-
-static void		max(size_t *a, size_t b)
+static void			hashprint(char *key, void *value, void *data)
 {
-	if (*a < b)
-		*a = b;
-}
+	char			*v;
+	size_t			*l;
+	char			*str;
+	t_qbuf			*buf;
 
-static void		hashprint(char *key, void *value, void *data)
-{
-	char		*v;
-	size_t		*l;
-	char		*str;
-	t_qbuf		*buf;
-	
 	v = (char *)value;
 	l = (size_t *)((void **)data)[0];
 	buf = (t_qbuf *)((void **)data)[1];
@@ -136,11 +154,11 @@ static void		hashprint(char *key, void *value, void *data)
 	ft_strdel(&str);
 }
 
-static void		largest(char *key, void *value, void *data)
+static void			largest(char *key, void *value, void *data)
 {
-	char		*v;
-	size_t		*l;
-	size_t		t[2];
+	char			*v;
+	size_t			*l;
+	size_t			t[2];
 
 	v = (char *)value;
 	l = (size_t *)data;
@@ -150,12 +168,12 @@ static void		largest(char *key, void *value, void *data)
 	max(l + 1, t[1]);
 }
 
-static int		print_hash(t_proc *p, t_hdict *dict)
+static int			lhash_print(t_proc *p, t_hdict *dict)
 {
-	size_t		len[2];
-	t_qbuf		*buf;
-	void		*arg;
-	char		*str;
+	size_t			len[2];
+	t_qbuf			*buf;
+	void			*arg;
+	char			*str;
 
 	if (dict->count == 0)
 	{
@@ -174,21 +192,43 @@ static int		print_hash(t_proc *p, t_hdict *dict)
 	ft_strdel(&str);
 	arg = (void *)((void *[]){(void *)len, (void *)buf});
 	hash_foreach_data(dict, &hashprint, arg);
-	p->data.out = list_create(qbuf_del(&buf));
+	if (p->data.out != NULL)
+		ft_list_last(p->data.out)->next = list_create(qbuf_del(&buf));
+	else
+		p->data.out = list_create(qbuf_del(&buf));
 	return (0);
 }
 
-//int				ft_hash(t_proc *p, t_ctx *ctx)
-//{
-//	p->type = BUILTIN;
-//
-//	if (ctx->hash->count == 0)
-//	{
-//		p->data.out = list_create(ft_strdup("121sh: hash empty\n"));
-//		return (0);
-//	}
-//	return (print_hash(p, ctx->hash));
-//}
+static int			lhash_find(t_proc *p, t_ctx *ctx, int i)
+{
+	char			*path;
+	char			*str;
+	t_list			*l;
+	int				ret;
+
+	ret = 0;
+	while (p->argv[i] != NULL)
+	{
+		if ((path = path_fromctx(p->argv[i], ctx)) == NULL)
+		{
+			asprintf(&str, "221sh: hash: %s not found\n", p->argv[i]);
+			l = list_create(str);
+			if (p->data.out != NULL)
+				ft_list_last(p->data.out)->next = l;
+			else
+				p->data.out = l;
+			hash_remove(ctx->hash, p->argv[i], &ft_memdel);
+			ret |= 1;
+		}
+		else
+		{
+			path = ft_strdup(path);
+			hash_add_or_mod(ctx->hash, ft_strdup(p->argv[i]), path, &ft_memdel);
+		}
+		i++;
+	}
+	return (ret);
+}
 
 int					ft_hash(t_proc *p, t_ctx *ctx)
 {
@@ -239,7 +279,9 @@ int					ft_hash(t_proc *p, t_ctx *ctx)
 		ret |= (lhash_del(p, ctx, i));
 	else if (f & BU_H_PRT)
 		ret |= (lhash_prt(p, ctx, i));
-	if (f == 0 || (f & BU_H_LST) == BU_H_LST)
-		print_hash(p, ctx->hash);
+	if ((f & (BU_H_PRT | BU_H_DEL)) == 0 && p->argv[i] != NULL)
+		ret |= lhash_find(p, ctx, i);
+	if ((f == 0 && p->argv[i] == NULL) || (f & BU_H_LST) == BU_H_LST)
+		lhash_print(p, ctx->hash);
 	return (ret);
 }

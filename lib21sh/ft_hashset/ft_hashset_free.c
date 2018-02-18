@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:49:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 18:07:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 20:03:23 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void			hash_remove(t_hdict *dict, char *key,
 			ft_strdel(&tmp->key);
 			ptr(&tmp->content);
 			ft_memdel((void **)&tmp);
+			dict->count--;
 			return ;
 		}
 		prev = tmp;

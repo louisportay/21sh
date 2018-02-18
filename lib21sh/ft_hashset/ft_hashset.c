@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:48:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 18:06:43 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 20:16:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void			hash_add_or_mod(t_hdict *dict, char *key, char *value,
 
 	if ((e = hash_lookup(dict, key)) != NULL)
 	{
-		ptr(e->content);
+		ptr(&e->content);
 		e->content = value;
 		return ;
 	}

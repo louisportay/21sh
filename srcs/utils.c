@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:59:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/10 17:54:43 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 19:16:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,4 +15,10 @@
 void				on_emem(int status)
 {
 	fatal_err((char)status, get_ctxaddr(NULL));
+}
+
+void				max(size_t *a, size_t b)
+{
+	if (*a < b)
+		*a = b;
 }

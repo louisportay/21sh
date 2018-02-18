@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 11:37:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 20:25:44 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 19:21:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int			l_cd(t_proc *p, t_ctx *ctx, char *path)
 {
 	char			cwd[MAXPATHLEN + 1];
 	struct stat		stats;
-	
+
 	getcwd(cwd, MAXPATHLEN + 1);
 	if (chdir(path) != 0)
 	{
