@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 20:25:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 12:15:08 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void				complete_environ(char ***environ)
 		ft_astr_append(environ, ft_strjoinc("SHLVL", tmp, '='));
 		free(tmp);
 	}
-	if ((tmp = getcwd(NULL, 0)))
+	if (ft_astr_getkey(*environ, "PWD", 3) == -1 && (tmp = getcwd(NULL, 0)))
 	{
 		ft_astr_append(environ, ft_strjoinc("PWD", tmp, '='));
 		free(tmp);

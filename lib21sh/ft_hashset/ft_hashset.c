@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:48:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/11 15:07:51 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/18 14:01:21 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_hash_entry		*ft_hashset_lookup(t_hash_dict *dict, char *str)
 {
 	t_hash_entry	*entry;
 
-	if (dict == NULL || str == NULL)
+	if (dict == NULL || str == NULL || dict->count == 0)
 		return (NULL);
 	entry = dict->entries[ft_hashset_hash(dict, str)];
 	while (entry != NULL && ft_strcmp(str, entry->key) != 0)
@@ -55,6 +55,7 @@ t_hash_entry		*ft_hashset_add(t_hash_dict *dict, char *key, void *value)
 	entry->content = value;
 	val = ft_hashset_hash(dict, key);
 	entry->next = dict->entries[val];
+	dict->count++;
 	return (dict->entries[val] = entry);
 }
 
@@ -73,28 +74,4 @@ t_hash_dict			*ft_hashset_create(size_t size, int prime)
 		return (NULL);
 	}
 	return (dict);
-}
-
-void				ft_hashset_delete(t_hash_dict **dict)
-{
-	size_t			i;
-	t_hash_entry	*e;
-	t_hash_entry	*tmp;
-
-	if (dict == NULL || *dict == NULL)
-		return ;
-	i = 0;
-	while (i < (*dict)->size)
-	{
-		e = (*dict)->entries[i];
-		while (e != NULL)
-		{
-			tmp = e;
-			e = e->next;
-			ft_memdel((void **)&tmp);
-		}
-		e = NULL;
-		i++;
-	}
-	ft_memdel((void **)dict);
 }

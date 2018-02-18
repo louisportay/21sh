@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:47:35 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 20:07:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 14:01:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ struct						s_hash_dict
 {
 	size_t					size;
 	int						prime;
+	size_t					count;
 	t_hash_entry			**entries;
 };
 
@@ -43,6 +44,8 @@ t_hash_entry				*ft_hashset_lookup(t_hash_dict *dict, char *str);
 u_int						ft_hashset_hash(t_hash_dict *dict, char *str);
 void						ft_hashset_free(t_hash_dict **dict,
 											void (*ptr_free)(void **));
+void						ft_hashset_empty(t_hash_dict *dict,
+												void (*ptr)(void **));
 void						hash_foreach_data(t_hash_dict *dict,
 												void (*func)(),
 												void *data);

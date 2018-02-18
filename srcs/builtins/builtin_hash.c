@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 19:27:34 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 19:13:18 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 14:04:10 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,7 @@ static int		print_hash(t_proc *p, t_hash_dict *dict)
 int				ft_hash(t_proc *p, t_ctx *ctx)
 {
 	p->type = BUILTIN;
+	if (ctx->hash->count == 0)
+		return (0);
 	return (print_hash(p, ctx->hash));
 }
