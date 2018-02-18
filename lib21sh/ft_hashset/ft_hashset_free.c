@@ -6,28 +6,28 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:49:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 16:58:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 18:07:45 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_hashset.h"
 #include "ft_string.h"
 
-void				ft_hashset_free(t_hash_dict **dict,
+void			hash_free(t_hdict **dict,
 									void (*ptr)(void **))
 {
 	if (dict == NULL || *dict == NULL)
 		return ;
-	ft_hashset_empty(*dict, ptr);
+	hash_empty(*dict, ptr);
 	ft_memdel((void **)&((*dict)->entries));
 	ft_memdel((void **)dict);
 }
 
-void				ft_hashset_empty(t_hash_dict *dict, void (*ptr)(void **))
+void			hash_empty(t_hdict *dict, void (*ptr)(void **))
 {
-	size_t			i;
-	t_hash_entry	*e;
-	t_hash_entry	*tmp;
+	size_t		i;
+	t_hentry	*e;
+	t_hentry	*tmp;
 
 	if (dict == NULL)
 		return ;
@@ -49,15 +49,15 @@ void				ft_hashset_empty(t_hash_dict *dict, void (*ptr)(void **))
 	dict->count = 0;
 }
 
-void				hash_remove(t_hash_dict *dict, char *key,
+void			hash_remove(t_hdict *dict, char *key,
 								void (*ptr)(void **))
 {
-	u_int			i;
-	t_hash_entry	*e;
-	t_hash_entry	*tmp;
-	t_hash_entry	*prev;
+	u_int		i;
+	t_hentry	*e;
+	t_hentry	*tmp;
+	t_hentry	*prev;
 
-	i = ft_hashset_hash(dict, key);
+	i = hash_hash(dict, key);
 	prev = NULL;
 	e = dict->entries[i];
 	while (e != NULL)

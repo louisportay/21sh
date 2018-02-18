@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 15:45:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 18:23:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char					*env_path_get(char *exe, char **pathes)
 
 int						ctx_path(char *exe, t_ctx *ctx, char **path)
 {
-	t_hash_entry		*e;
+	t_hentry		*e;
 
 	*path = NULL;
 	if (ft_strindex(exe, '/') != -1)
@@ -47,14 +47,14 @@ int						ctx_path(char *exe, t_ctx *ctx, char **path)
 		}
 		return (0);
 	}
-	else if ((e = ft_hashset_lookup(ctx->hash, exe)) != NULL)
+	else if ((e = hash_lookup(ctx->hash, exe)) != NULL)
 		*path = (char *)e->content;
-	else 
+	else
 		*path = env_path_get(exe, ctx->path);
 	if (*path != NULL)
 	{
 		printf("Added '%s' to hash with path: '%s'\n", exe, *path);
-		ft_hashset_add(ctx->hash, exe, (void *)*path);
+		hash_add(ctx->hash, exe, (void *)*path);
 		return (1);
 	}
 	return (0);
@@ -103,13 +103,13 @@ static char				*lnpath(char *exe, t_ctx *ctx)
 		on_emem(NOMEM);
 		return (NULL);
 	}
-	ft_hashset_add(ctx->hash, dkey, dpath);
+	hash_add(ctx->hash, dkey, dpath);
 	return (path);
 }
 
 static char				*lctxpath(char *exe, t_ctx *ctx)
 {
-	t_hash_entry		*e;
+	t_hentry			*e;
 	char				*path;
 
 	path = NULL;
@@ -123,17 +123,17 @@ static char				*lctxpath(char *exe, t_ctx *ctx)
 		}
 		return (NULL);
 	}
-	else if ((e = ft_hashset_lookup(ctx->hash, exe)) != NULL)
+	else if ((e = hash_lookup(ctx->hash, exe)) != NULL)
 	{
 		if ((path = ft_strdup((char *)e->content)) == NULL)
 			on_emem(NOMEM);
 		return (path);
 	}
-	else 
+	else
 		return (lnpath(exe, ctx));
 }
 
-static char 			*llocpath(t_proc *p)
+static char				*llocpath(t_proc *p)
 {
 	char				*lpath;
 	char				**pathes;

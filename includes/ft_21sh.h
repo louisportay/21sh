@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/15 18:31:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 18:09:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ struct					s_ctx
 	**	EXECUTION HASH (for HASH builtin)
 	*/
 	
-	t_hash_dict			*hash;
-	t_hash_dict			*builtins;
+	t_hdict			*hash;
+	t_hdict			*builtins;
 	
 	/*
 	**	SHELL VARIABLES
@@ -154,7 +154,7 @@ typedef struct			s_typefunc
 void					vingtetunsh(char **av, char **environ);
 
 int						init(t_ctx *ctx, char **av, char **environ);
-t_hash_dict				*getbuiltins(void);
+t_hdict				*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);
 void					complete_environ(char ***environ);
 int						create_locals(char ***locals);

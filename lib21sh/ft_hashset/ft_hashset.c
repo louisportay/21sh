@@ -6,16 +6,16 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:48:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 17:31:24 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 18:06:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_hashset.h"
 #include "ft_string.h"
 
-u_int				ft_hashset_hash(t_hash_dict *dict, char *str)
+u_int			hash_hash(t_hdict *dict, char *str)
 {
-	u_int			hashval;
+	u_int		hashval;
 
 	if (dict == NULL || str == NULL)
 		return ((u_int)-1);
@@ -28,46 +28,46 @@ u_int				ft_hashset_hash(t_hash_dict *dict, char *str)
 	return (hashval % dict->size);
 }
 
-t_hash_entry		*ft_hashset_lookup(t_hash_dict *dict, char *str)
+t_hentry		*hash_lookup(t_hdict *dict, char *str)
 {
-	t_hash_entry	*entry;
+	t_hentry	*entry;
 
 	if (dict == NULL || str == NULL || dict->count == 0)
 		return (NULL);
-	entry = dict->entries[ft_hashset_hash(dict, str)];
+	entry = dict->entries[hash_hash(dict, str)];
 	while (entry != NULL && ft_strcmp(str, entry->key) != 0)
 		entry = entry->next;
 	return (entry);
 }
 
-t_hash_entry		*ft_hashset_add(t_hash_dict *dict, char *key, void *value)
+t_hentry		*hash_add(t_hdict *dict, char *key, void *value)
 {
-	t_hash_entry	*entry;
-	u_int			val;
+	t_hentry	*entry;
+	u_int		val;
 
 	if (dict == NULL || key == NULL)
 		return (NULL);
-	if (ft_hashset_lookup(dict, key) != NULL)
+	if (hash_lookup(dict, key) != NULL)
 		return (NULL);
-	if ((entry = (t_hash_entry *)ft_memalloc(sizeof(t_hash_entry))) == NULL)
+	if ((entry = (t_hentry *)ft_memalloc(sizeof(t_hentry))) == NULL)
 		return (NULL);
 	entry->key = key;
 	entry->content = value;
-	val = ft_hashset_hash(dict, key);
+	val = hash_hash(dict, key);
 	entry->next = dict->entries[val];
 	dict->count++;
 	return (dict->entries[val] = entry);
 }
 
-t_hash_dict			*ft_hashset_create(size_t size, int prime)
+t_hdict			*hash_create(size_t size, int prime)
 {
-	t_hash_dict		*dict;
+	t_hdict		*dict;
 
-	if ((dict = (t_hash_dict *)ft_memalloc(sizeof(t_hash_dict))) == NULL)
+	if ((dict = (t_hdict *)ft_memalloc(sizeof(t_hdict))) == NULL)
 		return (NULL);
 	dict->size = size;
 	dict->prime = prime;
-	dict->entries = (t_hash_entry **)ft_memalloc(sizeof(t_hash_entry *) * size);
+	dict->entries = (t_hentry **)ft_memalloc(sizeof(t_hentry *) * size);
 	if (dict->entries == NULL)
 	{
 		free(dict);
@@ -76,16 +76,16 @@ t_hash_dict			*ft_hashset_create(size_t size, int prime)
 	return (dict);
 }
 
-void				hash_add_or_mod(t_hash_dict *dict, char *key, char *value,
+void			hash_add_or_mod(t_hdict *dict, char *key, char *value,
 									void (*ptr)(void **))
 {
-	t_hash_entry	*e;
+	t_hentry	*e;
 
-	if ((e = ft_hashset_lookup(dict, key)) != NULL)
+	if ((e = hash_lookup(dict, key)) != NULL)
 	{
 		ptr(e->content);
 		e->content = value;
 		return ;
 	}
-	ft_hashset_add(dict, key, value);
+	hash_add(dict, key, value);
 }

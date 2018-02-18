@@ -6,24 +6,24 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 14:05:13 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 20:39:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 18:22:01 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static t_blt			get_proc_blt(char *name, t_hash_dict *blts)
+static t_blt			get_proc_blt(char *name, t_hdict *blts)
 {
-	t_hash_entry		*e;
+	t_hentry		*e;
 
 	if (name == NULL)
 		return (NULL);
-	if ((e = ft_hashset_lookup(blts, name)) != NULL)
+	if ((e = hash_lookup(blts, name)) != NULL)
 		return ((t_blt)e->content);
 	return (NULL);
 }
 
-int						prepare_fork(t_proc *p, t_ctx *ctx)	
+int						prepare_fork(t_proc *p, t_ctx *ctx)
 {
 	t_blt				blt;
 	int					pmod;

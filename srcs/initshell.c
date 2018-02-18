@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 18:58:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 18:14:42 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->fd = ctx->istty ? STDIN_FILENO : -1;
 	ctx->path = getpath(environ);
 	ctx->environ = ft_astr_dup(environ);
-	ctx->hash = ft_hashset_create(HASH_SIZE, HASH_PRIME);
+	ctx->hash = hash_create(HASH_SIZE, HASH_PRIME);
 }
 
 static void			init_job_control(t_ctx *ctx)

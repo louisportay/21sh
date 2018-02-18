@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 14:38:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 14:03:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 18:16:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void					prefork_assign(t_ctx *ctx, t_asmt *asmt)
 	}
 	if (pmod)
 	{
-		ft_hashset_empty(ctx->hash, &ft_memdel);
+		hash_empty(ctx->hash, &ft_memdel);
 		ft_astr_clear(&ctx->path);
 		ctx->path = getpath(ctx->environ);
 	}

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 12:15:08 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 18:14:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,23 +106,22 @@ void				init_termcaps(t_ctx *ctx)
 	}
 }
 
-t_hash_dict			*getbuiltins(void)
+t_hdict			*getbuiltins(void)
 {
-	t_hash_dict		*dict;
+	t_hdict		*dict;
 
-	dict = ft_hashset_create(HASH_SIZE, HASH_PRIME);
-//	ft_hashset_add(dict, "bang", &);
-	ft_hashset_add(dict, "cd", &ft_cd);
-	ft_hashset_add(dict, "echo", &ft_echo);
-	ft_hashset_add(dict, "printenv", &ft_printenv);
-	ft_hashset_add(dict, "hash", &ft_hash);
-//	ft_hashset_add(dict, "history", &);
-//	ft_hashset_add(dict, "export", &);
-//	ft_hashset_add(dict, "printenv", &);
-//	ft_hashset_add(dict, "set", &);
-//	ft_hashset_add(dict, "setenv", &);
-//	ft_hashset_add(dict, "unsetenv", &);
-//	ft_hashset_add(dict, "shopt", &);// on le garde ?
+	dict = hash_create(HASH_SIZE, HASH_PRIME);
+//	hash_add(dict, "bang", &);
+	hash_add(dict, "cd", &ft_cd);
+	hash_add(dict, "echo", &ft_echo);
+	hash_add(dict, "printenv", &ft_printenv);
+	hash_add(dict, "hash", &ft_hash);
+//	hash_add(dict, "history", &);
+//	hash_add(dict, "export", &);
+//	hash_add(dict, "set", &);
+//	hash_add(dict, "setenv", &);
+//	hash_add(dict, "unsetenv", &);
+//	hash_add(dict, "shopt", &);// on le garde ?
 	return (dict);
 }
 

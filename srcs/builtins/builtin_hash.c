@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 19:27:34 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 17:56:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 18:19:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int			lhash_inh(t_proc *p, t_ctx *ctx, int i, int j)
 
 static int			lhash_del(t_proc *p, t_ctx *ctx, int i)
 {
-	t_hash_entry	*e;
+	t_hentry	*e;
 	t_list			*lsts[2];
 	char			*str;
 	int				ret;
@@ -72,7 +72,7 @@ static int			lhash_del(t_proc *p, t_ctx *ctx, int i)
 	ret = 0;
 	while (p->argv[i] != NULL)
 	{
-		if ((e = ft_hashset_lookup(ctx->hash, p->argv[i])) == NULL)
+		if ((e = hash_lookup(ctx->hash, p->argv[i])) == NULL)
 		{
 			asprintf(&str, "221sh: hash: %s not found\n", p->argv[i]);
 			lsts[1] = list_create(str);
@@ -90,7 +90,7 @@ static int			lhash_prt(t_proc *p, t_ctx *ctx, int i)
 {
 	int				ret;
 	char			*str;
-	t_hash_entry	*e;
+	t_hentry	*e;
 	t_list			*lsts[2];
 
 	if (p->argv[i] == NULL)
@@ -101,7 +101,7 @@ static int			lhash_prt(t_proc *p, t_ctx *ctx, int i)
 	ret = 0;
 	while (p->argv[i] != NULL)
 	{
-		if ((e = ft_hashset_lookup(ctx->hash, p->argv[i])) == NULL)
+		if ((e = hash_lookup(ctx->hash, p->argv[i])) == NULL)
 			asprintf(&str, "221sh: hash: %s not found\n", p->argv[i]);
 		else
 			asprintf(&str, "1%s\n", (char *)e->content);
@@ -150,7 +150,7 @@ static void		largest(char *key, void *value, void *data)
 	max(l + 1, t[1]);
 }
 
-static int		print_hash(t_proc *p, t_hash_dict *dict)
+static int		print_hash(t_proc *p, t_hdict *dict)
 {
 	size_t		len[2];
 	t_qbuf		*buf;
@@ -233,9 +233,8 @@ int					ft_hash(t_proc *p, t_ctx *ctx)
 			break ;
 		i++;
 	}
-	printf("0x%x\n", f);
 	if (f & BU_H_CLR)
-		ft_hashset_empty(ctx->hash, &ft_memdel);
+		hash_empty(ctx->hash, &ft_memdel);
 	if (f & BU_H_DEL)
 		ret |= (lhash_del(p, ctx, i));
 	else if (f & BU_H_PRT)
