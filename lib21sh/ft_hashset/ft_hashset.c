@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:48:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 14:01:21 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 17:31:24 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,18 @@ t_hash_dict			*ft_hashset_create(size_t size, int prime)
 		return (NULL);
 	}
 	return (dict);
+}
+
+void				hash_add_or_mod(t_hash_dict *dict, char *key, char *value,
+									void (*ptr)(void **))
+{
+	t_hash_entry	*e;
+
+	if ((e = ft_hashset_lookup(dict, key)) != NULL)
+	{
+		ptr(e->content);
+		e->content = value;
+		return ;
+	}
+	ft_hashset_add(dict, key, value);
 }

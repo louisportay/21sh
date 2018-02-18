@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:49:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 14:05:18 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 16:58:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,34 @@ void				ft_hashset_empty(t_hash_dict *dict, void (*ptr)(void **))
 		i++;
 	}
 	dict->count = 0;
+}
+
+void				hash_remove(t_hash_dict *dict, char *key,
+								void (*ptr)(void **))
+{
+	u_int			i;
+	t_hash_entry	*e;
+	t_hash_entry	*tmp;
+	t_hash_entry	*prev;
+
+	i = ft_hashset_hash(dict, key);
+	prev = NULL;
+	e = dict->entries[i];
+	while (e != NULL)
+	{
+		tmp = e;
+		e = e->next;
+		if (ft_strcmp(tmp->key, key) == 0)
+		{
+			if (prev == NULL)
+				dict->entries[i] = e;
+			else
+				prev->next = e;
+			ft_strdel(&tmp->key);
+			ptr(&tmp->content);
+			ft_memdel((void **)&tmp);
+			return ;
+		}
+		prev = tmp;
+	}
 }
