@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:18:08 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 17:59:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/19 21:06:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int				ft_echo(t_proc *p, t_ctx *ctx)
 	t_qbuf		*buf;
 
 	(void)ctx;
-	p->type = BUILTIN;
+	p->type = BU_STR;
 	if (p->argv[1] == NULL)
 	{
-		p->data.out = list_create(ft_strdup("1\n"));
+		p->data.str = ft_strdup("1\n");
 		return (0);
 	}
 	nl = (ft_strcmp("-n", p->argv[1]) != 0);
@@ -37,6 +37,6 @@ int				ft_echo(t_proc *p, t_ctx *ctx)
 	}
 	if (nl)
 		qbuf_addc(buf, '\n');
-	p->data.out = list_create(qbuf_del(&buf));
+	p->data.str = qbuf_del(&buf);
 	return (0);
 }

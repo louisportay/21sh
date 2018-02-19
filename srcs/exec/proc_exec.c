@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 18:34:47 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/19 14:03:37 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 		dprintf(STDERR_FILENO, "%s: %s: %s\n", "21sh", p->argv[0], ENOCMD);
 		exit(1);
 	}
-	if (p->type == BUILTIN)
+	if (p->type & BUILTIN)
 		exit(blt_output(p));
 	execve(p->data.path, p->argv, p->env);
 	exit_err("Could not exec...\n");

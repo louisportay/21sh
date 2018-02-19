@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/16 20:20:40 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/19 19:20:12 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,8 @@ HEADERS= ft_21sh.h\
 		 history.c\
 		 line.h\
 		 prompt.h\
-		 token.h
+		 token.h\
+		 builtins.h
 
 SRCS=	main.c\
 		ft_21sh.c\
@@ -110,6 +111,9 @@ SRCS=	main.c\
 		builtin_echo.c\
 		builtin_printenv.c\
 		builtin_hash.c\
+		builtin_hash_args.c\
+		builtin_set.c\
+		builtin_set_args.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

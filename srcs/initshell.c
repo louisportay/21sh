@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 18:14:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/19 14:36:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void			init_job_control(t_ctx *ctx)
 
 static void			init_termios(t_ctx *ctx)
 {
+	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 	ctx->tios.c_lflag &= ~(ICANON | ECHO);
 	ctx->tios.c_cc[VMIN] &= 1;
 	ctx->tios.c_cc[VTIME] &= 0;
@@ -83,11 +84,11 @@ static int	init_terminal(t_ctx *ctx)
 		if (tcgetattr(ctx->fd, &ctx->oldtios) == -1 || (tmp = getenv("TERM")) == NULL
 				|| tgetent(NULL, tmp) == ERR)/*ft_strcmp(tmp, "xterm-256color") ||*/
 		{
+			ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 			ctx->line_edition = false;
 			ctx->history = false;
 			return (-1);
 		}
-		ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 		init_termios(ctx);
 	}
 	else

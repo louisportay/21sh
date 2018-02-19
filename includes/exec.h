@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 20:33:47 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/19 11:42:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,16 @@ typedef int				(*t_blt)(t_proc *p, t_ctx *ctx);
 
 enum					e_extype
 {
-	BINARY,
-	BUILTIN,
-	EXERR
+	BINARY = 0b000,
+	BUILTIN = 0b001,
+	BU_STR = 0b011,
+	EXERR = 0b100
 };
 
 union					u_ebin
 {
 	char				*path;
+	char				*str;
 	struct s_list		*out;
 };
 

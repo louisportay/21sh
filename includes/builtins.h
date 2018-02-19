@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 20:22:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/19 19:36:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,24 @@
 # include <sys/stat.h>
 
 # include "ft_21sh.h"
+
+# define BU_SET_PRLOC 0x1
+# define BU_SET_PRVAR 0x2
+# define BU_SET_PRSET 0x4
+# define BU_SET_PRCMD 0x8
+
+# define BU_SET_EXPOR 0x1
+# define BU_SET_BGCMD 0x2
+# define BU_SET_FNEXP 0x4
+# define BU_SET_ONCMD 0x8
+
+# define BU_SET_ON ("\ton\n")
+# define BU_SET_OFF ("\toff\n")
+# define BU_SET_MEXPO ("allexport")
+# define BU_SET_MBGCM ("notify")
+# define BU_SET_MFNEX ("noglob")
+# define BU_SET_MONCM ("xtrace")
+
 
 # define SH_EWFMT ("setenv: Wrong format: <key>=<value> - ")
 # define SH_ENKEY ("setenv: Missing key: ")
@@ -29,11 +47,25 @@
 # define SH_PENV ("printenv")
 # define SH_EXIT ("exit")
 
-# define SH_ENOFOD ("2cd: No such file or directory\n")
-# define SH_ERIGHT ("2cd: Permission denied\n")
-# define SH_EARGTO ("2cd: Too much arguments\n")
-# define SH_ENOHOM ("2cd: Variable $HOME not set\n")
-# define SH_ENOOPW ("2cd: Variable $OLDPWD not set\n")
+# define SH_ENOFOD ("No such file or directory")
+# define SH_ERIGHT ("Permission denied")
+# define SH_EARGTO ("221sh: cd: Too much arguments\n")
+# define SH_ENOHOM ("221sh: cd: Variable $HOME not set\n")
+# define SH_ENOOPW ("221sh: cd: Variable $OLDPWD not set\n")
+
+#define BU_H_EEMPTY ("121sh: hash empty\n")
+#define BU_H_CLR (1 << 0)
+#define BH_H_INH (1 << 1)
+#define BU_H_DEL (1 << 2)
+#define BU_H_PRT (1 << 3)
+#define BU_H_LST (1 << 4)
+
+#define BU_H_ETREQU ("221sh: hash: -t: option requires an argument\n")
+#define BU_H_EDREQU ("221sh: hash: -d: option requires an argument\n")
+#define BU_H_EPREQU ("221sh: hash: -p: option requires two arguments\n")
+#define BU_H_USAGE_ ("21sh: usage: hash [-lr] [-p pathname] [-dt] [name ...]\n")
+
+# define BU_H_EINVAL ("221sh: hash: -%c: invalid option\n%s")
 
 typedef struct s_ctx	t_ctx;
 typedef struct s_proc	t_proc;
@@ -46,5 +78,8 @@ int						ft_printenv(t_proc *p, t_ctx *ctx);
 int						ft_setenv(char **argv, t_ctx *ctx);
 int						ft_unsetenv(char **argv, t_ctx *ctx);
 int						ft_hash(t_proc *proc, t_ctx *ctx);
+int						ft_set(t_proc *proc, t_ctx *ctx);
+int						bu_hash_getopts(t_proc *p, t_ctx *ctx, int *i);
+int						bu_set_getopts(t_proc *p, t_ctx *ctx, int i);
 
 #endif

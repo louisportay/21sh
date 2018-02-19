@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 13:03:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 20:34:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/19 21:07:12 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int		traverse(t_proc *p, t_ctx *ctx)
 		else
 		{
 			err |= 1;
-			asprintf(&ret, "2No key '%s' in environ\n", p->argv[i]);
+			asprintf(&ret, "221sh: printenv: '%s' not found\n", p->argv[i]);
 		}
 		ft_list_insert(lsts, lsts + 1, list_create(ret));
 		i++;
@@ -47,6 +47,7 @@ int				ft_printenv(t_proc *p, t_ctx *ctx)
 	p->type = BUILTIN;
 	if (p->argv[1] == NULL)
 	{
+		p->type = BU_STR;
 		i = 0;
 		buf = qbuf_new(1 << 8);
 		qbuf_addc(buf, '1');
@@ -56,7 +57,7 @@ int				ft_printenv(t_proc *p, t_ctx *ctx)
 			qbuf_addc(buf, '\n');
 			i++;
 		}
-		p->data.out = list_create(qbuf_del(&buf));
+		p->data.str = qbuf_del(&buf);
 		return (0);
 	}
 	return (traverse(p, ctx));

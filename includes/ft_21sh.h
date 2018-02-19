@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/18 19:17:04 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/19 17:29:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ struct					s_ctx
 	
 	char				**environ;
 	char				**locals;
+	unsigned short		set;
 	
 	/*
 	**	LINE EDITION
