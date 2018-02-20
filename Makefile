@@ -21,14 +21,20 @@ vpath %.c $(SRCDIR)
 vpath %.h includes/
 
 CC= gcc-7 
-CFLAGS= -Wall -Wextra -Werror $(INCLUDE)#-I $(INCLUDE) -I $(LIBDIR)$(INCLUDE)
+CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
 DEBUG=sanitize
 OPT=LIB
 ARCH:= $(shell uname)
+TERMLIB=-ltermcap
 
 ifeq ($(ARCH), Darwin)
 	CC= clang
 endif
+ifeq ($(ARCH), Linux)
+	CC=gcc
+	TERMLIB=-lcurses
+endif
+
 
 ifeq ($(DEBUG), yes)
 	CFLAGS+= -g3
@@ -118,7 +124,7 @@ RESET="\033[0m"
 all: $(LIB) $(NAME)
 
 $(NAME): $(LIBDIR)$(LIB) $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $(OBJ) -L$(LIBDIR) -lft -ltermcap
+	$(CC) $(CFLAGS) -o $@ $(OBJ) -L$(LIBDIR) -lft $(TERMLIB)
 	@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
 
 $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
@@ -134,7 +140,7 @@ $(LIBDIR)$(LIB):
 	@$(MAKE) -C $(LIBDIR)
 
 main: $(LIB)
-	$(CC) $(CFLAGS) -o test $(main) -L$(LIBDIR) -lft -ltermcap
+	$(CC) $(CFLAGS) -o test $(main) -L$(LIBDIR) -lft $(TERMLIB)
 	-rm -f $(main:.c=.o)
 
 clean:

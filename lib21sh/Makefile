@@ -20,6 +20,9 @@ ARCH:= $(shell uname)
 ifeq ($(ARCH), Darwin)
 	CC= clang
 endif
+ifeq ($(ARCH), Linux)
+	CC=gcc
+endif
 
 ifeq ($(DEBUG),yes)
 	CFLAGS+= -g3
@@ -48,7 +51,8 @@ vpath %.h $(SRCDIR)
 GREEN="\033[32m"
 RESET="\033[0m"
 
-
+debug: 
+	@echo $(ARCH)
 $(NAME): $(OBJ)
 		ar rc $@ $?
 		ranlib $@

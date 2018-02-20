@@ -63,10 +63,8 @@ int						ctx_path(char *exe, t_ctx *ctx, char **path)
 int						loc_path(char *exe, char **env, char **path)
 {
 	char				*lpath;
-	size_t				len;
 	char				**pathes;
 
-	len = ft_strlen("PATH");
 	lpath = ft_astr_getval(env, "PATH");
 	if (lpath == NULL)
 		return (0);
