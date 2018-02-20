@@ -121,7 +121,7 @@ SRCS=	main.c\
 		builtin_set.c\
 		builtin_set_args.c\
 		builtin_setenv.c\
-		builtin_modenv.c\
+		builtin_addenv.c\
 		builtin_env_utils.c\
 		builtin_unsetenv.c\
 
