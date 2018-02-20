@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 14:23:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 14:29:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 12:10:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,22 @@ void					astr_to_buf(char **argv, t_qbuf *buf, int last)
 			qbuf_add(buf, last ? "" : " | ");
 		i++;
 	}
+}
+
+void					astr_env_replace(char ***env, char *key, char *new_v)
+{
+	int					i;
+	char				**e;
+	char				*str;
+
+	e = *env;
+	str = ft_strjoinc(key, new_v, '=');
+	if ((i = ft_astr_getkey(e, key, ft_strlen(key))) == -1)
+		ft_astr_append(&e, str);
+	else
+	{
+		ft_strdel(e + i);
+		e[i] = str;
+	}
+	*env = e;
 }

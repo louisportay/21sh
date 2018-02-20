@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_hash_foreach.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/10 16:59:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 19:16:14 by vbastion         ###   ########.fr       */
+/*   Created: 2018/02/15 19:58:37 by vbastion          #+#    #+#             */
+/*   Updated: 2018/02/18 18:05:44 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_hashset.h"
 
-void				on_emem(int status)
+void				hash_foreach_data(t_hdict *dict, void (*func)(),
+										void *data)
 {
-	fatal_err((char)status, get_ctxaddr(NULL));
-}
+	t_hentry		*e;
+	t_hentry		**d;
+	size_t			i;
+	size_t			l;
 
-void				max(size_t *a, size_t b)
-{
-	if (*a < b)
-		*a = b;
+	i = 0;
+	l = dict->size;
+	d = dict->entries;
+	while (i < l)
+	{
+		e = d[i];
+		while (e != NULL)
+		{
+			func(e->key, e->content, data);
+			e = e->next;
+		}
+		i++;
+	}
 }

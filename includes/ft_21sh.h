@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/15 11:17:51 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/19 17:29:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 # include "ft_ctype.h"
 # include "ft_hashset.h"
 # include "kvp.h"
-//# include ""
+# include "builtins.h"
+
 # include <signal.h>
 # include <sys/ioctl.h>
 # include <sys/types.h>
@@ -96,8 +97,8 @@ struct					s_ctx
 	**	EXECUTION HASH (for HASH builtin)
 	*/
 	
-	t_hash_dict			*hash;
-	t_hash_dict			*builtins;
+	t_hdict			*hash;
+	t_hdict			*builtins;
 	
 	/*
 	**	SHELL VARIABLES
@@ -105,6 +106,7 @@ struct					s_ctx
 	
 	char				**environ;
 	char				**locals;
+	unsigned short		set;
 	
 	/*
 	**	LINE EDITION
@@ -153,7 +155,7 @@ typedef struct			s_typefunc
 void					vingtetunsh(char **av, char **environ);
 
 int						init(t_ctx *ctx, char **av, char **environ);
-t_hash_dict				*getbuiltins(void);
+t_hdict				*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);
 void					complete_environ(char ***environ);
 int						create_locals(char ***locals);
@@ -165,6 +167,7 @@ void					fatal_err(char errcode, t_ctx *ctx);
 void					wrap_exit(int status, t_ctx *ctx);
 
 void					on_emem(int status);
+void					max(size_t *a, size_t b);
 
 int						set_sighandler(void);
 t_ctx					*get_ctxaddr(t_ctx *ctxaddr);
@@ -203,5 +206,9 @@ int						exec(t_job *extree);
 //		UNTIL,
 //		WHILE,
 //};
+
+/*
+**	BUILTINS
+*/
 
 #endif

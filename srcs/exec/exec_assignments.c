@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 14:38:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 14:42:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/19 15:09:23 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,40 +15,53 @@
 void					prefork_assign(t_ctx *ctx, t_asmt *asmt)
 {
 	int					pmod;
-	char				*path;
+	int					i;
+	char				*k;
 
-	handle_assign(&ctx->environ, asmt, &pmod);
+	pmod = 0;
+	while (asmt != NULL)
+	{
+		pmod |= ft_strcmp(asmt->key, "PATH") == 0;
+		k = asmt->key;
+		if ((i = ft_astr_getkey(ctx->environ, k, ft_strlen(k))) != -1)
+		{
+			ft_strdel(ctx->environ + i);
+			ctx->environ[i] = ft_strjoinc(asmt->key, asmt->value, '=');
+		}
+		else
+			astr_env_replace(&ctx->locals, asmt->key, asmt->value);
+		asmt = asmt->next;
+	}
 	if (pmod)
 	{
-/*
-**	UPDATE HASH
-*/
-		if (ctx->path != NULL)
-			ft_astr_clear(&ctx->path);
-		if ((path = ft_astr_getval(ctx->environ, "PATH")) != NULL)
-			ctx->path = ft_strsplit(path, ':');
+		hash_empty(ctx->hash, &ft_memdel);
+		ft_astr_clear(&ctx->path);
+		ctx->path = getpath(ctx->environ);
 	}
 }
 
-void					handle_assign(char ***astrenv, t_asmt *asmts,
-										int *locpath)
+int						proc_update_env(t_proc *p)
 {
 	int					i;
 	char				*str;
+	int					mod;
+	t_asmt				*a;
 
-	*locpath = 0;
-	while (asmts != NULL)
+	mod = 0;
+	a = p->asmts;
+	while (a != NULL)
 	{
-		*locpath |= ft_strcmp("PATH", asmts->key) == 0;
-		str = ft_strjoinc(asmts->key, asmts->value, '=');
-		if ((i = ft_astr_getkey(*astrenv, asmts->key,
-								ft_strlen(asmts->key))) != -1)
+		mod |= ft_strcmp("PATH", a->key) == 0;
+		str = ft_strjoinc(a->key, a->value, '=');
+		if ((i = ft_astr_getkey(p->env, a->key,
+								ft_strlen(a->key))) != -1)
 		{
-			ft_strdel((*astrenv) + i);
-			(*astrenv)[i] = str;
+			ft_strdel(p->env + i);
+			p->env[i] = str;
 		}
 		else
-			ft_astr_append(astrenv, str);
-		asmts = asmts->next;
+			ft_astr_append(&p->env, str);
+		a = a->next;
 	}
+	return (mod);
 }

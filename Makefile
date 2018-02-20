@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/15 14:39:08 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/19 21:40:46 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRCDIR= srcs/ \
 		srcs/line \
 		srcs/parser \
 		srcs/exec \
+		srcs/builtins \
 
 vpath %.c $(SRCDIR)
 vpath %.h includes/
@@ -59,7 +60,8 @@ HEADERS= ft_21sh.h\
 		 history.c\
 		 line.h\
 		 prompt.h\
-		 token.h
+		 token.h\
+		 builtins.h
 
 SRCS=	main.c\
 		ft_21sh.c\
@@ -108,6 +110,20 @@ SRCS=	main.c\
 		job_lifecycle.c\
 		bridge_exec_astr.c\
 		exec_assignments.c\
+		prepare_fork.c\
+		blt_output.c\
+		\
+		builtin_cd.c\
+		builtin_echo.c\
+		builtin_printenv.c\
+		builtin_hash.c\
+		builtin_hash_args.c\
+		builtin_set.c\
+		builtin_set_args.c\
+		builtin_setenv.c\
+		builtin_modenv.c\
+		builtin_env_utils.c\
+		builtin_unsetenv.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 11:06:11 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/19 14:36:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->fd = ctx->istty ? STDIN_FILENO : -1;
 	ctx->path = getpath(environ);
 	ctx->environ = ft_astr_dup(environ);
-	ctx->hash = ft_hashset_create(HASH_SIZE, HASH_PRIME);
+	ctx->hash = hash_create(HASH_SIZE, HASH_PRIME);
 }
 
 static void			init_job_control(t_ctx *ctx)
@@ -49,14 +49,13 @@ static void			init_job_control(t_ctx *ctx)
 		ctx->job_control = 0;
 		perror("setpgid");
 	}
-	printf("shell pid: %d - pgid: %d - read pgid: %d\n", ctx->pid, ctx->pgid, getpgid(ctx->pid));
-	int ret = tcsetpgrp(ctx->fd, ctx->pgid);
-	if (ret != 0)
-		perror("tcsetpgrp init");
+	if (tcsetpgrp(ctx->fd, ctx->pgid) != 0)
+		dprintf(STDERR_FILENO, "init job ctrl tcsetgrp error\n");
 }
 
 static void			init_termios(t_ctx *ctx)
 {
+	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 	ctx->tios.c_lflag &= ~(ICANON | ECHO);
 	ctx->tios.c_cc[VMIN] &= 1;
 	ctx->tios.c_cc[VTIME] &= 0;
@@ -85,11 +84,11 @@ static int	init_terminal(t_ctx *ctx)
 		if (tcgetattr(ctx->fd, &ctx->oldtios) == -1 || (tmp = getenv("TERM")) == NULL
 				|| tgetent(NULL, tmp) == ERR)/*ft_strcmp(tmp, "xterm-256color") ||*/
 		{
+			ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 			ctx->line_edition = false;
 			ctx->history = false;
 			return (-1);
 		}
-		ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 		init_termios(ctx);
 	}
 	else
@@ -116,7 +115,7 @@ int	init(t_ctx *ctx, char **av, char **environ)
 
 	ft_astr_append(&ctx->locals, ft_strjoinc("HISTFILE", tmp = get_histfile(ctx), '='));
 	free(tmp);
-//	ctx->builtins = getbuiltins();
+	ctx->builtins = getbuiltins();
 	if (ctx->history)
 		init_hist(ctx);
 	return (SUCCESS);

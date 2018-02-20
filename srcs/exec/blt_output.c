@@ -1,37 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   blt_output.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 14:33:01 by vbastion         ###   ########.fr       */
+/*   Created: 2018/02/16 16:53:38 by vbastion          #+#    #+#             */
+/*   Updated: 2018/02/19 12:03:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int						exec(t_job *extree)
+int						blt_output(t_proc *p)
 {
-	t_ctx				*ctx;
-	int					ret;
+	t_list				*lst;
+	char				*str;
 
-	ctx = get_ctxaddr(NULL);
-	if (ctx->istty)
+	if (p->type == BU_STR)
 	{
-		if ((ret = tcsetattr(ctx->fd, TCSADRAIN, &ctx->oldtios)) != 0)
-			perror("tcsetattr set");
+		if (p->data.str != NULL)
+			ft_putstr_fd(p->data.str + 1, p->data.str[0] - '0');
+		return (p->status);
 	}
-	while (extree != NULL)
+	lst = p->data.out;
+	while (lst != NULL)
 	{
-		job_exec(extree, 1, get_ctxaddr(NULL));
-		extree = extree->next;
+		str = (char *)lst->content;
+		ft_putstr_fd((char *)lst->content + 1, ((char *)lst->content)[0] - '0');
+		lst = lst->next;
 	}
-	if (ctx->istty)
-	{
-		if ((ret = tcsetattr(ctx->fd, TCSADRAIN, &ctx->tios)) != 0)
-			perror("tcsetattr reset");
-	}
-	return (0);
+	return (p->status);
 }

@@ -6,4 +6,8 @@ Add redir																		--	DONE
 add bg jobs to job list
 collect exit status (complete it and test)										--	MOSTLY DONE, CHECK EXTENSIVELY
 handle async tree execution and continuation
-
+look for path before fork to be sure 
+add error handling for ASSIGNMENTS (check _key_ sanity)
+Update tcsetpgrp, tcgetattr for uninteractive actions
+Do some free and cleanup, it's really messy
+fix hash multiple arguments error (displaying only the last, clearing previous output)

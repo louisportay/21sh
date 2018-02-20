@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 11:06:07 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/19 21:40:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void				complete_environ(char ***environ)
 		ft_astr_append(environ, ft_strjoinc("SHLVL", tmp, '='));
 		free(tmp);
 	}
-	if ((tmp = getcwd(NULL, 0)))
+	if (ft_astr_getkey(*environ, "PWD", 3) == -1 && (tmp = getcwd(NULL, 0)))
 	{
 		ft_astr_append(environ, ft_strjoinc("PWD", tmp, '='));
 		free(tmp);
@@ -106,22 +106,24 @@ void				init_termcaps(t_ctx *ctx)
 	}
 }
 
-t_hash_dict			*getbuiltins(void)
+t_hdict			*getbuiltins(void)
 {
-	t_hash_dict		*dict;
+	t_hdict		*dict;
 
-	dict = ft_hashset_create(HASH_SIZE, HASH_PRIME);
-//	ft_hashset_add(dict, "bang", &);
-//	ft_hashset_add(dict, "cd", &);
-//	ft_hashset_add(dict, "echo", &);
-//	ft_hashset_add(dict, "env", &);
-//	ft_hashset_add(dict, "hash", &);
-//	ft_hashset_add(dict, "history", &);
-//	ft_hashset_add(dict, "export", &);
-//	ft_hashset_add(dict, "set", &);
-//	ft_hashset_add(dict, "setenv", &);
-//	ft_hashset_add(dict, "unsetenv", &);
-//	ft_hashset_add(dict, "shopt", &);// on le garde ?
+	dict = hash_create(HASH_SIZE, HASH_PRIME);
+//	hash_add(dict, "bang", &);
+//	hash_add(dict, "history", &);
+//	hash_add(dict, "env", &);
+//	hash_add(dict, "shopt", &);// on le garde ?
+	hash_add(dict, "cd", &ft_cd);
+	hash_add(dict, "echo", &ft_echo);
+	hash_add(dict, "printenv", &ft_printenv);
+	hash_add(dict, "hash", &ft_hash);
+	hash_add(dict, "set", &ft_set);
+	hash_add(dict, "setenv", &ft_setenv);
+	hash_add(dict, "export", &ft_export);
+	hash_add(dict, "unsetenv", &ft_unsetenv);
+	hash_add(dict, "unset", &ft_unset);
 	return (dict);
 }
 
@@ -132,11 +134,11 @@ t_hash_dict			*getbuiltins(void)
 char			**getpath(char **environ)
 {
 	char			**path;
-	int				i;
+	char			*tpath;
 
-	if ((i = ft_astr_getkey(environ, "PATH", 4)) == -1)
+	if ((tpath = ft_astr_getval(environ, "PATH")) == NULL)
 		return (NULL);
-	if (!(path = ft_strsplit(environ[i], ':')))
+	if ((path = ft_strsplit(tpath, ':')) == NULL)
 		return (NULL);
 	if (astr_rmdup(&path) == -1)
 	{
