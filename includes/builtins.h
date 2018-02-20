@@ -72,14 +72,17 @@ typedef struct s_proc	t_proc;
 
 int						ft_cd(t_proc *p, t_ctx *ctx);
 int						ft_echo(t_proc *p, t_ctx *ctx);
-int						ft_exit(char **args, t_ctx *ctx);
-int						ft_env(char **args, t_ctx *ctx);
 int						ft_printenv(t_proc *p, t_ctx *ctx);
 int						ft_setenv(t_proc *p, t_ctx *ctx);
-int						ft_unsetenv(char **argv, t_ctx *ctx);
+int						ft_export(t_proc *p, t_ctx *ctx);
+int						ft_unsetenv(t_proc *proc, t_ctx *ctx);
+int						ft_unset(t_proc *proc, t_ctx *ctx);
 int						ft_hash(t_proc *proc, t_ctx *ctx);
 int						ft_set(t_proc *proc, t_ctx *ctx);
+int						modenv(t_proc *p, t_ctx *ctx, char *name);
 int						bu_hash_getopts(t_proc *p, t_ctx *ctx, int *i);
 int						bu_set_getopts(t_proc *p, t_ctx *ctx, int i);
+int                                             is_identifier(char *str);
+int			                        is_sane(char *str, int *end);
 
 #endif

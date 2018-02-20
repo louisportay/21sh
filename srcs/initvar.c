@@ -112,16 +112,18 @@ t_hdict			*getbuiltins(void)
 
 	dict = hash_create(HASH_SIZE, HASH_PRIME);
 //	hash_add(dict, "bang", &);
+//	hash_add(dict, "history", &);
+//	hash_add(dict, "env", &);
+//	hash_add(dict, "shopt", &);// on le garde ?
 	hash_add(dict, "cd", &ft_cd);
 	hash_add(dict, "echo", &ft_echo);
 	hash_add(dict, "printenv", &ft_printenv);
 	hash_add(dict, "hash", &ft_hash);
-//	hash_add(dict, "history", &);
-//	hash_add(dict, "export", &);
 	hash_add(dict, "set", &ft_set);
 	hash_add(dict, "setenv", &ft_setenv);
-//	hash_add(dict, "unsetenv", &);
-//	hash_add(dict, "shopt", &);// on le garde ?
+	hash_add(dict, "export", &ft_export);
+	hash_add(dict, "unsetenv", &ft_unsetenv);
+	hash_add(dict, "unset", &ft_unset);
 	return (dict);
 }
 
