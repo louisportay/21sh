@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/14 17:59:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/21 15:11:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,8 @@ enum	e_toktype
 
 		COMMENT = 1 << 20,				// # *ANY_TOKEN NEWLINE
 		PARAM_EXP = DOLLAR | WORD,		// ${} | $VAR
-//		PARAM_EXP = DOLLAR | 1 << 0,	// ${} | $VAR
 		CMD_SUB = DOLLAR | WORD,		// $() |	bquotes+grouping --> 42SH
-//		CMD_SUB = DOLLAR | 1 << 2,		// $() |	bquotes+grouping --> 42SH
 		ARI_EXP = DOLLAR | WORD,		// $[] | $((MATHS))
-//		ARI_EXP = DOLLAR | 1 << 3,		// $[] | $((MATHS))
 };
 
 typedef struct		s_token

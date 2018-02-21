@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/13 15:38:53 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/21 16:42:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,22 +50,28 @@ void		lineread(t_ctx *ctx, t_line *line)
 		ft_dlsthead(&ctx->hist.list);
 	ft_dlsthead(&line->line);
 
-	if (status == READERROR)
+	if (status == READERROR && !ctx->heredoc_eof)
 		fatal_err(FAILREAD, ctx);
+	else if (status == READERROR)//cheap code
+	{
+		dump_err(FAILREAD);
+		stack_pop(&line->linestate);
+		return ;
+	}
 	else if (status == EXITSHELL)
 		wrap_exit(EXIT_SUCCESS, ctx);
 	else if (status == ERR_QUOTE)
 		return (err_quotes(line));
 
 	if (ctx->heredoc_eof)
-		query_hdocstate(line->line->next, &line->linestate, ctx->heredoc_eof);
+		query_hdocstate(line->line, &line->linestate, ctx->heredoc_eof);
 	else
 		query_linestate(line->line->next, &line->linestate);
 
 	if (line->linestate->state != UNQUOTED)
 	{
 		ft_strcpy(ctx->prompt_mode, PS2);
-		if ((line->cursor_offset % ctx->ws.ws_col))
+		if ((line->cursor_offset % ctx->ws.ws_col) || ctx->heredoc_eof)
 			write(STDOUT_FILENO, "\n", 1);
 	}
 	else
@@ -73,12 +79,15 @@ void		lineread(t_ctx *ctx, t_line *line)
 
 	join_split_lines(line);
 
-	if (ctx->history && line->split_line->next && line->linestate->state == UNQUOTED && !dlst_isblank(line->split_line->next) && !ctx->heredoc_eof)
+	if (!ctx->heredoc_eof && ctx->history && line->split_line->next && line->linestate->state == UNQUOTED && !dlst_isblank(line->split_line->next))
 	{
 		add_histentry(ctx);
 		line->line_saved = true;
 	}
 
-	if (line->linestate->state == UNQUOTED || line->linestate->state == SQUOTE || line->linestate->state == DQUOTE)
+	if (((line->linestate->state == UNQUOTED ||
+			line->linestate->state == SQUOTE ||
+			line->linestate->state == DQUOTE) && !ctx->heredoc_eof) ||
+			line->linestate->state == HEREDOC)//CHANGE THAT AWFUL LINE
 		ft_dlstaddend(line->split_line, (line->final_newline = ft_dlstnew("\n", 1)));
 }

@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/19 21:40:46 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/15 11:58:36 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRCDIR= srcs/ \
 vpath %.c $(SRCDIR)
 vpath %.h includes/
 
-CC= gcc-7 
+CC= gcc-7
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
 DEBUG=sanitize
 OPT=LIB
@@ -129,7 +129,7 @@ OBJDIR= obj
 #include srcs/parser/parser.mk
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
 
-LIBDIR= lib21sh/
+LIBDIR= libft/
 LIB= libft.a
 
 NAME= 21sh
@@ -164,7 +164,7 @@ clean:
 ifeq ($(OPT), LIB)
 	@$(MAKE) clean -C $(LIBDIR)
 endif
-	-rm -rf $(OBJDIR) 
+	-rm -rf $(OBJDIR)
 	@-rm -f a.out
 	@-rm -f test
 	@-rm -rf test.dSYM
@@ -173,7 +173,7 @@ fclean: clean
 
 ifeq ($(OPT), LIB)
 	@$(MAKE) fclean -C $(LIBDIR)
-endif		
+endif
 	-rm -f $(NAME)
 	@-rm -rf $(NAME).dSYM
 

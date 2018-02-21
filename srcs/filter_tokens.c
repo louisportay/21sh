@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 21:19:04 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/21 17:17:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	filter_redir(t_token *toklist, t_token *prev)
 
 	if (toklist->type == DLESS)
 		return (filter_heredoc(toklist, prev));
-	if (!(toklist->next->type & (WORD | ASSIGNMENT_WORD)) || !(tmp = (t_redir *)malloc(sizeof(t_redir))))
+	if (!(toklist->next->type & (WORD | ASSIGNMENT_WORD /*| DOLLAR*/)) || !(tmp = (t_redir *)malloc(sizeof(t_redir))))
 		return (-1);
 	prev->next = (t_token *)tmp;
 	tmp->first_letter = toklist->first_letter;

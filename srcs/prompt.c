@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/15 10:30:22 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/21 17:07:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,16 @@ static void	l_flag(t_ctx *ctx)
 }
 
 /*
-** Shell name flag
+** Executable name flag
 */
 
 static void	s_flag(t_ctx *ctx)
 {
 	size_t	len;
 
-	len = ft_strlen(SHELLNAME);
+	len = ft_strlen(ctx->av[0]) - 2;
 	ctx->line.cursor_offset += len;
-	write(STDOUT_FILENO, SHELLNAME, len);
+	write(STDOUT_FILENO, ctx->av[0] + 2, len);
 }
 
 /*

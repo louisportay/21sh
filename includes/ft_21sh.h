@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/19 17:29:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/21 16:58:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,61 +85,62 @@ struct					s_ctx
 	/*
 	**	JOB CONTROL - Might miss a lot of variables
 	*/
-	
+
 	pid_t				pid;
 	pid_t				pgid;
 	int					fd;
 	int	                istty;
 	char				**path;
 	t_list				*running_processes;
-	
+
 	/*
 	**	EXECUTION HASH (for HASH builtin)
 	*/
-	
+
 	t_hdict			*hash;
 	t_hdict			*builtins;
-	
+
 	/*
 	**	SHELL VARIABLES
 	*/
-	
+
 	char				**environ;
 	char				**locals;
 	unsigned short		set;
-	
+
 	/*
 	**	LINE EDITION
 	*/
-	
+
 	t_line				line;
 	t_hist				hist;
 	t_line				*cur_line;//line currently modified
 	char                *heredoc_eof;//current EOF
 	char				prompt_mode[4];
-	
+
 	/*
 	**	SHOPT BOOLS
 	*/
-	
+
 	int					emacs_mode;
 	int	                line_edition;
 	int	                history;
 	int					job_control;
-	
+
 	/*
 	**	TERMINAL CONTEXT
 	*/
-	
+
 	struct s_termcaps	tc;
 	struct winsize		ws;
 	struct termios		tios;
 	struct termios		oldtios;
-	
+	char				**av;
+
 	/*
 	**	TBD
 	*/
-	
+
 	t_token				*toklist; // Do we keep it here?
 };
 

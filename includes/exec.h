@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 11:42:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 17:14:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ enum					e_extype
 
 union					u_ebin
 {
-	char				*path;
 	char				*str;
 	struct s_list		*out;
 };
@@ -74,7 +73,7 @@ struct					s_job
 	struct s_proc		*procs;
 	pid_t				pgid;
 	char				notified;
-	struct termios		tmodes;
+	struct termios		tmodes;// Candidate for deletion
 	int					status;
 	int					stdin;
 	int					stdout;
@@ -113,7 +112,7 @@ void					job_fmtinfo(t_job *j, char *status);
 
 int						job_next(t_job *j, t_ctx *ctx);
 
-void					setup_signals(void (*sig)()); 
+void					setup_signals(void (*sig)());
 
 void					prefork_assign(t_ctx *ctx, t_asmt *asmt);
 int						proc_update_env(t_proc *p);

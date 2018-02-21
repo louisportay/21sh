@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 14:36:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/21 16:57:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 {
-	(void)av;//
+	ctx->av = av;
 	ctx->cur_line = NULL;
 	ctx->heredoc_eof = NULL;
 	ctx->line.line = NULL;

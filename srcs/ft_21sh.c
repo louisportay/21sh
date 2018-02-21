@@ -6,22 +6,11 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/15 11:00:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/19 11:29:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-//SHELL var
-
-//	if (*exec_file == '/')
-//		tmp = ft_strdup(exec_file);
-//	else if (*exec_file == '.')
-//		tmp = ft_strexpand(exec_file, '.', tmp);
-//	else if ((path = get_kvp("PATH", ctx->environ)))
-//		tmp = getpath(path, exec_file);
-//	else
-//		tmp = NULL;
 
 t_ctx *get_ctxaddr(t_ctx *ctxaddr)
 {
