@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/19 17:29:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/21 19:03:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "ft_hashset.h"
 # include "kvp.h"
 # include "builtins.h"
+# include "expand.h"
 
 # include <signal.h>
 # include <sys/ioctl.h>

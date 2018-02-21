@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/19 21:40:46 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/21 19:51:11 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,9 @@ SRCDIR= srcs/ \
 		srcs/parser \
 		srcs/exec \
 		srcs/builtins \
+		srcs/expand \
+		srcs/expand/path_matching \
+		srcs/expand/braces \
 
 vpath %.c $(SRCDIR)
 vpath %.h includes/
@@ -56,12 +59,18 @@ INCLUDE=\
 -I$(LIBDIR)ft_dlst\
 -I$(LIBDIR)kvp
 
-HEADERS= ft_21sh.h\
-		 history.c\
-		 line.h\
-		 prompt.h\
-		 token.h\
-		 builtins.h
+HEADERS=\
+ft_21sh.h\
+history.c\
+line.h\
+prompt.h\
+token.h\
+builtins.h\
+expand.h\
+expand_braces.h\
+expand_param.h\
+expand_quotes.h\
+expand_tilde.h\
 
 SRCS=	main.c\
 		ft_21sh.c\
@@ -124,6 +133,13 @@ SRCS=	main.c\
 		builtin_addenv.c\
 		builtin_env_utils.c\
 		builtin_unsetenv.c\
+		\
+		expand_exec.c\
+		expand.c\
+		bridge_splitws.c\
+		\
+		expand_braces.c\
+
 
 OBJDIR= obj
 #include srcs/parser/parser.mk
