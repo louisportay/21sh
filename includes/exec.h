@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 10:13:41 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/18 17:14:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,19 @@ typedef struct s_ctx	t_ctx;
 typedef struct s_proc	t_proc;
 typedef struct s_job	t_job;
 
+enum					e_extype
+{
+	BINARY,
+	BUILTIN,
+	EXERR
+};
+
+union					u_ebin
+{
+	char				*path;
+	struct s_list		*out;
+};
+
 struct					s_proc
 {
 	struct s_proc		*next;
@@ -41,11 +54,12 @@ struct					s_proc
 	char				**env;
 	t_asmt				*asmts;
 	pid_t				pid;
-	char				**ctx;		// Candidate for deletion
 	char				completed;
 	char				stopped;
 	int					status;
 	t_redir				*redirs;
+	enum e_extype		type;
+	union u_ebin		data;
 };
 
 struct					s_job
@@ -54,7 +68,7 @@ struct					s_job
 	t_proc				*procs;
 	pid_t				pgid;
 	char				notified;
-	struct termios		tmodes;
+	struct termios		tmodes;// Candidate for deletion
 	int					status;
 	int					stdin;
 	int					stdout;

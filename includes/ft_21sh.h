@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/15 11:17:51 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/21 16:58:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ struct					s_ctx
 	struct winsize		ws;
 	struct termios		tios;
 	struct termios		oldtios;
+	char				**av;
 	
 	/*
 	**	TBD

@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/15 11:06:48 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/15 11:58:36 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,7 +105,7 @@ OBJDIR= obj
 #include srcs/parser/parser.mk
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
 
-LIBDIR= lib21sh/
+LIBDIR= libft/
 LIB= libft.a
 
 NAME= 21sh

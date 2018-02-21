@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 10:43:32 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/16 10:04:17 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ t_redir					*redir_dup(t_redir *redir)
 {
 	t_redir				*rdr;
 
-	rdr = (t_redir *)ft_pmemalloc(sizeof(t_redir), &on_emem, NOMEM);
+	if (redir->type != DLESS)
+		rdr = (t_redir *)ft_pmemalloc(sizeof(t_redir), &on_emem, NOMEM);
+	else
+		rdr = (t_redir *)ft_pmemalloc(sizeof(t_heredoc), &on_emem, NOMEM);
 	rdr->type = redir->type;
 	if ((rdr->s_rhs = ft_strdup(redir->s_rhs)) == NULL)
 	{
@@ -56,8 +59,11 @@ t_redir					*redir_dup(t_redir *redir)
 		return (NULL);
 	}
 	rdr->lhs = redir->lhs;
-	rdr->fd_rhs = redir->fd_rhs;
-	rdr->dash = redir->dash;
+	if (rdr->type != DLESS)
+	{
+		rdr->fd_rhs = redir->fd_rhs;
+		rdr->dash = redir->dash;
+	}
 	return (rdr);
 }
 

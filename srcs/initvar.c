@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 11:06:07 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/21 17:13:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,38 +32,42 @@ int					create_locals(char ***locals)
 ** and set SHLVL and PWD
 */
 
-//remove astr_append by astr_replace
-
-void				complete_environ(char ***environ)
+void				complete_environ(char ***env)
 {
 	struct passwd	*pw;
 	char			*tmp;
+	int				i;
 
 	pw = NULL;
-	if ((ft_astr_getkey(*environ, "HOME", 4)) == -1)
+	if ((ft_astr_getkey(*env, "HOME", 4)) == -1)
 	{
 		pw = getpwuid(getuid());
-		ft_astr_append(environ, ft_strjoinc("HOME", pw->pw_dir, '='));
+		ft_astr_append(env, ft_strjoinc("HOME", pw->pw_dir, '='));
 	}
-	if ((ft_astr_getkey(*environ, "USER", 4)) == -1)
+	if ((ft_astr_getkey(*env, "USER", 4)) == -1)
 	{
 		if (!pw)
 			pw = getpwuid(getuid());
-		ft_astr_append(environ, ft_strjoinc("USER", pw->pw_name, '='));
+		ft_astr_append(env, ft_strjoinc("USER", pw->pw_name, '='));
 	}
-	if ((ft_astr_getkey(*environ, "PATH", 4)) == -1)
-		ft_astr_append(environ, ft_strjoinc("PATH", PATH, '='));
-	if (!(tmp = ft_astr_getval(*environ, "SHLVL")))
-		ft_astr_append(environ, ft_strjoinc("SHLVL", "1", '='));
+	if ((ft_astr_getkey(*env, "PATH", 4)) == -1)
+		ft_astr_append(env, ft_strjoinc("PATH", PATH, '='));
+	if ((i = ft_astr_getkey(*env, "SHLVL", 5)) == -1)
+		ft_astr_append(env, ft_strjoinc("SHLVL", "1", '='));
 	else
 	{
-		tmp = ft_itoa(ft_atoi(tmp) + 1);
-		ft_astr_append(environ, ft_strjoinc("SHLVL", tmp, '='));
+		tmp = ft_itoa(ft_atoi((*env)[i] + 6) + 1);
+		ft_astr_replace(*env, i, ft_strjoinc("SHLVL", tmp, '='));
 		free(tmp);
 	}
-	if ((tmp = getcwd(NULL, 0)))
+	if ((tmp = getcwd(NULL, 0)) && (i = (ft_astr_getkey(*env, "PWD", 3))) == -1)
 	{
-		ft_astr_append(environ, ft_strjoinc("PWD", tmp, '='));
+		ft_astr_append(env, ft_strjoinc("PWD", tmp, '='));
+		free(tmp);
+	}
+	else if (tmp)
+	{
+		ft_astr_replace(*env, i, ft_strjoinc("PWD", tmp, '='));
 		free(tmp);
 	}
 }

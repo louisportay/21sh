@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/15 10:20:34 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/16 14:14:33 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,10 @@ void	query_hdocstate(t_dlist *dlst, t_stack **linestate, char *eof)
 	if (!(s = dlst_to_str(dlst)))
 		return ;
 	if (!ft_strcmp(s, eof))
+	{
 		stack_pop(linestate);
+		ft_dlstdel(&dlst->next, &delvoid);
+	}
 	free(s);
 }
 
@@ -196,22 +199,24 @@ void	wrap_lineread(t_ctx *ctx, t_line *l, char *prompt_mode)
 	ctx->cur_line = l;
 	ft_strcpy(ctx->prompt_mode, prompt_mode);
 	stack_push(&l->linestate, stack_create(UNQUOTED));
+	if (ctx->heredoc_eof)
+		stack_push(&l->linestate, stack_create(HEREDOC));
+
 
 	if (ctx->line_edition)
 	{
-		lineread(ctx, &ctx->line);
+		lineread(ctx, l);
 		while (l->linestate && l->linestate->state != UNQUOTED)
-			lineread(ctx, &ctx->line);
+			lineread(ctx, l);
 	}
 	else
 	{
-		getrawline(ctx, &ctx->line);
+		getrawline(ctx, l);
 		while (l->linestate && l->linestate->state != UNQUOTED)
-			getrawline(ctx, &ctx->line);
+			getrawline(ctx, l);
 	}
 	ctx->cur_line = NULL;
-//	if (l->linestate)
-		stack_del(&l->linestate);
+	stack_del(&l->linestate);
 
 	//DEBUG//
 //	if (ctx->line.split_line)//

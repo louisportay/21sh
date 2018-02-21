@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 11:06:11 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/21 16:57:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 {
-	(void)av;//
+	ctx->av = av;
 	ctx->cur_line = NULL;
 	ctx->heredoc_eof = NULL;
 	ctx->line.line = NULL;
@@ -57,6 +57,7 @@ static void			init_job_control(t_ctx *ctx)
 
 static void			init_termios(t_ctx *ctx)
 {
+	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 	ctx->tios.c_lflag &= ~(ICANON | ECHO);
 	ctx->tios.c_cc[VMIN] &= 1;
 	ctx->tios.c_cc[VTIME] &= 0;
@@ -85,11 +86,11 @@ static int	init_terminal(t_ctx *ctx)
 		if (tcgetattr(ctx->fd, &ctx->oldtios) == -1 || (tmp = getenv("TERM")) == NULL
 				|| tgetent(NULL, tmp) == ERR)/*ft_strcmp(tmp, "xterm-256color") ||*/
 		{
+			ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 			ctx->line_edition = false;
 			ctx->history = false;
 			return (-1);
 		}
-		ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 		init_termios(ctx);
 	}
 	else

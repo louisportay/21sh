@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:03:42 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 13:37:44 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/21 17:07:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,6 @@
 #elif __APPLE__
 # define CUSTOM_HOST_NAME_MAX _POSIX_HOST_NAME_MAX
 #endif
-
-/*
-** This must be $(NAME) in the makefile
-*/
-
-# define SHELLNAME "21sh"
 
 # define PROMPT_FLAG(FUNC, FLAG)	(t_prompt_flag){.func = FUNC, .flag = FLAG}
 
