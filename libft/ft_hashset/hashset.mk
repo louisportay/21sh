@@ -1,6 +1,7 @@
 HASHSET=\
 ft_hashset.c\
-ft_hashset_free.c
+ft_hashset_free.c\
+ft_hash_foreach.c\
 
 HASHSET_DIR=ft_hashset
 

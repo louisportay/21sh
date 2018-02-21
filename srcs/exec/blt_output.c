@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:53:38 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 12:03:22 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/21 18:22:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int						blt_output(t_proc *p)
 {
 	t_list				*lst;
 	char				*str;
+	(void)str;//
 
 	if (p->type == BU_STR)
 	{

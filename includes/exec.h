@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 17:14:36 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/21 18:21:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ enum					e_extype
 union					u_ebin
 {
 	char				*str;
+	char				*path;
 	struct s_list		*out;
 };
 

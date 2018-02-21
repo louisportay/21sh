@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/15 11:58:36 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/21 18:34:43 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ endif
 ifeq ($(ARCH), Linux)
 	CC=gcc
 	TERMLIB=-lcurses
+	CFLAGS+=-D _GNU_SOURCE
 endif
 
 
