@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 15:59:10 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/10 10:52:00 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 14:00:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void				vtok_splittilclose(t_vtok *tok, t_vtok **next)
 
 int					vtok_isword(char *str)
 {
-	if (ft_isletter(*(str++)) == 0)
+	if (ft_isalpha(*(str++)) == 0)
 		return (0);
 	while (*str != '\0')
 	{

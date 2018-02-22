@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/14 17:50:55 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 16:17:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int				expand_glob(char **str)
 	t_list		*lst;
 	int			ret;
 
+	if (str == NULL || *str == NULL || **str == '\0')
+		return (1);
 	lst = bridge_strsplit(*str);
 	if ((ret = multi_expand(lst)) < 1)
 		return (ret);

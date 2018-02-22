@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:30:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/07 16:33:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 13:22:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static int		get_extstring(char **matcher, t_mtok **tmp)
 {
-	t_membuf	buf;
+	t_qbuf		*buf;
 	char		*str;
 
-	ft_mb_init(&buf);
+	buf = qbuf_new(1 << 8);
 	while (**matcher != '\0' && ft_strindex(SPEC_CHR_OP, **matcher) == -1
 			&& **matcher != ')')
 	{
@@ -25,10 +25,10 @@ static int		get_extstring(char **matcher, t_mtok **tmp)
 			break ;
 		if (**matcher == '\\')
 			(*matcher)++;
-		ft_mb_addc(&buf, **matcher);
+		qbuf_addc(buf, **matcher);
 		(*matcher)++;
 	}
-	if ((str = ft_mb_fetch(&buf)) == NULL)
+	if ((str = qbuf_del(&buf)) == NULL)
 		return (-1);
 	if ((*tmp = mtok_create_str(STRIN, str)) == NULL)
 	{

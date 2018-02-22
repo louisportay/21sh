@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 19:09:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 13:41:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ struct					s_vtok
 
 struct					s_lvar
 {
-	t_ctx			*ctx;
-	t_qbuf			buf;
+	t_ctx				*ctx;
+	t_qbuf				*buf;
 	t_vtok				*tokens;
 	t_vtok				*curr_tok;
 	int					exit_code;

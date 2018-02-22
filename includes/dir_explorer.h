@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:47:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 19:09:32 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 11:16:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 typedef struct dirent	t_dir;
 typedef struct stat		t_stat;
+typedef struct s_mtok	t_mtok;
 
 typedef struct s_entry	t_entry;
 

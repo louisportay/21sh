@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 19:12:30 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/11 16:04:09 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/22 11:34:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int						qbuf_addc(t_qbuf *buf, char c);
 int						qbuf_grow(t_qbuf *buf);
 int						qbuf_grown(t_qbuf *buf, size_t n);
 
+char					*qbuf_dump(t_qbuf *buf);
 char					*qbuf_del(t_qbuf **buf);
 
 #endif

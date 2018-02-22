@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 18:11:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/14 18:26:51 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 13:39:05 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static t_vtok	*vtok_next(char **str, int dq)
 		*str = *str + 1;
 		return (t);
 	}
-	else if (ft_isletter(**str))
+	else if (ft_isalpha(**str))
 		return (vtok_word(str));
 	else
 		return (vtok_other(str, dq));

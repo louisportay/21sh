@@ -6,18 +6,18 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 18:12:07 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/09 17:31:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 13:59:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand_param.h"
 
-void			vtok_tobuf(t_vtok *tok, t_membuf *buf)
+void			vtok_tobuf(t_vtok *tok, t_qbuf *buf)
 {
 	if (tok->type == VAWORD || tok->type == VOTHER)
-		ft_mb_add(buf, tok->data.str, ft_strlen(tok->data.str));
+		qbuf_add(buf, tok->data.str);
 	else
-		ft_mb_addc(buf, tok->data.c);
+		qbuf_addc(buf, tok->data.c);
 }
 
 int				vtok_assert(t_vtok *tok, int n, enum e_vtype type)

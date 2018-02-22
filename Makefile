@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/21 19:51:11 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/22 14:04:31 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,10 @@ SRCDIR= srcs/ \
 		srcs/expand \
 		srcs/expand/path_matching \
 		srcs/expand/braces \
+		srcs/expand/path_matching \
+		srcs/expand/tilde \
+		srcs/expand/quotes \
+		srcs/expand/param \
 
 vpath %.c $(SRCDIR)
 vpath %.h includes/
@@ -139,7 +143,54 @@ SRCS=	main.c\
 		bridge_splitws.c\
 		\
 		expand_braces.c\
-
+		btok_scan.c\
+		btok_lifecycle.c\
+		btok_get.c\
+		btok_from.c\
+		btok_sanitize.c\
+		expand_glob.c\
+		dir_expand_glob.c\
+		dir_explore.c\
+		ent_handling.c\
+		ent_sort.c\
+		ent_match.c\
+		pattern_matching_assert.c\
+		pattern_matching.c\
+		mtok_clear.c\
+		mtok_splitstr.c\
+		mtok_untilstr.c\
+		pattern_matching_tokens.c\
+		ttok_lifecycle.c\
+		ttok_comb.c\
+		ttok_combine.c\
+		ttok_compose.c\
+		ttok_get.c\
+		ttok_utils.c\
+		ttok_str.c\
+		dir_handle_matched.c\
+		pattern_matching_pointers.c\
+		ft_utils.c\
+		pattern_matching_brackets.c\
+		pattern_matching_ematcher.c\
+		\
+		expand_tilde.c\
+		\
+		expand_quotes.c\
+		\
+		expand_param.c\
+		scan_dollar.c\
+		vtok_dollarpid.c\
+		vtok_lifecycle.c\
+		vtok_get.c\
+		vtok_handletokens.c\
+		vtok_sanitize.c\
+		vtok_sanitize_utils.c\
+		vtok_util.c\
+		vtok_str.c\
+		vtok_dollar.c\
+		vtok_addvar.c\
+		vtok_dollarbrace.c\
+		vtok_dollarexec.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

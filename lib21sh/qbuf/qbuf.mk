@@ -1,4 +1,5 @@
 QBUF=\
+qbuf_dump.c\
 qbuf_insert.c\
 qbuf_lifecycle.c\
 

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 11:31:46 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 19:10:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 13:13:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int							match(char *str, t_mtok *tokens);
 int							compare(char *str, size_t pos, t_mtok *token);
 
 void						ft_mb_add_unsafe(t_qbuf *buf, char *str);
-void						ft_mb_pushrange(t_qbuf *buf, char beg, char end);
+void						qbuf_addrange(t_qbuf *buf, char beg, char end);
 int							ft_strwildcmp(char *str, char *matcher);
 char						*ft_strrmdup(char **str);
 
