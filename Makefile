@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/21 18:34:43 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/22 18:05:17 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,13 @@ SRCDIR= srcs/ \
 		srcs/parser \
 		srcs/exec \
 		srcs/builtins \
+		srcs/expand \
+		srcs/expand/path_matching \
+		srcs/expand/braces \
+		srcs/expand/path_matching \
+		srcs/expand/tilde \
+		srcs/expand/quotes \
+		srcs/expand/param \
 
 vpath %.c $(SRCDIR)
 vpath %.h includes/
@@ -57,12 +64,18 @@ INCLUDE=\
 -I$(LIBDIR)ft_dlst\
 -I$(LIBDIR)kvp
 
-HEADERS= ft_21sh.h\
-		 history.c\
-		 line.h\
-		 prompt.h\
-		 token.h\
-		 builtins.h
+HEADERS=\
+ft_21sh.h\
+history.c\
+line.h\
+prompt.h\
+token.h\
+builtins.h\
+expand.h\
+expand_braces.h\
+expand_param.h\
+expand_quotes.h\
+expand_tilde.h\
 
 SRCS=	main.c\
 		ft_21sh.c\
@@ -125,6 +138,60 @@ SRCS=	main.c\
 		builtin_addenv.c\
 		builtin_env_utils.c\
 		builtin_unsetenv.c\
+		\
+		expand_exec.c\
+		expand.c\
+		bridge_splitws.c\
+		\
+		expand_braces.c\
+		btok_scan.c\
+		btok_lifecycle.c\
+		btok_get.c\
+		btok_from.c\
+		btok_sanitize.c\
+		expand_glob.c\
+		dir_expand_glob.c\
+		dir_explore.c\
+		ent_handling.c\
+		ent_sort.c\
+		ent_match.c\
+		pattern_matching_assert.c\
+		pattern_matching.c\
+		mtok_clear.c\
+		mtok_splitstr.c\
+		mtok_untilstr.c\
+		pattern_matching_tokens.c\
+		ttok_lifecycle.c\
+		ttok_comb.c\
+		ttok_combine.c\
+		ttok_compose.c\
+		ttok_get.c\
+		ttok_utils.c\
+		ttok_str.c\
+		dir_handle_matched.c\
+		pattern_matching_pointers.c\
+		ft_utils.c\
+		pattern_matching_brackets.c\
+		pattern_matching_ematcher.c\
+		\
+		expand_tilde.c\
+		\
+		expand_quotes.c\
+		\
+		expand_param.c\
+		scan_dollar.c\
+		vtok_dollarpid.c\
+		vtok_lifecycle.c\
+		vtok_get.c\
+		vtok_handletokens.c\
+		vtok_sanitize.c\
+		vtok_sanitize_utils.c\
+		vtok_util.c\
+		vtok_str.c\
+		vtok_dollar.c\
+		vtok_addvar.c\
+		vtok_dollarbrace.c\
+		vtok_dollarexec.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

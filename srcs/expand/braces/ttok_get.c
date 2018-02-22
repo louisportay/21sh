@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 19:01:55 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/13 15:20:02 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 13:14:10 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,36 +28,36 @@ int					btok_match(t_btok *head, int *es)
 
 t_ttok				*l_redo_until(t_btok **btok, enum e_btoktype type)
 {
-	t_membuf		buf;
+	t_qbuf			*buf;
 	t_btok			*t;
 
 	t = *btok;
-	ft_mb_init(&buf);
+	buf = qbuf_new(1 << 8);
 	while (t->type == type)
 	{
-		ft_mb_add(&buf, t->val, ft_strlen(t->val));
+		qbuf_add(buf, t->val);
 		t = t->next;
 	}
 	*btok = t;
-	return (ttok_newstr(ft_mb_fetch(&buf)));
+	return (ttok_newstr(qbuf_del(&buf)));
 }
 
 t_ttok				*l_redo_past(t_btok **btok, enum e_btoktype type)
 {
-	t_membuf		buf;
+	t_qbuf			*buf;
 	t_btok			*t;
 
 	t = *btok;
-	ft_mb_init(&buf);
+	buf = qbuf_new(1 << 8);
 	while (1)
 	{
-		ft_mb_add(&buf, t->val, ft_strlen(t->val));
+		qbuf_add(buf, t->val);
 		t = t->next;
 		if (t->type == type)
 			break ;
 	}
 	*btok = t;
-	return (ttok_newstr(ft_mb_fetch(&buf)));
+	return (ttok_newstr(qbuf_del(&buf)));
 }
 
 t_ttok				*ttok_next(t_btok **btok)

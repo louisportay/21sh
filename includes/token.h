@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/21 15:11:22 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/22 18:10:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,35 +33,36 @@
 
 enum	e_toktype
 {
-		HEAD,
+	HEAD,
 
-		NEWLINE = 1 << 0, 				// \n
-		SEMICOL = 1 << 1,				// ;
-		IO_NUMBER = 1 << 2,				// *[0-9]>|*[0-9]<
-		WORD = 1 << 3,       			// Everything else...
-		ASSIGNMENT_WORD = 1 << 4, 		// WORD=
+	NEWLINE = 1 << 0, 				// \n
+	SEMICOL = 1 << 1,				// ;
+	IO_NUMBER = 1 << 2,				// *[0-9]>|*[0-9]<
+	WORD = 1 << 3,       			// Everything else...
+	ASSIGNMENT_WORD = 1 << 4, 		// WORD=
 
-		OR = 1 << 5,					// |
-		AND = 1 << 6,					// &
-		LESS = 1 << 7,					// <
-		GREAT = 1 << 8,					// >
-		OR_IF = 1 << 9,					// ||
-		AND_IF = 1 << 10, 				// &&
-		DLESS = 1 << 11,				// << (HEREDOC)
-		DGREAT = 1 << 12,				// >>
-		LESSAND = 1 << 13,				// <&
-		GREATAND = 1 << 14,				// >&
-		TLESS = 1 << 15,				// <<<
-		ANDGREAT = 1 << 16,				// &>
-		ANDDGREAT = 1 << 17,			// &>>
+	OR = 1 << 5,					// |
+	AND = 1 << 6,					// &
+	LESS = 1 << 7,					// <
+	GREAT = 1 << 8,					// >
+	OR_IF = 1 << 9,					// ||
+	AND_IF = 1 << 10, 				// &&
+	DLESS = 1 << 11,				// << (HEREDOC)
+	DGREAT = 1 << 12,				// >>
+	LESSAND = 1 << 13,				// <&
+	GREATAND = 1 << 14,				// >&
+	TLESS = 1 << 15,				// <<<
+	ANDGREAT = 1 << 16,				// &>
+	ANDDGREAT = 1 << 17,			// &>>
 
-		DOLLAR = 1 << 18,				// $
-		BANG = 1 << 19,					// !
+	DOLLAR = 1 << 18,				// $
+	BANG = 1 << 19,					// !
 
-		COMMENT = 1 << 20,				// # *ANY_TOKEN NEWLINE
-		PARAM_EXP = DOLLAR | WORD,		// ${} | $VAR
-		CMD_SUB = DOLLAR | WORD,		// $() |	bquotes+grouping --> 42SH
-		ARI_EXP = DOLLAR | WORD,		// $[] | $((MATHS))
+	COMMENT = 1 << 20,				// # *ANY_TOKEN NEWLINE
+	PARAM_EXP = DOLLAR | WORD,		// ${} | $VAR
+	CMD_SUB = DOLLAR | WORD,		// $() |	bquotes+grouping --> 42SH
+	ARI_EXP = DOLLAR | WORD,		// $[] | $((MATHS))
+	TOKERR = 1 << 21
 };
 
 typedef struct		s_token

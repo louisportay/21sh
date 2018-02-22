@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:47:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/07 16:45:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 11:23:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 int				get_string(char **matcher, t_mtok **tmp)
 {
-	t_membuf	buf;
+	t_qbuf		*buf;
 	char		*str;
 
-	ft_mb_init(&buf);
+	buf = qbuf_new(1 << 8);
 	while (**matcher != '\0' && ft_strindex(SPEC_CHR, **matcher) == -1)
 	{
 		if (**matcher == '\\')
 			(*matcher)++;
-		ft_mb_addc(&buf, **matcher);
+		qbuf_addc(buf, **matcher);
 		(*matcher)++;
 	}
-	if ((str = ft_mb_fetch(&buf)) == NULL)
+	if ((str = qbuf_del(&buf)) == NULL)
 		return (-1);
 	if ((*tmp = mtok_create_str(STRIN, str)) == NULL)
 	{

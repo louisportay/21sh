@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 15:47:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 13:33:28 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/22 11:50:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <wchar.h>
 
 int		ft_isalnum(int c);
+int		ft_isnumber(char *str);
 int		ft_isalpha(int c);
 int		ft_isascii(int c);
 int		ft_isdigit(int c);

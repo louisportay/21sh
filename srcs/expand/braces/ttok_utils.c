@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 15:19:41 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/13 15:20:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 11:56:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_btok				*ttok_before(t_btok *next, t_btok *from)
 
 int					ft_islet(char *str)
 {
-	return (str[0] != '\0' && ft_isletter(str[0]) && str[1] == '\0');
+	return (str[0] != '\0' && ft_isalpha(str[0]) && str[1] == '\0');
 }
 
 int					btok_assert(t_btok *tok, int n, enum e_btoktype type)
@@ -55,21 +55,21 @@ t_btok				*btok_peek(t_btok *tok, int n)
 t_ttok				*ttok_flatten(t_btok **head)
 {
 	t_ttok			*ret;
-	t_membuf		buf;
+	t_qbuf			*buf;
 	char			*str;
 	t_btok			*curr;
 
 	curr = *head;
-	ft_mb_init(&buf);
+	buf = qbuf_new(1 << 8);
 	while (1)
 	{
 		str = curr->val;
-		ft_mb_add(&buf, str, ft_strlen(str));
+		qbuf_add(buf, str);
 		if (curr->type == BRCBRA)
 			break ;
 		curr = curr->next;
 	}
-	ret = ttok_newstr(ft_mb_fetch(&buf));
+	ret = ttok_newstr(qbuf_del(&buf));
 	*head = curr->next;
 	return (ret);
 }

@@ -6,26 +6,26 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/19 11:29:12 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/22 18:05:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-t_ctx *get_ctxaddr(t_ctx *ctxaddr)
+t_ctx 				*get_ctxaddr(t_ctx *ctxaddr)
 {
-	static t_ctx *ctx = NULL;
+	static t_ctx 	*ctx = NULL;
 
 	if (ctxaddr)
 		ctx = ctxaddr;
 	return (ctx);
 }
 
-void	vingtetunsh(char **av, char  **environ)
+void				vingtetunsh(char **av, char  **environ)
 {
-	t_ctx	ctx;
-	char	ret;
-	t_job *extree;
+	t_ctx			ctx;
+	char			ret;
+	t_job			*extree;
 
 	if ((ret = init(&ctx, av, environ)) != SUCCESS)
 		fatal_err(ret, &ctx);
@@ -41,9 +41,8 @@ void	vingtetunsh(char **av, char  **environ)
 		delete_toklist(&ctx.toklist);
 		if (extree != NULL)
 		{
-			// HERE WILL THE EXPANSION GO IN NEAR FUTURE
 			exec(extree);
-		        job_clear(&extree);
+	        job_clear(&extree);
 		}
 		if (ctx.line.line_saved == false)
 			ft_dlstdel(&ctx.line.split_line, &delvoid);

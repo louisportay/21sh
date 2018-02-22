@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vtok_addvar.c                                      :+:      :+:    :+:   */
+/*   expand_quotes.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/09 11:52:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 14:02:51 by vbastion         ###   ########.fr       */
+/*   Created: 2018/01/14 15:59:19 by vbastion          #+#    #+#             */
+/*   Updated: 2018/01/14 16:02:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expand_param.h"
+#ifndef EXPAND_QUOTES
+# define EXPAND_QUOTES
 
-void				vtok_addvar(t_qbuf *buf, t_ctx *ctx, char *key)
-{
-	char			*value;
+# include "qbuf.h"
+# include "ft_list.h"
 
-	value = ft_astr_getval(ctx->environ, key);
-	if (value == NULL && (value = ft_astr_getval(ctx->locals, key)) == NULL)
-		return ;
-	qbuf_add(buf, value);
-}
+int					expand_quotes(t_list *list);
+
+#endif
