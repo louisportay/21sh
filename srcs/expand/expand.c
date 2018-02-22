@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:18:58 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 19:47:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 18:19:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int					expand(char *str, t_ctx *ctx,
 	if (expand_braces(&o) < 1
 		|| expand_tilde(&o, ctx) < 1
 		|| expand_param(&o, ctx) < 1
-		|| expand_glob(&o) == -1
+		|| expand_glob(&o, ctx) == -1
 		|| expand_split(o, &lst) == -1)
 
 	{

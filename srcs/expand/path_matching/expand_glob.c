@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 16:17:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 18:20:18 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,13 @@ static char		*bufferize(t_list *lst)
 	return (qbuf_del(&buf));
 }
 
-int				expand_glob(char **str)
+int				expand_glob(char **str, t_ctx *ctx)
 {
 	t_list		*lst;
 	int			ret;
 
+	if (ctx->set & BU_SET_FNEXP)
+		return (1);
 	if (str == NULL || *str == NULL || **str == '\0')
 		return (1);
 	lst = bridge_strsplit(*str);
