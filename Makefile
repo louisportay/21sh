@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/21 18:34:43 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/22 10:54:21 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -125,6 +125,7 @@ SRCS=	main.c\
 		builtin_addenv.c\
 		builtin_env_utils.c\
 		builtin_unsetenv.c\
+		builtin_env.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

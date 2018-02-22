@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/21 17:07:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/22 16:24:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,19 @@ static void	l_flag(t_ctx *ctx)
 static void	s_flag(t_ctx *ctx)
 {
 	size_t	len;
+	char	*c;
 
-	len = ft_strlen(ctx->av[0]) - 2;
+	if ((c = ft_strrchr(ctx->av[0], '/')))
+	{
+			len = ft_strlen(c + 1);
+			write(STDOUT_FILENO, c + 1, len);
+	}
+	else
+	{
+		len = ft_strlen(ctx->av[0]);
+		write(STDOUT_FILENO, ctx->av[0], len);
+	}
 	ctx->line.cursor_offset += len;
-	write(STDOUT_FILENO, ctx->av[0] + 2, len);
 }
 
 /*

@@ -6,13 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 14:05:13 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 18:22:01 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 18:57:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static t_blt			get_proc_blt(char *name, t_hdict *blts)
+static t_blt		get_proc_blt(char *name, t_hdict *blts)
 {
 	t_hentry		*e;
 
@@ -23,6 +23,22 @@ static t_blt			get_proc_blt(char *name, t_hdict *blts)
 	return (NULL);
 }
 
+static int			test_env_builtin(t_proc *p, t_ctx *ctx)
+{
+	if (!ft_strcmp("env", p->argv[0]))
+	{
+		p->type = BINARY;
+		if (p->argv[1])
+			return (ft_env(p, ctx));
+		else
+		{
+			ft_strdel(&p->argv[0]);
+			p->argv[0] = ft_strdup("printenv");
+		}
+	}
+	return (0);
+}
+
 int						prepare_fork(t_proc *p, t_ctx *ctx)
 {
 	t_blt				blt;
@@ -30,6 +46,9 @@ int						prepare_fork(t_proc *p, t_ctx *ctx)
 
 	p->env = ft_astr_dup(ctx->environ);
 	pmod = (p->asmts != NULL && p->argv[0] != NULL) ? proc_update_env(p) : 0;
+	pmod |= test_env_builtin(p, ctx);
+	if (p->type & BU_STR)
+		return (0);
 	if ((blt = get_proc_blt(p->argv[0], ctx->builtins)) != NULL)
 		p->status = blt(p, ctx);
 	else

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:53:38 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 18:22:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/22 17:40:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int						blt_output(t_proc *p)
 	char				*str;
 	(void)str;//
 
-	if (p->type == BU_STR)
+	if (p->type & BU_STR)
 	{
 		if (p->data.str != NULL)
 			ft_putstr_fd(p->data.str + 1, p->data.str[0] - '0');
