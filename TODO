@@ -3,4 +3,4 @@ fix SEGV on ${} expansion for non-existent VARS									--	PARTLY FIXED, mostly
 fix ~[+-]																		--	FIXED
 fix \ in expand_quotes															--	FIXED it seems
 fix unwanted ' ' with some $VAR expansions
-fix not working range
+fix not working range															--	Ranges both working
