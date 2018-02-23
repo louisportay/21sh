@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 15:05:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 22:42:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 22:49:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,89 +58,92 @@ int						expand_argv(t_proc *p, t_ctx *ctx)
 	return (ret);
 }
 
-static void				*flatten_list(t_list *l)
-{
-	t_qbuf				*buf;
+//	static void				*flatten_list(t_list *l)
+//	{
+//		t_qbuf				*buf;
+//	
+//		buf = qbuf_new(1 << 8);
+//		while (l != NULL)
+//		{
+//			qbuf_add(buf, (char *)l->content);
+//			if (l->next != NULL)
+//				qbuf_addc(buf, ' ');
+//			l = l->next;
+//		}
+//		return ((void *)qbuf_del(&buf));
+//	}
 
-	buf = qbuf_new(1 << 8);
-	while (l != NULL)
-	{
-		qbuf_add(buf, (char *)l->content);
-		if (l->next != NULL)
-			qbuf_addc(buf, ' ');
-		l = l->next;
-	}
-	return ((void *)qbuf_del(&buf));
-}
+//	int						expand_asmt(t_proc *p, t_ctx *ctx)
+//	{
+//		t_asmt				*a;
+//		char				*s;
+//		int					ret;
+//	
+//		a = p->asmts;
+//		while (a != NULL)
+//		{
+//			if ((ret = expand(a->value, ctx, &flatten_list, (void **)&s)) < 1)
+//			{
+//				if (ret == -1)
+//					on_emem(NOMEM);
+//				else if (ret == -2)
+//				{
+//					dprintf(STDERR_FILENO, "21sh: no match: %s\n", a->value);
+//					return (-2);
+//				}
+//			}
+//			else
+//			{
+//				ft_strdel(&a->value);
+//				a->value = s;
+//			}
+//			a = a->next;
+//		}
+//		return (0);
+//	}
+//	
+//	int						expand_redir(t_proc *p, t_ctx *ctx)
+//	{
+//		t_redir				*r;
+//		t_list				*l;
+//	
+//		r = p->redirs;
+//		while (r != NULL)
+//		{
+//			if (r->type != DLESS)
+//			{
+//				if ((ret = expand(r->s_rhs, ctx, NULL, (void **)&l)) < 1)
+//				{
+//					if (ret == -1)
+//						on_emem(NOMEM);
+//					else if (ret == -2)
+//					{
+//						dprintf(STDERR_FILENO, "21sh: no match: %s\n", a->value);
+//						return (-2);
+//					}
+//				}
+//				else
+//				{
+//					if (l->next != NULL)
+//					{
+//						r->type = TOKERR;
+//						ft_list_clear(&l, &ft_memdel);
+//					}
+//					else
+//					{
+//						ft_strdel(&r->s_rhs);
+//						r->s_rhs = (char *)l->content;
+//						ft_memdel((void **)&l);
+//					}
+//				}
+//			}
+//			r = r->next;
+//		}
+//		return (0);
+//	}
 
-int						expand_asmt(t_proc *p, t_ctx *ctx)
-{
-	t_asmt				*a;
-	char				*s;
-	int					ret;
-
-	a = p->asmts;
-	while (a != NULL)
-	{
-		if ((ret = expand(a->value, ctx, &flatten_list, (void **)&s)) < 1)
-		{
-			if (ret == -1)
-				on_emem(NOMEM);
-			else if (ret == -2)
-			{
-				dprintf(STDERR_FILENO, "21sh: no match: %s\n", a->value);
-				return (-2);
-			}
-		}
-		else
-		{
-			ft_strdel(&a->value);
-			a->value = s;
-		}
-		a = a->next;
-	}
-	return (0);
-}
-
-int						expand_redir(t_proc *p, t_ctx *ctx)
-{
-	t_redir				*r;
-	t_list				*l;
-
-	r = p->redirs;
-	while (r != NULL)
-	{
-		if (r->type != DLESS)
-		{
-			if ((ret = expand(r->s_rhs, ctx, NULL, (void **)&l)) < 1)
-			{
-				if (ret == -1)
-					on_emem(NOMEM);
-				else if (ret == -2)
-				{
-					dprintf(STDERR_FILENO, "21sh: no match: %s\n", a->value);
-					return (-2);
-				}
-			}
-			else
-			{
-				if (l->next != NULL)
-				{
-					r->type = TOKERR;
-					ft_list_clear(&l, &ft_memdel);
-				}
-				else
-				{
-					ft_strdel(&r->s_rhs);
-					r->s_rhs = (char *)l->content;
-					ft_memdel((void **)&l);
-				}
-			}
-		}
-		r = r->next;
-	}
-	return (0);
-}
+int expand_redir(t_proc *p, t_ctx *ctx) { (void)p; (void)ctx; return (0); }
+int expand_asmt(t_proc *p, t_ctx *ctx) { (void)p; (void)ctx; return (0); }
 
 int						expand_proc(t_proc *p, t_ctx *ctx)
 {
