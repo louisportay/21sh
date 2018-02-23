@@ -6,39 +6,11 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 10:28:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:01:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-//mettre les variables dans l'ordre dans lequel elles ont ete declarees (les declarer dans un ordre logique)
-//editer les options en fonction de *av donnés
-
-static void			init_ctx(t_ctx *ctx, char **av, char **environ)
-{
-	ctx->av = av;
-	ctx->cur_line = NULL;
-	ctx->heredoc_eof = NULL;
-	ctx->line.line = NULL;
-	ctx->line.yank = NULL;
-	ctx->line.lastline = NULL;
-	ctx->line.linestate = NULL;
-	ctx->hist.file = 0;
-	ctx->hist.list = NULL;
-	ctx->hist.index = 1;
-	ctx->toklist = NULL;//
-	ctx->emacs_mode = 1;
-	ctx->line_edition = 1;
-	ctx->config_file = 1;
-	ctx->history = 1;
-	ctx->job_control = 1;
-	ctx->istty = isatty(STDIN_FILENO);
-	ctx->fd = ctx->istty ? STDIN_FILENO : -1;
-	ctx->path = getpath(environ);
-	ctx->environ = ft_astr_dup(environ);
-	ctx->hash = hash_create(HASH_SIZE, HASH_PRIME);
-}
 
 static void			init_job_control(t_ctx *ctx)
 {
@@ -54,9 +26,40 @@ static void			init_job_control(t_ctx *ctx)
 		dprintf(STDERR_FILENO, "init job ctrl tcsetgrp error\n");
 }
 
+//mettre les variables dans l'ordre dans lequel elles ont ete declarees (les declarer dans un ordre logique)
+
+static void			init_ctx(t_ctx *ctx, char **av, char **environ)
+{
+	ctx->av = av;
+	ctx->cur_line = NULL;
+	ctx->heredoc_eof = NULL;
+	ctx->line.line = NULL;
+	ctx->line.yank = NULL;
+	ctx->line.lastline = NULL;
+	ctx->line.linestate = NULL;
+	ctx->hist.file = 0;
+	ctx->hist.list = NULL;
+	ctx->hist.index = 1;
+	ctx->emacs_mode = 1;
+	ctx->line_edition = 1;
+	ctx->config_file = 1;
+	ctx->history = 1;
+	ctx->job_control = 1;
+	ctx->fd = STDIN_FILENO;//ctx->istty ? STDIN_FILENO : -1;
+	ctx->istty = isatty(STDIN_FILENO);
+	ctx->path = getpath(environ);
+	ctx->environ = ft_astr_dup(environ);
+	ctx->hash = hash_create(HASH_SIZE, HASH_PRIME);
+	ctx->ret_tcget = tcgetattr(ctx->fd, &ctx->oldtios);
+	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
+	create_locals(&ctx->locals);
+	ctx->builtins = getbuiltins();
+	if (ctx->istty)
+		init_job_control(ctx);
+}
+
 static void			init_termios(t_ctx *ctx)
 {
-	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 	ctx->tios.c_lflag &= ~(ICANON | ECHO);
 	ctx->tios.c_cc[VMIN] &= 1;
 	ctx->tios.c_cc[VTIME] &= 0;
@@ -75,17 +78,15 @@ static void			init_termios(t_ctx *ctx)
 
 //on garde la comparaison avec xterm-256color ?
 
-static int	init_terminal(t_ctx *ctx)
+static int	init_line_edition(t_ctx *ctx)
 {
 	char *tmp;
 
 	if (ctx->istty)
 	{
-		init_job_control(ctx);
-		if (tcgetattr(ctx->fd, &ctx->oldtios) == -1 || ctx->line_edition == 0 || (tmp = getenv("TERM")) == NULL
+		if (ctx->ret_tcget == -1 || ctx->line_edition == 0 || (tmp = getenv("TERM")) == NULL
 				|| tgetent(NULL, tmp) == ERR)/*ft_strcmp(tmp, "xterm-256color") ||*/
 		{
-			ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 			ctx->line_edition = false;
 			ctx->history = false;
 			return (-1);
@@ -107,17 +108,15 @@ int	init(t_ctx *ctx, char **av, char **environ)
 
 	get_ctxaddr(ctx);
 	init_ctx(ctx, av, environ);
-	getopt_21sh(ctx, ctx->av);
-	init_terminal(ctx);
 	if (set_sighandler() == FAILSETSIGHDLR)
 		return (FAILSETSIGHDLR);
+	get_shell_opt(ctx, ctx->av);
+	init_line_edition(ctx);
 
-	create_locals(&ctx->locals);
 	complete_environ(&ctx->environ);
 
 	ft_astr_append(&ctx->locals, ft_strjoinc("HISTFILE", tmp = get_histfile(ctx), '='));
 	free(tmp);
-	ctx->builtins = getbuiltins();
 	if (ctx->history)
 		init_hist(ctx);
 	return (SUCCESS);

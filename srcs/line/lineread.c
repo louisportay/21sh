@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/21 16:42:28 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:14:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void		lineread(t_ctx *ctx, t_line *line)
 	tputs(ctx->tc.im, 1, &ft_putchar_stdin);
 	while (status == READON)
 	{
-		if (read(STDIN_FILENO, &key.buf[key.i++], 1) == -1)
+		if (read(ctx->fd, &key.buf[key.i++], 1) == -1)
 			status = READERROR;
 		else
 			status = user_input(ctx, line, &key);
@@ -59,7 +59,10 @@ void		lineread(t_ctx *ctx, t_line *line)
 		return ;
 	}
 	else if (status == EXITSHELL)
+	{
+		write(STDOUT_FILENO, "exit\n", 5);
 		wrap_exit(EXIT_SUCCESS, ctx);
+	}
 	else if (status == ERR_QUOTE)
 		return (err_quotes(line));
 

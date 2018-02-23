@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/23 10:24:21 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:19:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@
 # define FAILREAD_STR			"Can't read from STDIN\n"
 # define BADQUOTES_STR			"Unexpected end of file\n"
 # define FAILSETSIGHDLR_STR		"Couldn't set properly signal handlers.\n"
+# define BADOPT_C_STR			"21sh: -c: option requires an argument\n"
+# define BADOPT_F_STR			"21sh: -f: option requires an argument\n"
+
+# define HELP1 "21sh, by vbastion and lportay:\n\n-h:\t\tDisplay this help\n"
+# define HELP2 "-f <file>:\tRead <file>\n-c <cmd>:"
+# define HELP3 "\tExecute <cmd>\n\n--rawline:\tdisable advanced line edition\n"
+# define HELP4 "--norc:\t\tdo not read configuration file\n--nohist:\t"
+# define HELP5 "disable command history\n"
 
 # define AMBIG_REDIR			"ambiguous redirect\n"
 
@@ -72,6 +80,8 @@ enum					e_errcode
 	NOMEM,
 	BADQUOTES,
 	FAILSETSIGHDLR,
+	BADOPT_C,
+	BADOPT_F,
 };
 
 /*
@@ -117,6 +127,7 @@ struct					s_ctx
 	t_line				*cur_line;//line currently modified
 	char                *heredoc_eof;//current EOF
 	char				prompt_mode[4];
+	int					ret_tcget;
 
 	/*
 	**	SHOPT BOOLS
@@ -138,11 +149,6 @@ struct					s_ctx
 	struct termios		oldtios;
 	char				**av;
 
-	/*
-	**	TBD
-	*/
-
-	t_token				*toklist; // Do we keep it here?
 };
 
 
@@ -156,10 +162,11 @@ typedef struct			s_typefunc
 
 void					vingtetunsh(char **av, char **environ);
 
+void					exec_loop(t_dlist *input);
 int						init(t_ctx *ctx, char **av, char **environ);
 t_hdict				*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);
-void					getopt_21sh(t_ctx *ctx, char **av);
+void					get_shell_opt(t_ctx *ctx, char **av);
 void					complete_environ(char ***environ);
 int						create_locals(char ***locals);
 char					**getpath(char **environ);

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/18 18:15:00 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 18:14:30 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,18 @@ void	dump_err(char errcode)
 {
 	if (errcode == BADQUOTES)
 		ft_putstr_fd(BADQUOTES_STR, STDERR_FILENO);
-	if (errcode == NOMEM)
+	else if (errcode == NOMEM)
 		ft_putstr_fd(NOMEM_STR, STDERR_FILENO);
-	if (errcode == NODIR)
+	else if (errcode == NODIR)
 		ft_putstr_fd(NODIR_STR, STDERR_FILENO);
-	if (errcode == FAILSETSIGHDLR)
+	else if (errcode == FAILSETSIGHDLR)
 		ft_putstr_fd(FAILSETSIGHDLR_STR, STDERR_FILENO);
-	if (errcode == FAILREAD)
+	else if (errcode == FAILREAD)
 		ft_putstr_fd(FAILREAD_STR, STDERR_FILENO);
+	else if (errcode == BADOPT_C)
+		ft_putstr_fd(BADOPT_C_STR, STDERR_FILENO);
+	else if (errcode == BADOPT_F)
+		ft_putstr_fd(BADOPT_F_STR, STDERR_FILENO);
 }
 
 /*
@@ -84,7 +88,6 @@ void	wrap_exit(int status, t_ctx *ctx)
 		ft_astr_clear(&ctx->environ);
 	if (ctx->locals)
 		ft_astr_clear(&ctx->locals);
-	write(STDOUT_FILENO, "exit\n", 5);
 	if (ctx->line_edition == true)
 		tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);	
 	exit(status);

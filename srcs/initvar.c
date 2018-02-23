@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 17:13:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/23 13:31:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,7 @@ t_hdict			*getbuiltins(void)
 
 	dict = hash_create(HASH_SIZE, HASH_PRIME);
 //	hash_add(dict, "bang", &);
-//	hash_add(dict, "history", &);
-//	hash_add(dict, "env", &);
-//	hash_add(dict, "shopt", &);// on le garde ?
+//	hash_add(dict, "history", &ft_history);
 	hash_add(dict, "cd", &ft_cd);
 	hash_add(dict, "echo", &ft_echo);
 	hash_add(dict, "printenv", &ft_printenv);
