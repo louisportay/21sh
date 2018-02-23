@@ -6,11 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 19:01:55 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 13:14:10 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 19:40:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand_braces.h"
+
+//added (unsigned)
 
 int					btok_match(t_btok *head, int *es)
 {
@@ -18,7 +20,7 @@ int					btok_match(t_btok *head, int *es)
 		return (0);
 	while (head != NULL && *es != -1)
 	{
-		if (head->type != *es)
+		if (head->type != (unsigned)*es)
 			return (0);
 		head = head->next;
 		es++;

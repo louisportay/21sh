@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:39:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 14:59:18 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 16:12:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int				ft_strcmp(const char *s1, const char *s2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 
 char			*ft_strchr(const char *s, int c);
+char			*ft_strrchr(const char *s, int c);
 char			*ft_strcat(char *s1, const char *s2);
 char			*ft_strncat(char *s1, const char *s2, size_t n);
 

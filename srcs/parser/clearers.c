@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 11:35:37 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 16:38:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 void				proc_clear(t_proc **proc)
 {
+	if ((*proc)->type == BU_STR)
+		ft_strdel(&(*proc)->data.str);
+	else if ((*proc)->type == BINARY)
+		ft_strdel(&(*proc)->data.path);
+	else if ((*proc)->type == BUILTIN)
+		ft_list_clear(&(*proc)->data.out, &ft_memdel);
 	if ((*proc)->next != NULL)
 		proc_clear(&(*proc)->next);
 	if ((*proc)->argv != NULL)

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/22 18:05:32 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 19:08:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,29 @@ t_ctx 				*get_ctxaddr(t_ctx *ctxaddr)
 	return (ctx);
 }
 
-void				vingtetunsh(char **av, char  **environ)
+void	exec_loop(t_dlist *input)
 {
-	t_ctx			ctx;
-	char			ret;
-	t_job			*extree;
+	t_token *toklist;
+	t_job	*extree;
+
+	extree = NULL;
+	toklist = NULL;
+	if (input != NULL)
+		toklist = tokenizer(input);
+	if (toklist != NULL)
+		extree = parse(toklist);
+	delete_toklist(&toklist);
+	if (extree != NULL)
+	{
+		exec(extree);
+		job_clear(&extree);
+	}
+}
+
+void	vingtetunsh(char **av, char  **environ)
+{
+	t_ctx	ctx;
+	char	ret;
 
 	if ((ret = init(&ctx, av, environ)) != SUCCESS)
 		fatal_err(ret, &ctx);
@@ -34,16 +52,8 @@ void				vingtetunsh(char **av, char  **environ)
 	{
 		wrap_lineread(&ctx, &ctx.line, PS1);
 
-		if (ctx.line.split_line)
-			ctx.toklist = tokenizer(ctx.line.split_line);
-		if (ctx.toklist != NULL)
-			extree = parse(ctx.toklist);
-		delete_toklist(&ctx.toklist);
-		if (extree != NULL)
-		{
-			exec(extree);
-	        job_clear(&extree);
-		}
+		exec_loop(ctx.line.split_line);
+
 		if (ctx.line.line_saved == false)
 			ft_dlstdel(&ctx.line.split_line, &delvoid);
 		else//

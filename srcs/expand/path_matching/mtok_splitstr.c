@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 10:56:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 11:35:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 19:41:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,15 @@ static t_list	*l_strsplitlist(char *str)
 	return (lst[0]);
 }
 
+//added (void)head;
+
 static t_mtok	*mtok_split(t_mtok *t)
 {
 	t_list		*lst;
 	t_list		*head;
 	t_mtok		*to[3];
 
+	(void)head;
 	if ((lst = l_strsplitlist(t->data.str)) == NULL)
 		return (NULL);
 	head = lst;

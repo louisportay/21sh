@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/07 15:48:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 19:40:14 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,11 @@ static int			f_dflt(char **matcher, t_mtok **tmp)
 	return (-1);
 }
 
+//added static
+
 t_mptr				get_matcher(int id)
 {
-	const t_mptr	ptrs[3] = (const t_mptr[3]) { &f_star, &f_mark, &f_brac };
+	static const t_mptr	ptrs[3] = (const t_mptr[3]) { &f_star, &f_mark, &f_brac };
 
 	return ((id < 0 || id >= SPEC_CHR_CNT) ? &f_dflt : ptrs[id]);
 }

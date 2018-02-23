@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/23 15:33:02 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/23 19:32:16 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,6 +81,7 @@ SRCS=	main.c\
 		ft_21sh.c\
 		initvar.c\
 		initshell.c\
+		getopt.c\
 		error.c\
 		signal.c\
 		tools.c\
@@ -138,6 +139,7 @@ SRCS=	main.c\
 		builtin_addenv.c\
 		builtin_env_utils.c\
 		builtin_unsetenv.c\
+		builtin_env.c\
 		\
 		expand_exec.c\
 		expand.c\

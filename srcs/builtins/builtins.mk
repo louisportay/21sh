@@ -6,7 +6,8 @@ builtin_env.o\
 builtin_exit.o\
 builtin_printenv.o\
 builtin_setenv.o\
-builtin_unsetenv.o
+builtin_unsetenv.o\
+builtin_env.o
 
 HEADER+=inc/builtins.h
 PATH_C+=src/builtins
