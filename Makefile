@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/22 18:05:17 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/23 15:33:02 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -192,6 +192,9 @@ SRCS=	main.c\
 		vtok_addvar.c\
 		vtok_dollarbrace.c\
 		vtok_dollarexec.c\
+		\
+		mtok_print.c\
+		mtok_sort.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 11:31:46 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 13:13:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 15:33:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ t_mtok						*mtok_splitstr(t_mtok *o);
 void						mtok_print(t_mtok *o);
 int							mtok_until_str(t_mtok *tok, char *str,
 											t_mtok **next);
+t_mtok						*mtok_requal(t_mtok *tok);
 
 char						*get_tok_names(enum e_mt_type id);
 

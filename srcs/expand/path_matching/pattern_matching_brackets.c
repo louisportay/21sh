@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   pattern_matching_brackets.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:47:45 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 13:14:25 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 16:26:15 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./pattern_matching.h"
 
-static void		ft_mb_rng(t_qbuf *buf, u_int bin)
+#define EXTGLOB 0
+
+static void		qbuf_handrng(t_qbuf *buf, u_int bin)
 {
 	if (bin & UPPER_BIN)
 		qbuf_add(buf, PM_UPPER_STR);
@@ -35,12 +37,12 @@ static void		handle_rem(t_qbuf *buf, char **curr)
 	if (ft_strncmp(*curr + 1, PM_DIGIT, 5) == 0)
 		qbuf_add(buf, PM_DIGIT_STR);
 	else if (ft_strncmp(*curr + 1, PM_GRAPH, 5) == 0)
-		ft_mb_rng(buf, UPPER_BIN | LOWER_BIN | DIGIT_BIN | PUNCT_BIN);
+		qbuf_handrng(buf, UPPER_BIN | LOWER_BIN | DIGIT_BIN | PUNCT_BIN);
 	else if (ft_strncmp(*curr + 1, PM_LOWER, 5) == 0)
 		qbuf_add(buf, PM_LOWER_STR);
 	else if (ft_strncmp(*curr + 1, PM_PRINT, 5) == 0)
 	{
-		ft_mb_rng(buf, UPPER_BIN | LOWER_BIN | DIGIT_BIN | PUNCT_BIN);
+		qbuf_handrng(buf, UPPER_BIN | LOWER_BIN | DIGIT_BIN | PUNCT_BIN);
 		qbuf_addc(buf, ' ');
 	}
 	else if (ft_strncmp(*curr + 1, PM_PUNCT, 5) == 0)
@@ -56,9 +58,9 @@ static void		handle_rem(t_qbuf *buf, char **curr)
 static void		classes(t_qbuf *buf, char **curr)
 {
 	if (ft_strncmp(*curr + 1, PM_ALNUM, 5) == 0)
-		ft_mb_rng(buf, UPPER_BIN | LOWER_BIN | DIGIT_BIN);
+		qbuf_handrng(buf, UPPER_BIN | LOWER_BIN | DIGIT_BIN);
 	else if (ft_strncmp(*curr + 1, PM_ALPHA, 5) == 0)
-		ft_mb_rng(buf, UPPER_BIN | LOWER_BIN);
+		qbuf_handrng(buf, UPPER_BIN | LOWER_BIN);
 	else if (ft_strncmp(*curr + 1, PM_ASCII, 5) == 0)
 		qbuf_addrange(buf, 0x0, 0xF);
 	else if (ft_strncmp(*curr + 1, PM_BLANK, 5) == 0)
@@ -78,7 +80,7 @@ static int		spec_classes(t_qbuf *buf, char **curr)
 	if (**curr == ':' && ft_strncmp(*curr + 1, PM_WORD, 4) == 0
 		&& (*curr)[5] == ':')
 	{
-		ft_mb_rng(buf, UPPER_BIN | LOWER_BIN | DIGIT_BIN);
+		qbuf_handrng(buf, UPPER_BIN | LOWER_BIN | DIGIT_BIN);
 		qbuf_addc(buf, '_');
 		*curr += 6;
 		return (1);
@@ -86,7 +88,7 @@ static int		spec_classes(t_qbuf *buf, char **curr)
 	else if (**curr == ':' && ft_strncmp(*curr + 1, PM_XDIGIT, 6) == 0
 			&& (*curr)[7] == ':')
 	{
-		ft_mb_rng(buf, XUPPER_BIN | XLOWER_BIN | DIGIT_BIN);
+		qbuf_handrng(buf, XUPPER_BIN | XLOWER_BIN | DIGIT_BIN);
 		*curr += 8;
 		return (1);
 	}
@@ -106,6 +108,9 @@ char			*create_range(char *beg, char *end)
 			qbuf_addrange(buf, beg[0], beg[2]);
 			beg += 3;
 		}
+		/*
+		**	TO BE FIXED TO match `[[:class:]]`, not `[:class:]`
+		*/
 		else if (ft_strwildcmp(beg, PM_CLASS_WILDCARD) == 0)
 			classes(buf, &beg);
 		else if (spec_classes(buf, &beg) != 0)
