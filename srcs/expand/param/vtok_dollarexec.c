@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 16:01:02 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/10 15:59:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 14:07:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,23 @@ static void			vtok_plus(t_lvar *lvar, char *lhs, char *rhs)
 {
 	char			*elhs;
 
-	elhs = ft_env_get_value(lvar->env->env, lhs);
+	elhs = ft_astr_getval(lvar->ctx->environ, lhs);
 	if (elhs == NULL
-		&& (elhs = ft_env_get_value(lvar->env->locals, lhs)) == NULL)
+		&& (elhs = ft_astr_getval(lvar->ctx->locals, lhs)) == NULL)
 		return ;
-	ft_mb_add(&lvar->buf, rhs, ft_strlen(rhs));
+	qbuf_add(lvar->buf, rhs);
 }
 
 static void			vtok_minus(t_lvar *lvar, char *lhs, char *rhs)
 {
 	char			*elhs;
 
-	elhs = ft_env_get_value(lvar->env->env, lhs);
+	elhs = ft_astr_getval(lvar->ctx->environ, lhs);
 	if (elhs == NULL
-		&& (elhs = ft_env_get_value(lvar->env->locals, lhs)) == NULL)
-		ft_mb_add(&lvar->buf, rhs, ft_strlen(rhs));
+		&& (elhs = ft_astr_getval(lvar->ctx->locals, lhs)) == NULL)
+		qbuf_add(lvar->buf, rhs);
 	else
-		ft_mb_add(&lvar->buf, elhs, ft_strlen(elhs));
+		qbuf_add(lvar->buf, elhs);
 }
 
 void				vtok_dollexec(t_lvar *lvar, char *str[2], char c)

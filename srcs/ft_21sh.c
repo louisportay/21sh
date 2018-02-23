@@ -6,15 +6,15 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/23 18:25:43 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/23 19:08:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-t_ctx *get_ctxaddr(t_ctx *ctxaddr)
+t_ctx 				*get_ctxaddr(t_ctx *ctxaddr)
 {
-	static t_ctx *ctx = NULL;
+	static t_ctx 	*ctx = NULL;
 
 	if (ctxaddr)
 		ctx = ctxaddr;
@@ -35,10 +35,9 @@ void	exec_loop(t_dlist *input)
 	delete_toklist(&toklist);
 	if (extree != NULL)
 	{
-		// HERE WILL THE EXPANSION GO IN NEAR FUTURE
 		exec(extree);
-        job_clear(&extree);
-	}	
+		job_clear(&extree);
+	}
 }
 
 void	vingtetunsh(char **av, char  **environ)

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 10:53:34 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/10 15:59:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 14:04:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 static void			vtok_dollbraceone(t_lvar *lvar)
 {
 	vtok_move(&lvar->curr_tok, 2);
-	vtok_addvar(&lvar->buf, lvar->env, lvar->curr_tok->data.str);
+	vtok_addvar(lvar->buf, lvar->ctx, lvar->curr_tok->data.str);
 	vtok_move(&lvar->curr_tok, 2);
 	lvar->next = &vtok_start;
 }
 
 static void			vtok_dolldflt(t_lvar *lvar)
 {
-	vtok_tobuf(lvar->curr_tok, &lvar->buf);
+	vtok_tobuf(lvar->curr_tok, lvar->buf);
 	lvar->curr_tok = lvar->curr_tok->next;
 	lvar->next = &vtok_start;
 }
@@ -36,7 +36,7 @@ static void			vtok_getstr(t_lvar *lvar, t_vtok *tok, char **ret)
 	else
 	{
 		vtok_splittilclose(tok->next, &next);
-		vtok_handletokens(tok->next, ret, lvar->env);
+		vtok_handletokens(tok->next, ret, lvar->ctx);
 		vtok_last(tok)->next = next;
 	}
 }

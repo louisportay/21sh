@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 16:48:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/13 15:18:18 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/21 19:05:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,7 @@
 
 # include <stdlib.h>
 
-# include "ft_mem.h"
-# include "ft_string.h"
-# include "ft_list.h"
-# include "ft_membuf.h"
-# include "qbuf.h"
+# include "ft_21sh.h"
 
 typedef struct s_btok	t_btok;
 typedef struct s_ttok	t_ttok;

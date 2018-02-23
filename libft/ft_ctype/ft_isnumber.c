@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vtok_addvar.c                                      :+:      :+:    :+:   */
+/*   ft_isnumber.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/09 11:52:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 14:02:51 by vbastion         ###   ########.fr       */
+/*   Created: 2018/02/22 11:45:43 by vbastion          #+#    #+#             */
+/*   Updated: 2018/02/22 17:22:56 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expand_param.h"
+#include "ft_ctype.h"
 
-void				vtok_addvar(t_qbuf *buf, t_ctx *ctx, char *key)
+int				ft_isnumber(char *str)
 {
-	char			*value;
-
-	value = ft_astr_getval(ctx->environ, key);
-	if (value == NULL && (value = ft_astr_getval(ctx->locals, key)) == NULL)
-		return ;
-	qbuf_add(buf, value);
+	if (*str == '-' || *str == '+')
+		str++;
+	if (ft_isdigit(*str) == 0)
+		return (0);
+	while (*str != '\0')
+	{
+		if (ft_isdigit((int)(*str)) == 0)
+			return (0);
+		str++;
+	}
+	return (1);
 }

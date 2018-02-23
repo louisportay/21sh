@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 10:53:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/09 11:53:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 14:01:25 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 static void			vtok_dollword(t_lvar *lvar)
 {
-	vtok_addvar(&lvar->buf, lvar->env, lvar->curr_tok->next->data.str);
+	vtok_addvar(lvar->buf, lvar->ctx, lvar->curr_tok->next->data.str);
 	lvar->curr_tok = lvar->curr_tok->next->next;
 	lvar->next = &vtok_start;
 }
 
 static void			vtok_dollnull(t_lvar *lvar)
 {
-	vtok_tobuf(lvar->curr_tok, &lvar->buf);
+	vtok_tobuf(lvar->curr_tok, lvar->buf);
 	lvar->exit_code = VAR_OK;
 	lvar->next = NULL;
 }
@@ -46,7 +46,7 @@ void				vtok_vadoll(t_lvar *lvar)
 		vtok_dollvaobra(lvar);
 	else
 	{
-		vtok_tobuf(lvar->curr_tok, &lvar->buf);
+		vtok_tobuf(lvar->curr_tok, lvar->buf);
 		lvar->curr_tok = lvar->curr_tok->next;
 		lvar->next = &vtok_start;
 	}

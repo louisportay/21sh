@@ -6,23 +6,17 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:53:53 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/07 15:54:41 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 16:46:29 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./pattern_matching.h"
 
-void			ft_mb_add_unsafe(t_membuf *buf, char *str)
-{
-	while (*str != '\0')
-		ft_mb_addc(buf, *(str++));
-}
-
-void			ft_mb_pushrange(t_membuf *buf, char beg, char end)
+void			qbuf_addrange(t_qbuf *buf, char beg, char end)
 {
 	while (beg <= end)
 	{
-		ft_mb_addc(buf, beg);
+		qbuf_addc(buf, beg);
 		beg++;
 	}
 }
@@ -47,18 +41,18 @@ char			*ft_strrmdup(char **str)
 	char		*s;
 	u_char		c;
 	int			mod;
-	t_membuf	buf;
+	t_qbuf		*buf;
 	char		prz[UCHAR_MAX];
 
 	s = *str;
 	mod = 0;
-	ft_bzero(prz, SCHAR_MAX);
-	ft_mb_init(&buf);
+	ft_bzero(prz, UCHAR_MAX);
+	buf = qbuf_new(1 << 8);
 	while (*s != '\0')
 	{
 		c = *(s++);
 		if (prz[c] == 0)
-			ft_mb_addc(&buf, c);
+			qbuf_addc(buf, c);
 		else
 			mod = 1;
 		prz[c] = 1;
@@ -66,7 +60,7 @@ char			*ft_strrmdup(char **str)
 	if (mod)
 	{
 		ft_strdel(str);
-		*str = ft_mb_fetch(&buf);
+		*str = qbuf_del(&buf);
 	}
 	return (*str);
 }

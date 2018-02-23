@@ -6,21 +6,21 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 10:56:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/07 14:25:40 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 19:41:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./pattern_matching.h"
 
-static void		l_handchar(char **str, t_membuf *buf, t_list *lst[3])
+static void		l_handchar(char **str, t_qbuf *buf, t_list *lst[3])
 {
 	char		*tmp;
 
 	if (**str == '/')
 	{
-		if (ft_mb_getsize(buf) != 0)
+		if (buf->used != 0)
 		{
-			tmp = ft_mb_fetch(buf);
+			tmp = qbuf_dump(buf);
 			lst[2] = list_create(tmp);
 			ft_list_insert(lst, lst + 1, lst[2]);
 		}
@@ -32,7 +32,7 @@ static void		l_handchar(char **str, t_membuf *buf, t_list *lst[3])
 	}
 	else
 	{
-		ft_mb_addc(buf, **str);
+		qbuf_addc(buf, **str);
 		(*str)++;
 	}
 }
@@ -40,21 +40,23 @@ static void		l_handchar(char **str, t_membuf *buf, t_list *lst[3])
 static t_list	*l_strsplitlist(char *str)
 {
 	t_list		*lst[3];
-	t_membuf	buf;
+	t_qbuf		*buf;
 	char		*tmp;
 
 	lst[0] = NULL;
-	ft_mb_init(&buf);
+	buf = qbuf_new(1 << 8);
 	while (*str != '\0')
-		l_handchar(&str, &buf, lst);
-	if (ft_mb_getsize(&buf) != 0)
+		l_handchar(&str, buf, lst);
+	if (buf->used != 0)
 	{
-		tmp = ft_mb_fetch(&buf);
+		tmp = qbuf_dump(buf);
 		lst[2] = list_create(tmp);
 		ft_list_insert(lst, lst + 1, lst[2]);
 	}
 	return (lst[0]);
 }
+
+//added (void)head;
 
 static t_mtok	*mtok_split(t_mtok *t)
 {
@@ -62,6 +64,7 @@ static t_mtok	*mtok_split(t_mtok *t)
 	t_list		*head;
 	t_mtok		*to[3];
 
+	(void)head;
 	if ((lst = l_strsplitlist(t->data.str)) == NULL)
 		return (NULL);
 	head = lst;

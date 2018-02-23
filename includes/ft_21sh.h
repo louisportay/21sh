@@ -24,6 +24,7 @@
 # include "ft_hashset.h"
 # include "kvp.h"
 # include "builtins.h"
+# include "expand.h"
 
 # include <signal.h>
 # include <sys/ioctl.h>

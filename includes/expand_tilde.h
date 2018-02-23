@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vtok_addvar.c                                      :+:      :+:    :+:   */
+/*   expand_tilde.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/09 11:52:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 14:02:51 by vbastion         ###   ########.fr       */
+/*   Created: 2017/12/21 16:18:03 by vbastion          #+#    #+#             */
+/*   Updated: 2018/02/21 19:13:08 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expand_param.h"
+#ifndef EXPAND_TILDE_H
+# define EXPAND_TILDE_H
 
-void				vtok_addvar(t_qbuf *buf, t_ctx *ctx, char *key)
-{
-	char			*value;
+# include "ft_21sh.h"
 
-	value = ft_astr_getval(ctx->environ, key);
-	if (value == NULL && (value = ft_astr_getval(ctx->locals, key)) == NULL)
-		return ;
-	qbuf_add(buf, value);
-}
+# define USR_PATH ("/Users/")
+
+typedef struct s_job		t_job;
+typedef struct s_proc		t_proc;
+typedef struct s_ctx		t_ctx;
+
+int							expand_tilde(char **str, t_ctx *ctx);
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 11:31:46 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/13 17:36:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 15:33:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 
 # include <limits.h>
 
-# include "ft_string.h"
-# include "ft_membuf.h"
-# include "ft_list.h"
+# include "ft_21sh.h"
 
 # define SPEC_CHR_OP ("*?[|")
 # define SPEC_CHR_OP_CNT 4
@@ -118,6 +116,7 @@ t_mtok						*mtok_splitstr(t_mtok *o);
 void						mtok_print(t_mtok *o);
 int							mtok_until_str(t_mtok *tok, char *str,
 											t_mtok **next);
+t_mtok						*mtok_requal(t_mtok *tok);
 
 char						*get_tok_names(enum e_mt_type id);
 
@@ -132,8 +131,8 @@ int							get_matcher_tokens(char *matcher, t_mtok **tmp,
 int							match(char *str, t_mtok *tokens);
 int							compare(char *str, size_t pos, t_mtok *token);
 
-void						ft_mb_add_unsafe(t_membuf *buf, char *str);
-void						ft_mb_pushrange(t_membuf *buf, char beg, char end);
+void						ft_mb_add_unsafe(t_qbuf *buf, char *str);
+void						qbuf_addrange(t_qbuf *buf, char beg, char end);
 int							ft_strwildcmp(char *str, char *matcher);
 char						*ft_strrmdup(char **str);
 

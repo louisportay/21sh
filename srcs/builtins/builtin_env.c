@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:22:38 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/22 18:55:50 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/23 19:04:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,13 @@ int		err_getopt(t_proc *p, char **av_addr)
 	return (-1);
 }
 
-int		ft_env(t_proc *p, t_ctx *ctx)
+int		ft_env(t_proc *p)
 {
 	char	*c;
 	char	**av_addr;
 	int		pmod;
 	int		getopt;
 
-	(void)ctx;
 	pmod = 0;
 	getopt = 1;
 	av_addr = p->argv;

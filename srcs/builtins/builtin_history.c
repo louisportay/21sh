@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ctype.h                                         :+:      :+:    :+:   */
+/*   builtin_history.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/24 15:47:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/22 11:50:41 by vbastion         ###   ########.fr       */
+/*   Created: 2018/02/23 10:35:33 by lportay           #+#    #+#             */
+/*   Updated: 2018/02/23 16:29:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_CTYPE_H
-# define FT_CTYPE_H
+int					ft_history(t_proc *p, t_ctx *ctx)
+{
+	if (ctx->history == 1)
+	{
 
-#include <wchar.h>
-
-int		ft_isalnum(int c);
-int		ft_isnumber(char *str);
-int		ft_isalpha(int c);
-int		ft_isascii(int c);
-int		ft_isdigit(int c);
-int		ft_isprint(int c);
-int		ft_tolower(int c);
-int		ft_toupper(int c);
-int		ft_isunicode(wchar_t a);
-int		ft_isspace(int c);
-
-#endif
+	}
+	return (0);
+}

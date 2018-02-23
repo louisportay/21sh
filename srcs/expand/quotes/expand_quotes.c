@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 15:59:40 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/14 17:42:37 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 16:08:24 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int					do_expand_quotes(t_list *elem)
 	t_qbuf			*buf;
 	char			*str;
 
-	buf = qbuf_new(128);
+	buf = qbuf_new(1 << 8);
 	str = (char *)elem->content;
 	while (*str != '\0')
 	{
@@ -40,8 +40,9 @@ int					do_expand_quotes(t_list *elem)
 			push_str_til(&str, buf, '\"');
 		else if (*str == '\\')
 		{
-			qbuf_addn(buf, str, 2);
-			str += 2;
+			str++;
+			qbuf_addc(buf, *str);
+			str++;
 		}
 		else
 			qbuf_addc(buf, *(str++));

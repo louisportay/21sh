@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/14 17:08:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/21 19:37:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int						token_issep(struct s_token *tok);
 void					*token_dumperror(struct s_token *tok);
 struct s_redir			*redir_dup(struct s_redir *redir);
 
-char					**astr_fromlist(struct s_list *list);
+char					**astr_fromlist(struct s_list **list);
 
 /*
  *						DEBUG ONLY | COMMENT SYNTAX ON PURPOSE

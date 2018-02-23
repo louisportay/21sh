@@ -6,18 +6,17 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/14 17:59:00 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/22 13:41:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPAND_PARAM_H
 # define EXPAND_PARAM_H
 
-# include "ft_membuf.h"
-# include "ft_environ.h"
+# include "ft_21sh.h"
 
 # include "expand.h"
-# include "ft_delegates.h"
+// # include "ft_delegates.h"
 
 # define VACHR ("${} \"")
 # define VAR_OK 1
@@ -55,8 +54,8 @@ struct					s_vtok
 
 struct					s_lvar
 {
-	t_environ			*env;
-	t_membuf			buf;
+	t_ctx				*ctx;
+	t_qbuf				*buf;
 	t_vtok				*tokens;
 	t_vtok				*curr_tok;
 	int					exit_code;
@@ -64,7 +63,7 @@ struct					s_lvar
 	void				(*next)(t_lvar *lvar);
 };
 
-int						expand_param(char **str, t_environ *env);
+int						expand_param(char **str, t_ctx *ctx);
 
 int						scan_dollar(char *str);
 
@@ -90,21 +89,21 @@ t_vtok					*vtok_peek_if(t_vtok *tok, int n, enum e_vtype type);
 
 t_vtok					*vtok_get(char *str);
 
-void					vtok_tobuf(t_vtok *tok, t_membuf *buf);
+void					vtok_tobuf(t_vtok *tok, t_qbuf *buf);
 void					vtok_print(t_vtok *tok);
 void					vtok_printone(t_vtok *tok);
 
 int						vtok_handletokens(t_vtok *tokens, char **ret,
-											t_environ *env);
+											t_ctx *ctx);
 
 void					vtok_start(t_lvar *lvar);
 t_vtok					*vtok_last(t_vtok *last);
 
-void					vtok_addvar(t_membuf *buf, t_environ *env, char *key);
+void					vtok_addvar(t_qbuf *buf, t_ctx *ctx, char *key);
 void					vtok_vadoll(t_lvar *lvar);
 void					vtok_dollvaobra(t_lvar *lvar);
 void					vtok_dolldoll(t_lvar *lvar);
-void					vtok_addpid(t_membuf *buf, int clear);
+void					vtok_addpid(t_qbuf *buf, int clear);
 void					vtok_dollexec(t_lvar *lvar, char *str[2], char c);
 
 int						vtok_counttil(t_vtok *head, enum e_vtype type);

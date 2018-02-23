@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 18:17:36 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/23 19:05:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,22 @@
 # define SH_ENOHOM ("221sh: cd: Variable $HOME not set\n")
 # define SH_ENOOPW ("221sh: cd: Variable $OLDPWD not set\n")
 
-#define BU_H_EEMPTY ("121sh: hash empty\n")
-#define BU_H_CLR (1 << 0)
-#define BH_H_INH (1 << 1)
-#define BU_H_DEL (1 << 2)
-#define BU_H_PRT (1 << 3)
-#define BU_H_LST (1 << 4)
 
-#define BU_H_ETREQU ("221sh: hash: -t: option requires an argument\n")
-#define BU_H_EDREQU ("221sh: hash: -d: option requires an argument\n")
-#define BU_H_EPREQU ("221sh: hash: -p: option requires two arguments\n")
-#define BU_H_USAGE_ ("21sh: usage: hash [-lr] [-p pathname] [-dt] [name ...]\n")
+# define BU_H_EEMPTY ("121sh: hash empty\n")
+# define BU_H_CLR (1 << 0)
+# define BH_H_INH (1 << 1)
+# define BU_H_DEL (1 << 2)
+# define BU_H_PRT (1 << 3)
+# define BU_H_LST (1 << 4)
+
+# define DOTGLOB (1 << 5)
+# define NULLGLOB (1 << 6)
+# define FAILGLOB (1 << 7)
+
+# define BU_H_ETREQU ("221sh: hash: -t: option requires an argument\n")
+# define BU_H_EDREQU ("221sh: hash: -d: option requires an argument\n")
+# define BU_H_EPREQU ("221sh: hash: -p: option requires two arguments\n")
+# define BU_H_USAGE_ ("21sh: usage: hash [-lr] [-p path] [-dt] [name ...]\n")
 
 # define BU_H_EINVAL ("221sh: hash: -%c: invalid option\n%s")
 
@@ -79,7 +84,7 @@ int						ft_unsetenv(t_proc *proc, t_ctx *ctx);
 int						ft_unset(t_proc *proc, t_ctx *ctx);
 int						ft_hash(t_proc *proc, t_ctx *ctx);
 int						ft_set(t_proc *proc, t_ctx *ctx);
-int						ft_env(t_proc *p, t_ctx *ctx);
+int						ft_env(t_proc *p);
 int						modenv(t_proc *p, t_ctx *ctx, char *name);
 int						bu_hash_getopts(t_proc *p, t_ctx *ctx, int *i);
 int						bu_set_getopts(t_proc *p, t_ctx *ctx, int i);
