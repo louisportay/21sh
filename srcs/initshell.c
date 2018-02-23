@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 16:57:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/23 10:28:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->toklist = NULL;//
 	ctx->emacs_mode = 1;
 	ctx->line_edition = 1;
+	ctx->config_file = 1;
 	ctx->history = 1;
 	ctx->job_control = 1;
 	ctx->istty = isatty(STDIN_FILENO);
@@ -81,7 +82,7 @@ static int	init_terminal(t_ctx *ctx)
 	if (ctx->istty)
 	{
 		init_job_control(ctx);
-		if (tcgetattr(ctx->fd, &ctx->oldtios) == -1 || (tmp = getenv("TERM")) == NULL
+		if (tcgetattr(ctx->fd, &ctx->oldtios) == -1 || ctx->line_edition == 0 || (tmp = getenv("TERM")) == NULL
 				|| tgetent(NULL, tmp) == ERR)/*ft_strcmp(tmp, "xterm-256color") ||*/
 		{
 			ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
@@ -106,6 +107,7 @@ int	init(t_ctx *ctx, char **av, char **environ)
 
 	get_ctxaddr(ctx);
 	init_ctx(ctx, av, environ);
+	getopt_21sh(ctx, ctx->av);
 	init_terminal(ctx);
 	if (set_sighandler() == FAILSETSIGHDLR)
 		return (FAILSETSIGHDLR);

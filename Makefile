@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/22 10:54:21 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/23 10:14:49 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,7 @@ SRCS=	main.c\
 		ft_21sh.c\
 		initvar.c\
 		initshell.c\
+		getopt.c\
 		error.c\
 		signal.c\
 		tools.c\

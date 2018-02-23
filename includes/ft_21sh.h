@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/21 16:58:28 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/23 10:24:21 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ struct					s_ctx
 
 	int					emacs_mode;
 	int	                line_edition;
+	int					config_file;
 	int	                history;
 	int					job_control;
 
@@ -158,6 +159,7 @@ void					vingtetunsh(char **av, char **environ);
 int						init(t_ctx *ctx, char **av, char **environ);
 t_hdict				*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);
+void					getopt_21sh(t_ctx *ctx, char **av);
 void					complete_environ(char ***environ);
 int						create_locals(char ***locals);
 char					**getpath(char **environ);

@@ -54,7 +54,8 @@ ft-sh3
 #CTRL-U (cut the line before the cursor, not included, to the beginning)
 #CTRL-W (cut the previous word, put it in the clipboard)
 
-CTRL-C pour réafficher le prompt 			*SIGINT to catch*
+#CTRL-C pour réafficher le prompt 			*SIGINT to catch*
+i
 CTRL-\ and other signals, block them
 
 *Alt-D	Delete the word after the cursor on the current line, put it on the clipboard
@@ -115,9 +116,3 @@ New42sh
 
 *Suspens*
 builtin fc
-
-Others
-======
-
-For future improvements, make the whole line edition library work on a single pointer called "Current Line"
-See signal.c
