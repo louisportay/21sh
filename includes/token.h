@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/22 18:10:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 22:34:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct		s_heredoc
 
 	int				lhs;
 	char			*s_rhs;
+	int				glob;
 	t_line			hdoc;
 }					t_heredoc;
 

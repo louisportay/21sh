@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 12:51:49 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 18:30:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 18:59:15 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,17 @@ int				path_match(t_mtok *tok, t_entry **matched)
 	return (tok == NULL ? 0 : proceed(tok, matched, dats));
 }
 
+static int		no_exp(t_mtok *new)
+{
+	while (new != NULL)
+	{
+		if (new->type != STRIN)
+			return (0);
+		new = new->next;
+	}
+	return (1);
+}
+
 int				do_expand_glob(char **str)
 {
 	t_mtok		*or;
@@ -72,6 +83,11 @@ int				do_expand_glob(char **str)
 	new = mtok_splitstr(or);
 	mtok_clear(&or);
 	new = mtok_requal(new);
+	if (no_exp(new))
+	{
+		mtok_clear(&new);
+		return (1);
+	}
 	if ((lret = path_match(new, &matched)) == 0)
 		return (0);
 	else if (lret == -1)

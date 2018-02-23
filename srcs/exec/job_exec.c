@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 19:17:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 22:04:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int						job_exec(t_job *j, int fg, t_ctx *ctx)
 	int					infile;
 	int					outfile;
 	t_qbuf				*buf;
+	int					exp_err;
 
 	if (j == NULL)
 		return (0);
@@ -99,7 +100,8 @@ int						job_exec(t_job *j, int fg, t_ctx *ctx)
 	outfile = j->stdout;
 	p = j->procs;
 	buf = qbuf_new(2 << 8);
-	expand_job(j, ctx);
+	if (expand_job(j, ctx, &exp_err) != 0)
+		;
 	while (p != NULL)
 	{
 		do_pipe(j, p, mypipe, &outfile);

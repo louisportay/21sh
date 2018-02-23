@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:18:58 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 12:09:54 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/23 18:54:33 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int					expand(char *str, t_ctx *ctx,
 {
 	t_list			*lst;
 	char			*o;
+	int				ret;
 
 	if (ft_strcmp(str, "") == 0)
 		return (1);
@@ -40,9 +41,18 @@ int					expand(char *str, t_ctx *ctx,
 	*conv = NULL;
 	if (expand_braces(&o) < 1
 		|| expand_tilde(&o, ctx) < 1
-		|| expand_param(&o, ctx) < 1
-		|| expand_glob(&o, ctx) == -1
-		|| expand_split(o, &lst) == -1)
+		|| expand_param(&o, ctx) < 1)
+	{
+		ft_strdel(&o);
+		return (0);
+	}
+	if ((ret = expand_glob(&o, ctx)) < 1)
+	{
+		printf("ret is %d\n", ret);
+		ft_strdel(&o);
+		return (ret);
+	}
+	if (expand_split(o, &lst) == -1)
 	{
 		ft_strdel(&o);
 		return (0);

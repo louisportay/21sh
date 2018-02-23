@@ -11,3 +11,4 @@ dotglob                                                   --  DONE
 fix ".*" expansion to be working like "./.*" is           --  DONE
 Do NORM on 'mtok_sort'
 TODO: [:class:] -> [[:class:]] -> Ask if mandatory (it's a bonus, but would change so much impl)
+Handle nullglob for redirection
