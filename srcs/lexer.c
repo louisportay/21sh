@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/12 14:06:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/24 15:40:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,18 @@ void	init_token_table(t_kvp *tok)
 	tok[15] =(t_kvp){.key=(void *)TLESS, .val=(char *)"TLESS", .typ=INT_STR};
 	tok[16] =(t_kvp){.key=(void *)ANDGREAT, .val=(char *)"ANDGREAT", .typ=INT_STR};
 	tok[17] =(t_kvp){.key=(void *)ANDDGREAT, .val=(char *)"ANDDGREAT", .typ=INT_STR};
-	tok[18] =(t_kvp){.key=(void *)DOLLAR, .val=(char *)"DOLLAR", .typ=INT_STR};
-	tok[19] =(t_kvp){.key=(void *)BANG, .val=(char *)"BANG", .typ=INT_STR};
-	tok[20] =(t_kvp){.key=(void *)PARAM_EXP, .val=(char *)"PARAM_EXP", .typ=INT_STR};
-	tok[21] =(t_kvp){.key=(void *)CMD_SUB, .val=(char *)"CMD_SUB", .typ=INT_STR};
-	tok[22] =(t_kvp){.key=(void *)ARI_EXP, .val=(char *)"ARI_EXP", .typ=INT_STR};
-	tok[23] =(t_kvp){.key=(void *)COMMENT, .val=(char *)"COMMENT", .typ=INT_STR};
-	tok[24] =(t_kvp){.key=(void *)0, .val=NULL, .typ=INT_STR};
+//	tok[18] =(t_kvp){.key=(void *)DOLLAR, .val=(char *)"DOLLAR", .typ=INT_STR};
+	tok[18] =(t_kvp){.key=(void *)BANG, .val=(char *)"BANG", .typ=INT_STR};
+//	tok[20] =(t_kvp){.key=(void *)PARAM_EXP, .val=(char *)"PARAM_EXP", .typ=INT_STR};
+//	tok[21] =(t_kvp){.key=(void *)CMD_SUB, .val=(char *)"CMD_SUB", .typ=INT_STR};
+//	tok[22] =(t_kvp){.key=(void *)ARI_EXP, .val=(char *)"ARI_EXP", .typ=INT_STR};
+	tok[19] =(t_kvp){.key=(void *)COMMENT, .val=(char *)"COMMENT", .typ=INT_STR};
+	tok[20] =(t_kvp){.key=(void *)0, .val=NULL, .typ=INT_STR};
 }
 
 void	print_toklist(t_token *toklist)
 {
-	t_kvp	tok[25];
+	t_kvp	tok[21];
 	int			i;
 
 	init_token_table(tok);
@@ -126,7 +126,7 @@ int 	ft_isblank(char c)
 
 bool	is_delimiter(char c)
 {
-	if (c == '|' || c == '&' || c == ';' || c == '<' || c == '>' || c == '$' || c == '!')
+	if (c == '|' || c == '&' || c == ';' || c == '<' || c == '>' ||/* c == '$' ||*/ c == '!')
 		return (true);
 	else
 		return (false);
@@ -189,8 +189,8 @@ int		basic_token_type(char c, int quote_state)
 		return (COMMENT);
 	else if (quote_state != UNQUOTED)
 		return (WORD);
-	else if (c == '$')
-		return (DOLLAR);
+//	else if (c == '$')
+//		return (DOLLAR);
 	else if (c == '!')
 		return (BANG);
 	else if (c == ';')
@@ -305,24 +305,26 @@ void	delete_following_redir(t_token *toklist)
 	}
 }
 
-void	requalify_tokens(t_token **toklist)
+void	err_filter_tok(t_token **toklist, t_token *bad_tok)
 {
-	t_kvp	tok[25];
-	t_token		*ret;
+	t_kvp	tok[21];
 	int			i;
 
+	i = 0;
+	init_token_table(tok);
+	while ((unsigned long)tok[i].key != bad_tok->type && tok[i].key)
+			i++;
+	dprintf(STDERR_FILENO, "-LEXER- 21sh: syntax error near unexpected token `%s'\n", (char *)tok[i].val);
+	delete_following_redir(bad_tok);
+	delete_toklist(toklist);
+}
+
+void	requalify_tokens(t_token **toklist)
+{
+	t_token		*ret;
+
 	if ((ret = filter_tokens(*toklist)) != SUCCESS)
-	{
-		i = 0;
-		init_token_table(tok);
-		while ((unsigned long)tok[i].key != ret->type && tok[i].key)
-				i++;
-		ft_putstr_fd("syntax error near token `", STDERR_FILENO);
-		ft_putstr_fd(tok[i].val, STDERR_FILENO);
-		ft_putstr_fd("'\n", STDERR_FILENO);
-		delete_following_redir(ret);
-		delete_toklist(toklist);
-	}
+		err_filter_tok(toklist, ret);
 }
 
 t_token		*tokenizer(t_dlist *line)
@@ -349,12 +351,11 @@ t_token		*tokenizer(t_dlist *line)
 			last_tok = last_tok->next;
 	}
 
-//	print_toklist(toklist->next);//
-//	write(STDOUT_FILENO, "\n", 1);//
+//	if (toklist)//
+//		print_toklist(toklist->next);//
 	requalify_tokens(&toklist);
 //	if (toklist)//
 //		print_toklist(toklist->next);//
 	stack_del(&quote_state);
-
 	return (toklist);
 }
