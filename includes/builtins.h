@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/24 15:12:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/24 15:34:50 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,19 @@
 # include <sys/stat.h>
 
 # include "ft_21sh.h"
+
+#define BU_S_USG ("21sh: usage: set [-+][Fabdfhnolx]")
+
+#define BU_S_HPR ("l: displays local variables. With '+l' shows env beforehand")
+#define BU_S_HSE ("o: displays options. '+o' prints it as commands to set them")
+#define BU_S_HEX ("a: assignment commands are exported")
+#define BU_S_HBG ("b: set job notifications to be immediate")
+#define BU_S_HON ("x: prints each action done before execution")
+#define BU_S_HFN ("f: inhib globbing expansion")
+#define BU_S_HDO ("d: adds hidden files to globbing")
+#define BU_S_HNU ("n: if expansion fails, replace it with a null string")
+#define BU_S_HFA ("F: if expansion fails, abords pipe execution")
+#define BU_S_HEL ("h: displays this help. '+h' adds usage beforehand")
 
 # define BU_SET_PRLOC (1 << 0)
 # define BU_SET_PRVAR (1 << 1)
