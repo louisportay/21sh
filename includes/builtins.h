@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 19:05:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/24 15:12:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,18 @@
 
 # include "ft_21sh.h"
 
-# define BU_SET_PRLOC 0x1
-# define BU_SET_PRVAR 0x2
-# define BU_SET_PRSET 0x4
-# define BU_SET_PRCMD 0x8
+# define BU_SET_PRLOC (1 << 0)
+# define BU_SET_PRVAR (1 << 1)
+# define BU_SET_PRSET (1 << 2)
+# define BU_SET_PRCMD (1 << 3)
 
-# define BU_SET_EXPOR 0x1
-# define BU_SET_BGCMD 0x2
-# define BU_SET_FNEXP 0x4
-# define BU_SET_ONCMD 0x8
+# define BU_SET_EXPOR (1 << 0)
+# define BU_SET_BGCMD (1 << 1)
+# define BU_SET_FNEXP (1 << 2)
+# define BU_SET_ONCMD (1 << 3)
+# define DOTGLOB (1 << 4)
+# define NULLGLOB (1 << 5)
+# define FAILGLOB (1 << 6)
 
 # define BU_SET_ON ("\ton\n")
 # define BU_SET_OFF ("\toff\n")
@@ -34,7 +37,9 @@
 # define BU_SET_MBGCM ("notify")
 # define BU_SET_MFNEX ("noglob")
 # define BU_SET_MONCM ("xtrace")
-
+# define BU_SET_GLDOT ("dotglob")
+# define BU_SET_GLNUL ("nullglob")
+# define BU_SET_GLFAI ("failglob")
 
 # define SH_EWFMT ("setenv: Wrong format: <key>=<value> - ")
 # define SH_ENKEY ("setenv: Missing key: ")
@@ -60,10 +65,6 @@
 # define BU_H_DEL (1 << 2)
 # define BU_H_PRT (1 << 3)
 # define BU_H_LST (1 << 4)
-
-# define DOTGLOB (1 << 5)
-# define NULLGLOB (1 << 6)
-# define FAILGLOB (1 << 7)
 
 # define BU_H_ETREQU ("221sh: hash: -t: option requires an argument\n")
 # define BU_H_EDREQU ("221sh: hash: -d: option requires an argument\n")

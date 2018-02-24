@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:18:58 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 18:54:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/24 13:57:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int					expand(char *str, t_ctx *ctx,
 	}
 	if ((ret = expand_glob(&o, ctx)) < 1)
 	{
-		printf("ret is %d\n", ret);
 		ft_strdel(&o);
 		return (ret);
 	}

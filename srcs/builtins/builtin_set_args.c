@@ -6,13 +6,37 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 17:37:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 18:59:47 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/24 15:25:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-#define BU_S_USG ("21sh: usage: set [-+][abfolx]")
+#define BU_S_USG ("21sh: usage: set [-+][Fabdfhnolx]")
+
+#define BU_S_HPR ("l: displays local variables. With '+l' shows env beforehand")
+#define BU_S_HSE ("o: displays options. '+o' prints it as commands to set them")
+#define BU_S_HEX ("a: assignment commands are exported")
+#define BU_S_HBG ("b: set job notifications to be immediate")
+#define BU_S_HON ("x: prints each action done before execution")
+#define BU_S_HFN ("f: inhib globbing expansion")
+#define BU_S_HDO ("d: adds hidden files to globbing")
+#define BU_S_HNU ("n: if expansion fails, replace it with a null string")
+#define BU_S_HFA ("F: if expansion fails, abords pipe execution")
+#define BU_S_HEL ("h: displays this help. '+h' adds usage beforehand")
+
+static int			set_help(t_proc *p, int usage)
+{
+	char			*str;
+
+	asprintf(&str, "1%s%c%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
+				usage ? BU_S_USG : "", usage ? '\n' : '\r',
+				BU_S_HPR, BU_S_HSE, BU_S_HEX, BU_S_HBG, BU_S_HON, BU_S_HFN,
+				BU_S_HDO, BU_S_HNU, BU_S_HFA, BU_S_HEL);
+	p->type = BU_STR;
+	p->data.str = str;
+	return (-1);
+}
 
 static int			lusage(t_proc *p, char c, char ec)
 {
@@ -48,6 +72,14 @@ static int			lget_min(t_proc *p, int i, u_short *tmp)
 			*tmp |= BU_SET_FNEXP;
 		else if (p->argv[i][j] == 'x')
 			*tmp |= BU_SET_ONCMD;
+		else if (p->argv[i][j] == 'd')
+			*tmp |= DOTGLOB;
+		else if (p->argv[i][j] == 'n')
+			*tmp |= NULLGLOB;
+		else if (p->argv[i][j] == 'F')
+			*tmp |= FAILGLOB;
+		else if (p->argv[i][j] == 'h')
+			return (set_help(p, 0));
 		else
 			return (lusage(p, p->argv[i][j], 1));
 		j++;
@@ -76,6 +108,14 @@ static int			lget_max(t_proc *p, int i, u_short *tmp)
 			*tmp &= ~BU_SET_FNEXP;
 		else if (p->argv[i][j] == 'x')
 			*tmp &= ~BU_SET_ONCMD;
+		else if (p->argv[i][j] == 'd')
+			*tmp &= ~DOTGLOB;
+		else if (p->argv[i][j] == 'n')
+			*tmp &= ~NULLGLOB;
+		else if (p->argv[i][j] == 'F')
+			*tmp &= ~FAILGLOB;
+		else if (p->argv[i][j] == 'h')
+			return (set_help(p, 1));
 		else
 			return (lusage(p, p->argv[i][j], 1));
 		j++;

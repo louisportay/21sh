@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 15:20:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 19:02:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/24 15:18:25 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,31 @@ static void			lset(t_ctx *ctx, t_qbuf *buf)
 	qbuf_add(buf, ctx->set & BU_SET_FNEXP ? BU_SET_ON : BU_SET_OFF);
 	qbuf_add(buf, BU_SET_MONCM);
 	qbuf_add(buf, ctx->set & BU_SET_ONCMD ? BU_SET_ON : BU_SET_OFF);
+	qbuf_add(buf, BU_SET_GLDOT);
+	qbuf_add(buf, ctx->set & DOTGLOB ? BU_SET_ON : BU_SET_OFF);
+	qbuf_add(buf, BU_SET_GLNUL);
+	qbuf_add(buf, ctx->set & NULLGLOB ? BU_SET_ON : BU_SET_OFF);
+	qbuf_add(buf, BU_SET_GLFAI);
+	qbuf_add(buf, ctx->set & FAILGLOB ? BU_SET_ON : BU_SET_OFF);
 }
 
 static void			lcmd(t_ctx *ctx, t_qbuf *buf)
 {
 	qbuf_add(buf, "set ");
 	qbuf_addc(buf, ctx->set & BU_SET_EXPOR ? '-' : '+');
-	qbuf_add(buf, "o allexport\n");
-	qbuf_add(buf, "set ");
+	qbuf_add(buf, "o allexport\nset ");
 	qbuf_addc(buf, ctx->set & BU_SET_BGCMD ? '-' : '+');
-	qbuf_add(buf, "o notify\n");
-	qbuf_add(buf, "set ");
+	qbuf_add(buf, "o notify\nset ");
 	qbuf_addc(buf, ctx->set & BU_SET_FNEXP ? '-' : '+');
-	qbuf_add(buf, "o noglob\n");
-	qbuf_add(buf, "set ");
+	qbuf_add(buf, "o noglob\nset ");
 	qbuf_addc(buf, ctx->set & BU_SET_ONCMD ? '-' : '+');
-	qbuf_add(buf, "o xtrace\n");
+	qbuf_add(buf, "o xtrace\nset ");
+	qbuf_addc(buf, ctx->set & DOTGLOB ? '-' : '+');
+	qbuf_add(buf, "o dotglob\nset ");
+	qbuf_addc(buf, ctx->set & NULLGLOB ? '-' : '+');
+	qbuf_add(buf, "o nullglob\nset ");
+	qbuf_addc(buf, ctx->set & FAILGLOB ? '-' : '+');
+	qbuf_add(buf, "o failglob\n");
 }
 
 static void			lloc(t_ctx *ctx, t_qbuf *buf)
