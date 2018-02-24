@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 18:09:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/24 18:34:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int						job_putfg(t_job *j, int cont, t_ctx *ctx);
 void					job_fmtinfo(t_job *j, char *status);
 
 int						job_next(t_job *j, t_ctx *ctx);
+int						job_donext(t_job *j, t_ctx *ctx);
 
 void					setup_signals(void (*sig)());
 
@@ -133,5 +134,7 @@ char					*proc_path(t_proc *p, t_ctx *ctx, int locpath);
 int						prepare_fork(t_proc *p, t_ctx *ctx);
 
 int						blt_output(t_proc *p);
+
+char					*get_command(t_job *j);
 
 #endif

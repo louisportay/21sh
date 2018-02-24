@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 14:32:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/24 18:35:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,11 @@ int						job_wait(t_job *j)
 **	}
 */
 
-int						job_next(t_job *j, t_ctx *ctx)
+int						job_donext(t_job *j, t_ctx *ctx)
 {
 	int					ret;
 
-	ret = job_putfg(j, 0, ctx);
-	if (ret == 0)
+	if (j->status == 0)
 	{
 		ret = job_exec(j->ok, 1, ctx);
 		if (ret == 0 && j->parent->status == 0)
@@ -81,6 +80,12 @@ int						job_next(t_job *j, t_ctx *ctx)
 			return (job_exec(j->err, 1, ctx));
 	}
 	return (job_exec(j->err, 1, ctx));
+}
+
+int						job_next(t_job *j, t_ctx *ctx)
+{
+	j->status = job_putfg(j, 0, ctx);
+	return (job_donext(j, ctx));
 }
 
 void					job_putbg(t_job *j, int continued)

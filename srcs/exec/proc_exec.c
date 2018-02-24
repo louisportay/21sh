@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 14:12:14 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/24 16:41:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	setup_fd(fd[1], STDOUT_FILENO);
 	setup_fd(fd[2], STDERR_FILENO);
 	if (do_redir(p->redirs) == -1)
+	{
+		dprintf(2, "Ambiguous redirection\n");
 		exit(1);
+	}
 	if (p->argv[0] == NULL)
 		exit(0);
 	if (p->type == EXERR)

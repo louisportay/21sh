@@ -1,14 +1,13 @@
-fix ** in globbing																        --	FIXED (for no globstar, will still be crashed in globstar)
-fix SEGV on ${} expansion for non-existent VARS           --	DONE
-fix ~[+-]																		              --	DONE
-fix \ in expand_quotes														        --	DONE
-fix unwanted ' ' with some $VAR expansions
-fix not working range															        --	DONE
-nullglob                                                  --  DONE  ->  Need to be removed from argv
+fix ** in globbing											--	FIXED (for no globstar, will still be crashed in globstar)
+fix SEGV on ${} expansion for non-existent VARS				--	DONE
+fix ~[+-]													--	DONE
+fix \ in expand_quotes										--	DONE
+fix unwanted ' ' with some $VAR expansions					--	DONE
+fix not working range										--	DONE
+nullglob													--  DONE  ->  Need to be removed from argv
 nocaseglob -> mb if time (just do a specialized strcmp)
-failglob                                                  --  DONE  ->  To be checked and added in final expand return/handling
-dotglob                                                   --  DONE
-fix ".*" expansion to be working like "./.*" is           --  DONE
+failglob													--  DONE  ->  To be checked and added in final expand return/handling
+dotglob														--  DONE
+fix ".*" expansion to be working like "./.*" is				--  DONE
 Do NORM on 'mtok_sort'
-TODO: [:class:] -> [[:class:]] -> Ask if mandatory (it's a bonus, but would change so much impl)
-Handle nullglob for redirection
+Handle nullglob for redirection								--	DONE

@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/23 19:32:16 by lportay          ###   ########.fr        #
+#    Updated: 2018/02/24 17:07:32 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -127,6 +127,7 @@ SRCS=	main.c\
 		exec_assignments.c\
 		prepare_fork.c\
 		blt_output.c\
+		get_command.c\
 		\
 		builtin_cd.c\
 		builtin_echo.c\

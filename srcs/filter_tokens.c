@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/21 17:17:29 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/24 13:11:04 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,37 +124,37 @@ static void filter_bang(t_token *toklist)
 		toklist->type = WORD;
 }
 
-static int get_exp_token_type(t_token *tok)
-{
-	if (*(char *)tok->first_letter->data == '{')
-		return (PARAM_EXP);
-	else if (*(char *)tok->first_letter->data == '[')
-		return (ARI_EXP);
-	else if (*(char *)tok->first_letter->data == '(' && *(char *)tok->first_letter->next->data == '(')
-		return (ARI_EXP);
-	else if (*(char *)tok->first_letter->data == '(')
-		return (CMD_SUB);
-	else
-		return (PARAM_EXP);
-		
-}
+//static int get_exp_token_type(t_token *tok)
+//{
+//	if (*(char *)tok->first_letter->data == '{')
+//		return (PARAM_EXP);
+//	else if (*(char *)tok->first_letter->data == '[')
+//		return (ARI_EXP);
+//	else if (*(char *)tok->first_letter->data == '(' && *(char *)tok->first_letter->next->data == '(')
+//		return (ARI_EXP);
+//	else if (*(char *)tok->first_letter->data == '(')
+//		return (CMD_SUB);
+//	else
+//		return (PARAM_EXP);
+//		
+//}
 
-static void	filter_dollar(t_token *toklist)
-{
-	t_token *tmp;
-
-	tmp = toklist->next;
-	if (toklist->last_letter->next != tmp->first_letter || !(tmp->type & (WORD | ASSIGNMENT_WORD)))
-	{
-		toklist->type = WORD;
-		return ;
-	}
-
-	toklist->type = get_exp_token_type(toklist->next);
-	toklist->last_letter = tmp->last_letter;
-	toklist->next = tmp->next;
-	free(tmp);
-}
+//static void	filter_dollar(t_token *toklist)
+//{
+//	t_token *tmp;
+//
+//	tmp = toklist->next;
+//	if (toklist->last_letter->next != tmp->first_letter || !(tmp->type & (WORD | ASSIGNMENT_WORD)))
+//	{
+//		toklist->type = WORD;
+//		return ;
+//	}
+//	toklist->type = get_exp_token_type(toklist->next);
+//	if (toklist
+//	toklist->last_letter = tmp->last_letter;
+//	toklist->next = tmp->next;
+//	free(tmp);
+//}
 
 /*
 ** Change the following tokens:
@@ -209,8 +209,8 @@ t_token	*filter_tokens(t_token *toklist)
 		}
 		else if (toklist->type & BANG)
 			filter_bang(toklist);
-		else if (toklist->type & DOLLAR)
-			filter_dollar(toklist);
+	//	else if (toklist->type & DOLLAR)
+	//		filter_dollar(toklist);
 
 		prev = prev->next;
 		toklist = prev->next;

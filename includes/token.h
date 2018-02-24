@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/23 22:34:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/24 16:18:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@
 # define ISREDIR(n) (IS_LESS_REDIR(n) | IS_GREAT_REDIR(n) | IS_AND_REDIR(n))
 
 //c'est pas trop a la norme cette macro, a changer apres
-# define IS_MAX_OPE(n) (n & (OR_IF | AND_IF | DGREAT | LESSAND | GREATAND | ANDDGREAT | TLESS | DOLLAR | BANG | NEWLINE | SEMICOL))
+# define IS_MAX_OPE(n) (n & (OR_IF | AND_IF | DGREAT | LESSAND | GREATAND | ANDDGREAT | TLESS | BANG | NEWLINE | SEMICOL)) 
+//DOLLAR
 
 # define IS_NOT_MAX_OPE(n) (n & (OR | AND | LESS | GREAT | DLESS | ANDGREAT))
 # define IS_WORD_IO_NUMBER(n) (n & (WORD | ASSIGNMENT_WORD | IO_NUMBER))
@@ -55,13 +56,13 @@ enum	e_toktype
 	ANDGREAT = 1 << 16,				// &>
 	ANDDGREAT = 1 << 17,			// &>>
 
-	DOLLAR = 1 << 18,				// $
+	// DOLLAR = 1 << 18,				// $
 	BANG = 1 << 19,					// !
 
 	COMMENT = 1 << 20,				// # *ANY_TOKEN NEWLINE
-	PARAM_EXP = DOLLAR | WORD,		// ${} | $VAR
-	CMD_SUB = DOLLAR | WORD,		// $() |	bquotes+grouping --> 42SH
-	ARI_EXP = DOLLAR | WORD,		// $[] | $((MATHS))
+	// PARAM_EXP = DOLLAR | WORD,		// ${} | $VAR
+	// CMD_SUB = DOLLAR | WORD,		// $() |	bquotes+grouping --> 42SH
+	// ARI_EXP = DOLLAR | WORD,		// $[] | $((MATHS))
 	TOKERR = 1 << 21
 };
 

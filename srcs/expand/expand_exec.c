@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 15:05:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/24 14:00:35 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/24 16:45:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,23 +122,23 @@ int						expand_redir(t_proc *p, t_ctx *ctx)
 					on_emem(NOMEM);
 				else if (ret == -2)
 				{
+					r->type = TOKERR;
 					dprintf(STDERR_FILENO, "21sh: no match: %s\n", r->s_rhs);
 					return (-2);
 				}
 			}
 			else
 			{
-				if (l->next != NULL)
+				if (((char *)l->content)[0] == '\0'
+					|| l->next != NULL)
 				{
 					r->type = TOKERR;
 					ft_list_clear(&l, &ft_memdel);
+					return (0);
 				}
-				else
-				{
-					ft_strdel(&r->s_rhs);
-					r->s_rhs = (char *)l->content;
-					ft_memdel((void **)&l);
-				}
+				ft_strdel(&r->s_rhs);
+				r->s_rhs = (char *)l->content;
+				ft_memdel((void **)&l);
 			}
 		}
 		r = (t_redir *)r->next;

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 22:04:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/24 18:34:37 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,23 +100,27 @@ int						job_exec(t_job *j, int fg, t_ctx *ctx)
 	outfile = j->stdout;
 	p = j->procs;
 	buf = qbuf_new(2 << 8);
-	if (expand_job(j, ctx, &exp_err) != 0)
-		;
-	while (p != NULL)
+	if (j->parent == j)
+		j->command = get_command(j);
+	j->status = expand_job(j, ctx, &exp_err);
+	if (exp_err == 0)
 	{
-		do_pipe(j, p, mypipe, &outfile);
-		if (p->asmts != NULL && p->argv[0] == NULL && fg)
-			prefork_assign(ctx, p->asmts);
-		else if (p->argv[0] != NULL)
-			prepare_fork(p, ctx);
-		if (do_fork(p, j, (int[]){infile, outfile}, fg, ctx) == 1)
-			return (1);
-		clear_pipe(j, &infile, &outfile, mypipe[0]);
-		astr_to_buf(p->argv, buf, p->next == NULL);
-		p = p->next;
+		while (p != NULL)
+		{
+			do_pipe(j, p, mypipe, &outfile);
+			if (p->asmts != NULL && p->argv[0] == NULL && fg)
+				prefork_assign(ctx, p->asmts);
+			else if (p->argv[0] != NULL)
+				prepare_fork(p, ctx);
+			if (do_fork(p, j, (int[]){infile, outfile}, fg, ctx) == 1)
+				return (1);
+			clear_pipe(j, &infile, &outfile, mypipe[0]);
+			p = p->next;
+		}
 	}
-	j->command = qbuf_del(&buf);
-	if (fg)
+	if (fg && exp_err)
+		return (job_donext(j, ctx));
+	else if (fg)
 		return (job_next(j, ctx));
 	job_fmtinfo(j, EXE_LCHD);
 	job_putbg(j, 0);
