@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/24 18:35:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/26 10:46:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,11 @@ int						job_putfg(t_job *j, int continued, t_ctx *ctx)
 	int					ret;
 	int					status;
 
-	if ((ret = tcsetpgrp(ctx->fd, j->pgid)) != 0)
+	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, j->pgid)) != 0)
 		perror("tcsetpgrp");
 	(void)continued;
 	status = job_wait(j);
-	if ((ret = tcsetpgrp(ctx->fd, ctx->pgid)) != 0)
+	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, ctx->pgid)) != 0)
 		perror("tcsetpgrp");
 	return (status);
 }

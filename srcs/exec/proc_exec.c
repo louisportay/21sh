@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/24 16:41:17 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/26 10:47:10 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void					set_pid_data(t_ctx *ctx, pid_t pgid,
 	pid = getpid();
 	if (pgid == 0)
 		pgid = pid;
+	if (ctx->istty == 0)
+		return ;
 	if ((ret = setpgid(pid, pgid)) != 0)
 		dprintf(STDERR_FILENO, "Error with setpgid in set_pid_data\n");
 	if (fg)
