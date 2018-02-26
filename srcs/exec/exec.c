@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 18:41:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/26 20:03:48 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,7 @@ int						exec(t_job **jobs)
 	}
 	update_tty(ctx, 0);
 	*jobs = fg[0];
+	jc_addjobs(bg[0], ctx);
+	jc_print(ctx);
 	return (0);
 }

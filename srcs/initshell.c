@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 18:01:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/26 19:40:25 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ static void			init_job_control(t_ctx *ctx)
 	}
 	if (tcsetpgrp(ctx->fd, ctx->pgid) != 0)
 		dprintf(STDERR_FILENO, "init job ctrl tcsetgrp error\n");
+	ctx->bg_cnt = DFL_BGCNT;
+	ctx->bg_jobs = (t_job **)ft_pmemalloc(sizeof(t_job *) * DFL_BGCNT,
+											&on_emem, NOMEM);
 }
 
 //mettre les variables dans l'ordre dans lequel elles ont ete declarees (les declarer dans un ordre logique)

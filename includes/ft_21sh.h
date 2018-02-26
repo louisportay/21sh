@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/26 18:39:48 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/26 19:57:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@
 # define DEBUG2 	write(STDOUT_FILENO, "DEBUG2\n", 7)
 # define ERROR 		write(STDOUT_FILENO, "ERROR\n", 6)
 
+# define DFL_BGCNT 8
+
 typedef struct s_ctx	t_ctx;
 
 enum					e_errcode
@@ -102,7 +104,8 @@ struct					s_ctx
 	int					fd;
 	int	                istty;
 	char				**path;
-	t_list				*running_processes;
+	t_job				**bg_jobs;
+	size_t				bg_cnt;
 
 	/*
 	**	EXECUTION HASH (for HASH builtin)
@@ -196,27 +199,32 @@ bool					is_number_w_dash(char *str);
 t_job					*parse(t_token *tok);
 int						exec(t_job **jobs);
 
-// Shell script stuff
+void					jc_addjobs(t_job *jobs, t_ctx *ctx);
+void					jc_print(t_ctx *ctx);
 
-//enum	e_rword
-//{
-//		BANG,
-//		LBRACE,
-//		RBRACE,
-//		CASE,
-//		DO,
-//		DONE,
-//		ELIF,
-//		ELSE,
-//		ESAC,
-//		FI,
-//		FOR,
-//		IF,
-//		IN,
-//		THEN,
-//		UNTIL,
-//		WHILE,
-//};
+/*
+**	Shell script stuff
+**
+**	enum	e_rword
+**	{
+**		BANG,
+**		LBRACE,
+**		RBRACE,
+**		CASE,
+**		DO,
+**		DONE,
+**		ELIF,
+**		ELSE,
+**		ESAC,
+**		FI,
+**		FOR,
+**		IF,
+**		IN,
+**		THEN,
+**		UNTIL,
+**		WHILE,
+**	};
+*/
 
 /*
 **	BUILTINS

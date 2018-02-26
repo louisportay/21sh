@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/24 17:07:32 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/26 19:56:36 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -198,6 +198,9 @@ SRCS=	main.c\
 		\
 		mtok_print.c\
 		mtok_sort.c\
+		\
+		jc_addjobs.c\
+		jc_print.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk
