@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/24 18:34:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/26 18:15:25 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ struct					s_job
 	int					stdin;
 	int					stdout;
 	int					stderr;
-	int					fg;
+	int					bg;
 	struct s_job		*ok;
 	struct s_job		*err;
 	struct s_job		*next;

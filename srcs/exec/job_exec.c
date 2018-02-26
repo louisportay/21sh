@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/24 18:34:37 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/26 18:24:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,46 +83,56 @@ void					clear_pipe(t_job *j, int *infile, int *outfile,
 	*infile = new_in;
 }
 
-int						job_exec(t_job *j, int fg, t_ctx *ctx)
+static int				launch_processes(t_job *j, t_ctx *ctx, int fg)
 {
 	t_proc				*p;
 	int					mypipe[2];
 	int					infile;
 	int					outfile;
-	t_qbuf				*buf;
-	int					exp_err;
 
-	if (j == NULL)
-		return (0);
 	mypipe[0] = j->stdin;
 	mypipe[1] = j->stdout;
 	infile = j->stdin;
 	outfile = j->stdout;
 	p = j->procs;
-	buf = qbuf_new(2 << 8);
+	p = j->procs;
+	while (p != NULL)
+	{
+		do_pipe(j, p, mypipe, &outfile);
+		if (p->asmts != NULL && p->argv[0] == NULL && fg)
+			prefork_assign(ctx, p->asmts);
+		else if (p->argv[0] != NULL)
+			prepare_fork(p, ctx);
+		if (do_fork(p, j, (int[]){infile, outfile}, fg, ctx) == 1)
+			return (1);
+		clear_pipe(j, &infile, &outfile, mypipe[0]);
+		p = p->next;
+	}
+	return (0);
+}
+
+int						job_exec(t_job *j, int fg, t_ctx *ctx)
+{
+	t_qbuf				*buf;
+	int					exp_err;
+
+	if (j == NULL)
+		return (0);
+	
+	buf = qbuf_new(1 << 8);
 	if (j->parent == j)
 		j->command = get_command(j);
 	j->status = expand_job(j, ctx, &exp_err);
 	if (exp_err == 0)
 	{
-		while (p != NULL)
-		{
-			do_pipe(j, p, mypipe, &outfile);
-			if (p->asmts != NULL && p->argv[0] == NULL && fg)
-				prefork_assign(ctx, p->asmts);
-			else if (p->argv[0] != NULL)
-				prepare_fork(p, ctx);
-			if (do_fork(p, j, (int[]){infile, outfile}, fg, ctx) == 1)
-				return (1);
-			clear_pipe(j, &infile, &outfile, mypipe[0]);
-			p = p->next;
-		}
+		if (launch_processes(j, ctx, fg) == 1)
+			return (1);
 	}
 	if (fg && exp_err)
 		return (job_donext(j, ctx));
 	else if (fg)
 		return (job_next(j, ctx));
 	job_fmtinfo(j, EXE_LCHD);
-	job_putbg(j, 0);
+//	job_putbg(j, 0);
 	return (0);
 }
