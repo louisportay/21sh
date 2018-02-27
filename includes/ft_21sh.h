@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/26 19:57:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/27 11:07:45 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "kvp.h"
 # include "builtins.h"
 # include "expand.h"
+# include "job_control.h"
 
 # include <signal.h>
 # include <sys/ioctl.h>
@@ -106,6 +107,7 @@ struct					s_ctx
 	char				**path;
 	t_job				**bg_jobs;
 	size_t				bg_cnt;
+	t_job				*fg_job;
 
 	/*
 	**	EXECUTION HASH (for HASH builtin)
@@ -198,9 +200,6 @@ bool					is_number_w_dash(char *str);
 
 t_job					*parse(t_token *tok);
 int						exec(t_job **jobs);
-
-void					jc_addjobs(t_job *jobs, t_ctx *ctx);
-void					jc_print(t_ctx *ctx);
 
 /*
 **	Shell script stuff

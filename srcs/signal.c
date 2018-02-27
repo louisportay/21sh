@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/23 10:00:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/02/27 08:55:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int		set_sighandler(void)
 	if (signal(SIGTTIN, SIG_IGN) == SIG_ERR) // "kill"
 		return (FAILSETSIGHDLR);
 	if (signal(SIGTTOU, SIG_IGN) == SIG_ERR) // "kill"
+		return (FAILSETSIGHDLR);
+	if (signal(SIGCHLD, &jc_signal) == SIG_ERR) // Child?
 		return (FAILSETSIGHDLR);
 	return (SUCCESS);
 }

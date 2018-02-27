@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jc_print.c                                         :+:      :+:    :+:   */
+/*   jc_update.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/26 19:45:08 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/27 10:44:55 by vbastion         ###   ########.fr       */
+/*   Created: 2018/02/27 10:56:09 by vbastion          #+#    #+#             */
+/*   Updated: 2018/02/27 11:41:50 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void					jc_print(t_ctx *ctx)
+void					jc_update(t_job *j, t_job *parent, pid_t pid,
+									int status)
 {
-	size_t				i;
-
-	printf("# of jobs: %zu\n", ctx->bg_cnt);
-	i = 0;
-	while (i < ctx->bg_cnt)
-	{
-		if (ctx->bg_jobs[i] != NULL)
-			printf("[%lu]%-4s%-24s%s\n", i + 1, "-", "Stopped",
-					ctx->bg_jobs[i]->command);
-		i++;
-	}
+	(void)j;
+	(void)parent;
+	(void)pid;
+	(void)status;
 }

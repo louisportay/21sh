@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/26 19:56:36 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/27 11:32:14 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,17 +65,23 @@ INCLUDE=\
 -I$(LIBDIR)kvp
 
 HEADERS=\
-ft_21sh.h\
-history.c\
-line.h\
-prompt.h\
-token.h\
 builtins.h\
+dir_explorer.h\
+exec.h\
 expand.h\
 expand_braces.h\
 expand_param.h\
 expand_quotes.h\
 expand_tilde.h\
+ft_21sh.h\
+history.h\
+job_control.h\
+line.h\
+parser.h\
+pattern_matching.h\
+posix_classes.h\
+prompt.h\
+token.h\
 
 SRCS=	main.c\
 		ft_21sh.c\
@@ -200,7 +206,10 @@ SRCS=	main.c\
 		mtok_sort.c\
 		\
 		jc_addjobs.c\
+		jc_jobs.c\
 		jc_print.c\
+		jc_signal.c\
+		jc_update.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk
