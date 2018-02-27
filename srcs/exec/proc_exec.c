@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 10:47:10 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/27 19:24:37 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,17 @@ void					set_pid_data(t_ctx *ctx, pid_t pgid,
 	if (ctx->istty == 0)
 		return ;
 	if ((ret = setpgid(pid, pgid)) != 0)
+	{
+		perror("setpgid - set_pid_data");
 		dprintf(STDERR_FILENO, "Error with setpgid in set_pid_data\n");
+	}
 	if (fg)
 	{
 		if ((ret = tcsetpgrp(ctx->fd, pgid != 0 ? pgid : getpid())) != 0)
+		{
+			perror("tcsetpgrp - set_pid_data");
 			dprintf(STDERR_FILENO, "Error with tcsetpgrp in set_pid_data\n");
+		}
 	}
 }
 

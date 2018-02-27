@@ -6,46 +6,49 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 10:29:44 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/27 11:37:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/27 15:57:12 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-t_job					*jc_getchild(t_job *j, pid_t pid, t_job **child)
+static t_job			*jc_get(t_job *j, pid_t pid)
 {
 	t_proc				*p;
 	t_job				*ret_j;
+	t_job				*ok;
 
 	p = j->procs;
 	while (p != NULL)
 	{
 		if (p->pid == pid)
-		{
-			*child = j;
-			return (j->parent);
-		}
+			return (j);
 		p = p->next;
 	}
-	if (j->ok != NULL && (ret_j = jc_getchild(j->ok, pid, child)) != NULL)
-		return (j->parent);
-	else if (j->err != NULL && (ret_j = jc_getchild(j->err, pid, child)) != NULL)
-		return (j->parent);
+	ok = j->ok;
+	while (ok != NULL)
+	{
+		if ((ret_j = jc_get(ok, pid)) != NULL)
+			return (ret_j);
+		ok = ok->ok;
+	}
+	if (j->err != NULL && (ret_j = jc_get(j->err, pid)) != NULL)
+		return (ret_j);
 	return (NULL);
 }
 
-t_job					*jc_getparent(t_ctx *ctx, pid_t pid, t_job **child)
+t_job					*jc_getjob(t_ctx *ctx, pid_t pid)
 {
 	size_t				i;
 	t_job				*j;
 
-	if (ctx->fg_job != NULL && jc_getchild(ctx->fg_job, pid, child) != NULL)
-		return (ctx->fg_job);
+	if (ctx->fg_job != NULL && (j = jc_get(ctx->fg_job, pid)) != NULL)
+		return (j);
 	i = 0;
 	while (i < ctx->bg_cnt)
 	{
 		if (ctx->bg_jobs[i] != NULL
-			&& (j = jc_getchild(ctx->bg_jobs[i], pid, child)) != NULL)
+			&& (j = jc_get(ctx->bg_jobs[i], pid)) != NULL)
 			return (j);
 		i++;
 	}

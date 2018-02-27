@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/27 09:23:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/27 15:51:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ struct					s_proc
 	pid_t				pid;
 	char				completed;
 	char				stopped;
-	char				running;
-	char				align;		// Should not be used
 	int					status;
 	struct s_redir		*redirs;
 	enum e_extype		type;
@@ -78,6 +76,9 @@ struct					s_job
 	char				notified;
 	struct termios		tmodes;// Candidate for deletion
 	int					status;
+	char				completed;
+	char				running;
+	char				done;
 	int					stdin;
 	int					stdout;
 	int					stderr;

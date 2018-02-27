@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/24 15:34:50 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/27 16:34:05 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int						ft_env(t_proc *p);
 int						modenv(t_proc *p, t_ctx *ctx, char *name);
 int						bu_hash_getopts(t_proc *p, t_ctx *ctx, int *i);
 int						bu_set_getopts(t_proc *p, t_ctx *ctx, int i);
-int                                             is_identifier(char *str);
-int			                        is_sane(char *str, int *end);
+int						is_identifier(char *str);
+int						is_sane(char *str, int *end);
 
 #endif

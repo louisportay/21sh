@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/27 11:07:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/27 17:09:21 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void					vingtetunsh(char **av, char **environ);
 
 void					exec_loop(t_dlist *input);
 int						init(t_ctx *ctx, char **av, char **environ);
-t_hdict				*getbuiltins(void);
+t_hdict					*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);
 void					get_shell_opt(t_ctx *ctx, char **av);
 void					complete_environ(char ***environ);
@@ -200,6 +200,7 @@ bool					is_number_w_dash(char *str);
 
 t_job					*parse(t_token *tok);
 int						exec(t_job **jobs);
+int						job_waitforit(t_job *j, t_ctx *ctx);
 
 /*
 **	Shell script stuff

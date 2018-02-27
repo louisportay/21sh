@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/27 11:32:14 by vbastion         ###   ########.fr        #
+#    Updated: 2018/02/27 16:03:48 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -210,6 +210,7 @@ SRCS=	main.c\
 		jc_print.c\
 		jc_signal.c\
 		jc_update.c\
+		jc_helper.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk

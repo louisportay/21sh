@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 10:46:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/27 19:52:42 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,40 +44,23 @@ int						job_wait(t_job *j)
 	return (j->parent->status = j->status);
 }
 
-/*
-**	if (j->parent != NULL)
-**		j->parent->status = j->parent;
-**	if (j->status == 0)
-**
-**	while (1)
-**	{
-**		pid = waitpid(WAIT_ANY, &status, WUNTRACED);
-**		if (pid == -1)
-**		{
-**			perror("waitpid");
-**			return ;
-**		}
-**		if (proc_chgstat(j, pid, status)
-**			|| job_stopped(j)
-**			|| job_completed(j))
-**		{
-**			// EXECUTE NEXT IN TREE
-**			break ;
-**		}
-**	}
-*/
-
 int						job_donext(t_job *j, t_ctx *ctx)
 {
 	int					ret;
 
 	if (j->status == 0)
 	{
-		ret = job_exec(j->ok, 1, ctx);
-		if (ret == 0 && j->parent->status == 0)
-			return (0);
+		if (j->ok == NULL)
+			return (j->status);
 		else
-			return (job_exec(j->err, 1, ctx));
+		{
+			if ((ret = job_exec(j->ok, j->parent->bg == 0, ctx)) == 0
+				&& j->parent->status == 0)
+				return (j->parent->status);
+			else
+				return (job_exec(j->err, j->parent->bg == 0, ctx));
+
+		}
 	}
 	return (job_exec(j->err, 1, ctx));
 }
@@ -100,15 +83,22 @@ void					job_putbg(t_job *j, int continued)
 int						job_putfg(t_job *j, int continued, t_ctx *ctx)
 {
 	int					ret;
-	int					status;
 
-	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, j->pgid)) != 0)
-		perror("tcsetpgrp");
 	(void)continued;
-	status = job_wait(j);
+//	if (ctx->fg_job != j->parent)
+//		ctx->fg_job = j->parent;
+//	j->running = 1;
+	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, j->pgid)) != 0)
+		perror("tcsetpgrp - job_putfg");
+//	while (j->completed != 1)
+//		;
+//	j->running = 0;
+	job_wait(j);
+	j->status = jc_pipestatus(j);
+	j->parent->status = j->status;
 	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, ctx->pgid)) != 0)
 		perror("tcsetpgrp");
-	return (status);
+	return (j->status);
 }
 
 /*

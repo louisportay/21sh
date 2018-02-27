@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/26 18:40:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/02/27 18:25:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	exec_loop(t_dlist *input)
 	if (extree != NULL)
 	{
 		exec(&extree);
-		job_clear(&extree);
+//		job_clear(&extree);
 	}
 }
 
