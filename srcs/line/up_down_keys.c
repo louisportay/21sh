@@ -6,22 +6,18 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 17:42:27 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/08 19:36:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/06 19:55:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
 /*
-** Clear the line, print the prompt and will eventually update the history entry
+** Will eventually update the history entry, if it is modified
 */
 
 static void	load_histentry(t_ctx *ctx, t_line *l)
 {
-	clear_line(ctx, l);
-	l->cursor_offset = 0;
-	print_prompt(ctx);
-	l->line_len = l->cursor_offset;
 	if (l->line)
 		ft_dlsthead(&l->line);
 	if (ctx->hist.list->prev && l->line && l->line != l->lastline)
@@ -39,6 +35,10 @@ static void	load_histentry(t_ctx *ctx, t_line *l)
 
 void	up_key(t_ctx *ctx, t_line *l)
 {
+	clear_line(ctx, l);
+//	l->cursor_offset = 0;
+//	print_prompt(ctx);
+	l->line_len = l->cursor_offset;
 	load_histentry(ctx, l);
 	ctx->hist.list = ctx->hist.list->next;
 	print_line_cursor_len(l, T_HISTENTRY(ctx->hist.list->data)->line->next);
@@ -49,6 +49,10 @@ void	up_key(t_ctx *ctx, t_line *l)
 
 void	down_key(t_ctx *ctx, t_line *l)
 {
+	clear_line(ctx, l);
+//	l->cursor_offset = 0;
+//	print_prompt(ctx);
+	l->line_len = l->cursor_offset;
 	load_histentry(ctx, l);
 	ctx->hist.list = ctx->hist.list->prev;
 	if (!ctx->hist.list->prev)

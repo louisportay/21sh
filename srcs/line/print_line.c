@@ -12,6 +12,11 @@
 
 #include "ft_21sh.h"
 
+/*
+** These functions are designed to redraw part of the line,
+** changing some attributes.
+*/
+
 void	print_line_cursor_len(t_line *l, t_dlist *list)
 {
 	while (list)

@@ -6,39 +6,39 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/16 14:14:33 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/06 20:44:55 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void	init_line_funcs(t_line_pair *p)
+static void	init_pairs(t_line_pair *p)
 {
-	p[0] = TEST_FUNC(&test_upkey, &up_key);
-	p[1] = TEST_FUNC(&test_downkey, &down_key);
-	p[2] = TEST_FUNC(&test_lkey, &lkey);
-	p[3] = TEST_FUNC(&test_rkey, &rkey);
-	p[4] = TEST_FUNC(&test_del_current_char, &del_current_char);
-	p[5] = TEST_FUNC(&test_del_previous_char, &del_previous_char);
-	p[6] = TEST_FUNC(&test_line_beginning, &go_to_line_beginning);
-	p[7] = TEST_FUNC(&test_line_end, &go_to_line_end);
-	p[8] = TEST_FUNC(&test_lower_line, &go_lower_line);
-	p[9] = TEST_FUNC(&test_upper_line, &go_upper_line);
-	p[10] = TEST_FUNC(&test_go_prev_word, &go_to_previous_word);
-	p[11] = TEST_FUNC(&test_go_next_word, &go_to_next_word);
-	p[12] = TEST_FUNC(&test_kill_beginline, &kill_line_beginning);
-	p[13] = TEST_FUNC(&test_kill_endline, &kill_line_end);
-	p[14] = TEST_FUNC(&test_clear_screen, &clear_screen_);
-	p[15] = TEST_FUNC(&test_yank, &yank);
-	p[16] = TEST_FUNC(&test_emacs_mode, &reverse_emacs_mode);
-	p[17] = TEST_FUNC(&test_killprevword, &kill_prev_word);
-	//p[18] = LINE_FUNC(&test_killnextword, &kill_next_word);
-	p[18] = TEST_FUNC(NULL, NULL);
+	p[0] = (t_line_pair){.test = &test_upkey, .func = &up_key};
+	p[1] = (t_line_pair){.test = &test_downkey, .func = &down_key};
+	p[2] = (t_line_pair){.test = &test_lkey, .func = &lkey};
+	p[3] = (t_line_pair){.test = &test_rkey, .func = &rkey};
+	p[4] = (t_line_pair){.test = &test_del_curr_char, .func = &del_curr_char};
+	p[5] = (t_line_pair){.test = &test_del_prev_char, .func = &del_prev_char};
+	p[6] = (t_line_pair){.test = &test_beginning,	.func = &go_beginning};
+	p[7] = (t_line_pair){.test = &test_end, .func = &go_end};
+	p[8] = (t_line_pair){.test = &test_lower_line, .func = &go_lower_line};
+	p[9] = (t_line_pair){.test = &test_upper_line, .func = &go_upper_line};
+	p[10] = (t_line_pair){.test = &test_go_prev_word, .func = &go_prev_word};
+	p[11] = (t_line_pair){.test = &test_go_next_word, .func = &go_next_word};
+	p[12] = (t_line_pair){.test = &test_kill_beginning, .func = &kill_beginning};
+	p[13] = (t_line_pair){.test = &test_kill_end, .func = &kill_end};
+	p[14] = (t_line_pair){.test = &test_clear_screen, .func = &clear_screen_};
+	p[15] = (t_line_pair){.test = &test_yank, .func = &yank};
+	p[16] = (t_line_pair){.test = &test_emacs_mode, 	.func = &toggle_emacs_mode};
+	p[17] = (t_line_pair){.test = &test_kill_prev_word, .func = &kill_prev_word};
+	p[18] = (t_line_pair){.test = &test_kill_next_word, .func = &kill_next_word};
+	p[19] = (t_line_pair){.test = NULL, .func = NULL};
 }
 
 int	read_state(t_ctx *ctx, t_line *l, t_key *key)
 {
-	if (*key->buf == NEWLINE_ || (ctx->emacs_mode && *key->buf == C_O))
+	if (*key->buf == NL || (ctx->emacs_mode && *key->buf == C_O))
 	{
 		if (l->line && ft_dlstaddr(l->line, 0) != l->lastline)
 			ft_dlstdel(&l->lastline, &delvoid);
@@ -54,27 +54,32 @@ int	read_state(t_ctx *ctx, t_line *l, t_key *key)
 	return (READON);
 }
 
-void	linefunc_switch(t_ctx *ctx, t_line *l, t_key *key)
+void	line_switch(t_ctx *ctx, t_line *l, t_key *key)
 {
-	t_line_pair	p[19];
+	t_line_pair	p[20];
 	int			i;
 
 	i = 0;
-	init_line_funcs(p);
+	init_pairs(p);
 	while (p[i].test && !(p[i].test(ctx, l, key)))
 		i++;
 	if (p[i].test)
 		p[i].func(ctx, l);
 }
 
+/*
+** When the line reader receives Ctrl-C
+**
+** LEAKS when an history entry is changed then C_C
+*/
+
 void	reset_line(t_ctx *ctx, t_line *l)
 {
 
-	write(STDOUT_FILENO, "\n", 1);
-
+	write(STDOUT_FILENO, "^C", 2);
+	go_end(ctx, l);
 	if (l->split_line)
 		ft_dlstdel(&l->split_line, &delvoid);
-
 	if (l->line)
 	{
 		ft_dlsthead(&l->line);
@@ -82,19 +87,31 @@ void	reset_line(t_ctx *ctx, t_line *l)
 	}
 	else
 		ft_dlstdel(&l->lastline, &delvoid);
+
 	l->line = ft_dlstnew("HEAD", 4);
 	l->lastline = l->line;
 	l->cursor_offset = 0;
-
 	stack_del(&l->linestate);
 	stack_push(&l->linestate, stack_create(UNQUOTED));
-
-	l->multiline = false;
+//	if (l->multiline == true)
+//		move_cursor_end_of_line(ctx, l);
+	write(STDOUT_FILENO, "\n", 1);
+//	l->multiline = false;
 	ft_strcpy(ctx->prompt_mode, PS1);
 	print_prompt(ctx);
 	l->line_len = l->cursor_offset;
 }
 
+void	reset_buffer(t_key *key)
+{
+	if ((key->buf[0] && key->buf[0] != ESC) ||
+		(key->buf[1] && key->buf[1] != '[') ||
+		key->i == READLEN)
+	{
+		ft_bzero(key->buf, key->i);
+		key->i = 0;
+	}
+}
 int	user_input(t_ctx *ctx, t_line *l, t_key *key)
 {
 	int ret;
@@ -111,45 +128,43 @@ int	user_input(t_ctx *ctx, t_line *l, t_key *key)
 	else if (*key->buf == C_C)
 		reset_line(ctx, l);
 	else
-		linefunc_switch(ctx, l, key);
+		line_switch(ctx, l, key);
 
-	if ((key->buf[0] && key->buf[0] != ESC) || (key->buf[1] && key->buf[1] != '[') || key->i == READLEN)
-	{
-		ft_bzero(key->buf, key->i);
-		key->i = 0;
-	}
+	reset_buffer(key);
+
 //	else if (buf == C_R && ctx->history)
 //		recherche dans l'historique (C_G + C_J + C_O)
 //	else if (buf == TAB && ctx->autocomplete)
 //		autocompletion
+
 	return (READON);
 }
 
-void	query_linestate(t_dlist *dlst, t_stack **linestate)
+void	query_linestate(t_dlist *line, t_stack **linestate)
 {
 	if ((*linestate)->state == BSLASH)
 		stack_pop(linestate);
-	while (dlst && (*linestate)->state != HASH)
+	while (line && (*linestate)->state != HASH)
 	{
-		update_linestate(linestate, *(char *)(dlst->data));
-		if (*(char *)(dlst->data) != '\\' && (*linestate)->state == BSLASH)
+		update_linestate(linestate, *(char *)(line->data));
+		if (*(char *)(line->data) != '\\' && (*linestate)->state == BSLASH)
 			stack_pop(linestate);
-		dlst = dlst->next;
+		line = line->next;
 	}
 	if ((*linestate)->state == HASH)
 		stack_pop(linestate);
 }
 
-void	query_hdocstate(t_dlist *dlst, t_stack **linestate, char *eof)
+void	query_hdocstate(t_dlist *line, t_stack **linestate, char *eof)
 {
 	char *s;
 
-	if (!(s = dlst_to_str(dlst)))
+	if (!(s = dlst_to_str(line)))
 		return ;
 	if (!ft_strcmp(s, eof))
 	{
 		stack_pop(linestate);
-		ft_dlstdel(&dlst->next, &delvoid);
+		ft_dlstdel(&line->next, &delvoid);
 	}
 	free(s);
 }
@@ -183,25 +198,23 @@ void	join_split_lines(t_line *l)
 		l->split_line = l->line;
 }
 
-void	err_quotes(t_line *l)
+void	err_line(t_line *l, int errno)
 {
-	write(STDIN_FILENO, "\n", 1);//
-	dump_err(BADQUOTES);
+	write(STDIN_FILENO, "\n", 1);
+	dump_err(errno);
 	ft_dlstdel(&l->split_line, &delvoid);
 	ft_dlstdel(&l->line, &delvoid);
 	stack_del(&l->linestate);
 }
 
-void	wrap_lineread(t_ctx *ctx, t_line *l, char *prompt_mode)
+void	ft_readline(t_ctx *ctx, t_line *l, char *prompt_mode)
 {
 	l->split_line = NULL;
-	l->line_saved = false;
 	ctx->cur_line = l;
 	ft_strcpy(ctx->prompt_mode, prompt_mode);
 	stack_push(&l->linestate, stack_create(UNQUOTED));
-	if (ctx->heredoc_eof)
+	if (l->heredoc)
 		stack_push(&l->linestate, stack_create(HEREDOC));
-
 
 	if (ctx->line_edition)
 	{
@@ -215,13 +228,21 @@ void	wrap_lineread(t_ctx *ctx, t_line *l, char *prompt_mode)
 		while (l->linestate && l->linestate->state != UNQUOTED)
 			getrawline(ctx, l);
 	}
+
+	if (l->split_line)
+	{
+		add_histentry(&ctx->hist, ctx->line.split_line);
+		ft_dlstaddend(l->split_line, ft_dlstnew("\n", 1));
+	}
+
 	ctx->cur_line = NULL;
 	stack_del(&l->linestate);
 
-	//DEBUG//
-//	if (ctx->line.split_line)//
-//		print_line(ctx->line.split_line->next);//print what's retrieved
-//	write(1, "\n", 1);//
-	/////////
+	  //DEBUG//
+//     if (ctx->line.split_line)//
+//             print_line(ctx->line.split_line->next);//print what's retrieved
+//     write(1, "\n", 1);//
+       /////////
+
 }
 

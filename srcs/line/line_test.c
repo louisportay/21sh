@@ -12,7 +12,7 @@
 
 # include "ft_21sh.h"
 
-bool	test_kill_beginline(t_ctx *ctx, t_line *l, t_key *key)
+bool	test_kill_beginning(t_ctx *ctx, t_line *l, t_key *key)
 {
 	(void)ctx;
 	if (*key->buf == C_U && l->line->prev)
@@ -21,7 +21,7 @@ bool	test_kill_beginline(t_ctx *ctx, t_line *l, t_key *key)
 		return (false);
 }
 
-bool	test_kill_endline(t_ctx *ctx, t_line *l, t_key *key)
+bool	test_kill_end(t_ctx *ctx, t_line *l, t_key *key)
 {
 	if (*key->buf == C_K && ctx->emacs_mode && l->line->next)
 		return (true);
@@ -125,7 +125,7 @@ bool	test_lower_line(t_ctx *ctx, t_line *l, t_key *key)
 		return (false);
 }
 
-bool	test_line_end(t_ctx *ctx, t_line *l, t_key *key)
+bool	test_end(t_ctx *ctx, t_line *l, t_key *key)
 {
 	if (!ft_strncmp(key->buf, END, ft_strlen(END)))
 	{
@@ -142,7 +142,7 @@ bool	test_line_end(t_ctx *ctx, t_line *l, t_key *key)
 		return (false);
 }
 
-bool	test_line_beginning(t_ctx *ctx, t_line *l, t_key *key)
+bool	test_beginning(t_ctx *ctx, t_line *l, t_key *key)
 {
 	if (!ft_strncmp(key->buf, HOME, ft_strlen(HOME)))
 	{
@@ -233,7 +233,7 @@ bool	test_lkey(t_ctx *ctx, t_line *l, t_key *key)
 		return (false);
 }
 
-bool	test_del_current_char(t_ctx *ctx, t_line *l, t_key *key)
+bool	test_del_curr_char(t_ctx *ctx, t_line *l, t_key *key)
 {
 	if (!ft_strncmp(key->buf, DELETE, ft_strlen(DELETE)))
 	{
@@ -250,7 +250,7 @@ bool	test_del_current_char(t_ctx *ctx, t_line *l, t_key *key)
 		return (false);
 }
 
-bool 	test_del_previous_char(t_ctx *ctx, t_line *l, t_key *key)
+bool 	test_del_prev_char(t_ctx *ctx, t_line *l, t_key *key)
 {
 	if (*key->buf == BACKSPACE && l->line->prev)
 		return (true);
@@ -295,23 +295,23 @@ bool	test_load_line(t_ctx *ctx, t_line *l, t_key *key)
 		return (true);
 }
 
-//bool	test_killnextword(t_ctx *ctx, t_line *l, t_key *key)
-//{
-//	if (!ft_strncmp(key->buf, M_D, ft_strlen(M_D)))
-//	{
-//		ft_bzero(key->buf, *bufindex);
-//		key->i = 0;
-//		if (l->line->next && ctx->emacs_mode)
-//			return (true);
-//		else
-//			return (false);
-//	}
-//	else
-//		return (false);
-//
-//}
+bool	test_kill_next_word(t_ctx *ctx, t_line *l, t_key *key)
+{
+	if (!ft_strncmp(key->buf, M_D, ft_strlen(M_D)))
+	{
+		ft_bzero(key->buf, key->i);
+		key->i = 0;
+		if (l->line->next && ctx->emacs_mode)
+			return (true);
+		else
+			return (false);
+	}
+	else
+		return (false);
 
-bool	test_killprevword(t_ctx *ctx, t_line *l, t_key *key)
+}
+
+bool	test_kill_prev_word(t_ctx *ctx, t_line *l, t_key *key)
 {
 	(void)ctx;
 	if (*key->buf == C_W && l->line->prev)

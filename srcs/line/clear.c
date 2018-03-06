@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:52:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/07 18:43:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/06 20:19:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 
 void	redraw_line(t_ctx *ctx, t_line *l)
 {
-	l->cursor_offset = 0;
-	print_prompt(ctx);
 	if (l->line)
 	{
 		ft_dlsthead(&l->line);
@@ -35,13 +33,16 @@ void	redraw_line(t_ctx *ctx, t_line *l)
 
 void clear_line(t_ctx *ctx, t_line *l)
 {
-	tputs(ctx->tc.cr, 1, &ft_putchar_stdin);
-	move_cursor_n_lines(-l->cursor_line);
+//	tputs(ctx->tc.cr, 1, &ft_putchar_stdin);
+//	move_cursor_n_lines(-l->cursor_line);
+	go_beginning(ctx, l);
 	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
 }
 
 void	clear_screen_(t_ctx *ctx, t_line *l)
 {
 	tputs(ctx->tc.cl, 1, &ft_putchar_stdin);
+	l->cursor_offset = 0;
+	print_prompt(ctx);
 	redraw_line(ctx, l);
 }

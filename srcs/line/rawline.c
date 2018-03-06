@@ -32,20 +32,19 @@ void	getrawline(t_ctx *ctx, t_line *l)
 		wrap_exit(EXIT_SUCCESS, ctx);
 	}
 	else if (!tmp)
-		return (err_quotes(l));
+		return (err_line(l, BADQUOTES));
+
 	l->line = str_to_dlst(tmp);
 
-	if (ctx->heredoc_eof)
-		query_hdocstate(l->line->next, &l->linestate, ctx->heredoc_eof);
+	if (l->heredoc)
+		query_hdocstate(l->line->next, &l->linestate, l->eohdoc);
 	else
 		query_linestate(l->line->next, &l->linestate);
-
 	if (l->linestate->state != UNQUOTED)
 		ft_strcpy(ctx->prompt_mode, PS2);
-	join_split_lines(l);
-	if (l->linestate->state == UNQUOTED || l->linestate->state == SQUOTE || l->linestate->state == DQUOTE)
-		ft_dlstaddend(l->split_line, (l->final_newline = ft_dlstnew("\n", 1)));
 
+	join_split_lines(l);
+	add_newline(l);
 	free(tmp);
 	l->line = NULL;
 }
