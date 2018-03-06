@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 13:31:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/06 17:22:24 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ int					create_locals(char ***locals)
 	ft_astr_append(locals, ft_strjoinc("HISTSIZE", HISTSIZE, '='));
 	ft_astr_append(locals, ft_strjoinc("HISTFILESIZE", HISTFILESIZE, '='));
 	ft_astr_append(locals, ft_strjoinc("HOSTNAME", hostname, '='));
+	add_histfile(get_ctxaddr());
+//	ft_astr_append(locals, ft_strjoinc("HISTFILE", get_histfile(ctx), '='));
+
 	return (SUCCESS);
 }
 
@@ -116,7 +119,7 @@ t_hdict			*getbuiltins(void)
 
 	dict = hash_create(HASH_SIZE, HASH_PRIME);
 //	hash_add(dict, "bang", &);
-//	hash_add(dict, "history", &ft_history);
+	hash_add(dict, "history", &ft_history);
 	hash_add(dict, "cd", &ft_cd);
 	hash_add(dict, "echo", &ft_echo);
 	hash_add(dict, "printenv", &ft_printenv);

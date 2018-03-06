@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/23 18:14:30 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/06 15:32:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	dump_err(char errcode)
 		ft_putstr_fd(NOMEM_STR, STDERR_FILENO);
 	else if (errcode == NODIR)
 		ft_putstr_fd(NODIR_STR, STDERR_FILENO);
-	else if (errcode == FAILSETSIGHDLR)
-		ft_putstr_fd(FAILSETSIGHDLR_STR, STDERR_FILENO);
 	else if (errcode == FAILREAD)
 		ft_putstr_fd(FAILREAD_STR, STDERR_FILENO);
 	else if (errcode == BADOPT_C)
@@ -72,7 +70,7 @@ void	wrap_exit(int status, t_ctx *ctx)
 		if (ctx->hist.list->next)
 		{
 			trim_history(&ctx->hist.list->next, ft_astr_getval(ctx->locals, "HISTFILESIZE"));
-			save_history(ctx->locals, ctx->hist.list->next);
+			save_history(ft_astr_getval(ctx->locals, "HISTFILE"), ctx->hist.list->next);
 			ctx->hist.list = ctx->hist.list->next;
 			ft_dlstdelone(&ctx->hist.list->prev, &delvoid);
 			ft_dlstdel(&ctx->hist.list, &del_histentry);

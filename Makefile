@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/26 19:56:36 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/06 17:08:04 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,14 @@
 
 SRCDIR= srcs/ \
 		srcs/line \
+		srcs/history \
+		srcs/lexer \
 		srcs/parser \
 		srcs/exec \
 		srcs/builtins \
 		srcs/expand \
 		srcs/expand/path_matching \
 		srcs/expand/braces \
-		srcs/expand/path_matching \
 		srcs/expand/tilde \
 		srcs/expand/quotes \
 		srcs/expand/param \
@@ -28,7 +29,7 @@ SRCDIR= srcs/ \
 vpath %.c $(SRCDIR)
 vpath %.h includes/
 
-CC= gcc-7
+CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
 DEBUG=sanitize
 OPT=LIB
@@ -39,7 +40,7 @@ ifeq ($(ARCH), Darwin)
 	CC= clang
 endif
 ifeq ($(ARCH), Linux)
-	CC=gcc
+	CC=gcc-8
 	TERMLIB=-lcurses
 	CFLAGS+=-D _GNU_SOURCE
 endif
@@ -66,7 +67,7 @@ INCLUDE=\
 
 HEADERS=\
 ft_21sh.h\
-history.c\
+history.h\
 line.h\
 prompt.h\
 token.h\
@@ -86,11 +87,12 @@ SRCS=	main.c\
 		signal.c\
 		tools.c\
 		utils.c\
-		prompt.c\
 		history.c\
+		history_utils.c\
 		rawline.c\
 		quote.c\
 		\
+		prompt.c\
 		line.c\
 		lineread.c\
 		move_cursor.c\
@@ -141,6 +143,7 @@ SRCS=	main.c\
 		builtin_env_utils.c\
 		builtin_unsetenv.c\
 		builtin_env.c\
+		builtin_history.c\
 		\
 		expand_exec.c\
 		expand.c\
@@ -203,7 +206,6 @@ SRCS=	main.c\
 		jc_print.c\
 
 OBJDIR= obj
-#include srcs/parser/parser.mk
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
 
 LIBDIR= libft/

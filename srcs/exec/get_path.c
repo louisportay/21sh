@@ -80,7 +80,7 @@ int						get_path(char *exe, char **env, char **path,
 {
 	if (locpath)
 		return (loc_path(exe, env, path));
-	return (ctx_path(exe, get_ctxaddr(NULL), path));
+	return (ctx_path(exe, get_ctxaddr(), path));
 }
 
 static char				*lnpath(char *exe, t_ctx *ctx)

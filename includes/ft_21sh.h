@@ -46,11 +46,10 @@
 # include "parser.h"
 # include "exec.h"
 
-# define NOMEM_STR				"No memory available for dynamic allocation\n"
-# define NODIR_STR				"Error retrieving current directory\n"
-# define FAILREAD_STR			"Can't read from STDIN\n"
-# define BADQUOTES_STR			"Unexpected end of file\n"
-# define FAILSETSIGHDLR_STR		"Couldn't set properly signal handlers.\n"
+# define NOMEM_STR				"Cannot allocate memory\n"
+# define NODIR_STR				"error retrieving current directory\n"
+# define FAILREAD_STR			"closing standard input\n"
+# define BADQUOTES_STR			"unexpected end of file\n"
 # define BADOPT_C_STR			"21sh: -c: option requires an argument\n"
 # define BADOPT_F_STR			"21sh: -f: option requires an argument\n"
 
@@ -129,7 +128,6 @@ struct					s_ctx
 	t_line				line;
 	t_hist				hist;
 	t_line				*cur_line;//line currently modified
-	char                *heredoc_eof;//current EOF
 	char				prompt_mode[4];
 	int					ret_tcget;
 
@@ -166,7 +164,7 @@ typedef struct			s_typefunc
 
 void					vingtetunsh(char **av, char **environ);
 
-void					exec_loop(t_dlist *input);
+void					exec_pipe(t_dlist *input);
 int						init(t_ctx *ctx, char **av, char **environ);
 t_hdict				*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);
@@ -184,7 +182,7 @@ void					on_emem(int status);
 void					max(size_t *a, size_t b);
 
 int						set_sighandler(void);
-t_ctx					*get_ctxaddr(t_ctx *ctxaddr);
+t_ctx					*get_ctxaddr(void);
 
 /*
 ** Tools

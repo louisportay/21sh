@@ -6,13 +6,13 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 13:35:22 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 13:24:28 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/06 16:28:20 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_string.h"
 
-static int		ft_lwidth(long nb)
+int		ft_lwidth(long nb)
 {
 	int				width;
 	unsigned long	nbr;

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:39:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 16:12:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/06 16:30:14 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void			*ft_memalloc(size_t size);
 void			*ft_pmemalloc(size_t size, void (*on_error)(int), int status);
 
 void			*ft_memcpy(void *dst, const void *src, size_t n);
+int				ft_lwidth(long nb);
 
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strjoinc(char const *s1, char const *s2, char const c);

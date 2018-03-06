@@ -21,7 +21,7 @@ static void	sighandler(int signum)
 {
 	t_ctx *ctx;
 	
-	ctx = get_ctxaddr(NULL);
+	ctx = get_ctxaddr();
 	if (signum == SIGWINCH && ctx->line_edition)
 	{
 		ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws);
@@ -44,19 +44,12 @@ static void	sighandler(int signum)
 
 int		set_sighandler(void)
 {
-	if (signal(SIGWINCH, &sighandler) == SIG_ERR) // Window size change
-		return (FAILSETSIGHDLR);
-	if (signal(SIGTSTP, &sighandler) == SIG_ERR)
-		return (FAILSETSIGHDLR);
-	if (signal(SIGINT, &sighandler) == SIG_ERR)
-		return (FAILSETSIGHDLR);
-//	if (signal(SIGQUIT, &sighandler) == SIG_ERR) // "CTRL-\"
-//		return (FAILSETSIGHDLR);
-	if (signal(SIGTERM, &sighandler) == SIG_ERR) // "kill"
-		return (FAILSETSIGHDLR);
-	if (signal(SIGTTIN, SIG_IGN) == SIG_ERR) // "kill"
-		return (FAILSETSIGHDLR);
-	if (signal(SIGTTOU, SIG_IGN) == SIG_ERR) // "kill"
-		return (FAILSETSIGHDLR);
+	signal(SIGWINCH, &sighandler); // Window size change
+	signal(SIGTSTP, &sighandler);
+	signal(SIGINT, &sighandler);
+//	signal(SIGQUIT, &sighandler) == SIG_ERR) // "CTRL-\"
+	signal(SIGTERM, &sighandler); // "kill"
+	signal(SIGTTIN, SIG_IGN); // "kill"
+	signal(SIGTTOU, SIG_IGN); // "kill"
 	return (SUCCESS);
 }

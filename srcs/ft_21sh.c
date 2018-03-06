@@ -12,16 +12,13 @@
 
 #include "ft_21sh.h"
 
-t_ctx 				*get_ctxaddr(t_ctx *ctxaddr)
+t_ctx 				*get_ctxaddr(void)
 {
-	static t_ctx 	*ctx = NULL;
-
-	if (ctxaddr)
-		ctx = ctxaddr;
-	return (ctx);
+	static t_ctx 	ctx;
+	return (&ctx);
 }
 
-void	exec_loop(t_dlist *input)
+void	exec_pipe(t_dlist *input)
 {
 	t_token *toklist;
 	t_job	*extree;
@@ -42,22 +39,18 @@ void	exec_loop(t_dlist *input)
 
 void	vingtetunsh(char **av, char  **environ)
 {
-	t_ctx	ctx;
+	t_ctx	*ctx;
 	char	ret;
 
-	if ((ret = init(&ctx, av, environ)) != SUCCESS)
-		fatal_err(ret, &ctx);
+	ctx = get_ctxaddr();
 
-	while (1)//
+	if ((ret = init(ctx, av, environ)) != SUCCESS)
+		fatal_err(ret, ctx);
+
+	while (1)
 	{
-		wrap_lineread(&ctx, &ctx.line, PS1);
-
-		exec_loop(ctx.line.split_line);
-
-		if (ctx.line.line_saved == false)
-			ft_dlstdel(&ctx.line.split_line, &delvoid);
-		else//
-			ft_dlstremove(&ctx.line.final_newline, &delvoid);
+		ft_readline(ctx, &ctx->line, PS1);
+		exec_pipe(ctx->line.split_line);
+		ft_dlstdel(&ctx->line.split_line, &delvoid);
 	}
-	wrap_exit(EXIT_SUCCESS, &ctx);
 }

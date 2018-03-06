@@ -79,14 +79,11 @@ int		r_tless(t_redir *r)
 
 int		r_dless(t_heredoc *r)
 {
-	t_ctx	*ctx;
-
-	ctx = get_ctxaddr(NULL);
-	ctx->heredoc_eof = r->s_rhs;
-	tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->tios);
-	wrap_lineread(ctx, &r->hdoc, PS2);
-	tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);
-	ctx->heredoc_eof = NULL;
+	r->hdoc.heredoc = true;
+	r->hdoc.eohdoc = r->s_rhs;
+	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->tios);
+	ft_readline(get_ctxaddr(), &r->hdoc, PS2);
+	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->oldtios);
 	free(r->s_rhs);
 	if (r->hdoc.split_line && r->hdoc.split_line->next)
 		r->s_rhs = dlst_to_str(r->hdoc.split_line);

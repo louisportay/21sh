@@ -45,12 +45,12 @@ int						exec(t_job **jobs)
 
 	bg[0] = NULL;
 	fg[0] = NULL;
-	ctx = get_ctxaddr(NULL);
+	ctx = get_ctxaddr();
 	j = *jobs;
 	update_tty(ctx, 1);
 	while (j != NULL)
 	{
-		job_exec(j, j->bg == 0, get_ctxaddr(NULL));
+		job_exec(j, j->bg == 0, get_ctxaddr());
 		job_sort(&j, fg, bg);
 	}
 	update_tty(ctx, 0);

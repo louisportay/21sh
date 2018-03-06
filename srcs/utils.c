@@ -14,7 +14,7 @@
 
 void				on_emem(int status)
 {
-	fatal_err((char)status, get_ctxaddr(NULL));
+	fatal_err((char)status, get_ctxaddr());
 }
 
 void				max(size_t *a, size_t b)

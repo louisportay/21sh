@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 19:40:25 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/06 15:26:46 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,11 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 {
 	ctx->av = av;
 	ctx->cur_line = NULL;
-	ctx->heredoc_eof = NULL;
 	ctx->line.line = NULL;
 	ctx->line.yank = NULL;
 	ctx->line.lastline = NULL;
 	ctx->line.linestate = NULL;
-	ctx->hist.file = 0;
+	ctx->line.heredoc = 0;
 	ctx->hist.list = NULL;
 	ctx->hist.index = 1;
 	ctx->emacs_mode = 1;
@@ -48,7 +47,7 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->config_file = 1;
 	ctx->history = 1;
 	ctx->job_control = 1;
-	ctx->fd = STDIN_FILENO;//ctx->istty ? STDIN_FILENO : -1;
+	ctx->fd = STDIN_FILENO;
 	ctx->istty = isatty(STDIN_FILENO);
 	ctx->path = getpath(environ);
 	ctx->environ = ft_astr_dup(environ);
@@ -81,7 +80,7 @@ static void			init_termios(t_ctx *ctx)
 
 //on garde la comparaison avec xterm-256color ?
 
-static int	init_line_edition(t_ctx *ctx)
+static void	init_line_edition(t_ctx *ctx)
 {
 	char *tmp;
 
@@ -89,38 +88,29 @@ static int	init_line_edition(t_ctx *ctx)
 	{
 		if (ctx->ret_tcget == -1 || ctx->line_edition == 0 || (tmp = getenv("TERM")) == NULL
 				|| tgetent(NULL, tmp) == ERR)/*ft_strcmp(tmp, "xterm-256color") ||*/
-		{
 			ctx->line_edition = false;
-			ctx->history = false;
-			return (-1);
-		}
-		init_termios(ctx);
+		else
+			//ctx->history = false;
+			init_termios(ctx);
 	}
 	else
-	{
+//	{
 		ctx->line_edition = false;
-		ctx->history = false;
+	//ctx->history = false;
 	//	ctx->job_control = false;
-	}
-	return (0);
+//	}
 }
 
 int	init(t_ctx *ctx, char **av, char **environ)
 {
-	char	*tmp;
-
-	get_ctxaddr(ctx);
 	init_ctx(ctx, av, environ);
-	if (set_sighandler() == FAILSETSIGHDLR)
-		return (FAILSETSIGHDLR);
+	set_sighandler();
 	get_shell_opt(ctx, ctx->av);
 	init_line_edition(ctx);
 
 	complete_environ(&ctx->environ);
 
-	ft_astr_append(&ctx->locals, ft_strjoinc("HISTFILE", tmp = get_histfile(ctx), '='));
-	free(tmp);
-	if (ctx->history)
-		init_hist(ctx);
+//	if (ctx->history)
+	init_hist(&ctx->hist);
 	return (SUCCESS);
 }

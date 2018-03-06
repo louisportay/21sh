@@ -12,7 +12,7 @@
 
 .PHONY: clean fclean re
 
-CC= gcc-7
+CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
 DEBUG=sanitize
 ARCH:= $(shell uname)

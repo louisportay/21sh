@@ -113,13 +113,13 @@ static int				launch_processes(t_job *j, t_ctx *ctx, int fg)
 
 int						job_exec(t_job *j, int fg, t_ctx *ctx)
 {
-	t_qbuf				*buf;
+//	t_qbuf				*buf;
 	int					exp_err;
 
 	if (j == NULL)
 		return (0);
 	
-	buf = qbuf_new(1 << 8);
+//	buf = qbuf_new(1 << 8);
 	if (j->parent == j)
 		j->command = get_command(j);
 	j->status = expand_job(j, ctx, &exp_err);

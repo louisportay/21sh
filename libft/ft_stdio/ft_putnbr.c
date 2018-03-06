@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 11:14:19 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 15:25:46 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/06 16:23:50 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,5 @@ void	ft_putnbr(long n)
 
 	s = ft_itoa(n);
 	ft_putstr(s);
-	ft_strdel(&s);
+	free(s);
 }

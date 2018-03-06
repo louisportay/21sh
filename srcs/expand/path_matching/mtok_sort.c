@@ -24,7 +24,7 @@ t_mtok			*mtok_requal(t_mtok *mtk)
 	t_mtok		*t;
 	int			globstar;
 
-	globstar = get_ctxaddr(NULL)->set & GLOBSTAR;
+	globstar = get_ctxaddr()->set & GLOBSTAR;
 	ok[0] = NULL;
 	ok[1] = NULL;
 	err[0] = NULL;

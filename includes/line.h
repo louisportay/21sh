@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/16 14:11:29 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/06 21:12:02 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define C_Y '\031'
 # define ESC '\033'
 
-# define NEWLINE_	'\n'
+# define NL			'\n'
 # define TAB		'\t'
 # define BACKSPACE	127
 
@@ -88,18 +88,22 @@ enum					e_readcode
 	ERR_QUOTE,
 };
 
+/*
+** Quotes and Heredoc injects '\n'
+*/
+
 enum					e_linestate
 {
-	UNQUOTED,	
-	BSLASH,		
-	SQUOTE,		
-	DQUOTE,		
+	UNQUOTED = 0b1,	 // 0b0 ?
+	BSLASH = 0b10,
+	SQUOTE = 0b100,
+	DQUOTE = 0b1000,
 //	BQUOTE,		42SH	
-	PAREN,
-	BRACE,
-	BRACKET,
-	HASH,
-	HEREDOC,
+	PAREN = 0b10000,
+	BRACE = 0b100000,
+	BRACKET = 0b1000000,
+	HASH = 0b100000000,
+	HEREDOC = 0b1000000000,
 };
 
 struct		s_termcaps
@@ -120,6 +124,11 @@ struct		s_termcaps
 
 /*
 ** sizeof struct winsize = 8
+**
+**	cursor_offset:  number of lines by (cursor_offset / ws_col) col number by (cursor_offset % ws_col)
+**	line_len:		total length including the prompt len.
+**	cursor_line:	line on which the cursor is.
+**	num_lines:		total number of lines.
 */
 
 typedef struct			s_line
@@ -128,14 +137,14 @@ typedef struct			s_line
 	t_dlist				*yank;
 	t_dlist				*lastline;
 	t_dlist				*split_line;
-	t_dlist				*final_newline;
 	t_stack				*linestate;
-	size_t				cursor_offset;	// number of lines by (cursor_offset / ws_col) col number by (cursor_offset % ws_col)
-	size_t				line_len;		// include the prompt len
+	char				*eohdoc;
+	size_t				cursor_offset;
+	size_t				line_len;	
 	unsigned			cursor_line;
 	unsigned			num_lines;
-	bool				multiline;
-	bool				line_saved;
+//	bool				multiline;
+	bool				heredoc;
 }						t_line;
 
 typedef struct	s_key
@@ -155,7 +164,7 @@ typedef struct	s_line_pair
 	t_line_func func;
 }				t_line_pair;
 
-void	wrap_lineread(t_ctx *env, t_line *l, char *prompt_mode);
+void	ft_readline(t_ctx *ctx, t_line *l, char *prompt_mode);
 void	lineread(t_ctx *env, t_line *l);
 void	getrawline(t_ctx *env, t_line *l);
 int		user_input(t_ctx *env, t_line *l, t_key *key);
@@ -173,10 +182,10 @@ void	move_cursor_end_of_line(t_ctx *env, t_line *l);
 
 void	go_upper_line(t_ctx *env, t_line *l);
 void	go_lower_line(t_ctx *env, t_line *l);
-void	go_to_line_beginning(t_ctx *env, t_line *l);
-void	go_to_line_end(t_ctx *env, t_line *l);
-void	go_to_previous_word(t_ctx *env, t_line *l);
-void	go_to_next_word(t_ctx *env, t_line *l);
+void	go_beginning(t_ctx *env, t_line *l);
+void	go_end(t_ctx *env, t_line *l);
+void	go_prev_word(t_ctx *env, t_line *l);
+void	go_next_word(t_ctx *env, t_line *l);
 
 void	print_line_cursor_len(t_line *l, t_dlist *list);
 void	print_line_cursor(t_line *l, t_dlist *list);
@@ -188,33 +197,33 @@ void	lkey(t_ctx *env, t_line *l);
 void	rkey(t_ctx *env, t_line *l);
 
 void	insert_char(char *buf, t_ctx *env, t_line *l);
-void	del_previous_char(t_ctx *env, t_line *l);
-void	del_current_char(t_ctx *env, t_line *l);
+void	del_prev_char(t_ctx *env, t_line *l);
+void	del_curr_char(t_ctx *env, t_line *l);
 
-void	kill_line_end(t_ctx *env, t_line *l);
-void	kill_line_beginning(t_ctx *env, t_line *l);
+void	kill_end(t_ctx *env, t_line *l);
+void	kill_beginning(t_ctx *env, t_line *l);
 void	kill_prev_word(t_ctx *env, t_line *l);
-//void	kill_next_word(t_ctx *env, t_line *l);
+void	kill_next_word(t_ctx *env, t_line *l);
 void	yank(t_ctx *env, t_line *l);
 
-bool	test_kill_beginline(t_ctx *env, t_line *l, t_key *key);
-bool	test_kill_endline(t_ctx *env, t_line *l, t_key *key);
-bool	test_killprevword(t_ctx *env, t_line *l, t_key *key);
-//bool	test_killnextword(t_ctx *env, t_line *l, t_key *key);
+bool	test_kill_beginning(t_ctx *env, t_line *l, t_key *key);
+bool	test_kill_end(t_ctx *env, t_line *l, t_key *key);
+bool	test_kill_prev_word(t_ctx *env, t_line *l, t_key *key);
+bool	test_kill_next_word(t_ctx *env, t_line *l, t_key *key);
 bool	test_clear_screen(t_ctx *env, t_line *l, t_key *key);
 bool	test_yank(t_ctx *env, t_line *l, t_key *key);
 bool	test_go_next_word(t_ctx *env, t_line *l, t_key *key);
 bool	test_go_prev_word(t_ctx *env, t_line *l, t_key *key);
 bool	test_upper_line(t_ctx *env, t_line *l, t_key *key);
 bool	test_lower_line(t_ctx *env, t_line *l, t_key *key);
-bool	test_line_end(t_ctx *env, t_line *l, t_key *key);
-bool	test_line_beginning(t_ctx *env, t_line *l, t_key *key);
+bool	test_end(t_ctx *env, t_line *l, t_key *key);
+bool	test_beginning(t_ctx *env, t_line *l, t_key *key);
 bool	test_upkey(t_ctx *env, t_line *l, t_key *key);
 bool	test_downkey(t_ctx *env, t_line *l, t_key *key);
 bool	test_rkey(t_ctx *env, t_line *l, t_key *key);
 bool	test_lkey(t_ctx *env, t_line *l, t_key *key);
-bool	test_del_current_char(t_ctx *env, t_line *l, t_key *key);
-bool 	test_del_previous_char(t_ctx *env, t_line *l, t_key *key);
+bool	test_del_curr_char(t_ctx *env, t_line *l, t_key *key);
+bool 	test_del_prev_char(t_ctx *env, t_line *l, t_key *key);
 bool	test_emacs_mode(t_ctx *env, t_line *l, t_key *key);
 
 bool	test_load_line(t_ctx *env, t_line *l, t_key *key);
@@ -224,9 +233,10 @@ void	update_line(t_ctx *env, t_line *l);
 void	update_linestate(t_stack **state, char c);
 void	query_linestate(t_dlist *dlst, t_stack **linestate);
 void	query_hdocstate(t_dlist *dlst, t_stack **linestate, char *eof);
-void	reverse_emacs_mode(t_ctx *env, t_line *l);
+void	toggle_emacs_mode(t_ctx *env, t_line *l);
 void	join_split_lines(t_line *l);
-void	err_quotes(t_line *l);
+void	err_line(t_line *l, int errno);
 
+void	add_newline(t_line *l);
 
 #endif

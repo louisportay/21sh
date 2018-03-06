@@ -18,10 +18,8 @@ void		get_shell_opt(t_ctx *ctx, char **av)
 	{
 		if (!ft_strcmp(*av, "--norc"))
 			ctx->config_file = 0;
-		else if (!ft_strcmp(*av, "--rawline"))
+		else if (!ft_strcmp(*av, "--noediting"))
 			ctx->line_edition = 0;
-		else if (!ft_strcmp(*av, "--nohist"))
-			ctx->history = 0;
 		else if (!ft_strcmp(*av, "-f"))
 		{
 			if (av[1] == NULL)
@@ -38,7 +36,7 @@ void		get_shell_opt(t_ctx *ctx, char **av)
 				fatal_err(BADOPT_C, ctx);
 			l_av = str_to_dlst(av[1]);
 			ft_dlstaddend(l_av, ft_dlstnew("\n", 1));
-			exec_loop(l_av);
+			exec_pipe(l_av);
 			ft_dlstdel(&l_av, &delvoid);
 			wrap_exit(0, ctx);
 		}

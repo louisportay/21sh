@@ -16,7 +16,7 @@
 
 int					ent_match(char *str, t_mtok *tokens)
 {
-	if (get_ctxaddr(NULL)->set & DOTGLOB)
+	if (get_ctxaddr()->set & DOTGLOB)
 		return (compare(str,0, tokens) == 0);
 	if (str[0] == '.' && tokens->type == FILEN)
 		return (0);
