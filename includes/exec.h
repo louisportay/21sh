@@ -76,6 +76,7 @@ struct					s_job
 	char				notified;
 	struct termios		tmodes;// Candidate for deletion
 	int					status;
+	char				stopped;
 	char				completed;
 	char				running;
 	char				done;
@@ -88,6 +89,8 @@ struct					s_job
 	struct s_job		*next;
 	struct s_job		*parent;
 };
+
+int						exec(t_job *jobs);
 
 struct s_proc			*proc_cr(void);
 struct s_proc			*proc_new(char **argv);

@@ -12,26 +12,6 @@
 
 #include "ft_21sh.h"
 
-void					jc_updateproc(t_job *j, t_proc *p, int status)
-{
-	if (WIFEXITED(status))
-	{
-		p->completed = 1;
-		p->status = WEXITSTATUS(status);
-	}
-	else if (WIFSTOPPED(status))
-	{
-		p->stopped = 1;
-	}
-	else if (WIFSIGNALED(status))
-	{
-		p->completed = 1;
-		dprintf(STDERR_FILENO, "%d: Terminated by signal %d.\n", (int)p->pid, 
-				WTERMSIG(status));
-		j->parent->completed = JC_SIGNAL;
-	}
-}
-
 void					jc_updatejob(t_job *j)
 {
 	j = j->parent;

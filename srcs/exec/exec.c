@@ -36,7 +36,7 @@ static void				update_tty(t_ctx *ctx, int old)
 		perror(old ? "tcsetattr reset" : "tcsetattr set");
 }
 
-int						exec(t_job **jobs)
+int						exec(t_job *jobs)
 {
 	t_ctx				*ctx;
 	t_job				*tmp;
@@ -47,8 +47,9 @@ int						exec(t_job **jobs)
 	bg[0] = NULL;
 	fg[0] = NULL;
 	ctx = get_ctxaddr(NULL);
-	j = *jobs;
+	j = jobs;
 	update_tty(ctx, 1);
+	signal(SIGCHLD, SIG_DFL);
 	while (j != NULL)
 	{
 		tmp = j;
@@ -61,6 +62,7 @@ int						exec(t_job **jobs)
 		if (tmp->bg)
 			job_insert(bg, bg + 1, tmp);
 	}
+	signal(SIGCHLD, &jc_signal);
 	update_tty(ctx, 0);
 	jc_addjobs(bg[0], ctx);
 	jc_print(ctx);

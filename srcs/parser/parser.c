@@ -90,6 +90,18 @@ static t_job			*get_ands(t_token **toks, t_job *parent)
 	return (j[0]);
 }
 
+static void				job_updateands(t_job *job)
+{
+	t_job				*ok;
+
+	ok = job->ok;
+	while (ok != NULL)
+	{
+		ok->err = job->err;
+		ok = ok->ok;
+	}
+}
+
 static t_job			*job_getnext(t_token **tokens, t_job *parent)
 {
 	t_token				*tokz;
@@ -109,6 +121,7 @@ static t_job			*job_getnext(t_token **tokens, t_job *parent)
 		if ((job->err = job_getnext(&tokz, parent)) == NULL)
 			return (job_clear(&job));
 	}
+	job_updateands(job);
 	*tokens = tokz;
 	return (job);
 }

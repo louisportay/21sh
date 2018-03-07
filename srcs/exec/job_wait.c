@@ -76,7 +76,7 @@ void					job_putbg(t_job *j, int continued)
 	if (continued != 0)
 	{
 		if (kill(-j->pgid, SIGCONT) < 0)
-			ft_putstr_fd("Kill error on kill zombies", STDERR_FILENO);
+            ft_putstr_fd("Error on sending SIGCONT to group\n", STDERR_FILENO);
 	}
 }
 
@@ -85,17 +85,13 @@ int						job_putfg(t_job *j, int continued, t_ctx *ctx)
 	int					ret;
 
 	(void)continued;
-//	if (ctx->fg_job != j->parent)
-//		ctx->fg_job = j->parent;
-//	j->running = 1;
 	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, j->pgid)) != 0)
 		perror("tcsetpgrp - job_putfg");
-//	while (j->completed != 1)
-//		;
-//	j->running = 0;
-	job_wait(j);
-	j->status = jc_pipestatus(j);
-	j->parent->status = j->status;
+	signal(SIGCHLD, &jc_signal);
+	while (j->completed != 1 && j->stopped != 1)
+		;
+//		jc_updatepipe(ctx->fg_job);
+	signal(SIGCHLD, SIG_DFL);
 	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, ctx->pgid)) != 0)
 		perror("tcsetpgrp");
 	return (j->status);

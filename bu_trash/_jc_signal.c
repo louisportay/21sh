@@ -24,6 +24,7 @@ void					jc_signal(int signo)
 	ctx = get_ctxaddr(NULL);
 	while ((pid = waitpid(WAIT_ANY, &status, WUNTRACED)) > 0)
 	{
+        printf("Signaled %d\n", pid);
 		if ((j = jc_getjob(ctx, pid)) == NULL)
 			dprintf(STDERR_FILENO, "No job saved for (%d)\n", pid);
 		else

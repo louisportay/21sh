@@ -108,6 +108,7 @@ struct					s_ctx
 	t_job				**bg_jobs;
 	size_t				bg_cnt;
 	t_job				*fg_job;
+    int                 exe_stack;
 
 	/*
 	**	EXECUTION HASH (for HASH builtin)
@@ -199,7 +200,6 @@ bool					is_number(char *str);
 bool					is_number_w_dash(char *str);
 
 t_job					*parse(t_token *tok);
-int						exec(t_job **jobs);
 int						job_waitforit(t_job *j, t_ctx *ctx);
 
 /*

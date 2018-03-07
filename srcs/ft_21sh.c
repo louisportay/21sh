@@ -34,10 +34,7 @@ void	exec_loop(t_dlist *input)
 		extree = parse(toklist);
 	delete_toklist(&toklist);
 	if (extree != NULL)
-	{
-		exec(&extree);
-//		job_clear(&extree);
-	}
+		exec(extree);
 }
 
 void	vingtetunsh(char **av, char  **environ)

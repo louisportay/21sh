@@ -16,6 +16,7 @@ SRCDIR= srcs/ \
 		srcs/line \
 		srcs/parser \
 		srcs/exec \
+		srcs/job_control \
 		srcs/builtins \
 		srcs/expand \
 		srcs/expand/path_matching \
@@ -206,11 +207,8 @@ SRCS=	main.c\
 		mtok_sort.c\
 		\
 		jc_addjobs.c\
-		jc_jobs.c\
 		jc_print.c\
-		jc_signal.c\
 		jc_update.c\
-		jc_helper.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk
