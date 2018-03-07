@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/27 19:17:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/07 18:26:24 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 	else
 	{
 		p->pid = pid;
-        printf("Launched %d\n", pid);
 		if (ctx->istty != 0)
 		{
 			if (j->pgid == 0)
@@ -113,14 +112,12 @@ int						job_exec(t_job *j, int fg, t_ctx *ctx)
 	if (j->parent == j)
 		j->command = get_command(j);
 	j->status = expand_job(j, ctx, &exp_err);
-	if (j->parent->bg != 0)
+	if (j->parent->bg == 0)
 		ctx->fg_job = j;
 	if (exp_err == 0)
 	{
 		if (launch_processes(j, ctx, fg) == 1)
 			return (1);
-		if (fg == 1)
-			ctx->fg_job = j;
 	}
 	if (fg && exp_err)
 		return (job_donext(j, ctx));

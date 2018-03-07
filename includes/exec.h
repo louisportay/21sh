@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/27 15:51:04 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/07 17:18:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int						proc_chgstat(t_job *job, pid_t pid, int status);
 
 struct s_job			*job_new(t_proc *plist);
 void					job_insert(t_job **head, t_job **curr, t_job *j);
+void					job_ctxinsert(t_job *job, t_ctx *ctx);
 void					*job_clear(t_job **jobs);
 
 struct s_job			*job_find(pid_t pid, t_job *job_list);
@@ -119,6 +120,8 @@ void					job_fmtinfo(t_job *j, char *status);
 
 int						job_next(t_job *j, t_ctx *ctx);
 int						job_donext(t_job *j, t_ctx *ctx);
+
+void					job_safeclear(t_job **job);
 
 void					setup_signals(void (*sig)());
 

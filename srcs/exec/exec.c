@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/27 19:39:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/07 18:30:33 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,28 @@ int						exec(t_job *jobs)
 	t_ctx				*ctx;
 	t_job				*tmp;
 	t_job				*bg[2];
-	t_job				*fg[2];
-	t_job				*j;
 
 	bg[0] = NULL;
-	fg[0] = NULL;
 	ctx = get_ctxaddr(NULL);
-	j = jobs;
 	update_tty(ctx, 1);
 	signal(SIGCHLD, SIG_DFL);
-	while (j != NULL)
+	while (jobs != NULL)
 	{
-		tmp = j;
-		j = j->next;
+		tmp = jobs;
+		jobs = jobs->next;
 		tmp->next = NULL;
 		{	/*	Add old job deletion if not empty and on loop end	*/	}
 		if (tmp->bg == 0)
 			ctx->fg_job = tmp;
 		job_exec(tmp, tmp->bg == 0, ctx);
 		if (tmp->bg)
-			job_insert(bg, bg + 1, tmp);
+			job_ctxinsert(tmp, ctx);
 	}
-	signal(SIGCHLD, &jc_signal);
-	update_tty(ctx, 0);
-	jc_addjobs(bg[0], ctx);
+	for (size_t i = 0; i < ctx->bg_cnt; i++)
+		jc_updatepipe(ctx->bg_jobs[i]);
 	jc_print(ctx);
+	jc_clear(ctx);
+	update_tty(ctx, 0);
+	signal(SIGCHLD, &jc_signal);
 	return (0);
 }

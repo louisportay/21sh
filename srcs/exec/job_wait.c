@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/27 19:52:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/07 16:26:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int						job_donext(t_job *j, t_ctx *ctx)
 int						job_next(t_job *j, t_ctx *ctx)
 {
 	j->status = job_putfg(j, 0, ctx);
+	return (0);
 	return (job_donext(j, ctx));
 }
 
@@ -87,13 +88,18 @@ int						job_putfg(t_job *j, int continued, t_ctx *ctx)
 	(void)continued;
 	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, j->pgid)) != 0)
 		perror("tcsetpgrp - job_putfg");
-	signal(SIGCHLD, &jc_signal);
-	while (j->completed != 1 && j->stopped != 1)
-		;
-//		jc_updatepipe(ctx->fg_job);
-	signal(SIGCHLD, SIG_DFL);
+	jc_updatepipe(j);
+	if (j->completed == 0 && j->stopped == 0)
+	{
+		signal(SIGCHLD, &jc_signal);
+		while (j->completed != 1 && j->stopped != 1)
+			;
+		signal(SIGCHLD, SIG_DFL);
+	}
 	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, ctx->pgid)) != 0)
 		perror("tcsetpgrp");
+	(void)ret;
+	(void)ctx;
 	return (j->status);
 }
 

@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/02/27 16:03:48 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/07 16:59:54 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRCDIR= srcs/ \
 		srcs/line \
 		srcs/parser \
 		srcs/exec \
-		srcs/job_control \
+		srcs/jc \
 		srcs/builtins \
 		srcs/expand \
 		srcs/expand/path_matching \
@@ -206,9 +206,10 @@ SRCS=	main.c\
 		mtok_print.c\
 		mtok_sort.c\
 		\
-		jc_addjobs.c\
-		jc_print.c\
+		jc_find.c\
+		jc_signal.c\
 		jc_update.c\
+		job_safeclear.c\
 
 OBJDIR= obj
 #include srcs/parser/parser.mk
