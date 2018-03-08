@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 14:38:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 16:50:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ int						jc_updatepipe(t_job *j)
 	t_proc				*p;
 	pid_t				pid;
 	int					status;
+	int					completed;
 
 	if (j == NULL)
 		return (0);
 	p = j->procs;
-	j->completed = 1;
+	completed = 1;
 	while (p != NULL)
 	{
 		if (p->completed == 1)
@@ -54,15 +55,18 @@ int						jc_updatepipe(t_job *j)
 			;
 		else if (pid == -1)
 			return (-1);
-		j->completed &= p->completed;
+		completed &= p->completed;
 		if (p->stopped)
 		{
+			j->completed = 0;
 			j->stopped = 1;
 			return (1);
 		}
-		j->status = (p->next == NULL && j->completed) ? p->status : 0;
+		j->status = (p->next == NULL && completed) ? p->status : 0;
 		p = p->next;
 	}
+	if (completed == 1)
+		j->completed = 1;
 	return (j->status);
 }
 
