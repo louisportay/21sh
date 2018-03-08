@@ -6,43 +6,11 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/07 16:26:46 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 14:28:25 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-int						job_wait(t_job *j)
-{
-	int					status;
-	pid_t				pid;
-	t_proc				*p;
-
-	p = j->procs;
-	while (p != NULL)
-	{
-		pid = waitpid(p->pid, &status, WUNTRACED);
-		if (pid == -1)
-		{
-			perror("waitpid");
-			return (-1);
-		}
-		p->status = status;
-		if (WIFEXITED(status))
-		{
-			p->stopped = 1;
-			j->status = WEXITSTATUS(status);
-		}
-		else if (WIFSIGNALED(status))
-		{
-			p->completed = 1;
-			dprintf(STDERR_FILENO, "%s (%d) stopped by sig(%d)\n",
-					p->argv[0], pid, WTERMSIG(status));
-		}
-		p = p->next;
-	}
-	return (j->parent->status = j->status);
-}
 
 int						job_donext(t_job *j, t_ctx *ctx)
 {
@@ -54,21 +22,22 @@ int						job_donext(t_job *j, t_ctx *ctx)
 			return (j->status);
 		else
 		{
-			if ((ret = job_exec(j->ok, j->parent->bg == 0, ctx)) == 0
+			if ((ret = job_exec(j->ok, ctx)) == 0
 				&& j->parent->status == 0)
 				return (j->parent->status);
 			else
-				return (job_exec(j->err, j->parent->bg == 0, ctx));
+				return (job_exec(j->err, ctx));
 
 		}
 	}
-	return (job_exec(j->err, 1, ctx));
+	if (j->err != NULL)
+		return (j->status = job_exec(j->err, ctx));
+	return (j->status);
 }
 
 int						job_next(t_job *j, t_ctx *ctx)
 {
 	j->status = job_putfg(j, 0, ctx);
-	return (0);
 	return (job_donext(j, ctx));
 }
 
@@ -91,6 +60,8 @@ int						job_putfg(t_job *j, int continued, t_ctx *ctx)
 	jc_updatepipe(j);
 	if (j->completed == 0 && j->stopped == 0)
 	{
+		jc_updatebg(ctx);
+		jc_updatepipe(j);
 		signal(SIGCHLD, &jc_signal);
 		while (j->completed != 1 && j->stopped != 1)
 			;
@@ -98,8 +69,6 @@ int						job_putfg(t_job *j, int continued, t_ctx *ctx)
 	}
 	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, ctx->pgid)) != 0)
 		perror("tcsetpgrp");
-	(void)ret;
-	(void)ctx;
 	return (j->status);
 }
 

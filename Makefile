@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/07 16:59:54 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/08 13:39:48 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -128,7 +128,6 @@ SRCS=	main.c\
 		get_path.c\
 		job_utils.c\
 		job_wait.c\
-		proc_chgstat.c\
 		job_lifecycle.c\
 		bridge_exec_astr.c\
 		exec_assignments.c\
@@ -219,6 +218,8 @@ LIBDIR= libft/
 LIB= libft.a
 
 NAME= 21sh
+
+.SILENT:
 
 GREEN="\033[32m"
 RESET="\033[0m"

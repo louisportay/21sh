@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/07 18:26:24 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 14:28:55 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,10 @@ static int				launch_processes(t_job *j, t_ctx *ctx, int fg)
 		clear_pipe(j, &infile, &outfile, mypipe[0]);
 		p = p->next;
 	}
-	j->running = 1;
 	return (0);
 }
 
-int						job_exec(t_job *j, int fg, t_ctx *ctx)
+int						job_exec(t_job *j, t_ctx *ctx)
 {
 	int					exp_err;
 
@@ -116,12 +115,12 @@ int						job_exec(t_job *j, int fg, t_ctx *ctx)
 		ctx->fg_job = j;
 	if (exp_err == 0)
 	{
-		if (launch_processes(j, ctx, fg) == 1)
+		if (launch_processes(j, ctx, j->parent->bg == 0) == 1)
 			return (1);
 	}
-	if (fg && exp_err)
+	if (j->parent->bg == 0 && exp_err)
 		return (job_donext(j, ctx));
-	else if (fg)
+	else if (j->parent->bg == 0)
 		return (job_next(j, ctx));
 //	PUT_BG
 	return (0);

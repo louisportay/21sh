@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 10:30:48 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/07 18:32:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 14:10:48 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,14 @@ typedef struct s_ctx	t_ctx;
 
 void					jc_signal(int signo);
 int						jc_updatepipe(t_job *j);
-int						jc_procfind(t_job *j, pid_t pid);
-int						jc_jobfind(t_ctx *ctx, pid_t pid);
+void					jc_updateproc(t_job *j, t_proc *p, int status);
+int						jc_procfind(t_job *j, pid_t pid, t_proc **p);
+int						jc_jobfind(t_ctx *ctx, pid_t pid, t_proc **p);
 
 void					jc_print(t_ctx *ctx);
 void					jc_notify(t_job *j, int i);
 void					jc_clear(t_ctx *ctx);
+
+void					jc_updatebg(t_ctx *ctx);
 
 #endif

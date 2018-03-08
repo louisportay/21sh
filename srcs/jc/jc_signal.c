@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:37:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/07 18:37:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 14:29:24 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,15 @@
 void					jc_notify(t_job *j, int i)
 {
 	if (j->parent->done == 1)
-		printf("[%d]%-3c%-24s%s\n", i + 1, ' ', "Done", j->parent->command);
+	{
+		if (j->parent->status == 0)
+			printf("[%d]%-3c%-24s%s\n", i + 1, ' ', "Done", j->parent->command);
+		else
+			printf("[%d]%-3c%s %-3d%16c%s\n", i + 1, ' ', "Exit",
+					j->parent->status, ' ', j->parent->command);
+		get_ctxaddr(NULL)->bg_jobs[i] = NULL;
+//		job_safeclear(get_ctxaddr(NULL)->bg_jobs + i);
+	}
 	else
 		printf("[%d]%-3c%-24s%s\n", i + 1, ' ', "Not done", j->parent->command);
 }
@@ -41,17 +49,22 @@ void					jc_signal(int signo)
 	t_ctx				*ctx;
 	t_job				*j;
 	t_job				*next;
+	t_proc				*p;
 
 	if (signo != SIGCHLD)
 		return ;
 	ctx = get_ctxaddr(NULL);
 	while ((pid = waitpid(WAIT_ANY, &status, WUNTRACED)) > 0)
 	{
-		if (jc_procfind(ctx->fg_job, pid) == 1)
+		if (jc_procfind(ctx->fg_job, pid, &p) == 1)
+		{
+			jc_updateproc(ctx->fg_job, p, status);
 			jc_updatepipe(ctx->fg_job);
-		else if ((i = jc_jobfind(ctx, pid)) != -1)
+		}
+		else if ((i = jc_jobfind(ctx, pid, &p)) != -1)
 		{
 			j = ctx->bg_jobs[i];
+			jc_updateproc(j, p, status);
 			jc_updatepipe(j);
 			if (j->completed)
 			{
@@ -59,13 +72,14 @@ void					jc_signal(int signo)
 				if (next != NULL)
 				{
 					ctx->bg_jobs[i] = next;
-					job_exec(ctx->bg_jobs[i], 0, ctx);
+					job_exec(ctx->bg_jobs[i], ctx);
 				}
 				else
 				{
+					j->parent->status = j->status;
 					j = j->parent;
+					j->done = 1;
 					jc_notify(j, i);
-					ctx->bg_jobs[i]->parent->done = 1;
 				}
 			}
 		}

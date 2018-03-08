@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/07 17:18:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 14:26:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ struct					s_job
 	int					status;
 	char				stopped;
 	char				completed;
-	char				running;
 	char				done;
 	int					stdin;
 	int					stdout;
@@ -110,7 +109,7 @@ struct s_job			*job_find(pid_t pid, t_job *job_list);
 int						job_stopped(t_job *job);
 int						job_completed(t_job *job);
 
-int						job_exec(t_job *j, int fg, t_ctx *ctx);
+int						job_exec(t_job *j, t_ctx *ctx);
 
 int						job_wait(t_job *j);
 void					job_putbg(t_job *j, int cont);

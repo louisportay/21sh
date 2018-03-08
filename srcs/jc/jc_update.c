@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/07 18:10:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 14:38:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 	else if (WIFSTOPPED(status))
 	{
 		p->stopped = 1;
+		j->stopped = 1;
 	}
 	else if (WIFSIGNALED(status))
 	{
@@ -49,6 +50,8 @@ int						jc_updatepipe(t_job *j)
 			;
 		else if ((pid = waitpid(p->pid, &status, WNOHANG)) > 0)
 			jc_updateproc(j, p, status);
+		else if (pid == 0)
+			;
 		else if (pid == -1)
 			return (-1);
 		j->completed &= p->completed;
@@ -61,4 +64,16 @@ int						jc_updatepipe(t_job *j)
 		p = p->next;
 	}
 	return (j->status);
+}
+
+void					jc_updatebg(t_ctx *ctx)
+{
+	size_t				i;
+
+	i = 0;
+	while (i < ctx->bg_cnt)
+	{
+		jc_updatepipe(ctx->bg_jobs[i]);
+		i++;
+	}
 }

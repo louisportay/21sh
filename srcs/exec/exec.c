@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/07 18:30:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 14:27:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,13 @@ int						exec(t_job *jobs)
 		{	/*	Add old job deletion if not empty and on loop end	*/	}
 		if (tmp->bg == 0)
 			ctx->fg_job = tmp;
-		job_exec(tmp, tmp->bg == 0, ctx);
+		job_exec(tmp, ctx);
 		if (tmp->bg)
 			job_ctxinsert(tmp, ctx);
 	}
-	for (size_t i = 0; i < ctx->bg_cnt; i++)
-		jc_updatepipe(ctx->bg_jobs[i]);
-	jc_print(ctx);
-	jc_clear(ctx);
-	update_tty(ctx, 0);
+	jc_updatebg(ctx);
 	signal(SIGCHLD, &jc_signal);
+	update_tty(ctx, 0);
+	jc_print(ctx);
 	return (0);
 }

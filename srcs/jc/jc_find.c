@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:48:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/07 18:28:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 13:51:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	RETURN 1 IF success ELSE 0
 */
 
-int						jc_procfind(t_job *j, pid_t pid)
+int						jc_procfind(t_job *j, pid_t pid, t_proc **pr)
 {
 	t_proc				*p;
 
@@ -27,7 +27,10 @@ int						jc_procfind(t_job *j, pid_t pid)
 	while (p != NULL)
 	{
 		if (p->pid == pid)
+		{
+			*pr = p;
 			return (1);
+		}
 		p = p->next;
 	}
 	return (0);
@@ -38,7 +41,7 @@ int						jc_procfind(t_job *j, pid_t pid)
 **	RETURN index IF found ELSE -1
 */
 
-int						jc_jobfind(t_ctx *ctx, pid_t pid)
+int						jc_jobfind(t_ctx *ctx, pid_t pid, t_proc **p)
 {
 	size_t				i;
 
@@ -46,7 +49,7 @@ int						jc_jobfind(t_ctx *ctx, pid_t pid)
 	while (i < ctx->bg_cnt)
 	{
 		if (ctx->bg_jobs[i] != NULL
-			&& jc_procfind(ctx->bg_jobs[i], pid) != 0)
+			&& jc_procfind(ctx->bg_jobs[i], pid, p) != 0)
 			return (i);
 		i++;
 	}
