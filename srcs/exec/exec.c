@@ -6,24 +6,11 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 14:27:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 15:44:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-//	static void				job_sort(t_job **j, t_job *fg[2], t_job *bg[2])
-//	{
-//		t_job				*tj;
-//	
-//		tj = *j;
-//		*j = tj->next;
-//		tj->next = NULL;
-//		if (tj->bg)
-//			job_insert(bg, bg + 1, tj);
-//		else
-//			job_insert(fg, fg + 1, tj);
-//	}
 
 static void				update_tty(t_ctx *ctx, int old)
 {
@@ -52,15 +39,15 @@ int						exec(t_job *jobs)
 		jobs = jobs->next;
 		tmp->next = NULL;
 		{	/*	Add old job deletion if not empty and on loop end	*/	}
-		if (tmp->bg == 0)
+		if (tmp->parent->bg == 0)
 			ctx->fg_job = tmp;
 		job_exec(tmp, ctx);
-		if (tmp->bg)
+		if (tmp->parent->bg)
 			job_ctxinsert(tmp, ctx);
 	}
 	jc_updatebg(ctx);
 	signal(SIGCHLD, &jc_signal);
 	update_tty(ctx, 0);
-	jc_print(ctx);
+	jc_print(ctx, 0, 0);
 	return (0);
 }

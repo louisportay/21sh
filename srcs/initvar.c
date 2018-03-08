@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 13:31:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/08 15:08:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ t_hdict			*getbuiltins(void)
 	hash_add(dict, "export", &ft_export);
 	hash_add(dict, "unsetenv", &ft_unsetenv);
 	hash_add(dict, "unset", &ft_unset);
+	hash_add(dict, "jobs", &ft_jobs);
 	return (dict);
 }
 

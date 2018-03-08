@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/08 13:39:48 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/08 14:53:29 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -147,6 +147,7 @@ SRCS=	main.c\
 		builtin_env_utils.c\
 		builtin_unsetenv.c\
 		builtin_env.c\
+		builtin_jobs.c\
 		\
 		expand_exec.c\
 		expand.c\
@@ -208,6 +209,7 @@ SRCS=	main.c\
 		jc_find.c\
 		jc_signal.c\
 		jc_update.c\
+		jc_print.c\
 		job_safeclear.c\
 
 OBJDIR= obj
