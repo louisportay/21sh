@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 15:44:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 17:28:25 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int						exec(t_job *jobs)
 		job_exec(tmp, ctx);
 		if (tmp->parent->bg)
 			job_ctxinsert(tmp, ctx);
+		else
+			ctx->fg_job = NULL;	//	TO BE DELETED
 	}
 	jc_updatebg(ctx);
 	signal(SIGCHLD, &jc_signal);

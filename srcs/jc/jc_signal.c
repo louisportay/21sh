@@ -6,59 +6,51 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:37:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 14:49:43 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/08 17:38:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
+static void				ldojob(t_job *j, t_ctx *ctx, size_t i)
+{
+	t_job				*next;
+
+	jc_updatepipe(j);
+	if (j->completed)
+	{
+		next = j->status ? j->err : j->ok;
+		if (next != NULL)
+		{
+			ctx->bg_jobs[i] = next;
+			job_exec(ctx->bg_jobs[i], ctx);
+		}
+		else
+		{
+			j->parent->status = j->status;
+			j = j->parent;
+			j->done = 1;
+			jc_notify(j, i, 0);
+		}
+	}
+}
+
 void					jc_signal(int signo)
 {
-	pid_t				pid;
-	int					status;
-	int					i;
 	t_ctx				*ctx;
-	t_job				*j;
-	t_job				*next;
-	t_proc				*p;
+	size_t				i;
 
 	if (signo != SIGCHLD)
 		return ;
 	ctx = get_ctxaddr(NULL);
-	while ((pid = waitpid(WAIT_ANY, &status, WUNTRACED)) > 0)
+	if (ctx->fg_job != NULL)
+		jc_updatepipe(ctx->fg_job);
+	i = 0;
+	while (i < ctx->bg_cnt)
 	{
-		if (jc_procfind(ctx->fg_job, pid, &p) == 1)
-		{
-			jc_updateproc(ctx->fg_job, p, status);
-			jc_updatepipe(ctx->fg_job);
-		}
-		else if ((i = jc_jobfind(ctx, pid, &p)) != -1)
-		{
-			j = ctx->bg_jobs[i];
-			jc_updateproc(j, p, status);
-			jc_updatepipe(j);
-			if (j->completed)
-			{
-				next = j->status ? j->err : j->ok;
-				if (next != NULL)
-				{
-					ctx->bg_jobs[i] = next;
-					job_exec(ctx->bg_jobs[i], ctx);
-				}
-				else
-				{
-					j->parent->status = j->status;
-					j = j->parent;
-					j->done = 1;
-					jc_notify(j, i, 0);
-				}
-			}
-		}
-		else
-		{
-			dprintf(STDERR_FILENO, "No corresponding job\n");
-			return ;
-		}
+		if (ctx->bg_jobs[i] != NULL)
+			ldojob(ctx->bg_jobs[i], ctx, i);
+		i++;
 	}
 }
 
