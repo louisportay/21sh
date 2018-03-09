@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/08 14:53:29 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/09 18:34:13 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -210,6 +210,7 @@ SRCS=	main.c\
 		jc_signal.c\
 		jc_update.c\
 		jc_print.c\
+		jc_addbg.c\
 		job_safeclear.c\
 
 OBJDIR= obj

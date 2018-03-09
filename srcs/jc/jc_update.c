@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 16:50:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/09 18:39:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 				j->parent->status);
         j->parent->done = 1;
 	}
+	else
+		printf("Received unhandled status\n");
 }
 
 int						jc_updatepipe(t_job *j)
@@ -49,7 +51,7 @@ int						jc_updatepipe(t_job *j)
 	{
 		if (p->completed == 1)
 			;
-		else if ((pid = waitpid(p->pid, &status, WNOHANG)) > 0)
+		else if ((pid = waitpid(p->pid, &status, WNOHANG | WUNTRACED)) > 0)
 			jc_updateproc(j, p, status);
 		else if (pid == 0)
 			;
@@ -60,6 +62,7 @@ int						jc_updatepipe(t_job *j)
 		{
 			j->completed = 0;
 			j->stopped = 1;
+			j->parent->stopped = 1;
 			return (1);
 		}
 		j->status = (p->next == NULL && completed) ? p->status : 0;

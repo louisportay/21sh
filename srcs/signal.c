@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/27 16:07:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/09 18:41:23 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 ** SIGINT réaffiche le prompt et kill les process en cours
 */
 
-static void	sighandler(int signum)
+void	sighandler(int signum)
+//static void	sighandler(int signum)
 {
 	t_ctx *ctx;
 	
@@ -38,7 +39,7 @@ static void	sighandler(int signum)
 	}
 	else if (signum == SIGTSTP)
 	{
-	
+		printf("SIGTSTP\n");
 	}
 }
 

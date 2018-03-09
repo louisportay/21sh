@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/27 17:09:21 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/09 15:06:15 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,8 @@ bool					is_number_w_dash(char *str);
 
 t_job					*parse(t_token *tok);
 int						job_waitforit(t_job *j, t_ctx *ctx);
+
+void					sighandler(int signo);
 
 /*
 **	Shell script stuff

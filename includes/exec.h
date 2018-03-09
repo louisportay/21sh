@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 14:26:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/09 14:30:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int						job_donext(t_job *j, t_ctx *ctx);
 
 void					job_safeclear(t_job **job);
 
-void					setup_signals(void (*sig)());
+void					setup_signals(void);
 
 void					prefork_assign(t_ctx *ctx, t_asmt *asmt);
 int						proc_update_env(t_proc *p);

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 10:30:48 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 14:48:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/09 18:31:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,9 @@ void					jc_notify(t_job *j, int i, int all);
 void					jc_clear(t_ctx *ctx);
 
 void					jc_updatebg(t_ctx *ctx);
+
+size_t					jc_getbgnext(t_ctx *ctx);
+size_t					jc_bggrow(t_ctx *ctx);
+void					jc_addtobg(t_ctx *ctx, t_job *j);
 
 #endif
