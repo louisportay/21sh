@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/09 18:39:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/10 15:37:58 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 	{
 		p->stopped = 1;
 		j->stopped = 1;
+		kill(-j->pgid, SIGTSTP);
 	}
 	else if (WIFSIGNALED(status))
 	{

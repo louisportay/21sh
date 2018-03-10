@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/09 15:06:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/10 16:01:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ struct					s_ctx
 	size_t				bg_cnt;
 	t_job				*fg_job;
     int                 exe_stack;
+	t_list				*bgs;
 
 	/*
 	**	EXECUTION HASH (for HASH builtin)

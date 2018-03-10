@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/09 18:07:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/10 15:28:23 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int						job_donext(t_job *j, t_ctx *ctx)
 int						job_next(t_job *j, t_ctx *ctx)
 {
 	j->status = job_putfg(j, 0, ctx);
+	if (j->stopped)
+		return (j->status);
 	return (job_donext(j, ctx));
 }
 
@@ -66,12 +68,12 @@ int						job_putfg(t_job *j, int continued, t_ctx *ctx)
 		jc_updatebg(ctx);
 		jc_updatepipe(j);
 	}
-	if (j->stopped)
-		jc_addtobg(ctx, j);
 	//	}
 	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, ctx->pgid)) != 0)
 		perror("tcsetpgrp");
 	signal(SIGCHLD, SIG_IGN);
+	if (j->stopped)
+		jc_addtobg(ctx, j);
 	return (j->status);
 }
 

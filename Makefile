@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/09 18:34:13 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/10 14:41:58 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -212,6 +212,10 @@ SRCS=	main.c\
 		jc_print.c\
 		jc_addbg.c\
 		job_safeclear.c\
+		builtin_fg.c\
+		builtin_bg.c\
+		builtin_kill.c\
+
 
 OBJDIR= obj
 #include srcs/parser/parser.mk
