@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/22 16:24:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/10 20:51:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	ispromptflag(char c)
 
 static void	print_flag(t_ctx *ctx, char *s)
 {
-	ctx->line.cursor_offset += ft_strlen(s);
+	ctx->cur_line->cursor_offset += ft_strlen(s);
 	ft_putstr(s);
 }
 
@@ -48,7 +48,7 @@ static void	d_flag(t_ctx *ctx)
 	tm = localtime(&t);
 	time_str = asctime(tm);
 	time_str[10] = '\0';
-	ctx->line.cursor_offset += ft_strlen(time_str);//10
+	ctx->cur_line->cursor_offset += ft_strlen(time_str);//10
 	ft_putstr(time_str);
 }
 
@@ -98,7 +98,7 @@ static void	s_flag(t_ctx *ctx)
 		len = ft_strlen(ctx->av[0]);
 		write(STDOUT_FILENO, ctx->av[0], len);
 	}
-	ctx->line.cursor_offset += len;
+	ctx->cur_line->cursor_offset += len;
 }
 
 /*
@@ -127,7 +127,7 @@ static void	w_flag(t_ctx *ctx)
 	cwd = getcwd(NULL, 0);
 	if (cwd && homedir && (tmp = ft_strstr(cwd, homedir)) && tmp == cwd && cwd[ft_strlen(homedir)] == '/')
 	{
-		ctx->line.cursor_offset += ft_strlen(cwd) - ft_strlen(homedir) + 1;
+		ctx->cur_line->cursor_offset += ft_strlen(cwd) - ft_strlen(homedir) + 1;
 		write(STDOUT_FILENO, "~", 1);
 		ft_putstr(cwd + ft_strlen(homedir));
 	}
@@ -177,13 +177,15 @@ static void	init_flags(t_prompt_flag *flags)
 
 }
 
-void	print_prompt(t_ctx *ctx)
+void	print_prompt(void)
 {
+	t_ctx			*ctx;
 	t_prompt_flag	flags[9];
 	char			*prompt;
 	int				i;
 	char			c;
 
+	ctx = get_ctxaddr();
 	if (!ctx->istty || !(prompt = ft_astr_getval(ctx->locals, ctx->prompt_mode)))
 		return ;
 	i = 0;
@@ -199,9 +201,11 @@ void	print_prompt(t_ctx *ctx)
 		}
 		else
 		{
-			ctx->line.cursor_offset++;
+			ctx->cur_line->cursor_offset++;
 			write(STDOUT_FILENO, prompt, 1);
 		}
+		if (!(ctx->cur_line->cursor_offset % ctx->ws.ws_col))
+			tputs(ctx->tc.dow, 1, &ft_putchar_stdin);
 		prompt++;
 	}
 }

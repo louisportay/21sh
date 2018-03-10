@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/11 10:26:30 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/23 18:15:37 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/08 19:13:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	getrawline(t_ctx *ctx, t_line *l)
 {
 	char *tmp;
 
-	print_prompt(ctx);
+	print_prompt();
 	if (get_next_line(ctx->fd, &tmp) == -1)
 		fatal_err(FAILREAD, ctx);
 	if (!tmp && ctx->line.linestate->state == UNQUOTED)

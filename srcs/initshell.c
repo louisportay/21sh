@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/06 15:26:46 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/08 18:42:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,24 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->line.lastline = NULL;
 	ctx->line.linestate = NULL;
 	ctx->line.heredoc = 0;
+
 	ctx->hist.list = NULL;
 	ctx->hist.index = 1;
+
 	ctx->emacs_mode = 1;
 	ctx->line_edition = 1;
 	ctx->config_file = 1;
 	ctx->history = 1;
 	ctx->job_control = 1;
+
 	ctx->fd = STDIN_FILENO;
+	ctx->tty = open("/dev/tty", O_RDWR);
 	ctx->istty = isatty(STDIN_FILENO);
+
 	ctx->path = getpath(environ);
 	ctx->environ = ft_astr_dup(environ);
 	ctx->hash = hash_create(HASH_SIZE, HASH_PRIME);
+
 	ctx->ret_tcget = tcgetattr(ctx->fd, &ctx->oldtios);
 	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 	create_locals(&ctx->locals);
@@ -90,15 +96,10 @@ static void	init_line_edition(t_ctx *ctx)
 				|| tgetent(NULL, tmp) == ERR)/*ft_strcmp(tmp, "xterm-256color") ||*/
 			ctx->line_edition = false;
 		else
-			//ctx->history = false;
 			init_termios(ctx);
 	}
 	else
-//	{
 		ctx->line_edition = false;
-	//ctx->history = false;
-	//	ctx->job_control = false;
-//	}
 }
 
 int	init(t_ctx *ctx, char **av, char **environ)
@@ -107,10 +108,7 @@ int	init(t_ctx *ctx, char **av, char **environ)
 	set_sighandler();
 	get_shell_opt(ctx, ctx->av);
 	init_line_edition(ctx);
-
 	complete_environ(&ctx->environ);
-
-//	if (ctx->history)
 	init_hist(&ctx->hist);
 	return (SUCCESS);
 }

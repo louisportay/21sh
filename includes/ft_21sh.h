@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/26 19:57:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/10 16:39:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@
 # define DEBUG 		write(STDOUT_FILENO, "DEBUG\n", 6)
 # define DEBUG1 	write(STDOUT_FILENO, "DEBUG1\n", 7)
 # define DEBUG2 	write(STDOUT_FILENO, "DEBUG2\n", 7)
-# define ERROR 		write(STDOUT_FILENO, "ERROR\n", 6)
+
 
 # define DFL_BGCNT 8
 
@@ -130,6 +130,7 @@ struct					s_ctx
 	t_line				*cur_line;//line currently modified
 	char				prompt_mode[4];
 	int					ret_tcget;
+	int					tty;
 
 	/*
 	**	SHOPT BOOLS

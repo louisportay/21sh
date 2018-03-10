@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/23 10:00:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/10 15:25:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static void	sighandler(int signum)
 		ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws);
 		if (ctx->cur_line)
 		{
-			update_line(ctx, ctx->cur_line);
 			clear_line(ctx, ctx->cur_line);
 			redraw_line(ctx, ctx->cur_line);
 		}

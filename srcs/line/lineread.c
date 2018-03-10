@@ -6,21 +6,33 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/06 20:48:17 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/10 20:04:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
+int dump_w;
 
-void	init_line(t_ctx *ctx, t_line *l)
+void	reset_attributes(t_line *l)
+{
+	l->cursor_offset = 0;
+	print_prompt();
+	l->line_len = l->cursor_offset;
+	l->num_lines = l->line_len / get_ctxaddr()->ws.ws_col;
+	l->cursor_line = l->num_lines;
+
+	l->inlines = 0;
+	l->cursor_inline = 0;
+	l->inline_len = l->cursor_offset;
+	l->offset_inline = l->cursor_offset;
+}
+
+void	init_line(t_line *l)
 {
 	l->line = ft_dlstnew("HEAD", 4);
 	l->lastline = l->line;
-	l->cursor_offset = 0;
-//	l->multiline = false;
-	print_prompt(ctx);
-	l->line_len = l->cursor_offset;
+	reset_attributes(l);
 }
 
 void		lineread(t_ctx *ctx, t_line *l)
@@ -28,10 +40,11 @@ void		lineread(t_ctx *ctx, t_line *l)
 	t_key	key;
 	int		status;
 
+	dump_w = open("/dev/pts/5", O_RDWR);//
 	ft_bzero(key.buf, READLEN);
 	key.i = 0;
 	status = READON;
-	init_line(ctx, l);
+	init_line(l);
 	
 	tputs(ctx->tc.im, 1, &ft_putchar_stdin);
 	while (status == READON)
@@ -43,16 +56,14 @@ void		lineread(t_ctx *ctx, t_line *l)
 	}
 	tputs(ctx->tc.ei, 1, &ft_putchar_stdin);
 
-//	if (l->multiline == true)
 	go_end(ctx, l);
-	//	move_cursor_end_of_line(ctx, l);
-	if (ctx->hist.list)
-		ft_dlsthead(&ctx->hist.list);
+
+	ft_dlsthead(&ctx->hist.list);
 	ft_dlsthead(&l->line);
 
 	if (status == READERROR && !l->heredoc)
 		fatal_err(FAILREAD, ctx);
-	else if (status == READERROR)//cheap code
+	else if (status == READERROR)
 		return (err_line(l, FAILREAD));
 	else if (status == ERR_QUOTE)
 		return (err_line(l, BADQUOTES));

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:03:42 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/21 17:07:58 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/08 19:12:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ typedef struct			s_prompt_flag
 	char				flag;
 }						t_prompt_flag;
 
-void					print_prompt(t_ctx *env);
+void					print_prompt(void);
 
 #endif

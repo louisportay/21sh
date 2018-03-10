@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:48:21 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/06 19:55:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/10 16:33:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,13 +113,13 @@ void	yank(t_ctx *ctx, t_line *l)
 	l->line->next = ft_dlstdup(l->yank);
 	l->line->next->prev = l->line;
 	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
-	print_line_cursor_len(l, l->line->next);
+	print_line_attributes(ctx, l, l->line->next);
 	ft_dlstend(&l->line);
 	l->line->next = tmp;
 	if (tmp)
 		tmp->prev = l->line;
 	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
-	print_line(l->line->next);
+	print_line_nl(ctx, l, l->line->next);
 	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
 	if (!(l->cursor_offset % ctx->ws.ws_col))
 		tputs(ctx->tc.dow, 1, &ft_putchar_stdin);

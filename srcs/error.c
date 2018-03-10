@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/06 15:32:12 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/08 18:47:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,6 @@ void	wrap_exit(int status, t_ctx *ctx)
 		ft_astr_clear(&ctx->locals);
 	if (ctx->line_edition == true)
 		tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);	
+	close(ctx->tty);
 	exit(status);
 }

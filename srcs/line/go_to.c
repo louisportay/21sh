@@ -6,11 +6,13 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:10:46 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/06 20:51:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/10 20:03:51 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+//Changer les go_upper + go_lower
 
 void	go_upper_line(t_ctx *ctx, t_line *l)
 {

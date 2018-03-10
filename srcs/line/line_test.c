@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/20 18:34:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/14 17:37:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/10 20:38:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	test_yank(t_ctx *ctx, t_line *l, t_key *key)
 		return (false);
 }
 
-bool	test_go_next_word(t_ctx *ctx, t_line *l, t_key *key)
+bool	test_next_word(t_ctx *ctx, t_line *l, t_key *key)
 {
 	if (!ft_strncmp(key->buf, M_F, ft_strlen(M_F)))
 	{
@@ -70,7 +70,7 @@ bool	test_go_next_word(t_ctx *ctx, t_line *l, t_key *key)
 		return (false);
 }
 
-bool	test_go_prev_word(t_ctx *ctx, t_line *l, t_key *key)
+bool	test_prev_word(t_ctx *ctx, t_line *l, t_key *key)
 {
 	if (!ft_strncmp(key->buf, M_B, ft_strlen(M_B)))
 	{
@@ -93,6 +93,8 @@ bool	test_go_prev_word(t_ctx *ctx, t_line *l, t_key *key)
 	else
 		return (false);
 }
+
+// CHANGE CONDITION
 
 bool	test_upper_line(t_ctx *ctx, t_line *l, t_key *key)
 {
@@ -166,14 +168,12 @@ bool	test_upkey(t_ctx *ctx, t_line *l, t_key *key)
 	{
 		ft_bzero(key->buf, key->i);
 		key->i = 0;
-		if (ctx->history && ctx->hist.list->next)
+		if (ctx->hist.list->next)
 			return (true);
 		else
 			return (false);
 	}
-	if (!ctx->history || !ctx->hist.list->next)
-		return (false);
-	else if (*key->buf == C_P && ctx->emacs_mode)
+	if (*key->buf == C_P && ctx->emacs_mode && ctx->hist.list->next)
 		return (true);
 	else
 		return (false);
@@ -186,14 +186,12 @@ bool	test_downkey(t_ctx *ctx, t_line *l, t_key *key)
 	{
 		ft_bzero(key->buf, key->i);
 		key->i = 0;
-		if (ctx->history && ctx->hist.list->prev)
+		if (ctx->hist.list->prev)
 			return (true);
 		else
 			return (false);
 	}
-	if (!ctx->history || !ctx->hist.list->prev)
-		return (false);
-	else if (*key->buf == C_N && ctx->emacs_mode)
+	if (*key->buf == C_N && ctx->emacs_mode && ctx->hist.list->prev)
 		return (true);
 	else
 		return (false);
@@ -273,26 +271,6 @@ bool	test_emacs_mode(t_ctx *ctx, t_line *l, t_key *key)
 	else
 		return (false);
 
-}
-
-/*
-** Do not clear the buffer
-*/
-
-bool	test_load_line(t_ctx *ctx, t_line *l, t_key *key)
-{
-	if (l->line)
-		return (false);
-	else if (!ft_strncmp(key->buf, UP_KEY, ft_strlen(UP_KEY)))
-		return (false);
-	else if (!ft_strncmp(key->buf, DOWN_KEY, ft_strlen(DOWN_KEY)))
-		return (false);
-	else if (ctx->emacs_mode && (*key->buf == C_P || *key->buf == C_N))
-		return (false);
-	else if (*key->buf == C_C)	//
-		return (false);			//
-	else
-		return (true);
 }
 
 bool	test_kill_next_word(t_ctx *ctx, t_line *l, t_key *key)

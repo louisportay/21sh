@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 10:48:13 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/06 21:17:54 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/08 18:46:20 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 
 int		ft_putchar_stdin(int c)
 {
-	write(STDIN_FILENO, &c, 1);
+
+	write(get_ctxaddr()->tty, &c, 1);
 	return (c);
 }
 

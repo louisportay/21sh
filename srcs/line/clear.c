@@ -6,43 +6,43 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:52:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/06 20:19:43 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/10 20:35:23 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
 /*
-** Called when the window size changes and for CTRL-L trigger
-** Redraw the whole line with the prompt
+** Redraw the whole line and get whole attributes values
 */
 
 void	redraw_line(t_ctx *ctx, t_line *l)
 {
-	if (l->line)
-	{
-		ft_dlsthead(&l->line);
-		print_line_cursor(l, l->line->next);
-		ft_dlstend(&l->line);
-	}
-	else
-		print_line_cursor(l, T_HISTENTRY(ctx->hist.list->data)->line->next);
-	if (!(l->cursor_offset % ctx->ws.ws_col))
-		tputs(ctx->tc.dow, 1, &ft_putchar_stdin);
+	ft_dlsthead(&l->line);
+	print_line_attributes(ctx, l, l->line->next);
+	ft_dlstend(&l->line);
 }
+
+/*
+** Window size change
+*/
 
 void clear_line(t_ctx *ctx, t_line *l)
 {
-//	tputs(ctx->tc.cr, 1, &ft_putchar_stdin);
-//	move_cursor_n_lines(-l->cursor_line);
-	go_beginning(ctx, l);
+	if (l->cursor_line)
+		dprintf(ctx->tty, "\033[%dA", l->cursor_line);
+	tputs(ctx->tc.cr, 1, &ft_putchar_stdin);
 	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
+	reset_attributes(l);
 }
+
+/*
+** Ctrl-L
+*/
 
 void	clear_screen_(t_ctx *ctx, t_line *l)
 {
 	tputs(ctx->tc.cl, 1, &ft_putchar_stdin);
-	l->cursor_offset = 0;
-	print_prompt(ctx);
+	reset_attributes(l);
 	redraw_line(ctx, l);
 }

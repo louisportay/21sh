@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/06 17:08:04 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/10 20:06:20 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=sanitize
+DEBUG=no
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
@@ -104,6 +104,7 @@ SRCS=	main.c\
 		line_utils.c\
 		clear.c\
 		line_test.c\
+		get_state.c\
 		\
 		lexer.c\
 		filter_tokens.c\
@@ -215,6 +216,8 @@ NAME= 21sh
 
 GREEN="\033[32m"
 RESET="\033[0m"
+
+.SILENT:
 
 all: $(LIB) $(NAME)
 

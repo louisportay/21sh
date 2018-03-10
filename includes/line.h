@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/06 21:12:02 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/10 20:39:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,17 @@ enum					e_readcode
 
 enum					e_linestate
 {
-	UNQUOTED = 0b1,	 // 0b0 ?
-	BSLASH = 0b10,
-	SQUOTE = 0b100,
-	DQUOTE = 0b1000,
+	UNQUOTED =	0b1,	 // 0b0 ?
+	BSLASH =	0b10,
+	SQUOTE =	0b100,
+	DQUOTE =	0b1000,
 //	BQUOTE,		42SH	
-	PAREN = 0b10000,
-	BRACE = 0b100000,
-	BRACKET = 0b1000000,
-	HASH = 0b100000000,
-	HEREDOC = 0b1000000000,
+	PAREN =		0b10000,
+	BRACE =		0b100000,
+	BRACKET =	0b1000000,
+	HASH =		0b100000000,
+	HEREDOC =	0b1000000000,
+	ERROR = 		0b10000000000,
 };
 
 struct		s_termcaps
@@ -125,26 +126,42 @@ struct		s_termcaps
 /*
 ** sizeof struct winsize = 8
 **
-**	cursor_offset:  number of lines by (cursor_offset / ws_col) col number by (cursor_offset % ws_col)
-**	line_len:		total length including the prompt len.
-**	cursor_line:	line on which the cursor is.
-**	num_lines:		total number of lines.
+**	cursor_offset	:	Number of characters in front of the cursor
+**	line_len		:	Total number of characters (including the prompt len)
+**	cursor_line		:	Line on which the cursor is
+**	num_lines		:	Total number of lines minus 1
+**
+**	offset_inline	:	Number of characters in front of the cursor in that inline
+**	inline_len		:	Total number of characters in that inline
+**	cursor_inline	:	Inline on which the cursor is
+**	inlines			: 	Total number of inlines
+**
 */
+
+extern int dump_w;//
+
+#define INFO dprintf(dump_w, "=====================\ncursor_offset = %zu\nline_len = %zu\ncursor_line = %u\nnum_lines = %u\n\noffset_inline = %zu\ninline_len = %zu\ncursor_inline = %u\ninlines = %u\n\nwincol = %u\n", l->cursor_offset, l->line_len, l->cursor_line, l->num_lines, l->offset_inline, l->inline_len, l->cursor_inline, l->inlines, ctx->ws.ws_col)
 
 typedef struct			s_line
 {
 	t_dlist				*line;
+	t_dlist				*split_line;
 	t_dlist				*yank;
 	t_dlist				*lastline;
-	t_dlist				*split_line;
 	t_stack				*linestate;
-	char				*eohdoc;
+
 	size_t				cursor_offset;
-	size_t				line_len;	
+	size_t				line_len;
 	unsigned			cursor_line;
 	unsigned			num_lines;
-//	bool				multiline;
+	
+	size_t				offset_inline;
+	size_t				inline_len;
+	unsigned			cursor_inline;
+	unsigned			inlines;
+
 	bool				heredoc;
+	char				*eohdoc;
 }						t_line;
 
 typedef struct	s_key
@@ -168,17 +185,16 @@ void	ft_readline(t_ctx *ctx, t_line *l, char *prompt_mode);
 void	lineread(t_ctx *env, t_line *l);
 void	getrawline(t_ctx *env, t_line *l);
 int		user_input(t_ctx *env, t_line *l, t_key *key);
-void	init_line(t_ctx *ctx, t_line *line);
+void	init_line(t_line *l);
 
+void	redraw_line(t_ctx *ctx, t_line *l);
 void	clear_line(t_ctx *env, t_line *l);
-void	redraw_line(t_ctx *env, t_line *l);
 void	clear_screen_(t_ctx *env, t_line *l);
 
 void	move_cursor_n_columns(int n);
 void	move_cursor_n_lines(int n);
-void	move_cursor_forward(t_ctx *env, t_line *l);
-void	move_cursor_backward(t_ctx *env, t_line *l);
-void	move_cursor_end_of_line(t_ctx *env, t_line *l);
+int		move_cursor_forward(t_ctx *ctx, t_line *l);
+int		move_cursor_backward(t_ctx *ctx, t_line *l);
 
 void	go_upper_line(t_ctx *env, t_line *l);
 void	go_lower_line(t_ctx *env, t_line *l);
@@ -187,9 +203,11 @@ void	go_end(t_ctx *env, t_line *l);
 void	go_prev_word(t_ctx *env, t_line *l);
 void	go_next_word(t_ctx *env, t_line *l);
 
-void	print_line_cursor_len(t_line *l, t_dlist *list);
-void	print_line_cursor(t_line *l, t_dlist *list);
+void	print_line_attributes(t_ctx *ctx, t_line *l, t_dlist *list);
 void	print_line(t_dlist *list);
+void	print_line_nl(t_ctx *ctx, t_line *l, t_dlist *list);
+
+void	print_line_cursor(t_line *l, t_dlist *list); // ??
 
 void	up_key(t_ctx *env, t_line *l);
 void	down_key(t_ctx *env, t_line *l);
@@ -212,8 +230,8 @@ bool	test_kill_prev_word(t_ctx *env, t_line *l, t_key *key);
 bool	test_kill_next_word(t_ctx *env, t_line *l, t_key *key);
 bool	test_clear_screen(t_ctx *env, t_line *l, t_key *key);
 bool	test_yank(t_ctx *env, t_line *l, t_key *key);
-bool	test_go_next_word(t_ctx *env, t_line *l, t_key *key);
-bool	test_go_prev_word(t_ctx *env, t_line *l, t_key *key);
+bool	test_next_word(t_ctx *env, t_line *l, t_key *key);
+bool	test_prev_word(t_ctx *env, t_line *l, t_key *key);
 bool	test_upper_line(t_ctx *env, t_line *l, t_key *key);
 bool	test_lower_line(t_ctx *env, t_line *l, t_key *key);
 bool	test_end(t_ctx *env, t_line *l, t_key *key);
@@ -237,6 +255,9 @@ void	toggle_emacs_mode(t_ctx *env, t_line *l);
 void	join_split_lines(t_line *l);
 void	err_line(t_line *l, int errno);
 
+void	reset_attributes(t_line *l);
+
 void	add_newline(t_line *l);
+size_t	get_inline_len(t_dlist *line);
 
 #endif
