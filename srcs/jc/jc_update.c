@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/10 15:37:58 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/11 16:56:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int						jc_updatepipe(t_job *j)
 			j->parent->stopped = 1;
 			return (1);
 		}
-		j->status = (p->next == NULL && completed) ? p->status : 0;
+		j->status = p->status;
 		p = p->next;
 	}
 	if (completed == 1)

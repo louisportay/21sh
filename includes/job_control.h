@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 10:30:48 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/11 11:28:12 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/11 17:12:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ size_t					jc_ctxfind(t_ctx *ctx, int pgid);
 
 void					jc_print(t_ctx *ctx, int all, int verbose);
 void					jc_notify(t_job *j, t_ctx *ctx, int i, int all);
-void					jc_clear(t_ctx *ctx);
+size_t					jc_findid(t_ctx *ctx, t_job *j);
+char					jc_getstatus(t_job *j);
 
 void					jc_updatebg(t_ctx *ctx);
 
@@ -35,5 +36,7 @@ size_t					jc_bggrow(t_ctx *ctx);
 
 void					jc_addtobg(t_ctx *ctx, t_job *j);
 void					jc_rmbg(t_ctx *ctx, t_job *j);
+
+t_job					*jc_jobspec(t_proc *p, t_ctx *ctx);
 
 #endif

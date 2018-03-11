@@ -6,13 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 13:10:43 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/11 13:10:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/11 17:11:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static char				lgst(t_job *j)
+char					jc_getstatus(t_job *j)
 {
 	t_ctx				*ctx;
 
@@ -31,18 +31,18 @@ void					jc_notify(t_job *j, t_ctx *ctx, int i, int all)
 	if (j->parent->done == 1)
 	{
 		if (j->parent->status == 0)
-			printf("[%d]%-3c%-24s%s\n", i + 1, lgst(j), "Done",
+			printf("[%d]%-3c%-24s%s\n", i + 1, jc_getstatus(j), "Done",
 					j->parent->command);
 		else
-			printf("[%d]%-3c%s %-3d%16c%s\n", i + 1, ' ', "Exit",
-					j->parent->status, lgst(j), j->parent->command);
+			printf("[%d]%-3c%s %-3d%16c%s\n", i + 1, jc_getstatus(j), "Exit",
+					j->parent->status, jc_getstatus(j), j->parent->command);
 		jc_rmbg(ctx, j);
 	}
 	else if (all && j->stopped)
-		printf("[%d]%-3c%-24s%s\n", i + 1, lgst(j), "Stopped",
+		printf("[%d]%-3c%-24s%s\n", i + 1, jc_getstatus(j), "Stopped",
 				j->parent->command);
 	else if (all)
-		printf("[%d]%-3c%-24s%s\n", i + 1, lgst(j), "Running",
+		printf("[%d]%-3c%-24s%s\n", i + 1, jc_getstatus(j), "Running",
 				j->parent->command);
 }
 
