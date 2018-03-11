@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:48:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/11 10:55:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/11 17:28:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,20 @@
 **	Looks for a pid in given pipeline
 **	RETURN 1 IF success ELSE 0
 */
+
+size_t				jc_findid(t_ctx *ctx, t_job *j)
+{
+	size_t			i;
+
+	i = 0;
+	while (i < ctx->bg_cnt)
+	{
+		if (ctx->bg_jobs[i] == j)
+			return (i);
+		i++;
+	}
+	return ((size_t)-1);
+}
 
 int						jc_procfind(t_job *j, pid_t pid, t_proc **pr)
 {
