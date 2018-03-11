@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:37:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 17:38:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/11 11:34:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void				ldojob(t_job *j, t_ctx *ctx, size_t i)
 			j->parent->status = j->status;
 			j = j->parent;
 			j->done = 1;
-			jc_notify(j, i, 0);
+			jc_notify(j, ctx, i, 0);
 		}
 	}
 }
@@ -50,22 +50,6 @@ void					jc_signal(int signo)
 	{
 		if (ctx->bg_jobs[i] != NULL)
 			ldojob(ctx->bg_jobs[i], ctx, i);
-		i++;
-	}
-}
-
-void					jc_clear(t_ctx *ctx)
-{
-	size_t				i;
-
-	i = 0;
-	while (i < ctx->bg_cnt)
-	{
-		if (ctx->bg_jobs[i] != NULL && ctx->bg_jobs[i]->parent->done == 1)
-		{
-			job_safeclear(ctx->bg_jobs + i);
-			ctx->bg_jobs[i] = NULL;
-		}
 		i++;
 	}
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/08 14:41:53 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/10 16:05:44 by vbastion         ###   ########.fr       */
+/*   Created: 2018/03/11 13:10:43 by vbastion          #+#    #+#             */
+/*   Updated: 2018/03/11 13:10:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char				lgst(t_job *j)
 		return (' ');
 }
 
-void					jc_notify(t_job *j, int i, int all)
+void					jc_notify(t_job *j, t_ctx *ctx, int i, int all)
 {
 	if (j->parent->done == 1)
 	{
@@ -36,7 +36,7 @@ void					jc_notify(t_job *j, int i, int all)
 		else
 			printf("[%d]%-3c%s %-3d%16c%s\n", i + 1, ' ', "Exit",
 					j->parent->status, lgst(j), j->parent->command);
-		get_ctxaddr(NULL)->bg_jobs[i] = NULL;
+		jc_rmbg(ctx, j);
 	}
 	else if (all && j->stopped)
 		printf("[%d]%-3c%-24s%s\n", i + 1, lgst(j), "Stopped",
@@ -51,11 +51,10 @@ void					jc_print(t_ctx *ctx, int all, int verbose)
 	size_t				i;
 
 	i = 0;
-	(void)verbose;
 	while (i < ctx->bg_cnt)
 	{
 		if (ctx->bg_jobs[i] != NULL)
-			jc_notify(ctx->bg_jobs[i], (int)i, all);
+			jc_notify(ctx->bg_jobs[i], ctx, (int)i, all);
 		i++;
 	}
 	if (verbose)
@@ -65,9 +64,14 @@ void					jc_print(t_ctx *ctx, int all, int verbose)
 			t_job *j = ctx->bg_jobs[i];
 			if (j == NULL)
 				continue ;
-			printf("[%zu]: %s (%d)\n", i, j->parent->command, j->pgid);
+			printf("[%zu]   %s (%d)\n", i + 1, j->parent->command, j->pgid);
 			for (t_proc *p = j->procs; p != NULL; p = p->next)
-				printf("\t%s (%d)\n", p->argv[0], p->pid);
+			{
+				printf("\t");
+				for (size_t j = 0; p->argv[j] != NULL; j++)
+					printf("%s ", p->argv[j]);
+				printf("(%d)\n", p->pid);
+			}
 		}
 	}
 }

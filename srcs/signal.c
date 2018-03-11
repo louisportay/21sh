@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/09 18:41:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/11 11:03:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,9 @@ void	sighandler(int signum)
 		}
 	}
 	else if (signum == SIGINT)
-	{
-	
-	}
+		;
 	else if (signum == SIGTSTP)
-	{
-		printf("SIGTSTP\n");
-	}
+		;
 }
 
 int		set_sighandler(void)

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/09 14:30:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/11 11:08:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,7 @@ int						job_completed(t_job *job);
 int						job_exec(t_job *j, t_ctx *ctx);
 
 int						job_wait(t_job *j);
-void					job_putbg(t_job *j, int cont);
-int						job_putfg(t_job *j, int cont, t_ctx *ctx);
+int						job_putfg(t_job *j, t_ctx *ctx);
 
 void					job_fmtinfo(t_job *j, char *status);
 

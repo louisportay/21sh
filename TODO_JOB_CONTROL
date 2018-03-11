@@ -1,15 +1,16 @@
 HANDLE BG/FG
 Free at the end																	--	CHECK IF THE WHOLE TREE IS FREED
 Get next extree																	--	CHECK FOR EXCEPTIONS
-Do assignment
+Do assignment					// WHAT ?
 Add redir																		--	DONE
-add bg jobs to job list
+add bg jobs to job list															--	DONE
 collect exit status (complete it and test)										--	MOSTLY DONE, CHECK EXTENSIVELY
-handle async tree execution and continuation
-look for path before fork to be sure 
-add error handling for ASSIGNMENTS (check _key_ sanity)
-Update tcsetpgrp, tcgetattr for uninteractive actions
+handle async tree execution and continuation									--	DONE
+look for path before fork to be sure 					// WHAT ?
+add error handling for ASSIGNMENTS (check _key_ sanity)	// WHAT ?
+Update tcsetpgrp, tcgetattr for uninteractive actions							--	DONE, I guess?
 Do some free and cleanup, it's really messy
 fix hash multiple arguments error (displaying only the last, clearing previous output)
-
 add verbose error messages
+add assignments and redirs to `jobs` builtins.
+`jobs -v` -> add it inline with regular print

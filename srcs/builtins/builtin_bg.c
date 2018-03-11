@@ -6,15 +6,138 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:55 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/10 14:45:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/11 15:01:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
+#define JOB_NO "no job"
+#define JOB_PRE "previous job"
+#define JOB_LAST "last job"
+
+#define BU_JOB_AMB ("ambiguous job spec")
+#define BU_JOB_NO ("no such job")
+
+static void			*lamb(char *builtin, char *str)
+{
+	dprintf(STDERR_FILENO, "21sh: %s: %s: %s\n", builtin, str, BU_JOB_AMB);
+	return (NULL);
+}
+static t_job		*lneedle(t_ctx *ctx, char *needle)
+{
+	size_t			i;
+	size_t			k;
+	t_job			*j;
+	t_proc			*p;
+
+	i = 0;
+	j = NULL;
+	while (i < ctx->bg_cnt)
+	{
+		if (ctx->bg_jobs[i] != NULL)
+		{
+			p  = ctx->bg_jobs[i]->procs;
+			while (p != NULL)
+			{
+				k = 0;
+				while (p->argv[k] != NULL)
+				{
+					if (ft_strstr(p->argv[k], needle) != NULL)
+					{
+						if (j == NULL)
+							j = ctx->bg_jobs[i];
+						else
+							return (lamb("bg", needle));
+					}
+					k++;
+				}
+				p = p->next;
+			}
+		}
+		i++;
+	}
+	return (j);
+}
+
+static t_job		*lstrcmp(t_ctx *ctx, char *str)
+{
+	size_t			len;
+	size_t			i;
+	t_job			*j;
+	t_proc			*p;
+
+	i = 0;
+	j = NULL;
+	len = ft_strlen(str);
+	while (i < ctx->bg_cnt)
+	{
+		if (ctx->bg_jobs[i] != NULL)
+		{
+			p = ctx->bg_jobs[i]->procs;
+			while (p != NULL)
+			{
+				if (ft_strncmp(p->argv[0], str, len) == 0)
+				{
+					if (j == NULL && p == ctx->bg_jobs[i]->procs)
+						j = ctx->bg_jobs[i];
+					else
+						return (lamb("bg", str));
+				}
+				p = p->next;
+			}
+		}
+		i++;
+	}
+	return (j);
+}
+
 int					ft_bg(t_proc *p, t_ctx *ctx)
 {
+	size_t			i;
+	size_t			k;
+	t_job			*j;
+
 	p->type = BU_STR;
-	(void)ctx;
+	j = NULL;
+	if (p->argv[1] == NULL)
+		j = (ctx->bgs == NULL) ? NULL : (t_job *)ctx->bgs->content;
+	else
+	{
+		i = 1;
+		while (p->argv[i] != NULL)
+		{
+			k = 0;
+			if (p->argv[i][k] == '%')
+				k++;
+			if (p->argv[i][k] == '\0'
+				|| (p->argv[i][k] == '+' && p->argv[i][k + 1] == '\0')
+				|| (p->argv[i][k] == '%' && p->argv[i][k + 1] == '\0'))
+				j = (ctx->bgs != NULL) ? (t_job *)ctx->bgs->content : NULL;
+			else if (p->argv[i][k] == '-' && p->argv[i][k + 1] == '\0')
+			{
+				if (ctx->bgs == NULL)
+					j = NULL;
+				else if (ctx->bgs->next == NULL)
+					j = (t_job *)ctx->bgs->content;
+				else
+					j = (t_job *)ctx->bgs->next->content;
+			}
+			else if (ft_isnumber(p->argv[i] + k))
+			{
+				int n = ft_atoi(p->argv[i] + k);
+				if (n < 0 || (size_t)n > ctx->bg_cnt || ctx->bg_jobs[n] == NULL)
+					dprintf(STDERR_FILENO, "21sh: %s: %s: %s\n", "bg",
+							p->argv[i], BU_JOB_NO);
+				else
+					j = ctx->bg_jobs[n];
+			}
+			else if (p->argv[i][k] == '?')
+				j = lneedle(ctx, p->argv[i] + k + 1);
+			else
+				j = lstrcmp(ctx, p->argv[i] + k);
+			i++;
+		}
+	}
 	return (0);
 }

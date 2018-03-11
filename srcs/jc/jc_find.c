@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:48:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 13:51:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/11 10:55:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,18 @@ int						jc_jobfind(t_ctx *ctx, pid_t pid, t_proc **p)
 		i++;
 	}
 	return (-1);
+}
+
+size_t					jc_ctxfind(t_ctx *ctx, int pgid)
+{
+	size_t				i;
+
+	i = 0;
+	while (i < ctx->bg_cnt)
+	{
+		if (ctx->bg_jobs[i] != NULL && ctx->bg_jobs[i]->pgid == pgid)
+			return (i);
+		i++;
+	}
+	return ((size_t)-1);
 }

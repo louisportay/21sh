@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/10 14:41:58 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/11 11:29:00 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -211,6 +211,7 @@ SRCS=	main.c\
 		jc_update.c\
 		jc_print.c\
 		jc_addbg.c\
+		jc_rmbg.c\
 		job_safeclear.c\
 		builtin_fg.c\
 		builtin_bg.c\
