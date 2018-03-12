@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 16:52:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 19:56:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/11 17:34:33 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void handle_move_around_newline(t_ctx *ctx, t_line *l)
 			{
 				tputs(ctx->tc.nd, 1, &ft_putchar_stdin);
 				l->offset_inline++;
+				if (!(l->offset_inline % ctx->ws.ws_col))
+					tputs(ctx->tc.cr, 1, &ft_putchar_stdin);
 			}
 			break;
 		}
@@ -93,7 +95,7 @@ int	move_cursor_forward(t_ctx *ctx, t_line *l)
 		l->cursor_line++;
 		l->cursor_inline++;
 		l->offset_inline = 0;
-		l->inline_len = get_inline_len(l->line->next); //UNDETERMINED
+		l->inline_len = get_inline_len(l->line->next);
 		tputs(ctx->tc.dow, 1, &ft_putchar_stdin);
 		return (1);
 	}

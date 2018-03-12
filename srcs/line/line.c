@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 20:39:34 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/12 16:44:20 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,12 @@ int	user_input(t_ctx *ctx, t_line *l, t_key *key)
 		return (ret);
 
 	if (ft_isprint(*key->buf))
-		insert_char(key->buf, ctx, l);
+	{
+		if (!l->num_lines)
+			insert_char(key->buf, ctx, l);
+		else
+			insert_char_slow(key->buf, ctx, l);
+	}
 	else if (*key->buf == C_C)
 		reset_line(ctx, l);
 	else
@@ -195,7 +200,7 @@ void	ft_readline(t_ctx *ctx, t_line *l, char *prompt_mode)
 
 	if (l->split_line)
 	{
-		add_histentry(&ctx->hist, ctx->line.split_line);
+		add_histentry(&ctx->hist, l->split_line);
 		ft_dlstaddend(l->split_line, ft_dlstnew("\n", 1));
 	}
 
@@ -203,9 +208,9 @@ void	ft_readline(t_ctx *ctx, t_line *l, char *prompt_mode)
 	stack_del(&l->linestate);
 
 	  //DEBUG//
-//     if (ctx->line.split_line)//
-//             print_line(ctx->line.split_line->next);//print what's retrieved
-//     write(1, "\n", 1);//
+   //  if (l->split_line)//
+   //          print_line(l->split_line->next);//print what's retrieved
+   //  write(1, "\n", 1);//
        /////////
 
 }

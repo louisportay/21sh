@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/11 10:26:30 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/08 19:13:25 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/11 11:20:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,13 @@ void	getrawline(t_ctx *ctx, t_line *l)
 	}
 	else if (!tmp)
 		return (err_line(l, BADQUOTES));
-
 	l->line = str_to_dlst(tmp);
-
 	if (l->heredoc)
 		query_hdocstate(l->line->next, &l->linestate, l->eohdoc);
 	else
 		query_linestate(l->line->next, &l->linestate);
 	if (l->linestate->state != UNQUOTED)
 		ft_strcpy(ctx->prompt_mode, PS2);
-
 	join_split_lines(l);
 	add_newline(l);
 	free(tmp);

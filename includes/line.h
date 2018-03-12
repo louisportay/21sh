@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 20:39:25 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/12 17:48:14 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ struct		s_termcaps
 
 extern int dump_w;//
 
-#define INFO dprintf(dump_w, "=====================\ncursor_offset = %zu\nline_len = %zu\ncursor_line = %u\nnum_lines = %u\n\noffset_inline = %zu\ninline_len = %zu\ncursor_inline = %u\ninlines = %u\n\nwincol = %u\n", l->cursor_offset, l->line_len, l->cursor_line, l->num_lines, l->offset_inline, l->inline_len, l->cursor_inline, l->inlines, ctx->ws.ws_col)
+#define INFO dprintf(dump_w, "=====================\ncursor_offset = %zu\nline_len = %zu\ncursor_line = %u\nnum_lines = %u\n\noffset_inline = %zu\ninline_len = %zu\ncursor_inline = %u\ninlines = %u\n\nwincol = %u\nwinlin = %u\n", l->cursor_offset, l->line_len, l->cursor_line, l->num_lines, l->offset_inline, l->inline_len, l->cursor_inline, l->inlines, ctx->ws.ws_col, ctx->ws.ws_row)
 
 typedef struct			s_line
 {
@@ -205,9 +205,6 @@ void	go_next_word(t_ctx *env, t_line *l);
 
 void	print_line_attributes(t_ctx *ctx, t_line *l, t_dlist *list);
 void	print_line(t_dlist *list);
-void	print_line_nl(t_ctx *ctx, t_line *l, t_dlist *list);
-
-void	print_line_cursor(t_line *l, t_dlist *list); // ??
 
 void	up_key(t_ctx *env, t_line *l);
 void	down_key(t_ctx *env, t_line *l);
@@ -215,6 +212,7 @@ void	lkey(t_ctx *env, t_line *l);
 void	rkey(t_ctx *env, t_line *l);
 
 void	insert_char(char *buf, t_ctx *env, t_line *l);
+void	insert_char_slow(char *buf, t_ctx *ctx, t_line *l);
 void	del_prev_char(t_ctx *env, t_line *l);
 void	del_curr_char(t_ctx *env, t_line *l);
 

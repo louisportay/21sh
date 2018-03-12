@@ -6,39 +6,25 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:48:21 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 16:33:39 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/12 17:40:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-/*
-** Used to kill a region
-*/
-
-static void	print_rest_of_line(t_ctx *ctx, t_line *l)
-{
-	unsigned tmp;
-
-	tmp = l->cursor_offset;
-	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
-	print_line_cursor(l, l->line->next);
-	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
-	l->line_len = l->cursor_offset;
-	l->cursor_offset = tmp;
-	if (!(l->cursor_offset % ctx->ws.ws_col))
-		tputs(ctx->tc.dow, 1, &ft_putchar_stdin);
-}
-
 void	kill_end(t_ctx *ctx, t_line *l)
 {
+	t_dlist *tmp;
+	
 	if (l->yank)
 		ft_dlstdel(&l->yank, &delvoid);
 	l->yank = l->line->next;
 	l->line->next = NULL;
-	l->yank->prev = NULL;
-	l->line_len = l->cursor_offset;
-	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
+	l->yank->prev = NULL;	
+	tmp = l->line;
+	ft_dlsthead(&tmp);
+	clear_line(ctx, l);
+	print_line_attributes(ctx, l, tmp->next);
 }
 
 void	kill_beginning(t_ctx *ctx, t_line *l)
@@ -55,10 +41,12 @@ void	kill_beginning(t_ctx *ctx, t_line *l)
 	l->line->next = tmp;
 	if (tmp)
 		tmp->prev = l->line;
+	tmp = l->line;
+	ft_dlsthead(&tmp);
 	clear_line(ctx, l);
-//	l->cursor_offset = 0;
-//	print_prompt(ctx);
-	print_rest_of_line(ctx, l);
+	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
+	print_line_attributes(ctx, l, tmp->next);
+	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
 }
 
 void	kill_prev_word(t_ctx *ctx, t_line *l)
@@ -78,32 +66,42 @@ void	kill_prev_word(t_ctx *ctx, t_line *l)
 	l->line->next = tmp;
 	if (tmp)
 		tmp->prev = l->line;
-	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
-	print_rest_of_line(ctx, l);
+	tmp = l->line;
+	ft_dlsthead(&tmp);
+	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
+	clear_line(ctx, l);
+	print_line_attributes(ctx, l, tmp->next);
+	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
 }
 
 void	kill_next_word(t_ctx *ctx, t_line *l)
 {
 	t_dlist *tmp;
-	int		offset;
 
 	if (l->yank)
 		ft_dlstdel(&l->yank, &delvoid);
 	l->yank = l->line->next;
 	l->yank->prev = NULL;
-	offset = l->cursor_offset;
 	tmp = l->line;
-
 	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
 	go_next_word(ctx, l);
-	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
-	l->cursor_offset = offset;
+	if (l->line->next)
+		l->line->next->prev = tmp;
 	tmp->next = l->line->next;
-	l->line->next = NULL;
+	while (l->yank != l->line)
+		l->yank = l->yank->next;
+	l->yank->next = NULL;
+	ft_dlsthead(&l->yank);
 	l->line = tmp;
-	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
-	print_rest_of_line(ctx, l);	
+	ft_dlsthead(&tmp);
+	clear_line(ctx, l);
+	print_line_attributes(ctx, l, tmp->next);
+	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
 }
+
+/*
+** Slow but okay
+*/
 
 void	yank(t_ctx *ctx, t_line *l)
 {
@@ -112,15 +110,13 @@ void	yank(t_ctx *ctx, t_line *l)
 	tmp = l->line->next;
 	l->line->next = ft_dlstdup(l->yank);
 	l->line->next->prev = l->line;
-	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
-	print_line_attributes(ctx, l, l->line->next);
 	ft_dlstend(&l->line);
 	l->line->next = tmp;
 	if (tmp)
 		tmp->prev = l->line;
-	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
-	print_line_nl(ctx, l, l->line->next);
-	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
-	if (!(l->cursor_offset % ctx->ws.ws_col))
-		tputs(ctx->tc.dow, 1, &ft_putchar_stdin);
+	tmp = l->line;
+	clear_line(ctx, l);
+	redraw_line(ctx, l);
+	while (l->line != tmp)
+		lkey(ctx, l);
 }

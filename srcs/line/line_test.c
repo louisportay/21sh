@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/20 18:34:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 20:38:58 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/11 16:39:55 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,14 @@ bool	test_prev_word(t_ctx *ctx, t_line *l, t_key *key)
 		return (false);
 }
 
-// CHANGE CONDITION
-
 bool	test_upper_line(t_ctx *ctx, t_line *l, t_key *key)
 {
+	(void)ctx;
 	if (!ft_strncmp(key->buf, C_UP, ft_strlen(C_UP)))
 	{
 		ft_bzero(key->buf, key->i);
 		key->i = 0;
-		if (l->cursor_offset >= ctx->ws.ws_col)
+		if (l->cursor_line != 0)
 			return (true);
 		else
 			return (false);

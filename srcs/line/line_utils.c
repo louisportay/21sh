@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 20:40:18 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/11 11:21:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@ void	lkey(t_ctx *ctx, t_line *l)
 {
 	move_cursor_backward(ctx, l);
 	l->line = l->line->prev;
+	INFO;//
 }
 
 void	rkey(t_ctx *ctx, t_line *l)
 {
 	move_cursor_forward(ctx, l);
 	l->line = l->line->next;
+	INFO;//
 }
