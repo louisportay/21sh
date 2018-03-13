@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 10:48:13 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/08 18:46:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/13 12:51:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,17 @@ bool	str_isblank(char *s)
 		if (*s != '\t' && *s != ' ')
 			return (false);
 		s++;
+	}
+	return (true);
+}
+
+bool	dlst_isblank(t_dlist *dlst)
+{
+	while (dlst)
+	{
+		if (str_isblank(dlst->data) == false)
+			return (false);
+		dlst = dlst->next;
 	}
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:03:42 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/08 19:12:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/13 17:59:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,21 @@ typedef struct s_ctx	t_ctx;
 
 typedef struct			s_prompt_flag
 {
-	void				(*func)(t_ctx *env);
+	void				(*fun)(t_ctx *env);
 	char				flag;
 }						t_prompt_flag;
 
 void					print_prompt(void);
+void					print_flag(t_ctx *ctx, char *s);
+
+
+void	d_flag(t_ctx *ctx);
+void	cap_h_flag(t_ctx *ctx);
+void	l_flag(t_ctx *ctx);
+void	s_flag(t_ctx *ctx);
+void	u_flag(t_ctx *ctx);
+void	w_flag(t_ctx *ctx);
+void	cap_w_flag(t_ctx *ctx);
+void	bang_flag(t_ctx *ctx);
 
 #endif

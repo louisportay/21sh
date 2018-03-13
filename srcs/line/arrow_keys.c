@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   up_down_keys.c                                     :+:      :+:    :+:   */
+/*   arrow_keys.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 17:42:27 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 20:34:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/13 18:55:33 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,16 @@ void	down_key(t_ctx *ctx, t_line *l)
 
 	clear_line(ctx, l);
 	redraw_line(ctx, l);
+}
+
+void	lkey(t_ctx *ctx, t_line *l)
+{
+	move_cursor_backward(ctx, l);
+	l->line = l->line->prev;
+}
+
+void	rkey(t_ctx *ctx, t_line *l)
+{
+	move_cursor_forward(ctx, l);
+	l->line = l->line->next;
 }

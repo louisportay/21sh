@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:44:52 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/12 17:46:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/13 11:32:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void del_char(t_ctx *ctx, t_line *l)
 {
-	l->line_len--;
 	ft_dlstremove(&l->line, &delvoid);
 
 	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
@@ -28,22 +27,12 @@ void	del_curr_char(t_ctx *ctx, t_line *l)
 	l->line = l->line->next;
 
 	if (*(char *)l->line->data == '\n')
-	{
-		l->inlines--;
 		l->num_lines--;
-		l->inline_len += get_inline_len(l->line);
-	}
-	else
-		l->inline_len--;
 	del_char(ctx, l);
 }
 
 void	del_prev_char(t_ctx *ctx, t_line *l)
 {
-	if (*(char *)l->line->data == '\n')
-		l->inlines--;
-	else
-		l->inline_len--;
 	if (move_cursor_backward(ctx, l) == 1)
 		l->num_lines--;
 	del_char(ctx, l);
@@ -53,8 +42,6 @@ void	del_prev_char(t_ctx *ctx, t_line *l)
 
 void	insert_char(char *buf, t_ctx *ctx, t_line *l)
 {
-	l->line_len++;
-	l->inline_len++;
 	ft_dlstinsert(l->line, ft_dlstnew(buf, 1));
 
 	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);

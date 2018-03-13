@@ -6,11 +6,19 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 20:05:44 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 20:06:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/13 19:19:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+void	get_state(t_line *l)
+{
+	if (l->heredoc)
+		query_hdocstate(l->line, &l->linestate, l->eohdoc);
+	else
+		query_linestate(l->line->next, &l->linestate);
+}
 
 void	query_linestate(t_dlist *line, t_stack **linestate)
 {

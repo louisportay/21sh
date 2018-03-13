@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/12 17:48:14 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/13 19:28:21 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,21 +126,14 @@ struct		s_termcaps
 /*
 ** sizeof struct winsize = 8
 **
-**	cursor_offset	:	Number of characters in front of the cursor
-**	line_len		:	Total number of characters (including the prompt len)
 **	cursor_line		:	Line on which the cursor is
 **	num_lines		:	Total number of lines minus 1
-**
-**	offset_inline	:	Number of characters in front of the cursor in that inline
-**	inline_len		:	Total number of characters in that inline
-**	cursor_inline	:	Inline on which the cursor is
-**	inlines			: 	Total number of inlines
+**	offset_inline	:	Number of characters in front of the cursor in that inline (space delimited by \n)
+**  prompt_len		:	prompt len on the lastline (if it contains \n)
 **
 */
 
-extern int dump_w;//
-
-#define INFO dprintf(dump_w, "=====================\ncursor_offset = %zu\nline_len = %zu\ncursor_line = %u\nnum_lines = %u\n\noffset_inline = %zu\ninline_len = %zu\ncursor_inline = %u\ninlines = %u\n\nwincol = %u\nwinlin = %u\n", l->cursor_offset, l->line_len, l->cursor_line, l->num_lines, l->offset_inline, l->inline_len, l->cursor_inline, l->inlines, ctx->ws.ws_col, ctx->ws.ws_row)
+#define INFO dprintf(dump_w, "=====================\ncursor_line = %u\nnum_lines = %u\noffset_inline = %u\nprompt_len = %u\n\nwincol = %u\nwinlin = %u\n", l->cursor_line, l->num_lines, l->offset_inline, l->prompt_len, ctx->ws.ws_col, ctx->ws.ws_row)
 
 typedef struct			s_line
 {
@@ -150,18 +143,13 @@ typedef struct			s_line
 	t_dlist				*lastline;
 	t_stack				*linestate;
 
-	size_t				cursor_offset;
-	size_t				line_len;
 	unsigned			cursor_line;
 	unsigned			num_lines;
-	
-	size_t				offset_inline;
-	size_t				inline_len;
-	unsigned			cursor_inline;
-	unsigned			inlines;
+	unsigned			offset_inline;
+	unsigned			prompt_len;
 
-	bool				heredoc;
 	char				*eohdoc;
+	bool				heredoc;
 }						t_line;
 
 typedef struct	s_key
@@ -170,29 +158,24 @@ typedef struct	s_key
 	int			i;
 }				t_key;
 
-# define TEST_FUNC(TEST, FUNC)		(t_line_pair){.test = TEST, .func = FUNC}
-
 typedef bool	(*t_line_test)(t_ctx *env, t_line *l, t_key *key);
 typedef void	(*t_line_func)(t_ctx *env, t_line *l);
 
 typedef struct	s_line_pair
 {
 	t_line_test	test;
-	t_line_func func;
+	t_line_func fun;
 }				t_line_pair;
 
 void	ft_readline(t_ctx *ctx, t_line *l, char *prompt_mode);
 void	lineread(t_ctx *env, t_line *l);
 void	getrawline(t_ctx *env, t_line *l);
 int		user_input(t_ctx *env, t_line *l, t_key *key);
-void	init_line(t_line *l);
 
 void	redraw_line(t_ctx *ctx, t_line *l);
 void	clear_line(t_ctx *env, t_line *l);
 void	clear_screen_(t_ctx *env, t_line *l);
 
-void	move_cursor_n_columns(int n);
-void	move_cursor_n_lines(int n);
 int		move_cursor_forward(t_ctx *ctx, t_line *l);
 int		move_cursor_backward(t_ctx *ctx, t_line *l);
 
@@ -242,20 +225,19 @@ bool	test_del_curr_char(t_ctx *env, t_line *l, t_key *key);
 bool 	test_del_prev_char(t_ctx *env, t_line *l, t_key *key);
 bool	test_emacs_mode(t_ctx *env, t_line *l, t_key *key);
 
-bool	test_load_line(t_ctx *env, t_line *l, t_key *key);
-
-void	load_line(t_ctx *env, t_line *l);
 void	update_line(t_ctx *env, t_line *l);
 void	update_linestate(t_stack **state, char c);
+void	get_state(t_line *l);
 void	query_linestate(t_dlist *dlst, t_stack **linestate);
 void	query_hdocstate(t_dlist *dlst, t_stack **linestate, char *eof);
+
 void	toggle_emacs_mode(t_ctx *env, t_line *l);
 void	join_split_lines(t_line *l);
 void	err_line(t_line *l, int errno);
+void	add_newline(t_line *l);
 
 void	reset_attributes(t_line *l);
-
-void	add_newline(t_line *l);
-size_t	get_inline_len(t_dlist *line);
+void	reset_line(t_ctx *ctx, t_line *l);
+void	init_line(t_line *l);
 
 #endif

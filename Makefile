@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/12 14:59:16 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/13 19:20:45 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,15 +89,20 @@ SRCS=	main.c\
 		utils.c\
 		history.c\
 		history_utils.c\
-		rawline.c\
 		quote.c\
 		\
+		rawline.c\
+		default.c\
 		prompt.c\
+		prompt_utils.c\
+		prompt_flags1.c\
+		prompt_flags2.c\
 		line.c\
+		user_input.c\
 		lineread.c\
 		move_cursor.c\
 		print_line.c\
-		up_down_keys.c\
+		arrow_keys.c\
 		go_to.c\
 		del_insert.c\
 		kill_yank.c\
