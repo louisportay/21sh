@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/11 16:56:13 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/13 12:44:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,49 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 	{
 		p->completed = 1;
 		j->parent->status = WTERMSIG(status);
-		dprintf(STDERR_FILENO, "%d: Terminated by signal %d.\n", (int)p->pid, 
+		dprintf(STDERR_FILENO, "%d: Terminated by signal %d.\n", (int)p->pid,
 				j->parent->status);
-        j->parent->done = 1;
+		j->parent->done = 1;
 	}
 	else
 		printf("Received unhandled status\n");
 }
 
+static int				lstopall(t_job *j)
+{
+	t_proc				*p;
+
+	j->completed = 0;
+	j->stopped = 1;
+	j->parent->stopped = 1;
+	p = j->procs;
+	while (p != NULL)
+	{
+		p->stopped = 1;
+		p = p->next;
+	}
+	return (1);
+}
+
+static int				lwaitpid(t_job *j, t_proc *p)
+{
+	pid_t				pid;
+	int					status;
+
+	if (p->completed == 1)
+		;
+	else if ((pid = waitpid(p->pid, &status, WNOHANG | WUNTRACED)) > 0)
+		jc_updateproc(j, p, status);
+	else if (pid == 0)
+		;
+	else if (pid == -1)
+		return (-1);
+	return (0);
+}
+
 int						jc_updatepipe(t_job *j)
 {
 	t_proc				*p;
-	pid_t				pid;
-	int					status;
 	int					completed;
 
 	if (j == NULL)
@@ -50,22 +80,11 @@ int						jc_updatepipe(t_job *j)
 	completed = 1;
 	while (p != NULL)
 	{
-		if (p->completed == 1)
-			;
-		else if ((pid = waitpid(p->pid, &status, WNOHANG | WUNTRACED)) > 0)
-			jc_updateproc(j, p, status);
-		else if (pid == 0)
-			;
-		else if (pid == -1)
+		if (lwaitpid(j, p) == -1)
 			return (-1);
 		completed &= p->completed;
 		if (p->stopped)
-		{
-			j->completed = 0;
-			j->stopped = 1;
-			j->parent->stopped = 1;
-			return (1);
-		}
+			return (lstopall(j));
 		j->status = p->status;
 		p = p->next;
 	}

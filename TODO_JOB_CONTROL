@@ -14,3 +14,4 @@ fix hash multiple arguments error (displaying only the last, clearing previous o
 add verbose error messages
 add assignments and redirs to `jobs` builtins.
 `jobs -v` -> add it inline with regular print
+Look for error on 4 stopped jobs, all bg-ed, saying "setpgid" of one them

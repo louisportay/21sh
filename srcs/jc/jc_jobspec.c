@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:37:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/13 11:11:08 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/13 14:00:48 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,47 +86,41 @@ static t_job		*lstrcmp(t_ctx *ctx, char *str)
 	return (j);
 }
 
-t_job				*jc_jobspec(t_proc *p, t_ctx *ctx)
+t_job				*jc_jobspec(char *argv, t_ctx *ctx)
 {
-	size_t			i;
 	t_job			*j;
-	size_t			k;
+	size_t			i;
 	int				n;
 
-	i = 1;
 	j = NULL;
-	while (p->argv[i] != NULL)
-	{
-		k = 0;
-		if (p->argv[i][k] == '%')
-			k++;
-		if (p->argv[i][k] == '\0'
-			|| (p->argv[i][k] == '+' && p->argv[i][k + 1] == '\0')
-			|| (p->argv[i][k] == '%' && p->argv[i][k + 1] == '\0'))
-			j = (ctx->bgs != NULL) ? (t_job *)ctx->bgs->content : NULL;
-		else if (p->argv[i][k] == '-' && p->argv[i][k + 1] == '\0')
-		{
-			if (ctx->bgs == NULL)
-				j = NULL;
-			else if (ctx->bgs->next == NULL)
-				j = (t_job *)ctx->bgs->content;
-			else
-				j = (t_job *)ctx->bgs->next->content;
-		}
-		else if (ft_isnumber(p->argv[i] + k))
-		{
-			n = ft_atoi(p->argv[i] + k) - 1;
-			if (n < 0 || (size_t)n > ctx->bg_cnt || ctx->bg_jobs[n] == NULL)
-				dprintf(STDERR_FILENO, "21sh: %s: %s: %s\n", "bg",
-						p->argv[i], BU_JOB_NO);
-			else
-				j = ctx->bg_jobs[n];
-		}
-		else if (p->argv[i][k] == '?')
-			j = lneedle(ctx, p->argv[i] + k + 1);
-		else
-			j = lstrcmp(ctx, p->argv[i] + k);
+	i = 0;
+	if (argv[i] == '%')
 		i++;
+	if (argv[i] == '\0'
+		|| (argv[i] == '+' && argv[i + 1] == '\0')
+		|| (argv[i] == '%' && argv[i + 1] == '\0'))
+		j = (ctx->bgs != NULL) ? (t_job *)ctx->bgs->content : NULL;
+	else if (argv[i] == '-' && argv[i + 1] == '\0')
+	{
+		if (ctx->bgs == NULL)
+			j = NULL;
+		else if (ctx->bgs->next == NULL)
+			j = (t_job *)ctx->bgs->content;
+		else
+			j = (t_job *)ctx->bgs->next->content;
 	}
+	else if (ft_isnumber(argv + i))
+	{
+		n = ft_atoi(argv + i) - 1;
+		if (n < 0 || (size_t)n > ctx->bg_cnt || ctx->bg_jobs[n] == NULL)
+			dprintf(STDERR_FILENO, "21sh: %s: %s: %s\n", "bg",
+					argv, BU_JOB_NO);
+		else
+			j = ctx->bg_jobs[n];
+	}
+	else if (argv[i] == '?')
+		j = lneedle(ctx, argv + i + 1);
+	else
+		j = lstrcmp(ctx, argv + i);
 	return (j);
 }

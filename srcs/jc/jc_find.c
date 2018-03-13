@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:48:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/11 17:28:22 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/13 12:30:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 **	RETURN 1 IF success ELSE 0
 */
 
-size_t				jc_findid(t_ctx *ctx, t_job *j)
+size_t					jc_findid(t_ctx *ctx, t_job *j)
 {
-	size_t			i;
+	size_t				i;
 
 	i = 0;
 	while (i < ctx->bg_cnt)
