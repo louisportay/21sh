@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/11 11:08:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/13 11:19:45 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void					proc_clear(t_proc **proc);
 void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 									t_ctx *ctx);
 int						proc_chgstat(t_job *job, pid_t pid, int status);
+
+void					proc_foreach(t_proc *p, void (*act)(t_proc *));
 
 struct s_job			*job_new(t_proc *plist);
 void					job_insert(t_job **head, t_job **curr, t_job *j);

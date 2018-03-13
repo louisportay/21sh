@@ -1,49 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   proc_lifecycle.c                                   :+:      :+:    :+:   */
+/*   proc_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/24 13:38:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 19:03:00 by lportay          ###   ########.fr       */
+/*   Created: 2018/03/13 11:27:18 by vbastion          #+#    #+#             */
+/*   Updated: 2018/03/13 11:27:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-//UNUSED
-
-t_proc					*proc_new(char **argv)
+void				proc_foreach(t_proc *p, void (*act)(t_proc *))
 {
-	t_proc				*proc;
-
-	if ((proc = (t_proc *)ft_memalloc(sizeof(t_proc))) == NULL)
-		return (NULL);
-	proc->argv = argv;
-	return (proc);
-}
-
-void					proc_insert(t_proc **head, t_proc **curr, t_proc *p)
-{
-	if (*head == NULL)
-		*head = p;
-	else
-		(*curr)->next = p;
-	*curr = p;
-}
-
-void					proc_clear(t_proc **proc)
-{
-	t_proc				*p;
-	t_proc				*tmp;
-
-	p = *proc;
-	*proc = NULL;
 	while (p != NULL)
 	{
-		tmp = p;
+		act(p);
 		p = p->next;
-		ft_memdel((void **)&tmp);
 	}
 }

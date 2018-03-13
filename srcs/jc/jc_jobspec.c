@@ -6,18 +6,11 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:37:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/11 16:37:37 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/13 11:11:08 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-#define JOB_NO "no job"
-#define JOB_PRE "previous job"
-#define JOB_LAST "last job"
-
-#define BU_JOB_AMB ("ambiguous job spec")
-#define BU_JOB_NO ("no such job")
 
 static void			*lamb(char *builtin, char *str)
 {

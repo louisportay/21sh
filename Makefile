@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/11 15:45:50 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/13 11:28:21 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,6 +120,7 @@ SRCS=	main.c\
 		bridge_dlist.c\
 		bridge_astr.c\
 		proc_next.c\
+		proc_func.c\
 		ptok_lifecycle.c\
 		clearers.c\
 		exec.c\
@@ -213,6 +214,7 @@ SRCS=	main.c\
 		jc_addbg.c\
 		jc_rmbg.c\
 		jc_jobspec.c\
+		jc_restore.c\
 		job_safeclear.c\
 		builtin_fg.c\
 		builtin_bg.c\

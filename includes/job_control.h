@@ -6,12 +6,20 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 10:30:48 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/11 17:12:13 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/13 11:23:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef JOB_CONTROL_H
 # define JOB_CONTROL_H
+
+#define JOB_NO "no job"
+#define JOB_PRE "previous job"
+#define JOB_LAST "last job"
+
+#define BU_JOB_AMB ("ambiguous job spec")
+#define BU_JOB_NO ("no such job")
+#define BU_JOB_ERR ("221sh: %s: %s\n")
 
 typedef struct s_job	t_job;
 typedef struct s_ctx	t_ctx;
@@ -38,5 +46,7 @@ void					jc_addtobg(t_ctx *ctx, t_job *j);
 void					jc_rmbg(t_ctx *ctx, t_job *j);
 
 t_job					*jc_jobspec(t_proc *p, t_ctx *ctx);
+
+void					jc_restore(t_job *j);
 
 #endif
