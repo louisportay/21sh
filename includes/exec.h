@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/13 11:19:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/13 16:20:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,22 @@ union					u_ebin
 	struct s_list		*out;
 };
 
+/*
+**	In `status` fields of both struct s_proc and struct s_job
+**	values are layered as:
+**		- from 0x00 to 0xFF	->	exit code
+**		- 0x0100			->	completed
+**		- 0x0200			->	stopped
+**			<<	FOR THE JOB ONLY  >>
+**		- 0x0400			->	signaled
+**		- 0x0800			->	done
+*/
+
+# define JOB_CMP 0x0100
+# define JOB_STP 0x0200
+# define JOB_SIG 0x0400
+# define JOB_DON 0x0800
+
 struct					s_proc
 {
 	struct s_proc		*next;
@@ -60,8 +76,8 @@ struct					s_proc
 	char				**env;
 	struct s_asmt		*asmts;
 	pid_t				pid;
-	char				completed;
-	char				stopped;
+//	char				completed;
+//	char				stopped;
 	int					status;
 	struct s_redir		*redirs;
 	enum e_extype		type;
@@ -76,9 +92,9 @@ struct					s_job
 	char				notified;
 	struct termios		tmodes;// Candidate for deletion
 	int					status;
-	char				stopped;
-	char				completed;
-	char				done;
+//	char				stopped;
+//	char				completed;
+//	char				done;
 	int					stdin;
 	int					stdout;
 	int					stderr;

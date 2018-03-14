@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 14:05:13 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 19:31:07 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 13:09:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int						prepare_fork(t_proc *p, t_ctx *ctx)
 	if (p->type & BU_STR)
 		return (0);
 	if ((blt = get_proc_blt(p->argv[0], ctx->builtins)) != NULL)
-		p->status = blt(p, ctx);
+		p->status = blt(p, ctx) & 0xFF;
 	else
 	{
 		if ((p->data.path = proc_path(p, ctx, pmod)) == NULL)

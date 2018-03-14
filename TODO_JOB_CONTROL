@@ -1,4 +1,4 @@
-HANDLE BG/FG
+HANDLE BG/FG																	--	DONE
 Free at the end																	--	CHECK IF THE WHOLE TREE IS FREED
 Get next extree																	--	CHECK FOR EXCEPTIONS
 Do assignment					// WHAT ?
@@ -12,6 +12,7 @@ Update tcsetpgrp, tcgetattr for uninteractive actions							--	DONE, I guess?
 Do some free and cleanup, it's really messy
 fix hash multiple arguments error (displaying only the last, clearing previous output)
 add verbose error messages
-add assignments and redirs to `jobs` builtins.
 `jobs -v` -> add it inline with regular print
-Look for error on 4 stopped jobs, all bg-ed, saying "setpgid" of one them
+Look for error on 4 stopped jobs, all bg-ed, saying "setpgid" of one them -> Might be error said in kerrisk, errno set by the parent setpgid
+Fix handling of background launched jobs (notifying on launch with id and pgid
+Fix notification and continuation of signaled jobs

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 13:10:43 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/11 17:11:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/14 16:53:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ char					jc_getstatus(t_job *j)
 
 void					jc_notify(t_job *j, t_ctx *ctx, int i, int all)
 {
-	if (j->parent->done == 1)
+	if (j->status & JOB_DON)
 	{
-		if (j->parent->status == 0)
+		if ((j->parent->status & 0xFF) == 0)
 			printf("[%d]%-3c%-24s%s\n", i + 1, jc_getstatus(j), "Done",
 					j->parent->command);
 		else
-			printf("[%d]%-3c%s %-3d%16c%s\n", i + 1, jc_getstatus(j), "Exit",
-					j->parent->status, jc_getstatus(j), j->parent->command);
+			printf("[%d]%-3c%s %-19d%s\n", i + 1, jc_getstatus(j), "Exit",
+					j->parent->status & 0xFF, j->parent->command);
 		jc_rmbg(ctx, j);
 	}
-	else if (all && j->stopped)
+	else if (all && j->status & JOB_STP)
 		printf("[%d]%-3c%-24s%s\n", i + 1, jc_getstatus(j), "Stopped",
 				j->parent->command);
 	else if (all)

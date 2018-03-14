@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:55 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/13 13:58:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/14 17:03:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void			ldobg(t_job *j, t_proc *bu, t_list **curr, t_ctx *ctx)
 	i = jc_findid(ctx, j);
 	if (i == (size_t)-1)
 		asprintf(&str, BU_JOB_ERR, "bg", BU_JOB_NO);
-	else if (j->stopped == 0)
+	else if ((j->status & JOB_STP) == 0)
 		asprintf(&str, "221sh: bg: job %zu already in background\n", i + 1);
 	else
 	{

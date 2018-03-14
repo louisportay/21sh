@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:37:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/11 11:34:32 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/14 17:17:51 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static void				ldojob(t_job *j, t_ctx *ctx, size_t i)
 	t_job				*next;
 
 	jc_updatepipe(j);
-	if (j->completed)
+	if (j->status & JOB_CMP)
 	{
-		next = j->status ? j->err : j->ok;
+		next = (j->status & 0xFF) ? j->err : j->ok;
 		if (next != NULL)
 		{
 			ctx->bg_jobs[i] = next;
@@ -27,9 +27,9 @@ static void				ldojob(t_job *j, t_ctx *ctx, size_t i)
 		}
 		else
 		{
-			j->parent->status = j->status;
+			j->parent->status = j->parent->status & ~0xFF;
+			j->parent->status |= (j->status & 0xFF) | JOB_DON;
 			j = j->parent;
-			j->done = 1;
 			jc_notify(j, ctx, i, 0);
 		}
 	}
