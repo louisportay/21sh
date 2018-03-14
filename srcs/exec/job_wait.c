@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 17:05:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/14 18:50:02 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ int						job_donext(t_job *j, t_ctx *ctx)
 		}
 	}
 	if (j->err != NULL)
-		return (j->status = (job_exec(j->err, ctx) & 0xFF));
+		return (job_exec(j->err, ctx) & 0xFF);
 	return (j->status & 0xFF);
 }
 
 int						job_next(t_job *j, t_ctx *ctx)
 {
-	j->status = job_putfg(j, ctx) & 0xFF;
+	j->status = (j->status & ~0xFF) | (job_putfg(j, ctx) & 0xFF);
 	if (j->status & JOB_STP)
 		return (j->status & 0xFF);
 	return (job_donext(j, ctx) & 0xFF);
@@ -49,7 +49,8 @@ int						job_putfg(t_job *j, t_ctx *ctx)
 
 	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, j->pgid)) != 0)
 		perror("tcsetpgrp - job_putfg");
-	ctx->fg_job = j;
+	if (ctx->fg_job == NULL)	// PTET CAHNGER CA HEIN!
+		ctx->fg_job = j;	// CA SERAIT SUREMENT BIEN
 	signal(SIGCHLD, &jc_signal);
 	while ((j->status & (JOB_STP | JOB_CMP)) == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 18:07:50 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/10 16:04:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/14 18:37:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void					jc_addtobg(t_ctx *ctx, t_job *j)
 	}
 	if ((i = jc_getbgnext(ctx)) == (size_t)-1)
 		i = jc_bggrow(ctx);
+	if (ctx->fg_job == j)
+		ctx->fg_job = NULL;
 	ctx->bg_jobs[i] = j;
 	j->parent->bg = 1;
 	l = list_create(j);

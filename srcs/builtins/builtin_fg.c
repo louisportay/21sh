@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:53 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/13 13:58:47 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/14 18:48:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,12 @@ static void			lmultiarg(t_proc *p, t_ctx *ctx)
 		{
 			i = jc_findid(ctx, j);
 			jc_remove(ctx, j, i);
+			signal(SIGCHLD, SIG_IGN);
 			jc_restore(j);
-			job_putfg(j, ctx);
+			j->bg = 0;
+			j->parent->bg = 0;
+			printf("ret of fg-ing: %d\n", job_putfg(j, ctx));
+			signal(SIGCHLD, &jc_signal);
 		}
 		else
 		{
@@ -83,8 +87,12 @@ int					ft_fg(t_proc *p, t_ctx *ctx)
 			j = (t_job *)ctx->bgs->content;
 			i = jc_findid(ctx, j);
 			jc_remove(ctx, j, i);
+			signal(SIGCHLD, SIG_IGN);
 			jc_restore(j);
-			job_putfg(j, ctx);
+			j->bg = 0;
+			j->parent->bg = 0;
+			job_next(j, ctx);
+			signal(SIGCHLD, &jc_signal);
 		}
 	}
 	else

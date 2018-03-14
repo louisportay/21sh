@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 13:19:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/14 18:28:29 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 void					jc_updateproc(t_job *j, t_proc *p, int status)
 {
 	if (WIFEXITED(status))
+	{
 		p->status = WEXITSTATUS(status) | JOB_CMP;
+	}
 	else if (WIFSTOPPED(status))
 	{
 		p->status |= JOB_STP;
@@ -25,8 +27,6 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 	else if (WIFSIGNALED(status))
 	{
 		p->status = (JOB_CMP | JOB_SIG) | (WTERMSIG(status) & 0xFF);
-//		dprintf(STDERR_FILENO, "%d: Terminated by signal %d.\n", (int)p->pid,
-//				j->parent->status & 0xFF);
 		j->parent->status = p->status | JOB_DON;
 		j->status = p->status | JOB_DON;
 	}
@@ -72,19 +72,19 @@ int						jc_updatepipe(t_job *j)
 	if (j == NULL)
 		return (0);
 	p = j->procs;
-	completed = 1;
+	completed = JOB_CMP;
 	while (p != NULL)
 	{
 		if (lwaitpid(j, p) == -1)
 			return (-1);
-		completed &= ((p->status & JOB_CMP) != 0);
+		completed &= p->status & JOB_CMP;
 		if (p->status & JOB_STP)
 			return (lstopall(j));
 		j->status = ((j->status & ~0xFF) | (p->status & 0xFF));
 		p = p->next;
 	}
-	if (completed == 1)
-		j->status |= JOB_CMP;
+	if (completed)
+		j->status = (j->status & 0xFF) | JOB_CMP;
 	return (j->status & 0xFF);
 }
 
