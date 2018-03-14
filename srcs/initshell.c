@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 18:42:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 12:22:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->fd = STDIN_FILENO;
 	ctx->tty = open("/dev/tty", O_RDWR);
 	ctx->istty = isatty(STDIN_FILENO);
+	if (ioctl(ctx->fd, TIOCGWINSZ, &ctx->ws) == -1)
+		ctx->line_edition = false;
 
 	ctx->path = getpath(environ);
 	ctx->environ = ft_astr_dup(environ);
@@ -76,9 +78,7 @@ static void			init_termios(t_ctx *ctx)
 	ctx->tios.c_cc[VDISCARD] = _POSIX_VDISABLE;
 #endif
 	ctx->tios.c_cc[VINTR] = _POSIX_VDISABLE;
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws) == -1)
-		ctx->line_edition = false;
-	else if (tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->tios) == -1)
+	if (tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->tios) == -1)
 		ctx->line_edition = false;
 	else
 		init_termcaps(ctx);

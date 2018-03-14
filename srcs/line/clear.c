@@ -27,7 +27,7 @@ void	redraw_line(t_ctx *ctx, t_line *l)
 ** Window size change
 */
 
-void clear_line(t_ctx *ctx, t_line *l)
+void	clear_line(t_ctx *ctx, t_line *l)
 {
 	if (l->cursor_line)
 		dprintf(ctx->tty, "\033[%dA", l->cursor_line);

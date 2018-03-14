@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:48:21 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/12 17:40:43 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 12:05:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 void	kill_end(t_ctx *ctx, t_line *l)
 {
 	t_dlist *tmp;
-	
+
 	if (l->yank)
 		ft_dlstdel(&l->yank, &delvoid);
 	l->yank = l->line->next;
 	l->line->next = NULL;
-	l->yank->prev = NULL;	
+	l->yank->prev = NULL;
 	tmp = l->line;
 	ft_dlsthead(&tmp);
 	clear_line(ctx, l);

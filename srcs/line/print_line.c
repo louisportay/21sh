@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 16:53:49 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 14:50:02 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 13:33:37 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_line_attributes(t_ctx *ctx, t_line *l, t_dlist *list)
 			l->cursor_line++;
 			l->num_lines++;
 			tputs(ctx->tc.dow, 1, &ft_putchar_stdin);
-		}	
+		}
 		list = list->next;
 	}
 }

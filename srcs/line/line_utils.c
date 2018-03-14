@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 19:24:50 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 12:41:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ void	join_split_lines(t_line *l)
 void	add_newline(t_line *l)
 {
 	if ((l->linestate->state & (SQUOTE | DQUOTE) && !l->heredoc) ||
-		 (l->linestate->state & HEREDOC))
+(l->linestate->state & HEREDOC))
 		ft_dlstaddend(l->split_line, ft_dlstnew("\n", 1));
 }
 
 void	toggle_emacs_mode(t_ctx *ctx, t_line *l)
 {
 	(void)l;
-	ctx->emacs_mode = !ctx->emacs_mode;	
+	ctx->emacs_mode = !ctx->emacs_mode;
 }
 
 void	err_line(t_line *l, int errno)

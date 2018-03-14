@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:57:13 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 14:24:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 13:35:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 
 void	d_flag(t_ctx *ctx)
 {
-	char 		*time_str;
+	char		*time_str;
 	struct tm	*tm;
-	time_t 		t;
+	time_t		t;
 
 	t = time(NULL);
 	tm = localtime(&t);
@@ -41,7 +41,6 @@ void	cap_h_flag(t_ctx *ctx)
 		print_flag(ctx, hostname);
 }
 
-
 /*
 ** TTY name flag
 */
@@ -51,7 +50,8 @@ void	l_flag(t_ctx *ctx)
 	char *s;
 
 	s = NULL;
-	if (isatty(STDIN_FILENO) && (s = ttyname(STDIN_FILENO)) && (s = ft_basename(s)))
+	if (isatty(STDIN_FILENO) && (s = ttyname(STDIN_FILENO)) &&
+			(s = ft_basename(s)))
 		print_flag(ctx, s);
 	free(s);
 }

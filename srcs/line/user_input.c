@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 11:51:16 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 19:31:24 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 13:59:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static void	init_pairs(t_line_pair *p)
 	p[2] = (t_line_pair){.test = &test_lkey, .fun = &lkey};
 	p[3] = (t_line_pair){.test = &test_rkey, .fun = &rkey};
 	p[4] = (t_line_pair){.test = &test_del_curr_char, .fun = &del_curr_char};
-	p[5] = (t_line_pair){.test = &test_del_prev_char, .fun = &del_prev_char};	
-	p[6] = (t_line_pair){.test = &test_beginning,	.fun = &go_beginning};
+	p[5] = (t_line_pair){.test = &test_del_prev_char, .fun = &del_prev_char};
+	p[6] = (t_line_pair){.test = &test_beginning, .fun = &go_beginning};
 	p[7] = (t_line_pair){.test = &test_end, .fun = &go_end};
 	p[8] = (t_line_pair){.test = &test_lower_line, .fun = &go_lower_line};
 	p[9] = (t_line_pair){.test = &test_upper_line, .fun = &go_upper_line};
@@ -78,13 +78,17 @@ static void	reset_buffer(t_key *key)
 	}
 }
 
-int	user_input(t_ctx *ctx, t_line *l, t_key *key)
+/*
+** C_R --> recherche dans l'historique (C_G + C_J + C_O)
+** C_I --> autocompletion
+*/
+
+int			user_input(t_ctx *ctx, t_line *l, t_key *key)
 {
 	int ret;
 
 	if ((ret = read_state(ctx, l, key)) != READON)
 		return (ret);
-
 	if (ft_isprint(*key->buf))
 	{
 		if (!l->num_lines)
@@ -96,13 +100,6 @@ int	user_input(t_ctx *ctx, t_line *l, t_key *key)
 		reset_line(ctx, l);
 	else
 		line_switch(ctx, l, key);
-
 	reset_buffer(key);
-
-//	else if (buf == C_R && ctx->history)
-//		recherche dans l'historique (C_G + C_J + C_O)
-//	else if (buf == TAB && ctx->autocomplete)
-//		autocompletion
-
 	return (READON);
 }

@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/13 19:20:45 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/14 12:39:29 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,12 +104,17 @@ SRCS=	main.c\
 		print_line.c\
 		arrow_keys.c\
 		go_to.c\
+		go_line.c\
 		del_insert.c\
 		kill_yank.c\
 		line_utils.c\
 		clear.c\
-		line_test.c\
 		get_state.c\
+		test_arrow.c\
+		test_kill_yank.c\
+		test_go_line.c\
+		test_go_to.c\
+		test_other.c\
 		\
 		lexer.c\
 		filter_tokens.c\

@@ -12,48 +12,47 @@
 
 #include "ft_21sh.h"
 
-static void del_char(t_ctx *ctx, t_line *l)
+static void	del_char(t_ctx *ctx, t_line *l)
 {
 	ft_dlstremove(&l->line, &delvoid);
-
 	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
 	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
 	print_line(l->line->next);
 	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
 }
 
-void	del_curr_char(t_ctx *ctx, t_line *l)
+void		del_curr_char(t_ctx *ctx, t_line *l)
 {
 	l->line = l->line->next;
-
 	if (*(char *)l->line->data == '\n')
 		l->num_lines--;
 	del_char(ctx, l);
 }
 
-void	del_prev_char(t_ctx *ctx, t_line *l)
+void		del_prev_char(t_ctx *ctx, t_line *l)
 {
 	if (move_cursor_backward(ctx, l) == 1)
 		l->num_lines--;
 	del_char(ctx, l);
 }
 
-//More efficient but broken on the lower edge of the window (F*cking termcap rc)
+/*
+** More efficient but broken on the lower edge of the window
+** (termcap rc restore one line lower)
+*/
 
-void	insert_char(char *buf, t_ctx *ctx, t_line *l)
+void		insert_char(char *buf, t_ctx *ctx, t_line *l)
 {
 	ft_dlstinsert(l->line, ft_dlstnew(buf, 1));
-
 	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
 	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
 	print_line(l->line->next);
 	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
-
 	l->num_lines += move_cursor_forward(ctx, l);
 	l->line = l->line->next;
 }
 
-void	insert_char_slow(char *buf, t_ctx *ctx, t_line *l)
+void		insert_char_slow(char *buf, t_ctx *ctx, t_line *l)
 {
 	t_dlist *tmp;
 
@@ -61,7 +60,6 @@ void	insert_char_slow(char *buf, t_ctx *ctx, t_line *l)
 	tmp = l->line->next;
 	clear_line(ctx, l);
 	redraw_line(ctx, l);
-
 	while (l->line != tmp)
 		lkey(ctx, l);
 }

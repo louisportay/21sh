@@ -6,37 +6,38 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 16:52:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 15:49:58 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 12:48:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void handle_move_around_newline(t_ctx *ctx, t_line *l)
+static void	munch_prompt_len(t_ctx *ctx, t_line *l, int offset)
+{
+	while (offset-- > 0)
+	{
+		tputs(ctx->tc.nd, 1, &ft_putchar_stdin);
+		l->offset_inline++;
+		if (!(l->offset_inline % ctx->ws.ws_col))
+			tputs(ctx->tc.cr, 1, &ft_putchar_stdin);
+	}
+}
+
+static void	handle_move_around_newline(t_ctx *ctx, t_line *l)
 {
 	t_dlist *tmp;
-	int		offset;
 
 	tmp = l->line->prev;
 	l->cursor_line--;
 	l->offset_inline = 0;
 	tputs(ctx->tc.up, 1, &ft_putchar_stdin);
-
 	while (*(char *)tmp->data != '\n')
 	{
 		if (!tmp->prev)
 		{
-			offset = l->prompt_len;
-			while (offset-- > 0)
-			{
-				tputs(ctx->tc.nd, 1, &ft_putchar_stdin);
-				l->offset_inline++;
-				if (!(l->offset_inline % ctx->ws.ws_col))
-					tputs(ctx->tc.cr, 1, &ft_putchar_stdin);
-			}
-			break;
+			munch_prompt_len(ctx, l, l->prompt_len);
+			break ;
 		}
-
 		l->offset_inline++;
 		if (!(l->offset_inline % ctx->ws.ws_col))
 			tputs(ctx->tc.cr, 1, &ft_putchar_stdin);
@@ -46,7 +47,7 @@ static void handle_move_around_newline(t_ctx *ctx, t_line *l)
 	}
 }
 
-int	move_cursor_backward(t_ctx *ctx, t_line *l)
+int			move_cursor_backward(t_ctx *ctx, t_line *l)
 {
 	if (*(char *)l->line->data == '\n')
 	{
@@ -69,7 +70,7 @@ int	move_cursor_backward(t_ctx *ctx, t_line *l)
 	}
 }
 
-int	move_cursor_forward(t_ctx *ctx, t_line *l)
+int			move_cursor_forward(t_ctx *ctx, t_line *l)
 {
 	l->offset_inline++;
 	if (*(char *)l->line->next->data == '\n')

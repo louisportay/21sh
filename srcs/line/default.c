@@ -32,11 +32,9 @@ void	init_line(t_line *l)
 
 void	reset_line(t_ctx *ctx, t_line *l)
 {
-
 	write(STDOUT_FILENO, "^C", 2);
 	go_end(ctx, l);
 	write(STDOUT_FILENO, "\n", 1);
-
 	if (l->split_line)
 		ft_dlstdel(&l->split_line, &delvoid);
 	if (l->line)
@@ -48,8 +46,7 @@ void	reset_line(t_ctx *ctx, t_line *l)
 	}
 	else
 		ft_dlstdel(&l->lastline, &delvoid);
-
-	stack_del(&l->linestate);	
+	stack_del(&l->linestate);
 	stack_push(&l->linestate, stack_create(UNQUOTED));
 	ft_strcpy(ctx->prompt_mode, PS1);
 	init_line(l);

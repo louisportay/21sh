@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 13:12:14 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 13:13:35 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 13:36:23 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	w_flag(t_ctx *ctx)
 
 	homedir = ft_astr_getval(ctx->environ, "HOME");
 	cwd = getcwd(NULL, 0);
-	if (cwd && homedir && (tmp = ft_strstr(cwd, homedir)) && tmp == cwd && cwd[ft_strlen(homedir)] == '/')
+	if (cwd && homedir && (tmp = ft_strstr(cwd, homedir)) && tmp == cwd
+			&& cwd[ft_strlen(homedir)] == '/')
 	{
 		ctx->cur_line->prompt_len += ft_strlen(cwd) - ft_strlen(homedir) + 1;
 		write(STDOUT_FILENO, "~", 1);
@@ -44,7 +45,8 @@ void	cap_w_flag(t_ctx *ctx)
 	char *cwd;
 	char *basename_cwd;
 
-	if ((cwd = getcwd(NULL, 0)) && (basename_cwd = ft_basename(cwd)))
+	if ((cwd = getcwd(NULL, 0)) &&
+			(basename_cwd = ft_basename(cwd)))
 	{
 		print_flag(ctx, basename_cwd);
 		free(basename_cwd);

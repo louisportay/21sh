@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 19:40:29 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 13:38:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,15 @@ static void	print_char(t_ctx *ctx, char *prompt)
 		ctx->cur_line->prompt_len = 0;
 		ctx->cur_line->num_lines++;
 	}
-	if (!(ctx->cur_line->prompt_len % ctx->ws.ws_col) && ctx->cur_line->prompt_len > 0)
+	if (!(ctx->cur_line->prompt_len % ctx->ws.ws_col)
+			&& ctx->cur_line->prompt_len > 0)
 	{
 		tputs(ctx->tc.dow, 1, &ft_putchar_stdin);
 		ctx->cur_line->num_lines++;
 	}
 }
 
-void	print_prompt(void)
+void		print_prompt(void)
 {
 	t_ctx			*ctx;
 	t_prompt_flag	flags[9];
@@ -73,7 +74,8 @@ void	print_prompt(void)
 	ctx = get_ctxaddr();
 	ctx->cur_line->prompt_len = 0;
 	ctx->cur_line->num_lines = 0;
-	if (!ctx->istty || !(prompt = ft_astr_getval(ctx->locals, ctx->prompt_mode)))
+	if (!ctx->istty ||
+			!(prompt = ft_astr_getval(ctx->locals, ctx->prompt_mode)))
 		return ;
 	init_flags(flags);
 	while (*prompt)
