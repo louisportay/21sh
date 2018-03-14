@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/10 15:27:58 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/14 19:22:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int						exec(t_job *jobs)
 	t_ctx				*ctx;
 	t_job				*tmp;
 	t_job				*bg[2];
+	int					was_bg;
+	size_t				id;
 
 	bg[0] = NULL;
 	ctx = get_ctxaddr(NULL);
@@ -39,13 +41,17 @@ int						exec(t_job *jobs)
 		jobs = jobs->next;
 		tmp->next = NULL;
 		{	/*	Add old job deletion if not empty and on loop end	*/	}
+		was_bg = tmp->parent->bg;
 		if (tmp->parent->bg == 0)
 			ctx->fg_job = tmp;
 		job_exec(tmp, ctx);
-		if (tmp->parent->bg)
-			jc_addtobg(ctx, tmp);
+		id = 0;
+		if (tmp->parent->bg == 0)
+			id = jc_addtobg(ctx, tmp);
 		else
 			ctx->fg_job = NULL;	//	TO BE DELETED
+		if (was_bg && id != (size_t)-1)
+			printf("[%zu] %d\n", id + 1, tmp->pgid);
 	}
 	jc_updatebg(ctx);
 	signal(SIGCHLD, &jc_signal);
