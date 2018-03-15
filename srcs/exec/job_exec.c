@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   job_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 18:24:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 17:42:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+/*
+**	errno is only used for the job control part
+*/
+
+#include <errno.h>
 
 int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 								t_ctx *ctx)
@@ -32,8 +38,12 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 		{
 			if (j->pgid == 0)
 				j->pgid = pid;
-			if ((ret = setpgid(pid, j->pgid)) != 0)
+			if ((ret = setpgid(pid, j->pgid)) != 0 && errno != ESRCH)
+			{
+				dprintf(STDERR_FILENO, "pid: %d - pgid: %d\n", pid, j->pgid);
+				perror("setpgid do_fork");
 				dprintf(STDERR_FILENO, "No pid set in 'do_fork'\n");
+			}
 		}
 	}
 	return (0);
@@ -54,18 +64,6 @@ void					do_pipe(t_job *job, t_proc *p, int mypipe[2],
 	else
 		*outfile = job->stdout;
 }
-
-/*
-**	void					do_postloop(t_job *j, int fg, t_ctx *ctx)
-**	{
-**		if (ctx->istty == 0)
-**			job_wait(j);
-**		else if (fg != 0)
-**			job_putfg(j, 0, ctx);
-**		else
-**			job_putbg(j, 0);
-**	}
-*/
 
 void					clear_pipe(t_job *j, int *infile, int *outfile,
 									int new_in)
@@ -95,7 +93,6 @@ static int				launch_processes(t_job *j, t_ctx *ctx, int fg)
 	infile = j->stdin;
 	outfile = j->stdout;
 	p = j->procs;
-	p = j->procs;
 	while (p != NULL)
 	{
 		do_pipe(j, p, mypipe, &outfile);
@@ -111,28 +108,26 @@ static int				launch_processes(t_job *j, t_ctx *ctx, int fg)
 	return (0);
 }
 
-int						job_exec(t_job *j, int fg, t_ctx *ctx)
+int						job_exec(t_job *j, t_ctx *ctx)
 {
-//	t_qbuf				*buf;
 	int					exp_err;
 
 	if (j == NULL)
 		return (0);
-	
-//	buf = qbuf_new(1 << 8);
 	if (j->parent == j)
 		j->command = get_command(j);
 	j->status = expand_job(j, ctx, &exp_err);
+	if (j->parent->bg == 0)
+		ctx->fg_job = j;
 	if (exp_err == 0)
 	{
-		if (launch_processes(j, ctx, fg) == 1)
+		if (launch_processes(j, ctx, j->parent->bg == 0) == 1)
 			return (1);
 	}
-	if (fg && exp_err)
+	if (j->parent->bg == 0 && exp_err)
 		return (job_donext(j, ctx));
-	else if (fg)
+	else if (j->parent->bg == 0)
 		return (job_next(j, ctx));
-	job_fmtinfo(j, EXE_LCHD);
-//	job_putbg(j, 0);
+//	PUT_BG
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:53:38 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 17:40:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 13:05:08 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int						blt_output(t_proc *p)
 	char				*str;
 	(void)str;//
 
-	if (p->type & BU_STR)
+	if (p->type == BU_STR)
 	{
 		if (p->data.str != NULL)
 			ft_putstr_fd(p->data.str + 1, p->data.str[0] - '0');
-		return (p->status);
+		return (p->status & 0xFF);
 	}
 	lst = p->data.out;
 	while (lst != NULL)
@@ -31,5 +31,5 @@ int						blt_output(t_proc *p)
 		ft_putstr_fd((char *)lst->content + 1, ((char *)lst->content)[0] - '0');
 		lst = lst->next;
 	}
-	return (p->status);
+	return (p->status & 0xFF);
 }

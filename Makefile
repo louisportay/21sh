@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/14 12:39:29 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/15 17:39:07 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRCDIR= srcs/ \
 		srcs/lexer \
 		srcs/parser \
 		srcs/exec \
+		srcs/jc \
 		srcs/builtins \
 		srcs/expand \
 		srcs/expand/path_matching \
@@ -72,11 +73,22 @@ line.h\
 prompt.h\
 token.h\
 builtins.h\
+dir_explorer.h\
+exec.h\
 expand.h\
 expand_braces.h\
 expand_param.h\
 expand_quotes.h\
 expand_tilde.h\
+ft_21sh.h\
+history.h\
+job_control.h\
+line.h\
+parser.h\
+pattern_matching.h\
+posix_classes.h\
+prompt.h\
+token.h\
 
 SRCS=	main.c\
 		ft_21sh.c\
@@ -126,6 +138,7 @@ SRCS=	main.c\
 		bridge_dlist.c\
 		bridge_astr.c\
 		proc_next.c\
+		proc_func.c\
 		ptok_lifecycle.c\
 		clearers.c\
 		exec.c\
@@ -134,7 +147,6 @@ SRCS=	main.c\
 		get_path.c\
 		job_utils.c\
 		job_wait.c\
-		proc_chgstat.c\
 		job_lifecycle.c\
 		bridge_exec_astr.c\
 		exec_assignments.c\
@@ -155,6 +167,7 @@ SRCS=	main.c\
 		builtin_unsetenv.c\
 		builtin_env.c\
 		builtin_history.c\
+		builtin_jobs.c\
 		\
 		expand_exec.c\
 		expand.c\
@@ -213,8 +226,19 @@ SRCS=	main.c\
 		mtok_print.c\
 		mtok_sort.c\
 		\
-		jc_addjobs.c\
+		jc_find.c\
+		jc_signal.c\
+		jc_update.c\
 		jc_print.c\
+		jc_addbg.c\
+		jc_rmbg.c\
+		jc_jobspec.c\
+		jc_restore.c\
+		job_safeclear.c\
+		builtin_fg.c\
+		builtin_bg.c\
+		builtin_kill.c\
+
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
@@ -223,6 +247,8 @@ LIBDIR= libft/
 LIB= libft.a
 
 NAME= 21sh
+
+.SILENT:
 
 GREEN="\033[32m"
 RESET="\033[0m"

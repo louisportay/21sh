@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 20:33:35 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/14 17:16:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,12 @@ int						ctx_path(char *exe, t_ctx *ctx, char **path)
 	t_hentry		*e;
 
 	*path = NULL;
-	if (ft_strindex(exe, '/') != -1)
-	{
-		if (access(exe, X_OK) == 0)
-		{
-			*path = exe;
-			return (1);
-		}
-		return (0);
-	}
-	else if ((e = hash_lookup(ctx->hash, exe)) != NULL)
+	if ((e = hash_lookup(ctx->hash, exe)) != NULL)
 		*path = (char *)e->content;
 	else
 		*path = env_path_get(exe, ctx->path);
 	if (*path != NULL)
 	{
-		printf("Added '%s' to hash with path: '%s'\n", exe, *path);
 		hash_add(ctx->hash, exe, (void *)*path);
 		return (1);
 	}
@@ -111,17 +101,7 @@ char					*path_fromctx(char *exe, t_ctx *ctx)
 	char				*path;
 
 	path = NULL;
-	if (ft_strindex(exe, '/') != -1)
-	{
-		if (access(exe, X_OK) == 0)
-		{
-			if ((path = ft_strdup(exe)) == NULL)
-				on_emem(NOMEM);
-			return (path);
-		}
-		return (NULL);
-	}
-	else if ((e = hash_lookup(ctx->hash, exe)) != NULL)
+	if ((e = hash_lookup(ctx->hash, exe)) != NULL)
 	{
 		if ((path = ft_strdup((char *)e->content)) == NULL)
 			on_emem(NOMEM);
@@ -141,7 +121,8 @@ static char				*llocpath(t_proc *p)
 		return (NULL);
 	if ((pathes = ft_strsplit(lpath, ':')) == NULL)
 		return (NULL);
-	path = env_path_get(p->argv[0], pathes);
+	if ((path = env_path_get(p->argv[0], pathes)) == NULL)
+		return (NULL);
 	ft_astr_clear(&pathes);
 	if ((path = ft_strdup(path)) == NULL)
 		on_emem(NOMEM);
@@ -150,5 +131,17 @@ static char				*llocpath(t_proc *p)
 
 char					*proc_path(t_proc *p, t_ctx *ctx, int locpath)
 {
+	char				*path;
+
+	if (ft_strindex(p->argv[0], '/') != -1)
+	{
+		if (access(p->argv[0], X_OK) == 0)
+		{
+			if ((path = ft_strdup(p->argv[0])) == NULL)
+				on_emem(NOMEM);
+			return (path);
+		}
+		return (NULL);
+	}
 	return (locpath == 0 ? path_fromctx(p->argv[0], ctx) : llocpath(p));
 }

@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jc_print.c                                         :+:      :+:    :+:   */
+/*   jc_rmbg.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/26 19:45:08 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 20:13:56 by vbastion         ###   ########.fr       */
+/*   Created: 2018/03/11 10:48:20 by vbastion          #+#    #+#             */
+/*   Updated: 2018/03/11 11:33:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void					jc_print(t_ctx *ctx)
+void					jc_rmbg(t_ctx *ctx, t_job *j)
 {
 	size_t				i;
+	t_list				*l;
+	t_list				*p;
 
-	printf("# of jobs: %zu\n", ctx->bg_cnt);
-	i = 0;
-	while (i < ctx->bg_cnt)
+	if ((i = jc_ctxfind(ctx, j->pgid)) == (size_t)-1)
+		return ;
+	ctx->bg_jobs[i] = NULL;
+	l = ctx->bgs;
+	p = NULL;
+	while (l != NULL)
 	{
-		if (ctx->bg_jobs[i] != NULL)
-			printf("[%lu]%-4s%-24s%s\n", i + 1, "-", "Stopped", ctx->bg_jobs[i]->command);
-		i++;
+		if ((t_job *)l->content == j)
+		{
+			if (p == NULL)
+				ctx->bgs = l->next;
+			else
+				p->next = l->next;
+			break ;
+		}
+		p = l;
+		l = l->next;
 	}
 }

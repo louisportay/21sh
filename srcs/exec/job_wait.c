@@ -6,117 +6,63 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 10:46:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 15:34:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int						job_wait(t_job *j)
-{
-	int					status;
-	pid_t				pid;
-	t_proc				*p;
-
-	p = j->procs;
-	while (p != NULL)
-	{
-		pid = waitpid(p->pid, &status, WUNTRACED);
-		if (pid == -1)
-		{
-			perror("waitpid");
-			return (-1);
-		}
-		p->status = status;
-		if (WIFEXITED(status))
-		{
-			p->stopped = 1;
-			j->status = WEXITSTATUS(status);
-		}
-		else if (WIFSIGNALED(status))
-		{
-			p->completed = 1;
-			dprintf(STDERR_FILENO, "%s (%d) stopped by sig(%d)\n",
-					p->argv[0], pid, WTERMSIG(status));
-		}
-		p = p->next;
-	}
-	return (j->parent->status = j->status);
-}
-
-/*
-**	if (j->parent != NULL)
-**		j->parent->status = j->parent;
-**	if (j->status == 0)
-**
-**	while (1)
-**	{
-**		pid = waitpid(WAIT_ANY, &status, WUNTRACED);
-**		if (pid == -1)
-**		{
-**			perror("waitpid");
-**			return ;
-**		}
-**		if (proc_chgstat(j, pid, status)
-**			|| job_stopped(j)
-**			|| job_completed(j))
-**		{
-**			// EXECUTE NEXT IN TREE
-**			break ;
-**		}
-**	}
-*/
-
 int						job_donext(t_job *j, t_ctx *ctx)
 {
 	int					ret;
 
-	if (j->status == 0)
+	if ((j->status & 0xFF) == 0)
 	{
-		ret = job_exec(j->ok, 1, ctx);
-		if (ret == 0 && j->parent->status == 0)
-			return (0);
+		if (j->ok == NULL)
+			return (j->status & 0xFF);
 		else
-			return (job_exec(j->err, 1, ctx));
+		{
+			if ((ret = job_exec(j->ok, ctx)) == 0
+					&& (j->parent->status & 0xFF) == 0)
+				return (j->parent->status & 0xFF);
+			else
+				return (job_exec(j->err, ctx) & 0xFF);
+
+		}
 	}
-	return (job_exec(j->err, 1, ctx));
+	if (j->err != NULL)
+		return (job_exec(j->err, ctx) & 0xFF);
+	return (j->status & 0xFF);
 }
 
 int						job_next(t_job *j, t_ctx *ctx)
 {
-	j->status = job_putfg(j, 0, ctx);
-	return (job_donext(j, ctx));
+	j->status = (j->status & ~0xFF) | (job_putfg(j, ctx) & 0xFF);
+	if (j->status & JOB_STP)
+		return (j->status & 0xFF);
+	else if ((j->status & JOB_SIG) || (j->parent->status & JOB_SIG))
+		return (1);
+	return (job_donext(j, ctx) & 0xFF);
 }
 
-void					job_putbg(t_job *j, int continued)
-{
-	if (continued != 0)
-	{
-		if (kill(-j->pgid, SIGCONT) < 0)
-			ft_putstr_fd("Kill error on kill zombies", STDERR_FILENO);
-	}
-}
-
-int						job_putfg(t_job *j, int continued, t_ctx *ctx)
+int						job_putfg(t_job *j, t_ctx *ctx)
 {
 	int					ret;
-	int					status;
 
 	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, j->pgid)) != 0)
-		perror("tcsetpgrp");
-	(void)continued;
-	status = job_wait(j);
+		perror("tcsetpgrp - job_putfg");
+	if (ctx->fg_job == NULL)	// PTET CAHNGER CA HEIN!
+		ctx->fg_job = j;	// CA SERAIT SUREMENT BIEN
+	signal(SIGCHLD, &jc_signal);
+	while ((j->status & (JOB_STP | JOB_CMP)) == 0)
+	{
+		jc_updatebg(ctx);
+		jc_updatepipe(j);
+	}
 	if (ctx->istty && (ret = tcsetpgrp(ctx->fd, ctx->pgid)) != 0)
 		perror("tcsetpgrp");
-	return (status);
+	signal(SIGCHLD, SIG_IGN);
+	if (j->status & JOB_STP)
+		jc_addtobg(ctx, j);
+	return (j->status & 0xFF);
 }
-
-/*
-**	if (continued != 0)
-**	{
-**		if ((ret = tcsetattr(ctx->fd, TCSADRAIN, &j->tmodes)) != 0)
-**			perror("tcsetattr");
-**		if (kill(-j->pgid, SIGCONT) < 0)
-**			ft_putstr_fd("Kill error on kill zombies", STDERR_FILENO);
-**	}
-*/

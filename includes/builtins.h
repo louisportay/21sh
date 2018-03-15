@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/06 21:10:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/15 17:39:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,14 @@ int						ft_hash(t_proc *proc, t_ctx *ctx);
 int						ft_set(t_proc *proc, t_ctx *ctx);
 int						ft_env(t_proc *p);
 int						ft_history(t_proc *p, t_ctx *ctx);
+int						ft_jobs(t_proc *proc, t_ctx *ctx);
+int						ft_fg(t_proc *proc, t_ctx *ctx);
+int						ft_bg(t_proc *proc, t_ctx *ctx);
+int						ft_kill(t_proc *proc, t_ctx *ctx);
 int						modenv(t_proc *p, t_ctx *ctx, char *name);
 int						bu_hash_getopts(t_proc *p, t_ctx *ctx, int *i);
 int						bu_set_getopts(t_proc *p, t_ctx *ctx, int i);
-int                                             is_identifier(char *str);
-int			                        is_sane(char *str, int *end);
+int						is_identifier(char *str);
+int						is_sane(char *str, int *end);
 
 #endif

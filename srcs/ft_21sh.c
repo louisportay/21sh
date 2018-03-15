@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/26 18:40:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 17:47:15 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void	exec_pipe(t_dlist *input)
 {
 	t_token *toklist;
 	t_job	*extree;
+	t_ctx	*ctx;
 
+	ctx = get_ctxaddr();
 	extree = NULL;
 	toklist = NULL;
 	if (input != NULL)
@@ -31,10 +33,8 @@ void	exec_pipe(t_dlist *input)
 		extree = parse(toklist);
 	delete_toklist(&toklist);
 	if (extree != NULL)
-	{
-		exec(&extree);
-		job_clear(&extree);
-	}
+		exec(extree);
+	jc_print(ctx, 0, 0);
 }
 
 void	vingtetunsh(char **av, char  **environ)

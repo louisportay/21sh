@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 18:15:25 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 16:33:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,22 @@ union					u_ebin
 	struct s_list		*out;
 };
 
+/*
+**	In `status` fields of both struct s_proc and struct s_job
+**	values are layered as:
+**		- from 0x00 to 0xFF	->	exit code
+**		- 0x0100			->	completed
+**		- 0x0200			->	stopped
+**			<<	FOR THE JOB ONLY  >>
+**		- 0x0400			->	signaled
+**		- 0x0800			->	done
+*/
+
+# define JOB_CMP 0x0100
+# define JOB_STP 0x0200
+# define JOB_SIG 0x0400
+# define JOB_DON 0x0800
+
 struct					s_proc
 {
 	struct s_proc		*next;
@@ -60,8 +76,8 @@ struct					s_proc
 	char				**env;
 	struct s_asmt		*asmts;
 	pid_t				pid;
-	char				completed;
-	char				stopped;
+//	char				completed;
+//	char				stopped;
 	int					status;
 	struct s_redir		*redirs;
 	enum e_extype		type;
@@ -76,6 +92,9 @@ struct					s_job
 	char				notified;
 	struct termios		tmodes;// Candidate for deletion
 	int					status;
+//	char				stopped;
+//	char				completed;
+//	char				done;
 	int					stdin;
 	int					stdout;
 	int					stderr;
@@ -86,6 +105,8 @@ struct					s_job
 	struct s_job		*parent;
 };
 
+int						exec(t_job *jobs);
+
 struct s_proc			*proc_cr(void);
 struct s_proc			*proc_new(char **argv);
 void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
@@ -95,26 +116,33 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 									t_ctx *ctx);
 int						proc_chgstat(t_job *job, pid_t pid, int status);
 
+void					proc_foreach(t_proc *p, void (*act)(t_proc *));
+void					proc_foreach_data(t_proc *p,
+											void (*act)(t_proc *, void *),
+											void *data);
+
 struct s_job			*job_new(t_proc *plist);
 void					job_insert(t_job **head, t_job **curr, t_job *j);
+void					job_ctxinsert(t_job *job, t_ctx *ctx);
 void					*job_clear(t_job **jobs);
 
 struct s_job			*job_find(pid_t pid, t_job *job_list);
 int						job_stopped(t_job *job);
 int						job_completed(t_job *job);
 
-int						job_exec(t_job *j, int fg, t_ctx *ctx);
+int						job_exec(t_job *j, t_ctx *ctx);
 
 int						job_wait(t_job *j);
-void					job_putbg(t_job *j, int cont);
-int						job_putfg(t_job *j, int cont, t_ctx *ctx);
+int						job_putfg(t_job *j, t_ctx *ctx);
 
 void					job_fmtinfo(t_job *j, char *status);
 
 int						job_next(t_job *j, t_ctx *ctx);
 int						job_donext(t_job *j, t_ctx *ctx);
 
-void					setup_signals(void (*sig)());
+void					job_safeclear(t_job **job);
+
+void					setup_signals(void);
 
 void					prefork_assign(t_ctx *ctx, t_asmt *asmt);
 int						proc_update_env(t_proc *p);

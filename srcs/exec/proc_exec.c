@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 10:47:10 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 11:07:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,17 @@ void					setup_fd(int lhs, int rhs)
 	}
 }
 
-void					setup_signals(void (*sig)())
+void					setup_signals(void)
 {
-	signal(SIGINT, sig);
-	signal(SIGTSTP, sig);
-	signal(SIGQUIT, sig);
-	signal(SIGTTOU, sig);
-	signal(SIGTTIN, sig);
-	signal(SIGCHLD, sig);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGTSTP, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGTTOU, SIG_DFL);
+	signal(SIGTTIN, SIG_DFL);
+	signal(SIGCHLD, SIG_DFL);
 }
 
-void					set_pid_data(t_ctx *ctx, pid_t pgid,
-										int fg)
+void					set_pid_data(t_ctx *ctx, pid_t pgid, int fg)
 {
 	pid_t				pid;
 	int					ret;
@@ -51,22 +50,28 @@ void					set_pid_data(t_ctx *ctx, pid_t pgid,
 	if (ctx->istty == 0)
 		return ;
 	if ((ret = setpgid(pid, pgid)) != 0)
+	{
+		perror("setpgid - set_pid_data");
 		dprintf(STDERR_FILENO, "Error with setpgid in set_pid_data\n");
+	}
 	if (fg)
 	{
 		if ((ret = tcsetpgrp(ctx->fd, pgid != 0 ? pgid : getpid())) != 0)
+		{
+			perror("tcsetpgrp - set_pid_data");
 			dprintf(STDERR_FILENO, "Error with tcsetpgrp in set_pid_data\n");
+		}
 	}
 }
 
 void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
-									t_ctx *ctx)
+		t_ctx *ctx)
 {
 	set_pid_data(ctx, pgid, fg);
 /*
-**	if (ctx->istty) IF CTX IS FG DO SIG_DFL ELSE LOOK UP DFL BEHAVIOUR
-*/
-	setup_signals(SIG_DFL);
+ **	if (ctx->istty) IF CTX IS FG DO SIG_DFL ELSE LOOK UP DFL BEHAVIOUR
+ */
+	setup_signals();
 	setup_fd(fd[0], STDIN_FILENO);
 	setup_fd(fd[1], STDOUT_FILENO);
 	setup_fd(fd[2], STDERR_FILENO);
@@ -80,7 +85,7 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	if (p->type == EXERR)
 	{
 		dprintf(STDERR_FILENO, "%s: %s: %s\n", "21sh", p->argv[0], ENOCMD);
-		exit(1);
+		exit(127);
 	}
 	if (p->type & BUILTIN)
 		exit(blt_output(p));

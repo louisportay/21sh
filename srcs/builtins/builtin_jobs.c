@@ -1,49 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   builtin_jobs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/10 16:59:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 10:25:49 by vbastion         ###   ########.fr       */
+/*   Created: 2018/03/08 11:59:05 by vbastion          #+#    #+#             */
+/*   Updated: 2018/03/08 15:47:44 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void				on_emem(int status)
+int					ft_jobs(t_proc *p, t_ctx *ctx)
 {
-	fatal_err((char)status, get_ctxaddr());
-}
+	char			*str;
 
-void				max(size_t *a, size_t b)
-{
-	if (*a < b)
-		*a = b;
-}
-
-void				ft_assert(void ***arr, size_t len)
-{
-	size_t			i;
-	int				err;
-
-	i = 0;
-	err = 0;
-	while (i < len)
+	p->type = BU_STR;
+	if (p->argv[1] != NULL && ft_strcmp(p->argv[1], "-v") != 0)
 	{
-		if (arr[i] == NULL)
-			err = 1;
-		i++;
+		asprintf(&str, "221sh: jobs: %s is not a valid argument\n", p->argv[1]);
+		p->data.str = str;
+		return (1);
 	}
-	if (err)
-	{
-		i = 0;
-		while (i < len)
-		{
-			ft_memdel(arr[i]);
-			i++;
-		}
-		on_emem(NOMEM);
-	}
+	jc_print(ctx, 1, p->argv[1] != NULL && ft_strcmp(p->argv[1], "-v") == 0);
+	return (0);
 }

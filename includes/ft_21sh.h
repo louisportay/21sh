@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 16:39:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/15 17:40:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "kvp.h"
 # include "builtins.h"
 # include "expand.h"
+# include "job_control.h"
 
 # include <signal.h>
 # include <sys/ioctl.h>
@@ -105,6 +106,9 @@ struct					s_ctx
 	char				**path;
 	t_job				**bg_jobs;
 	size_t				bg_cnt;
+	t_job				*fg_job;
+    int                 exe_stack;
+	t_list				*bgs;
 
 	/*
 	**	EXECUTION HASH (for HASH builtin)
@@ -167,7 +171,7 @@ void					vingtetunsh(char **av, char **environ);
 
 void					exec_pipe(t_dlist *input);
 int						init(t_ctx *ctx, char **av, char **environ);
-t_hdict				*getbuiltins(void);
+t_hdict					*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);
 void					get_shell_opt(t_ctx *ctx, char **av);
 void					complete_environ(char ***environ);
@@ -196,10 +200,11 @@ bool					is_number(char *str);
 bool					is_number_w_dash(char *str);
 
 t_job					*parse(t_token *tok);
-int						exec(t_job **jobs);
+int						job_waitforit(t_job *j, t_ctx *ctx);
 
-void					jc_addjobs(t_job *jobs, t_ctx *ctx);
-void					jc_print(t_ctx *ctx);
+void					sighandler(int signo);
+
+void					ft_assert(void ***arr, size_t len);
 
 /*
 **	Shell script stuff

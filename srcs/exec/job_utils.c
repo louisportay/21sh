@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 13:46:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 15:18:41 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/14 17:04:26 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int						job_stopped(t_job *job)
 	p = job->procs;
 	while (p != NULL)
 	{
-		if (p->completed == 0 && p->stopped == 0)
+		if ((p->status & (JOB_CMP | JOB_STP)) == 0)
 			return (0);
 		p = p->next;
 	}
@@ -44,7 +44,7 @@ int						job_completed(t_job *job)
 	p = job->procs;
 	while (p != NULL)
 	{
-		if (p->completed == 0)
+		if ((p->status & JOB_CMP) == 0)
 			return (0);
 		p = p->next;
 	}
