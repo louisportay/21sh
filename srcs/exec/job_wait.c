@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 18:50:02 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 15:34:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int						job_next(t_job *j, t_ctx *ctx)
 	j->status = (j->status & ~0xFF) | (job_putfg(j, ctx) & 0xFF);
 	if (j->status & JOB_STP)
 		return (j->status & 0xFF);
+	else if ((j->status & JOB_SIG) || (j->parent->status & JOB_SIG))
+		return (1);
 	return (job_donext(j, ctx) & 0xFF);
 }
 

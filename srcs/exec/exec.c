@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 19:22:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 14:12:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int						exec(t_job *jobs)
 		if (tmp->parent->bg == 0)
 			ctx->fg_job = tmp;
 		job_exec(tmp, ctx);
-		id = 0;
-		if (tmp->parent->bg == 0)
+		id = (size_t)-1;
+		if (tmp->parent->bg != 0)
 			id = jc_addtobg(ctx, tmp);
 		else
 			ctx->fg_job = NULL;	//	TO BE DELETED
@@ -56,6 +56,5 @@ int						exec(t_job *jobs)
 	jc_updatebg(ctx);
 	signal(SIGCHLD, &jc_signal);
 	update_tty(ctx, 0);
-	jc_print(ctx, 0, 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:55 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 17:03:04 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 16:39:23 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,21 @@ static void			ldobg(t_job *j, t_proc *bu, t_list **curr, t_ctx *ctx)
 	else
 		bu->data.out = l;
 	if (i != (size_t)-1)
-		jc_restore(j);
+		jc_restore(j, bu, curr);
 }
 
 static void			lmultiarg(t_proc *p, t_ctx *ctx)
 {
 	t_job			*j;
 	size_t			k;
-	char			*str;
 	t_list			*curr;
-	t_list			*l;
 
 	curr = NULL;
 	k = 1;
 	while (p->argv[k] != NULL)
 	{
-		if ((j = jc_jobspec(p->argv[k], ctx)) != NULL)
+		if ((j = jc_jobspec(p, "bg", p->argv[k], ctx)) != NULL)
 			ldobg(j, p, &curr, ctx);
-		else
-		{
-			asprintf(&str, BU_JOB_ERR, "bg", BU_JOB_NO);
-			l = list_create(str);
-			ft_list_insert(&p->data.out, &curr, l);
-		}
 		k++;
 	}
 }

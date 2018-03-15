@@ -6,11 +6,17 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/08 14:28:55 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 16:12:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+/*
+**	errno is only used for the job control part
+*/
+
+#include <errno.h>
 
 int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 								t_ctx *ctx)
@@ -32,7 +38,7 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 		{
 			if (j->pgid == 0)
 				j->pgid = pid;
-			if ((ret = setpgid(pid, j->pgid)) != 0)
+			if ((ret = setpgid(pid, j->pgid)) != 0 && errno != ESRCH)
 			{
 				dprintf(STDERR_FILENO, "pid: %d - pgid: %d\n", pid, j->pgid);
 				perror("setpgid do_fork");

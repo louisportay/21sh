@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/27 18:25:54 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 13:28:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	vingtetunsh(char **av, char  **environ)
 			ft_dlstdel(&ctx.line.split_line, &delvoid);
 		else//
 			ft_dlstremove(&ctx.line.final_newline, &delvoid);
+
+		jc_print(&ctx, 0, 0);
 	}
 	wrap_exit(EXIT_SUCCESS, &ctx);
 }

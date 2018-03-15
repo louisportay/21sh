@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 10:30:48 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 19:20:54 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 16:32:33 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ size_t					jc_bggrow(t_ctx *ctx);
 size_t					jc_addtobg(t_ctx *ctx, t_job *j);
 void					jc_rmbg(t_ctx *ctx, t_job *j);
 
-t_job					*jc_jobspec(char *argv, t_ctx *ctx);
+t_job					*jc_jobspec(t_proc *p, char *caller, char *argv,
+									t_ctx *ctx);
 
-void					jc_restore(t_job *j);
+void					jc_restore(t_job *j, t_proc *caller, t_list **curr);
+
+void					jc_remove(t_ctx *ctx, t_job *job, size_t i);
 
 #endif

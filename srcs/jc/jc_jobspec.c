@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:37:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/13 14:00:48 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 10:27:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,14 @@ static t_job		*lstrcmp(t_ctx *ctx, char *str)
 	return (j);
 }
 
-t_job				*jc_jobspec(char *argv, t_ctx *ctx)
+t_job				*jc_jobspec(t_proc *p, char *caller, char *argv,
+								t_ctx *ctx)
 {
 	t_job			*j;
 	size_t			i;
 	int				n;
+	t_list			*l;
+	char			*str;
 
 	j = NULL;
 	i = 0;
@@ -113,8 +116,15 @@ t_job				*jc_jobspec(char *argv, t_ctx *ctx)
 	{
 		n = ft_atoi(argv + i) - 1;
 		if (n < 0 || (size_t)n > ctx->bg_cnt || ctx->bg_jobs[n] == NULL)
-			dprintf(STDERR_FILENO, "21sh: %s: %s: %s\n", "bg",
-					argv, BU_JOB_NO);
+		{
+			asprintf(&str, "221sh: %s: %s: %s\n", caller, argv, BU_JOB_NO);
+			l = list_create(str);
+			ft_assert((void **[]){(void **)&str, (void **)&l}, 2);
+			if (p->data.out == NULL)
+				p->data.out = l;
+			else
+				ft_list_last(p->data.out)->next = l;
+		}
 		else
 			j = ctx->bg_jobs[n];
 	}

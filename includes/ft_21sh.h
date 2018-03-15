@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 16:01:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 10:26:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,8 @@ t_job					*parse(t_token *tok);
 int						job_waitforit(t_job *j, t_ctx *ctx);
 
 void					sighandler(int signo);
+
+void					ft_assert(void ***arr, size_t len);
 
 /*
 **	Shell script stuff

@@ -6,18 +6,24 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 18:28:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/15 15:59:08 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
+static void				lcheck(t_proc *p)
+{
+	int					status;
+
+	waitpid(p->pid, &status, WUNTRACED);
+	p->status = (p->status & 0xFF) | JOB_SIG | JOB_CMP;
+}
+
 void					jc_updateproc(t_job *j, t_proc *p, int status)
 {
 	if (WIFEXITED(status))
-	{
 		p->status = WEXITSTATUS(status) | JOB_CMP;
-	}
 	else if (WIFSTOPPED(status))
 	{
 		p->status |= JOB_STP;
@@ -26,9 +32,18 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 	}
 	else if (WIFSIGNALED(status))
 	{
-		p->status = (JOB_CMP | JOB_SIG) | (WTERMSIG(status) & 0xFF);
-		j->parent->status = p->status | JOB_DON;
-		j->status = p->status | JOB_DON;
+		p->status = WTERMSIG(status);
+		lcheck(p);
+		if (p->pid == j->pgid)
+		{
+			kill(-j->pgid, WTERMSIG(status));
+			jc_updatepipe(j);
+			proc_foreach(j->procs, &lcheck);
+			j->parent->status = WTERMSIG(status) | JOB_SIG;
+			j->status = j->parent->status;
+			dprintf(STDERR_FILENO, "%d: Terminated: %d\n", j->pgid,
+					WTERMSIG(status));
+		}
 	}
 	else
 		printf("Received unhandled status\n");
