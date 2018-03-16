@@ -18,6 +18,7 @@ ft_dlstprint.c\
 ft_dlstremove.c\
 move_dlst_head.c\
 str_to_dlst.c\
+ft_dlstlast.c\
 
 DLST_DIR=ft_dlst
 

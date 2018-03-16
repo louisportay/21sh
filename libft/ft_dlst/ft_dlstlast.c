@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt_utils.c                                     :+:      :+:    :+:   */
+/*   ft_dlstlast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/13 17:57:07 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 16:58:09 by lportay          ###   ########.fr       */
+/*   Created: 2018/03/15 18:40:19 by lportay           #+#    #+#             */
+/*   Updated: 2018/03/15 18:41:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_dlst.h"
 
-void	print_flag(t_ctx *ctx, char *s)
+t_dlist	*ft_dlstlast(t_dlist *dlst)
 {
-	ctx->cur_line->prompt_len +=
-		write(STDERR_FILENO, s, ft_strlen(s));
+	while (dlst->next)
+		dlst = dlst->next;
+	return (dlst);
 }
+

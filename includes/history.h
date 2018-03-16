@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:04:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/06 21:10:29 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/15 19:58:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ typedef struct s_ctx	t_ctx;
 typedef struct			s_hist
 {
 	t_dlist				*list;
-	int					index;
+	unsigned			index;
+	unsigned			first_entry;
 }						t_hist;
 
 typedef struct			s_histentry
@@ -47,13 +48,13 @@ typedef struct			s_histentry
 	unsigned			index;
 }						t_histentry;
 
-void					init_hist(t_hist *hist);
+void					init_hist(t_hist *hist, char *histfile);
 void					add_histfile(t_ctx *env);
 void					del_histentry(void *histentry, size_t histentry_size);
 void					del_history(t_dlist     **history);
 t_histentry				*new_histentry(t_dlist *line, unsigned index);
 void					trim_history(t_dlist **histlist, char *histsize);
-void					save_history(char *histfile, t_dlist *histlist);
+void					save_history(char *histfile, t_dlist *histlist, int flags);
 void					add_histentry(t_hist *hist, t_dlist *line);
 char					*dump_history(t_dlist *histlist, int n);
 
