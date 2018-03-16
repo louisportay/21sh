@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 13:10:43 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 17:48:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/16 14:29:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void					jc_notify(t_job *j, t_ctx *ctx, int i, int all)
 			printf("[%d]%-3c%s %-19d%s\n", i + 1, jc_getstatus(j), "Exit",
 					j->parent->status & 0xFF, j->parent->command);
 		jc_rmbg(ctx, j);
-		{	/*	FREE	*/	}
+		job_safeclear(&j->parent);
 	}
 	else if (all && j->status & JOB_SIG)
 	{
 		printf("[%d]%c  %-12s%-12d%s\n", i + 1, jc_getstatus(j), "Terminated: ",
 				j->status & 0xFF, j->parent->command);
 		jc_rmbg(ctx, j);
-		{	/*	FREE	*/	}
+		job_safeclear(&j->parent);
 	}
 	else if (all && j->status & JOB_STP)
 		printf("[%d]%-3c%-24s%s\n", i + 1, jc_getstatus(j), "Stopped",
@@ -66,21 +66,4 @@ void					jc_print(t_ctx *ctx, int all, int verbose)
 		i++;
 	}
 	(void)verbose;
-//	if (verbose)
-//	{
-//		for (i = 0; i < ctx->bg_cnt; i++)
-//		{
-//			t_job *j = ctx->bg_jobs[i];
-//			if (j == NULL)
-//				continue ;
-//			printf("[%zu]   %s (%d)\n", i + 1, j->parent->command, j->pgid);
-//			for (t_proc *p = j->procs; p != NULL; p = p->next)
-//			{
-//				printf("\t");
-//				for (size_t j = 0; p->argv[j] != NULL; j++)
-//					printf("%s ", p->argv[j]);
-//				printf("(%d)\n", p->pid);
-//			}
-//		}
-//	}
 }

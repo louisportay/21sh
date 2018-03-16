@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 17:47:35 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/16 14:29:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int						exec(t_job *jobs)
 		if (tmp->parent->bg != 0)
 			id = jc_addtobg(ctx, tmp);
 		else
-			ctx->fg_job = NULL;	//	TO BE DELETED
+			;
+			job_safeclear(&ctx->fg_job->parent);
 		if (was_bg && id != (size_t)-1)
 			printf("[%zu] %d\n", id + 1, tmp->pgid);
 	}

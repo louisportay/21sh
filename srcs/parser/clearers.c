@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 16:38:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/16 14:28:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,80 @@
 
 void				proc_clear(t_proc **proc)
 {
-	if ((*proc)->type == BU_STR)
-		ft_strdel(&(*proc)->data.str);
-	else if ((*proc)->type == BINARY)
-		ft_strdel(&(*proc)->data.path);
-	else if ((*proc)->type == BUILTIN)
-		ft_list_clear(&(*proc)->data.out, &ft_memdel);
-	if ((*proc)->next != NULL)
-		proc_clear(&(*proc)->next);
-	if ((*proc)->argv != NULL)
-		ft_astr_clear(&(*proc)->argv);
-	if ((*proc)->env != NULL)
-		ft_astr_clear(&(*proc)->env);
-	if ((*proc)->asmts != NULL)
-		asmt_clear(&(*proc)->asmts);
-	ft_memdel((void **)proc);
+	t_proc			*p;
+	t_proc			*t;
+
+	if (proc == NULL)
+		return ;
+	p = *proc;
+	*proc = NULL;
+	while (p != NULL)
+	{
+		t = p;
+		p = p->next;
+		if (t->type == BU_STR)
+			ft_strdel(&t->data.str);
+		else if (t->type == BINARY)
+			ft_strdel(&t->data.path);
+		else if (t->type == BUILTIN)
+			ft_list_clear(&t->data.out, &ft_memdel);
+		if (t->argv != NULL)
+			ft_astr_clear(&t->argv);
+		if (t->env != NULL)
+			ft_astr_clear(&t->env);
+		if (t->asmts != NULL)
+			asmt_clear(&t->asmts);
+		ft_memdel((void **)&t);
+	}
 }
 
 void				asmt_clear(t_asmt **asmt)
 {
-	if ((*asmt)->next != NULL)
-		asmt_clear(&(*asmt)->next);
-	ft_strdel(&(*asmt)->key);
-	ft_strdel(&(*asmt)->value);
-	ft_memdel((void **)asmt);
+	t_asmt			*a;
+	t_asmt			*t;
+
+	a = *asmt;
+	*asmt = NULL;
+	while (a != NULL)
+	{
+		t = a;
+		a = a->next;
+		ft_strdel(&a->key);
+		ft_strdel(&a->value);
+		ft_memdel((void **)&t);
+	}
 }
 
 void				*job_clear(t_job **job)
 {
+	t_job				*j;
+
+	j = *job;
+	*job = NULL;
+	proc_clear(&j->procs);
+	ft_memdel((void **)&j);
+	return (NULL);
+}
+
+
+void				job_safeclear(t_job **job)
+{
 	t_job			*j;
+	t_job			*t;
+	t_job			*e;
 
 	if (job == NULL || *job == NULL)
-		return (NULL);
+		return ;
 	j = *job;
 	if (j->command != NULL)
 		ft_strdel(&j->command);
-	if (j->procs != NULL)
-		proc_clear(&j->procs);
-	if (j->ok != NULL)
-	    job_clear(&j->ok);
-	if (j->err != NULL)
-	    job_clear(&j->err);
-	if (j->next != NULL)
-	    job_clear(&j->next);
-	ft_memdel((void **)job);
-	return (NULL);
+	e = (j->err != NULL) ? j->err : NULL;
+	while (j != NULL)
+	{
+		t = j;
+		j = j->ok;
+		job_clear(&t);
+	}
+	if (e != NULL)
+		job_safeclear(&e);
 }

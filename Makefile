@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/15 17:39:07 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/16 13:23:04 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -248,12 +248,8 @@ LIB= libft.a
 
 NAME= 21sh
 
-.SILENT:
-
 GREEN="\033[32m"
 RESET="\033[0m"
-
-.SILENT:
 
 all: $(LIB) $(NAME)
 

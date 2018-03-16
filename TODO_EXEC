@@ -1,0 +1,1 @@
+error in conditional exec for `ls && ls | cat -e` while `ls | cat -e && ls` is ok
