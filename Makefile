@@ -6,13 +6,15 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/14 12:39:29 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/15 15:23:32 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: clean fclean re all
 
 SRCDIR= srcs/ \
+		srcs/utils \
+		srcs/init \
 		srcs/line \
 		srcs/history \
 		srcs/lexer \
@@ -31,7 +33,7 @@ vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=sanitize
+DEBUG=yes #sanitize
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
@@ -155,6 +157,7 @@ SRCS=	main.c\
 		builtin_unsetenv.c\
 		builtin_env.c\
 		builtin_history.c\
+		builtin_exit.c\
 		\
 		expand_exec.c\
 		expand.c\

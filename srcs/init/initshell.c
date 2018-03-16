@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 12:22:00 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/15 20:00:30 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->line.linestate = NULL;
 	ctx->line.heredoc = 0;
 
-	ctx->hist.list = NULL;
+	ctx->hist.list = ft_dlstnew("HEAD", 4);
 	ctx->hist.index = 1;
 
 	ctx->emacs_mode = 1;
@@ -109,6 +109,6 @@ int	init(t_ctx *ctx, char **av, char **environ)
 	get_shell_opt(ctx, ctx->av);
 	init_line_edition(ctx);
 	complete_environ(&ctx->environ);
-	init_hist(&ctx->hist);
+	init_hist(&ctx->hist, ft_astr_getval(ctx->locals, "HISTFILE"));
 	return (SUCCESS);
 }
