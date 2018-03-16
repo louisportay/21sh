@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:35:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 20:06:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/16 11:43:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void		a_opt(t_proc *p, t_ctx *ctx)
 void	r_opt(t_proc *p, t_ctx *ctx)
 {
 	if (p->argv[2])
-		init_hist(ctx->hist, p->argv[2]);
+		init_hist(&ctx->hist, p->argv[2]);
 	else
-		init_hist(ctx->hist, ft_astr_getval(ctx->locals, "HISTFILE"));	
+		init_hist(&ctx->hist, ft_astr_getval(ctx->locals, "HISTFILE"));
 }
 
 void	w_opt(t_proc *p, t_ctx *ctx)
