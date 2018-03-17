@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 14:27:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 17:34:35 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 	}
 	else if (WIFSIGNALED(status))
 	{
+		if (WTERMSIG(status) == SIGPIPE)
+		{
+			waitpid(p->pid, &status, WUNTRACED);
+			p->status = (p->status & 0xFF) | JOB_CMP;
+			return ;
+		}
 		p->status = WTERMSIG(status);
 		lcheck(p);
 		if (p->pid == j->pgid)
