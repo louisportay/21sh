@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/16 14:28:32 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 12:45:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void				asmt_clear(t_asmt **asmt)
 	}
 }
 
-void				*job_clear(t_job **job)
+static void				*job_clear(t_job **job)
 {
 	t_job				*j;
 
@@ -70,14 +70,14 @@ void				*job_clear(t_job **job)
 }
 
 
-void				job_safeclear(t_job **job)
+void				*job_safeclear(t_job **job)
 {
 	t_job			*j;
 	t_job			*t;
 	t_job			*e;
 
 	if (job == NULL || *job == NULL)
-		return ;
+		return (NULL);
 	j = *job;
 	if (j->command != NULL)
 		ft_strdel(&j->command);
@@ -90,4 +90,5 @@ void				job_safeclear(t_job **job)
 	}
 	if (e != NULL)
 		job_safeclear(&e);
+	return (NULL);
 }

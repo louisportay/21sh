@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 18:15:48 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 12:45:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static t_job			*get_ands(t_token **toks, t_job *parent)
 	{
 		t = t->next;
 		if ((p = get_pipe(&t)) == NULL)
-			return (job_clear(j));
+			return (job_safeclear(j));
 		j[2] = job_new(p);
 		j[2]->parent = parent;
 		if (j[1] != NULL)	
@@ -112,14 +112,14 @@ static t_job			*job_getnext(t_token **tokens, t_job *parent)
 	job = job_new(NULL);
 	job->parent = (parent == NULL) ? job : parent;
 	if ((job->procs = get_pipe(&tokz)) == NULL)
-		return (job_clear(&job));
+		return (job_safeclear(&job));
 	if (tokz->type == AND_IF
 		&& (job->ok = get_ands(&tokz, parent == NULL ? job : parent)) == NULL)
-		return (job_clear(&job));
+		return (job_safeclear(&job));
 	if (tokz->type == OR_IF)
 	{
 		if ((job->err = job_getnext(&tokz, parent)) == NULL)
-			return (job_clear(&job));
+			return (job_safeclear(&job));
 	}
 	job_updateands(job);
 	*tokens = tokz;
@@ -137,7 +137,7 @@ t_job					*parse(struct s_token *tokens)
 	while (1)
 	{
 		if ((job[2] = job_getnext(&tokens, NULL)) == NULL)
-			return (job_clear(job));
+			return (job_safeclear(job));
 		if (tokens->type == NEWLINE)
 		{
 			job_insert(job, job + 1, job[2]);
@@ -153,7 +153,7 @@ t_job					*parse(struct s_token *tokens)
 		else
 		{
 			dprintf(STDERR_FILENO, "21sh: syntax error, unexpected token\n");
-			return (job_clear(job));
+			return (job_safeclear(job));
 		}
 	}
 	return (job[0]);

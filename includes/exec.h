@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 16:33:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 13:47:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ struct					s_proc
 	char				**env;
 	struct s_asmt		*asmts;
 	pid_t				pid;
-//	char				completed;
-//	char				stopped;
 	int					status;
 	struct s_redir		*redirs;
 	enum e_extype		type;
@@ -90,11 +88,7 @@ struct					s_job
 	struct s_proc		*procs;
 	pid_t				pgid;
 	char				notified;
-	struct termios		tmodes;// Candidate for deletion
 	int					status;
-//	char				stopped;
-//	char				completed;
-//	char				done;
 	int					stdin;
 	int					stdout;
 	int					stderr;
@@ -124,7 +118,6 @@ void					proc_foreach_data(t_proc *p,
 struct s_job			*job_new(t_proc *plist);
 void					job_insert(t_job **head, t_job **curr, t_job *j);
 void					job_ctxinsert(t_job *job, t_ctx *ctx);
-void					*job_clear(t_job **jobs);
 
 struct s_job			*job_find(pid_t pid, t_job *job_list);
 int						job_stopped(t_job *job);
@@ -140,7 +133,7 @@ void					job_fmtinfo(t_job *j, char *status);
 int						job_next(t_job *j, t_ctx *ctx);
 int						job_donext(t_job *j, t_ctx *ctx);
 
-void					job_safeclear(t_job **job);
+void					*job_safeclear(t_job **job);
 
 void					setup_signals(void);
 

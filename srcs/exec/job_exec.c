@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 17:42:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 13:49:02 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,7 @@ int						do_fork(t_proc *p, t_job *j, int fd[2], int fg,
 			if (j->pgid == 0)
 				j->pgid = pid;
 			if ((ret = setpgid(pid, j->pgid)) != 0 && errno != ESRCH)
-			{
-				dprintf(STDERR_FILENO, "pid: %d - pgid: %d\n", pid, j->pgid);
 				perror("setpgid do_fork");
-				dprintf(STDERR_FILENO, "No pid set in 'do_fork'\n");
-			}
 		}
 	}
 	return (0);
@@ -71,12 +67,12 @@ void					clear_pipe(t_job *j, int *infile, int *outfile,
 	if (*infile != j->stdin)
 	{
 		close(*infile);
-		*infile = -1;
+		*infile = j->stdin;
 	}
 	if (*outfile != j->stdout)
 	{
 		close(*outfile);
-		*outfile = -1;
+		*outfile = j->stdout;
 	}
 	*infile = new_in;
 }
