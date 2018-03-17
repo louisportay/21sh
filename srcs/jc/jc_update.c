@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 15:59:08 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 14:27:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 			proc_foreach(j->procs, &lcheck);
 			j->parent->status = WTERMSIG(status) | JOB_SIG;
 			j->status = j->parent->status;
+			if ((p->status & 0xFF) == SIGPIPE)
+				return ;
 			dprintf(STDERR_FILENO, "%d: Terminated: %d\n", j->pgid,
 					WTERMSIG(status));
 		}

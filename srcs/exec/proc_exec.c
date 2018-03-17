@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 13:28:46 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 14:21:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #define ENOCMD ("Command not found")
 
-void					exit_err(char *msg)
+static void					exit_err(char *msg)
 {
 	ft_putstr_fd(msg, STDERR_FILENO);
 	exit(1);
@@ -58,14 +58,22 @@ void					set_pid_data(t_ctx *ctx, pid_t pgid, int fg)
 	}
 }
 
-void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
-		t_ctx *ctx)
+void					proc_exec(t_proc *p, pid_t pgid, t_ctx *ctx, int fg)
 {
 	set_pid_data(ctx, pgid, fg);
 	setup_signals();
-	setup_fd(fd[0], STDIN_FILENO);
-	setup_fd(fd[1], STDOUT_FILENO);
-	setup_fd(fd[2], STDERR_FILENO);
+	if (p->pipe_in[0] != 0)
+	{
+		dup2(p->pipe_in[0], STDIN_FILENO);
+		close(p->pipe_in[0]);
+		close(p->pipe_in[1]);
+	}
+	if (p->pipe_out[1] != 0)
+	{
+		dup2(p->pipe_out[1], STDOUT_FILENO);
+		close(p->pipe_out[1]);
+		close(p->pipe_out[0]);
+	}
 	if (do_redir(p->redirs) == -1)
 	{
 		dprintf(2, "Ambiguous redirection\n");
@@ -81,5 +89,5 @@ void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
 	if (p->type & BUILTIN)	// And what about BU_STR ?
 		exit(blt_output(p));
 	execve(p->data.path, p->argv, p->env);
-	exit_err("Could not exec...\n");
+	exit_err("Could not exec...\n");	// NEED BETTER EXIT HANDLING, ASK LPORTAY
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 13:47:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 14:31:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ struct					s_proc
 	pid_t				pid;
 	int					status;
 	struct s_redir		*redirs;
+	int					pipe_in[2];
+	int					pipe_out[2];
 	enum e_extype		type;
 	union u_ebin		data;
 };
@@ -89,9 +91,6 @@ struct					s_job
 	pid_t				pgid;
 	char				notified;
 	int					status;
-	int					stdin;
-	int					stdout;
-	int					stderr;
 	int					bg;
 	struct s_job		*ok;
 	struct s_job		*err;
@@ -106,8 +105,7 @@ struct s_proc			*proc_new(char **argv);
 void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
 void					proc_clear(t_proc **proc);
 
-void					proc_exec(t_proc *p, pid_t pgid, int fd[3], int fg,
-									t_ctx *ctx);
+void					proc_exec(t_proc *p, pid_t pgid, t_ctx *ctx, int fg);
 int						proc_chgstat(t_job *job, pid_t pid, int status);
 
 void					proc_foreach(t_proc *p, void (*act)(t_proc *));

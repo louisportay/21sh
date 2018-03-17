@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:03:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/07 17:56:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 14:31:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@ t_job					*job_new(t_proc *plist)
 	if ((job = (t_job *)ft_memalloc(sizeof(t_job))) == NULL)
 		return (NULL);
 	job->procs = plist;
-	job->stdin = STDIN_FILENO;
-	job->stdout = STDOUT_FILENO;
-	job->stderr = STDERR_FILENO;
 	job->parent = job;
 	return (job);
 }
