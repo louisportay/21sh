@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 14:29:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 17:01:08 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int						do_fork(t_job *j, t_proc *p, t_ctx *ctx)
 	int					ret;
 
 	if ((pid = fork()) == 0)
-		proc_exec(p, j->pgid, ctx, j->parent->bg);
+		proc_exec(p, j->pgid, ctx, j->parent->bg == 0);
 	else if (pid < 0)
 		return (print_err("fork error\n", 1));
 	else
@@ -65,14 +65,16 @@ void					pipe_do(t_proc *p)
 
 void					pipe_clear(t_proc *p)
 {
-	if (p->pipe_in[0] != 0)
+	if (p->pipe_in[0] != -1)
 	{
-		close(p->pipe_in[0]);
-		close(p->pipe_in[1]);
+		if (p->pipe_in[0] != STDIN_FILENO)
+			close(p->pipe_in[0]);
+		if (p->pipe_in[1] != STDOUT_FILENO)
+			close(p->pipe_in[1]);
 	}
 }
 
-static int				launch_processes(t_job *j, t_ctx *ctx, int fg)
+static int				launch_processes(t_job *j, t_ctx *ctx)
 {
 	t_proc				*p;
 
@@ -80,7 +82,7 @@ static int				launch_processes(t_job *j, t_ctx *ctx, int fg)
 	while (p != NULL)
 	{
 		pipe_do(p);
-		if (p->asmts != NULL && p->argv[0] == NULL && fg)
+		if (p->asmts != NULL && p->argv[0] == NULL && j->bg == 0)
 			prefork_assign(ctx, p->asmts);
 		else if (p->argv[0] != NULL)
 			prepare_fork(p, ctx);
@@ -103,7 +105,7 @@ int						job_exec(t_job *j, t_ctx *ctx)
 	j->status = expand_job(j, ctx, &exp_err);
 	if (j->parent->bg == 0)
 		ctx->fg_job = j;
-	if (exp_err == 0 && launch_processes(j, ctx, j->parent->bg == 0) == 1)
+	if (exp_err == 0 && launch_processes(j, ctx) == 1)
 		return (1);
 	if (j->parent->bg == 0 && exp_err)
 		return (job_donext(j, ctx));

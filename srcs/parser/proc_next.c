@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 11:28:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 19:34:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 16:51:33 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,9 @@ t_proc					*proc_next(t_token **tokz)
 	p->asmts = get_asmt(tokz, rdr);
 	p->argv = get_args(tokz, rdr);
 	p->redirs = rdr[0];
+	p->pipe_in[0] = -1;
+	p->pipe_in[1] = -1;
+	p->pipe_out[0] = -1;
+	p->pipe_out[1] = -1;
 	return (p);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 12:45:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 16:47:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void				*job_safeclear(t_job **job)
 	if (job == NULL || *job == NULL)
 		return (NULL);
 	j = *job;
+	*job = NULL;
 	if (j->command != NULL)
 		ft_strdel(&j->command);
 	e = (j->err != NULL) ? j->err : NULL;
