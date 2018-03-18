@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/26 18:15:25 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 21:11:33 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,5 +136,8 @@ int						prepare_fork(t_proc *p, t_ctx *ctx);
 int						blt_output(t_proc *p);
 
 char					*get_command(t_job *j);
+
+int						do_redir(t_redir *r);
+
 
 #endif

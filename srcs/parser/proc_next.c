@@ -6,14 +6,14 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 11:28:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 19:34:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/17 20:28:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-#define TK_ASN (REDIR | ASSIGNMENT_WORD)
-#define TK_WORD (REDIR | WORD)
+#define TK_ASN (RDIR | ASSIGNMENT_WORD)
+#define TK_WORD (RDIR | WORD)
 
 static char				**get_args(t_token **toks, t_redir **rdr)
 {

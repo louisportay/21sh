@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 14:10:53 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 14:59:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	cleanup_after_read(t_ctx *ctx, t_line *l)
 	go_end(ctx, l);
 	ft_dlsthead(&ctx->hist.list);
 	ft_dlsthead(&l->line);
+//	history_expansion(&ctx->hist, l->line);
 }
 
 static void	special_read_status(t_ctx *ctx, t_line *l, int status)
@@ -71,6 +72,7 @@ void		lineread(t_ctx *ctx, t_line *l)
 		special_read_status(ctx, l, status);
 		return ;
 	}
+
 	get_state(l);
 	if (l->linestate->state != UNQUOTED)
 		update_prompt(ctx, l);

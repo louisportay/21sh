@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 16:14:17 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 15:16:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int		do_redir(t_redir *r)
 			ret = r_less(r);
 		else if (r->type & (DLESS | TLESS))
 			ret = r_dless_tless(r);
-		else if (IS_AND_REDIR(r->type))
+		else if (r->type & R_AND)
 			ret = r_andgreat_anddgreat(r);
 		else if (r->type & (GREATAND | LESSAND))
 			ret = r_greatand_lessand(r);

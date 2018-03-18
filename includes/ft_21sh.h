@@ -6,12 +6,14 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 16:39:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/17 19:05:18 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_21SH_H
 # define FT_21SH_H
+
+//inclure les headers de Vincent et virer leur inclusion de ft_21sh.h
 
 # include "ft_dlst.h"
 # include "stack.h"

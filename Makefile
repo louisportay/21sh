@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/15 15:23:32 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/17 21:10:40 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,6 +91,7 @@ SRCS=	main.c\
 		utils.c\
 		history.c\
 		history_utils.c\
+		history_expansion.c\
 		quote.c\
 		\
 		rawline.c\
@@ -119,7 +120,12 @@ SRCS=	main.c\
 		test_other.c\
 		\
 		lexer.c\
+		tokrules.c\
 		filter_tokens.c\
+		str_from_token.c\
+		token_utils.c\
+		clear_token.c\
+		\
 		redir.c\
 		parser.c\
 		printers.c\
