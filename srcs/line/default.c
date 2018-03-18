@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 19:20:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 19:24:40 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 19:23:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	init_line(t_line *l)
 
 /*
 ** When the line reader receives Ctrl-C
+**
+// Trying to handle Ctrl-C with a signal might be better style
+// appeler une fonction qui renvoie les variables du lexer pour reset tout le monde
 */
 
 void	reset_line(t_ctx *ctx, t_line *l)
@@ -35,8 +38,8 @@ void	reset_line(t_ctx *ctx, t_line *l)
 	write(STDOUT_FILENO, "^C", 2);
 	go_end(ctx, l);
 	write(STDOUT_FILENO, "\n", 1);
-	if (l->split_line)
-		ft_dlstdel(&l->split_line, &delvoid);
+//	if (l->split_line)
+//		ft_dlstdel(&l->split_line, &delvoid);
 	if (l->line)
 		ft_dlsthead(&l->line);
 	if (l->line && l->line != l->lastline)
@@ -46,8 +49,8 @@ void	reset_line(t_ctx *ctx, t_line *l)
 	}
 	else
 		ft_dlstdel(&l->lastline, &delvoid);
-	stack_del(&l->linestate);
-	stack_push(&l->linestate, stack_create(UNQUOTED));
+//	stack_del(&l->linestate);
+//	stack_push(&l->linestate, stack_create(UNQUOTED));
 	ft_strcpy(ctx->prompt_mode, PS1);
 	init_line(l);
 }

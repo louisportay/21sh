@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/17 20:24:51 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 18:10:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,27 +93,6 @@ enum	e_readcode
 	READON,
 	READERROR,
 	FINISHREAD,
-	EXITSHELL,
-	ERR_QUOTE,
-};
-
-/*
-** Quotes and Heredoc injects '\n'
-** change UNQUOTED to 0b0 ?
-** BQUOTE, 42SH
-*/
-
-enum	e_linestate
-{
-	UNQUOTED = 0b1,
-	BSLASH = 0b10,
-	SQUOTE = 0b100,
-	DQUOTE = 0b1000,
-	PAREN = 0b10000,
-	BRACE = 0b100000,
-	HASH = 0b100000000,
-	HEREDOC = 0b1000000000,
-	ERROR = 0b10000000000,
 };
 
 struct			s_termcaps
@@ -152,16 +131,16 @@ struct			s_termcaps
 typedef struct	s_line
 {
 	t_dlist		*line;
-	t_dlist		*split_line;
+//	t_dlist		*split_line;//
 	t_dlist		*yank;
 	t_dlist		*lastline;
-	t_stack		*linestate;
+//	t_stack		*linestate;
 	unsigned	cursor_line;
 	unsigned	num_lines;
 	unsigned	offset_inline;
 	unsigned	prompt_len;
 	char		*eohdoc;
-	bool		heredoc;
+//	bool		heredoc;
 }				t_line;
 
 typedef struct	s_key
@@ -237,16 +216,11 @@ bool			test_del_curr_char(t_ctx *env, t_line *l, t_key *key);
 bool			test_del_prev_char(t_ctx *env, t_line *l, t_key *key);
 bool			test_emacs_mode(t_ctx *env, t_line *l, t_key *key);
 
-void			update_line(t_ctx *env, t_line *l);
-void			update_linestate(t_stack **state, char c);
-void			get_state(t_line *l);
-void			query_linestate(t_dlist *dlst, t_stack **linestate);
-void			query_hdocstate(t_dlist *dlst, t_stack **linestate, char *eof);
+//void			update_line(t_ctx *env, t_line *l);
 
 void			toggle_emacs_mode(t_ctx *env, t_line *l);
-void			join_split_lines(t_line *l);
 void			err_line(t_line *l, int errno);
-void			add_newline(t_line *l);
+//void			add_newline(t_line *l);
 
 void			reset_attributes(t_line *l);
 void			reset_line(t_ctx *ctx, t_line *l);

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 20:00:30 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 15:58:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static void			init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->line.line = NULL;
 	ctx->line.yank = NULL;
 	ctx->line.lastline = NULL;
-	ctx->line.linestate = NULL;
-	ctx->line.heredoc = 0;
+//	ctx->line.linestate = NULL;
+	ctx->line.eohdoc = NULL;
 
 	ctx->hist.list = ft_dlstnew("HEAD", 4);
 	ctx->hist.index = 1;

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 11:51:16 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 13:59:03 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 16:10:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,20 @@ static int	read_state(t_ctx *ctx, t_line *l, t_key *key)
 {
 	if (*key->buf == NL || (ctx->emacs_mode && *key->buf == C_O))
 	{
-		if (l->line && ft_dlstaddr(l->line, 0) != l->lastline)
+		if (ft_dlstaddr(l->line, 0) != l->lastline)
 			ft_dlstdel(&l->lastline, &delvoid);
 		return (FINISHREAD);
 	}
 	else if (*key->buf == C_D && !ft_dlstcount(l->line))
 	{
-		if (l->linestate->state == UNQUOTED)
-			return (EXITSHELL);
-		else
-			return (ERR_QUOTE);
+	//	if (ft_dlstaddr(l->line, 0) != l->lastline)
+	//		ft_dlstdel(&l->lastline, &delvoid);
+		ft_dlstdel(&l->line, &delvoid);
+		return (FINISHREAD);
+//		if (l->linestate->state == UNQUOTED)
+//			return (EXITSHELL);
+//		else
+//			return (ERR_QUOTE);
 	}
 	return (READON);
 }
@@ -96,8 +100,8 @@ int			user_input(t_ctx *ctx, t_line *l, t_key *key)
 		else
 			insert_char_slow(key->buf, ctx, l);
 	}
-	else if (*key->buf == C_C)
-		reset_line(ctx, l);
+	else if (*key->buf == C_C)	// Change ?
+		reset_line(ctx, l);		//
 	else
 		line_switch(ctx, l, key);
 	reset_buffer(key);

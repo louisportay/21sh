@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 16:34:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 17:45:16 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,13 @@ size_t					token_count(t_token *tok)
 
 void	get_hdoc_line(t_heredoc *r)
 {
-	r->hdoc.heredoc = true;
 	r->hdoc.eohdoc = r->s_rhs;
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->tios);
+	//balade ta stack d'etat par la
 	ft_readline(get_ctxaddr(), &r->hdoc, PS2);
+	//evalue ta stack d'etat
+	// lis tant qu'elle contient HEREDOC
+	//ajouter une nouvelle entree dans l'hist quand tu as fini de lire / ou bien merge avec la ligne
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->oldtios);
 	if (ft_strchr(r->s_rhs, '\\') || ft_strchr(r->s_rhs, '\'')
 								|| ft_strchr(r->s_rhs, '"'))
@@ -59,13 +62,14 @@ void	get_hdoc_line(t_heredoc *r)
 	//quote removal on r->s_rhs
 
 	free(r->s_rhs);
-	if (r->hdoc.split_line && r->hdoc.split_line->next)//tester sans la premiere condition
-		r->s_rhs = dlst_to_str(r->hdoc.split_line);
-	else
+	// CHANGE THIS
+//	if (r->hdoc.split_line && r->hdoc.split_line->next)//tester sans la premiere condition
+//		r->s_rhs = dlst_to_str(r->hdoc.split_line);
+//	else
 		r->s_rhs = ft_strdup("");
 	//apply expansion on r->s_rhs depending on r->glob
-	if (r->hdoc.split_line)
-		ft_dlstdel(&r->hdoc.split_line, &delvoid);
+//	if (r->hdoc.split_line)
+//		ft_dlstdel(&r->hdoc.split_line, &delvoid);
 	if (r->hdoc.yank)
 		ft_dlstdel(&r->hdoc.yank, &delvoid);
 }

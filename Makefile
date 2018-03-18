@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/17 21:10:40 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/18 17:50:28 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=yes #sanitize
+DEBUG=sanitize
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
@@ -80,6 +80,8 @@ expand_param.h\
 expand_quotes.h\
 expand_tilde.h\
 
+#get_state.c\
+
 SRCS=	main.c\
 		ft_21sh.c\
 		initvar.c\
@@ -112,7 +114,6 @@ SRCS=	main.c\
 		kill_yank.c\
 		line_utils.c\
 		clear.c\
-		get_state.c\
 		test_arrow.c\
 		test_kill_yank.c\
 		test_go_line.c\

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/18 14:59:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 18:16:57 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,55 @@
 
 static int	get_input(t_ctx *ctx, t_key *key, t_line *l)
 {
-	int ret;
-
 	if (read(ctx->fd, &key->buf[key->i++], 1) == -1)
-		ret = READERROR;
+		return (READERROR);
 	else
-		ret = user_input(ctx, l, key);
-	return (ret);
+		return (user_input(ctx, l, key));
 }
 
 static void	cleanup_after_read(t_ctx *ctx, t_line *l)
 {
-	go_end(ctx, l);
+	if (l->line)
+	{
+		go_end(ctx, l);
+		if (*(char *)l->line->data != '\\')
+			ft_dlstinsert(l->line, ft_dlstnew("\n", 1));
+		ft_dlsthead(&l->line);
+	}
 	ft_dlsthead(&ctx->hist.list);
-	ft_dlsthead(&l->line);
 //	history_expansion(&ctx->hist, l->line);
 }
 
-static void	special_read_status(t_ctx *ctx, t_line *l, int status)
+void	err_line(t_line *l, int errno)
 {
-	if (status == READERROR && !l->heredoc)
-		fatal_err(FAILREAD, ctx);
-	else if (status == READERROR)
-		err_line(l, FAILREAD);
-	else if (status == ERR_QUOTE)
-		err_line(l, BADQUOTES);
-	else if (status == EXITSHELL)
-	{
-		write(STDERR_FILENO, "exit\n", 5);
-		wrap_exit(EXIT_SUCCESS, ctx);
-	}
+	write(STDIN_FILENO, "\n", 1);
+	dump_err(errno);
+//	ft_dlstdel(&l->split_line, &delvoid);
+	ft_dlstdel(&l->line, &delvoid);
+//	stack_push(&l->linestate, stack_create(ERROR));
 }
 
-static void	update_prompt(t_ctx *ctx, t_line *l)
+static void	read_err(t_ctx *ctx, t_line *l)
 {
-	ft_strcpy(ctx->prompt_mode, PS2);
-	if (l->offset_inline % ctx->ws.ws_col)
-		write(STDOUT_FILENO, "\n", 1);
+		if (l->eohdoc)
+			err_line(l, FAILREAD);
+		else
+			fatal_err(FAILREAD, ctx);
+//	else if (status == ERR_QUOTE)
+//		err_line(l, BADQUOTES);
+//	else if (status == EXITSHELL)
+//	{
+//		write(STDERR_FILENO, "exit\n", 5);
+//		wrap_exit(EXIT_SUCCESS, ctx);
+//	}
 }
+
+//static void	update_prompt(t_ctx *ctx, t_line *l)
+//{
+//	ft_strcpy(ctx->prompt_mode, PS2);
+//	if (l->offset_inline % ctx->ws.ws_col)
+//		write(STDOUT_FILENO, "\n", 1);
+//}
 
 void		lineread(t_ctx *ctx, t_line *l)
 {
@@ -67,17 +78,17 @@ void		lineread(t_ctx *ctx, t_line *l)
 		status = get_input(ctx, &key, l);
 	tputs(ctx->tc.ei, 1, &ft_putchar_stdin);
 	cleanup_after_read(ctx, l);
-	if (status != FINISHREAD)
+	if (status == READERROR)
 	{
-		special_read_status(ctx, l, status);
+		read_err(ctx, l);
 		return ;
 	}
 
-	get_state(l);
-	if (l->linestate->state != UNQUOTED)
-		update_prompt(ctx, l);
-	else
-		write(STDOUT_FILENO, "\n", 1);
-	join_split_lines(l);
-	add_newline(l);
+//	get_state(l);
+//	if (l->linestate->state != UNQUOTED)
+//		update_prompt(ctx, l);
+//	else
+//	write(STDOUT_FILENO, "\n", 1); 
+//	join_split_lines(l);
+//	add_newline(l);
 }

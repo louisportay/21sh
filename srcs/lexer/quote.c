@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 14:26:41 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/17 20:24:21 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 18:46:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,25 @@ void	handle_dquote(t_stack **line)
 		stack_push(line, stack_create(DQUOTE));
 }
 
-void	handle_paren(t_stack **line, char c)
-{
-	if ((*line)->state == PAREN && c == ')')
-		stack_pop(line);
-	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE && (*line)->state != DQUOTE && c == '(')
-		stack_push(line, stack_create(PAREN));
-}
-
-void	handle_brace(t_stack **line, char c)
-{
-	if ((*line)->state == BRACE && c == '}')
-		stack_pop(line);
-	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE && (*line)->state != DQUOTE && c == '{')
-		stack_push(line, stack_create(BRACE));
-}
+//void	handle_paren(t_stack **line, char c)
+//{
+//	if ((*line)->state == PAREN && c == ')')
+//		stack_pop(line);
+//	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE && (*line)->state != DQUOTE && c == '(')
+//		stack_push(line, stack_create(PAREN));
+//}
+//
+//void	handle_brace(t_stack **line, char c)
+//{
+//	if ((*line)->state == BRACE && c == '}')
+//		stack_pop(line);
+//	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE && (*line)->state != DQUOTE && c == '{')
+//		stack_push(line, stack_create(BRACE));
+//}
 
 void handle_hash(t_stack **line)
 {
-	if ((*line)->state == UNQUOTED || (*line)->state == PAREN || (*line)->state == BRACE)
+	if ((*line)->state == UNQUOTED)// || (*line)->state == PAREN || (*line)->state == BRACE)
 		stack_push(line, stack_create(HASH));
 }
 
@@ -72,6 +72,8 @@ void	handle_bquote(t_stack **line)
 }
 */
 
+//tej les paren + braces
+
 void	update_linestate(t_stack **state, char c)
 {
 	if (c == '#')
@@ -84,8 +86,8 @@ void	update_linestate(t_stack **state, char c)
 		handle_dquote(state);
 //	else if (c == '`')
 //		handle_bquote(state);
-	else if (c == '(' || c == ')')
-		handle_paren(state, c);
-	else if (c == '{' || c == '}')
-		handle_brace(state, c);
+//	else if (c == '(' || c == ')')
+//		handle_paren(state, c);
+//	else if (c == '{' || c == '}')
+//		handle_brace(state, c);
 }

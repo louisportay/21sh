@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 19:58:25 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 15:59:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	save_history(char *histfile, t_dlist *histlist, int flags)
 
 void	add_histentry(t_hist *hist, t_dlist *line)
 {
+	//virer le trailing newline
 	ft_dlstinsert(hist->list, ft_dlstnewaddr(new_histentry(ft_dlstdup(line), hist->index++), sizeof(t_histentry)));
 	trim_history(&hist->list->next, ft_astr_getval(get_ctxaddr()->locals, "HISTSIZE"));
 }

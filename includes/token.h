@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/18 15:24:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 19:35:50 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,25 @@ enum	e_toktype
 	TOKERR = 1 << 21
 };
 
+/*
+** Quotes and Heredoc injects '\n'
+** change UNQUOTED to 0b0 ?
+** BQUOTE, 42SH
+*/
+
+enum	e_linestate
+{
+	UNQUOTED = 0b1,
+	BSLASH = 0b10,
+	SQUOTE = 0b100,
+	DQUOTE = 0b1000,
+//	PAREN = 0b10000,
+//	BRACE = 0b100000,
+	HASH = 0b100000000,
+	HEREDOC = 0b1000000000,
+//	ERROR = 0b10000000000,
+};
+
 typedef struct		s_token
 {
 	t_dlist 		*first_letter;
@@ -54,6 +73,12 @@ typedef struct		s_token
 	struct s_token	*next;
 	enum e_toktype	type;
 }					t_token;
+
+typedef struct		s_toklist
+{
+	t_token			*tokens;
+	t_dlist			*line;
+}					t_toklist;
 
 typedef struct		s_redir
 {
@@ -99,4 +124,10 @@ t_token				*filter_tokens(t_token *toklist);// static ?
 
 int					is_metachar(char c);
 
+void			update_linestate(t_stack **state, char c);
+void			get_state(t_line *l);
+void			query_linestate(t_dlist *dlst, t_stack **linestate);
+void			query_hdocstate(t_dlist *dlst, t_stack **linestate, char *eof);
+
+void			join_lines(t_dlist **line, t_dlist **split_line);
 #endif
