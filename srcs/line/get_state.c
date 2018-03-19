@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 20:05:44 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 19:19:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 16:28:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	query_hdocstate(t_dlist *line, t_stack **linestate, char *eof)
 {
 	char *s;
 
-	if (!(s = dlst_to_str(line)))
+	if (!(s = str_from_dlst(line)))
 		return ;
 	if (!ft_strcmp(s, eof))
 	{

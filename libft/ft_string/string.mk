@@ -2,7 +2,6 @@ STRING=\
 ft_atoi.c\
 ft_basename.c\
 ft_bzero.c\
-ft_dirname.c\
 ft_itoa.c\
 ft_ltobuf.c\
 ft_memalloc.c\

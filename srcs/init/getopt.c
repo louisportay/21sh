@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:13:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/23 16:48:08 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 16:26:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		get_shell_opt(t_ctx *ctx, char **av)
 
 			if (av[1] == NULL)
 				fatal_err(BADOPT_C, ctx);
-			l_av = str_to_dlst(av[1]);
+			l_av = dlst_from_str(av[1]);
 			ft_dlstaddend(l_av, ft_dlstnew("\n", 1));
 			exec_pipe(l_av);
 			ft_dlstdel(&l_av, &delvoid);

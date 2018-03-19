@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 19:58:25 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 16:28:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	save_history(char *histfile, t_dlist *histlist, int flags)
 
 	while (histlist->prev)
 	{
-		tmp = dlst_to_str(T_HISTENTRY(histlist->data)->line);
+		tmp = str_from_dlst(T_HISTENTRY(histlist->data)->line);
 		if (tmp && !str_isblank(tmp))
 		{
 			write(fd, tmp, ft_strlen(tmp));
@@ -95,7 +95,7 @@ void	init_hist(t_hist *hist, char *histfile)
 	while (histentry)
 	{
 		if (ft_strlen(histentry))
-				ft_dlstinsert(hist->list, ft_dlstnewaddr(new_histentry(str_to_dlst(histentry), hist->index++), sizeof(t_histentry)));
+				ft_dlstinsert(hist->list, ft_dlstnewaddr(new_histentry(dlst_from_str(histentry), hist->index++), sizeof(t_histentry)));
 			free(histentry);
 		if (get_next_line(file, &histentry) == -1)
 			break ;

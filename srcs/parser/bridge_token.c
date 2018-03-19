@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 16:34:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 16:29:24 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	get_hdoc_line(t_heredoc *r)
 
 	free(r->s_rhs);
 	if (r->hdoc.split_line && r->hdoc.split_line->next)//tester sans la premiere condition
-		r->s_rhs = dlst_to_str(r->hdoc.split_line);
+		r->s_rhs = str_from_dlst(r->hdoc.split_line);
 	else
 		r->s_rhs = ft_strdup("");
 	//apply expansion on r->s_rhs depending on r->glob
