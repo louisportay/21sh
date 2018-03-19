@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/19 13:24:49 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/19 19:38:14 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,15 +98,12 @@ SRCS=	main.c\
 		ft_21sh.c\
 		initvar.c\
 		initshell.c\
+		init_ctx.c\
 		getopt.c\
 		error.c\
 		signal.c\
 		tools.c\
 		utils.c\
-		history.c\
-		history_utils.c\
-		quote.c\
-		paren.c\
 		\
 		rawline.c\
 		default.c\
@@ -127,11 +124,17 @@ SRCS=	main.c\
 		line_utils.c\
 		clear.c\
 		get_state.c\
+		quote.c\
+		paren.c\
 		test_arrow.c\
 		test_kill_yank.c\
 		test_go_line.c\
 		test_go_to.c\
 		test_other.c\
+		\
+		history.c\
+		manage_history.c\
+		history_utils.c\
 		\
 		lexer.c\
 		tokrules.c\

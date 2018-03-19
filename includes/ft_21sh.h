@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 17:39:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 19:38:37 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@
 # define HELP1 "21sh, by vbastion and lportay:\n\n-h:\t\tDisplay this help\n"
 # define HELP2 "-f <file>:\tRead <file>\n-c <cmd>:"
 # define HELP3 "\tExecute <cmd>\n\n--rawline:\tdisable advanced line edition\n"
-# define HELP4 "--norc:\t\tdo not read configuration file\n--nohist:\t"
-# define HELP5 "disable command history\n"
+# define HELP4 "--norc:\t\tdo not read configuration file\n"
 
 # define AMBIG_REDIR			"ambiguous redirect\n"
 
@@ -163,6 +162,7 @@ void					vingtetunsh(char **av, char **environ);
 
 void					exec_pipe(t_dlist *input);
 int						init(t_ctx *ctx, char **av, char **environ);
+void					init_ctx(t_ctx *ctx, char **av, char **environ);
 t_hdict					*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);
 void					get_shell_opt(t_ctx *ctx, char **av);

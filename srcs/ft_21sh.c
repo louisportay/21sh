@@ -6,15 +6,16 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 17:47:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 18:26:10 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-t_ctx 				*get_ctxaddr(void)
+t_ctx	*get_ctxaddr(void)
 {
-	static t_ctx 	ctx;
+	static t_ctx ctx;
+
 	return (&ctx);
 }
 
@@ -37,16 +38,14 @@ void	exec_pipe(t_dlist *input)
 	jc_print(ctx, 0, 0);
 }
 
-void	vingtetunsh(char **av, char  **environ)
+void	vingtetunsh(char **av, char **environ)
 {
 	t_ctx	*ctx;
 	char	ret;
 
 	ctx = get_ctxaddr();
-
 	if ((ret = init(ctx, av, environ)) != SUCCESS)
 		fatal_err(ret, ctx);
-
 	while (1)
 	{
 		ft_readline(ctx, &ctx->line, PS1);

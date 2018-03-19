@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 15:11:22 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/16 11:19:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 18:47:45 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	add_histfile(t_ctx *ctx)
 	filename = NULL;
 	if ((filename = ft_astr_getval(ctx->environ, "HOME")))
 	{
-		ft_astr_append(&ctx->locals, ft_strjoinc("HISTFILE", filename = ft_strjoinc(filename, HISTFILE, '/'), '='));
+		ft_astr_append(&ctx->locals, ft_strjoinc("HISTFILE",
+					filename = ft_strjoinc(filename, HISTFILE, '/'), '='));
 		free(filename);
 	}
 	else
@@ -28,8 +29,8 @@ void	add_histfile(t_ctx *ctx)
 
 char	*dump_history(t_dlist *histlist, int n)
 {
-	t_qbuf *buf;
-	t_dlist *tmp;
+	t_qbuf	*buf;
+	t_dlist	*tmp;
 
 	if (!n)
 		return (NULL);

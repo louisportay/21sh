@@ -6,13 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 17:42:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 20:04:41 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int					create_locals(char ***locals)
+int			create_locals(char ***locals)
 {
 	char			hostname[CUSTOM_HOST_NAME_MAX];
 
@@ -25,8 +25,6 @@ int					create_locals(char ***locals)
 	ft_astr_append(locals, ft_strjoinc("HISTFILESIZE", HISTFILESIZE, '='));
 	ft_astr_append(locals, ft_strjoinc("HOSTNAME", hostname, '='));
 	add_histfile(get_ctxaddr());
-//	ft_astr_append(locals, ft_strjoinc("HISTFILE", get_histfile(ctx), '='));
-
 	return (SUCCESS);
 }
 
@@ -35,7 +33,7 @@ int					create_locals(char ***locals)
 ** and set SHLVL and PWD
 */
 
-void				complete_environ(char ***env)
+void		complete_environ(char ***env)
 {
 	struct passwd	*pw;
 	char			*tmp;
@@ -90,7 +88,7 @@ void				complete_environ(char ***env)
 **	rc	->	restore cursor position
 */
 
-void				init_termcaps(t_ctx *ctx)
+void		init_termcaps(t_ctx *ctx)
 {
 	ctx->tc.le = tgetstr("le", NULL);
 	ctx->tc.nd = tgetstr("nd", NULL);
@@ -113,14 +111,17 @@ void				init_termcaps(t_ctx *ctx)
 	}
 }
 
-t_hdict			*getbuiltins(void)
+/*
+** Finish History + exit built-ins
+*/
+
+t_hdict		*getbuiltins(void)
 {
 	t_hdict		*dict;
 
 	dict = hash_create(HASH_SIZE, HASH_PRIME);
-//	hash_add(dict, "bang", &);
 	hash_add(dict, "exit", &ft_exit);
-	hash_add(dict, "history", &ft_history); // A finir
+	hash_add(dict, "history", &ft_history);
 	hash_add(dict, "cd", &ft_cd);
 	hash_add(dict, "echo", &ft_echo);
 	hash_add(dict, "printenv", &ft_printenv);
@@ -141,7 +142,7 @@ t_hdict			*getbuiltins(void)
 ** returns an array composed of the different paths to look for binary files
 */
 
-char			**getpath(char **environ)
+char		**getpath(char **environ)
 {
 	char			**path;
 	char			*tpath;

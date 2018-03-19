@@ -6,14 +6,13 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/08 18:26:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 19:21:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-
-int main(int ac, char **av, char **env)
+int		main(int ac, char **av, char **env)
 {
 	(void)ac;
 	vingtetunsh(av, env);
