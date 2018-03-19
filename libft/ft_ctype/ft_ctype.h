@@ -6,14 +6,14 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 15:47:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/16 13:50:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 13:43:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_CTYPE_H
 # define FT_CTYPE_H
 
-#include <wchar.h>
+# include <wchar.h>
 
 int		ft_isalnum(int c);
 int		ft_isnumber(char *str);

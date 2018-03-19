@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:49:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 20:03:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 14:34:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ void			hash_free(t_hdict **dict,
 	hash_empty(*dict, ptr);
 	ft_memdel((void **)&((*dict)->entries));
 	ft_memdel((void **)dict);
+}
+
+void			del_entry(t_hentry **e, void (*ptr)(void **))
+{
+	ft_strdel(&(*e)->key);
+	ptr(&(*e)->content);
+	ft_memdel((void **)e);
 }
 
 void			hash_empty(t_hdict *dict, void (*ptr)(void **))
@@ -39,9 +46,7 @@ void			hash_empty(t_hdict *dict, void (*ptr)(void **))
 		{
 			tmp = e;
 			e = e->next;
-			ft_strdel(&tmp->key);
-			ptr(&tmp->content);
-			ft_memdel((void **)&tmp);
+			del_entry(&tmp, ptr);
 		}
 		dict->entries[i] = NULL;
 		i++;
@@ -70,9 +75,7 @@ void			hash_remove(t_hdict *dict, char *key,
 				dict->entries[i] = e;
 			else
 				prev->next = e;
-			ft_strdel(&tmp->key);
-			ptr(&tmp->content);
-			ft_memdel((void **)&tmp);
+			del_entry(&tmp, ptr);
 			dict->count--;
 			return ;
 		}

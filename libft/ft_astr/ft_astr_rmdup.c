@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 17:22:39 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/06 15:37:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 13:47:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ static int	lastr_clean(char ***astr, size_t len, size_t cnt)
 	return (1);
 }
 
+static void	init_var(size_t *i, size_t *cnt, char ***arr, char **astr)
+{
+	*i = 0;
+	*cnt = 0;
+	*arr = astr;
+}
+
 int			astr_rmdup(char ***astr)
 {
 	size_t	i;
@@ -50,9 +57,7 @@ int			astr_rmdup(char ***astr)
 	int		is_dup;
 	char	**arr;
 
-	i = 0;
-	cnt = 0;
-	arr = *astr;
+	init_var(&i, &cnt, &arr, *astr);
 	while (arr[i] != NULL)
 	{
 		j = 0;

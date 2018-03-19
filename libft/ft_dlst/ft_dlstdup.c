@@ -6,17 +6,17 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/04 16:17:34 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 16:23:39 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 13:50:46 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_dlst.h"
 
 /*
-** This function only works for a 'string' data 
+** This function only works for a 'string' data
 */
 
-t_dlist *ft_dlstdup(t_dlist *dlst)
+t_dlist	*ft_dlstdup(t_dlist *dlst)
 {
 	t_dlist *dup;
 

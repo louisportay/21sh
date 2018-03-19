@@ -6,14 +6,14 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 16:44:10 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/15 17:50:24 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 14:42:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_STDIO_H
 # define FT_STDIO_H
 
-#define BUFF_SIZE 4096
+# define BUFF_SIZE 4096
 # define RESET			"\e[0m"
 # define BOLD			"\e[1m"
 # define ITALIC			"\e[3m"
@@ -36,9 +36,8 @@
 # define LIGHT_CYAN		"\e[96m"
 # define WHITE			"\e[97m"
 
-
-#include <unistd.h>
-#include "ft_string.h"
+# include <unistd.h>
+# include "ft_string.h"
 
 void		ft_putnbr(long n);
 

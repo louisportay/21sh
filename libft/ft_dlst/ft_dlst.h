@@ -6,14 +6,15 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/24 21:53:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 18:43:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 13:51:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_DLST_H
 # define FT_DLST_H
 
-#include <stdlib.h>
+# include <stdlib.h>
+
 /*
 ** Every list created with this set of functions should have a 'HEAD' maillon
 */
@@ -40,8 +41,8 @@ size_t				ft_dlstindex(t_dlist *dlst);
 t_dlist				*ft_dlstaddr(t_dlist *dlst, size_t rank);
 void				ft_dlstprint(t_dlist *list, char *sep, void (*p)(void *));
 void				ft_dlstinsert(t_dlist *previous, t_dlist *between);
-t_dlist				*str_to_dlst(char *str);
-char				*dlst_to_str(t_dlist *dlst);
+t_dlist				*dlst_from_str(char *str);
+char				*str_from_dlst(t_dlist *dlst);
 t_dlist				*ft_dlstdup(t_dlist *dlst);
 int					move_dlst_head(t_dlist **dlist, int movement);
 t_dlist				*ft_dlstlast(t_dlist *dlst);

@@ -1,5 +1,4 @@
 STDIO=\
-ft_putnbr.c\
 ft_putstr_fd.c\
 get_next_line.c\
 ft_tmpfile.c\

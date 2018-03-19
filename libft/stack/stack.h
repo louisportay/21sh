@@ -6,14 +6,14 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/22 11:19:07 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 16:13:23 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 16:06:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_H
 # define STACK_H
 
-#include <stdlib.h>
+# include <stdlib.h>
 
 /*
 ** This stack implementation is used to keep track of a recursive state
@@ -26,10 +26,10 @@ typedef struct		s_stack
 	int				state;
 }					t_stack;
 
-t_stack	*stack_create(int state);
-void	stack_push(t_stack **stack, t_stack *new);
-void	stack_pop(t_stack **stack);
-void	stack_del(t_stack **stack);
-void	stack_print(t_stack *stack, char *sep);
+t_stack				*stack_create(int state);
+void				stack_push(t_stack **stack, t_stack *new);
+void				stack_pop(t_stack **stack);
+void				stack_del(t_stack **stack);
+void				stack_print(t_stack *stack, char *sep);
 
 #endif

@@ -1,6 +1,6 @@
 DLST=\
 delvoid.c\
-dlst_to_str.c\
+dlst_from_str.c\
 ft_dlstadd.c\
 ft_dlstaddend.c\
 ft_dlstaddr.c\
@@ -17,7 +17,7 @@ ft_dlstnew.c\
 ft_dlstprint.c\
 ft_dlstremove.c\
 move_dlst_head.c\
-str_to_dlst.c\
+str_from_dlst.c\
 ft_dlstlast.c\
 
 DLST_DIR=ft_dlst
