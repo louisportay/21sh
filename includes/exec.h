@@ -6,14 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 14:31:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 17:27:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXEC_H
 # define EXEC_H
 
-# include <stdio.h> //
 # include <sys/types.h>
 # include <termios.h>
 # include <stdlib.h>
@@ -157,6 +156,5 @@ int						blt_output(t_proc *p);
 char					*get_command(t_job *j);
 
 int						do_redir(t_redir *r);
-
 
 #endif

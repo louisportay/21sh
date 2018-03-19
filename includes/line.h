@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 13:24:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 17:38:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,8 +233,8 @@ void			reset_attributes(t_line *l);
 void			reset_line(t_ctx *ctx, t_line *l);
 void			init_line(t_line *l);
 
-void	handle_paren(t_stack **line, char c);
-void	handle_brace(t_stack **line, char c);
-void	handle_hash(t_stack **line);
+void			handle_paren(t_stack **line, char c);
+void			handle_brace(t_stack **line, char c);
+void			handle_hash(t_stack **line);
 
 #endif

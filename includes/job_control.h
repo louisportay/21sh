@@ -6,20 +6,20 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 10:30:48 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 16:32:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 17:37:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef JOB_CONTROL_H
 # define JOB_CONTROL_H
 
-#define JOB_NO "no job"
-#define JOB_PRE "previous job"
-#define JOB_LAST "last job"
+# define JOB_NO "no job"
+# define JOB_PRE "previous job"
+# define JOB_LAST "last job"
 
-#define BU_JOB_AMB ("ambiguous job spec")
-#define BU_JOB_NO ("no such job")
-#define BU_JOB_ERR ("221sh: %s: %s\n")
+# define BU_JOB_AMB ("ambiguous job spec")
+# define BU_JOB_NO ("no such job")
+# define BU_JOB_ERR ("221sh: %s: %s\n")
 
 typedef struct s_job	t_job;
 typedef struct s_ctx	t_ctx;

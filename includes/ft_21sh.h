@@ -6,14 +6,12 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 17:40:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 17:39:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_21SH_H
 # define FT_21SH_H
-
-//inclure les headers de Vincent et virer leur inclusion de ft_21sh.h
 
 # include "ft_dlst.h"
 # include "stack.h"
@@ -28,6 +26,7 @@
 # include "builtins.h"
 # include "expand.h"
 # include "job_control.h"
+
 
 # include <signal.h>
 # include <sys/ioctl.h>
@@ -68,9 +67,6 @@
 
 //TO DELETE
 # define DEBUG 		write(STDOUT_FILENO, "DEBUG\n", 6)
-# define DEBUG1 	write(STDOUT_FILENO, "DEBUG1\n", 7)
-# define DEBUG2 	write(STDOUT_FILENO, "DEBUG2\n", 7)
-
 
 # define DFL_BGCNT 8
 
@@ -93,10 +89,13 @@ enum					e_errcode
 ** sizeof struct termios = 60
 */
 
-//padder correctement la struct
+/*
+** padder correctement la struct
+*/
 
 struct					s_ctx
 {
+
 	/*
 	**	JOB CONTROL - Might miss a lot of variables
 	*/
@@ -104,20 +103,20 @@ struct					s_ctx
 	pid_t				pid;
 	pid_t				pgid;
 	int					fd;
-	int	                istty;
+	int					istty;
 	char				**path;
 	t_job				**bg_jobs;
 	size_t				bg_cnt;
 	t_job				*fg_job;
-    int                 exe_stack;
+	int					exe_stack;
 	t_list				*bgs;
 
 	/*
 	**	EXECUTION HASH (for HASH builtin)
 	*/
 
-	t_hdict			*hash;
-	t_hdict			*builtins;
+	t_hdict				*hash;
+	t_hdict				*builtins;
 
 	/*
 	**	SHELL VARIABLES
@@ -133,7 +132,7 @@ struct					s_ctx
 
 	t_line				line;
 	t_hist				hist;
-	t_line				*cur_line;//line currently modified
+	t_line				*cur_line;
 	char				prompt_mode[4];
 	int					ret_tcget;
 	int					tty;
@@ -143,9 +142,9 @@ struct					s_ctx
 	*/
 
 	int					emacs_mode;
-	int	                line_edition;
+	int					line_edition;
 	int					config_file;
-	int	                history;
+	int					history;
 	int					job_control;
 
 	/*
@@ -160,15 +159,6 @@ struct					s_ctx
 
 };
 
-
-/*
-typedef struct			s_typefunc
-{
-	int type;
-	void	(*f)(void *ptr);
-}
-*/
-
 void					vingtetunsh(char **av, char **environ);
 
 void					exec_pipe(t_dlist *input);
@@ -179,7 +169,6 @@ void					get_shell_opt(t_ctx *ctx, char **av);
 void					complete_environ(char ***environ);
 int						create_locals(char ***locals);
 char					**getpath(char **environ);
-
 
 void					dump_err(char errcode);
 void					fatal_err(char errcode, t_ctx *ctx);
@@ -230,10 +219,6 @@ void					ft_assert(void ***arr, size_t len);
 **		UNTIL,
 **		WHILE,
 **	};
-*/
-
-/*
-**	BUILTINS
 */
 
 #endif

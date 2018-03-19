@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:47:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 18:19:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 17:25:18 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 
-#include "ft_21sh.h"
-
+# include "ft_21sh.h"
 # include "pattern_matching.h"
 
 typedef struct dirent	t_dir;
