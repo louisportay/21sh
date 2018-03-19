@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 17:47:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 15:25:42 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_ctx 				*get_ctxaddr(void)
 	return (&ctx);
 }
 
-void	exec_pipe(t_dlist *input)
+void	exec_loop(t_dlist *input)
 {
 	t_token *toklist;
 	t_job	*extree;
@@ -50,7 +50,7 @@ void	vingtetunsh(char **av, char  **environ)
 	while (1)
 	{
 		ft_readline(ctx, &ctx->line, PS1);
-		exec_pipe(ctx->line.split_line);
+		exec_loop(ctx->line.split_line);
 		ft_dlstdel(&ctx->line.split_line, &delvoid);
 	}
 }

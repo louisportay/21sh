@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 14:31:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 15:26:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,14 @@ struct					s_job
 
 int						exec(t_job *jobs);
 
+int						exec_pipe(t_job *j, t_ctx *ctx);
+
 struct s_proc			*proc_cr(void);
 struct s_proc			*proc_new(char **argv);
 void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
 void					proc_clear(t_proc **proc);
 
-void					proc_exec(t_proc *p, pid_t pgid, t_ctx *ctx, int fg);
+void					proc_exec(t_proc *p, t_job *, t_ctx *ctx);
 int						proc_chgstat(t_job *job, pid_t pid, int status);
 
 void					proc_foreach(t_proc *p, void (*act)(t_proc *));
@@ -132,8 +134,6 @@ int						job_next(t_job *j, t_ctx *ctx);
 int						job_donext(t_job *j, t_ctx *ctx);
 
 void					*job_safeclear(t_job **job);
-
-void					setup_signals(void);
 
 void					prefork_assign(t_ctx *ctx, t_asmt *asmt);
 int						proc_update_env(t_proc *p);

@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/16 13:23:04 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/19 15:27:51 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -144,6 +144,7 @@ SRCS=	main.c\
 		exec.c\
 		job_exec.c\
 		proc_exec.c\
+		exec_pipe.c\
 		get_path.c\
 		job_utils.c\
 		job_wait.c\
