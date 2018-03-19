@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/19 12:53:57 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/19 13:24:49 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,6 +106,7 @@ SRCS=	main.c\
 		history.c\
 		history_utils.c\
 		quote.c\
+		paren.c\
 		\
 		rawline.c\
 		default.c\

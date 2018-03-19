@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 11:23:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 13:05:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	filter_assignment_word(t_token *toklist)
 
 	tmp = toklist->first_letter;
 	if (ft_isdigit(*(char *)tmp->data) || *(char *)tmp->data == '=')
-			toklist->type = WORD;
+		toklist->type = WORD;
 	while (*(char *)tmp->data != '=' && (toklist->type & ASSIGNMENT_WORD))
 	{
 		if (!ft_isalnum(*(char *)tmp->data) && *(char *)tmp->data != '_')
@@ -116,19 +116,19 @@ static int	filter_io_number(t_token *toklist, t_token *prev)
 
 /*
 ** Change the following tokens:
-
+**
 ** ASSIGNMENT_WORD
 ** IO_NUMBER
-** LESS		
-** GREAT	
-** DLESS	
-** DGREAT	
-** LESSAND	
-** GREATAND	
-** TLESS	
-** ANDGREAT	
+** LESS
+** GREAT
+** DLESS
+** DGREAT
+** LESSAND
+** GREATAND
+** TLESS
+** ANDGREAT
 ** ANDDGREAT
-** 
+**
 ** Into:
 **
 ** Complete redirections operations with both operands
@@ -137,7 +137,7 @@ static int	filter_io_number(t_token *toklist, t_token *prev)
 ** Return the first faulty redirection if any.
 */
 
-t_token	*filter_tokens(t_token *toklist)
+t_token		*filter_tokens(t_token *toklist)
 {
 	t_token *prev;
 
@@ -157,7 +157,6 @@ t_token	*filter_tokens(t_token *toklist)
 			if (filter_redir(toklist, prev) == -1)
 				return (toklist);
 		}
-
 		prev = prev->next;
 		toklist = prev->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 18:59:04 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/17 19:01:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 13:06:50 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	fill_token_str(char *s, t_token *tok)
 {
-	t_dlist	*tmp;	
+	t_dlist	*tmp;
 
 	tmp = tok->first_letter;
 	while (tmp != tok->last_letter)
@@ -26,9 +26,9 @@ void	fill_token_str(char *s, t_token *tok)
 	*s = '\0';
 }
 
-char 	*allocate_token_str(t_token *tok)
+char	*allocate_token_str(t_token *tok)
 {
-	t_dlist	*tmp;	
+	t_dlist	*tmp;
 	char	*s;
 	size_t	len;
 

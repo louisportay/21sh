@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/18 21:00:46 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 11:15:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 12:59:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int		extend_operator(t_token *token, char c, int quote_state)
 {
 	if (quote_state != UNQUOTED || ft_isblank(c))
 		return (0);
-
 	if (token->type & OR && c == '|')
 		token->type = OR_IF;
 	else if (token->type & AND && c == '&')
@@ -61,7 +60,6 @@ int		extend_operator(t_token *token, char c, int quote_state)
 		return (0);
 	return (1);
 }
-
 
 int		token_type(char c, int quote_state)
 {
