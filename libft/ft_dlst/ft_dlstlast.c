@@ -1,30 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ctype.h                                         :+:      :+:    :+:   */
+/*   ft_dlstlast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/24 15:47:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/16 13:50:48 by lportay          ###   ########.fr       */
+/*   Created: 2018/03/15 18:40:19 by lportay           #+#    #+#             */
+/*   Updated: 2018/03/15 18:41:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_CTYPE_H
-# define FT_CTYPE_H
+#include "ft_dlst.h"
 
-#include <wchar.h>
+t_dlist	*ft_dlstlast(t_dlist *dlst)
+{
+	while (dlst->next)
+		dlst = dlst->next;
+	return (dlst);
+}
 
-int		ft_isalnum(int c);
-int		ft_isnumber(char *str);
-int		ft_isalpha(int c);
-int		ft_isascii(int c);
-int		ft_isdigit(int c);
-int		ft_isprint(int c);
-int		ft_tolower(int c);
-int		ft_toupper(int c);
-int		ft_isunicode(wchar_t a);
-int		ft_isspace(int c);
-int		ft_isblank(int c);
-
-#endif

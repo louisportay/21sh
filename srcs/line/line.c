@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 12:27:21 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 16:07:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void		ft_readline(t_ctx *ctx, t_line *l, char *prompt_mode)
 	{
 		if (dlst_isblank(l->split_line->next) == false)
 			add_histentry(&ctx->hist, l->split_line);
-		ft_dlstaddend(l->split_line, ft_dlstnew("\n", 1));
+		if (!l->heredoc)
+			ft_dlstaddend(l->split_line, ft_dlstnew("\n", 1));
 	}
 	ctx->cur_line = NULL;
 	stack_del(&l->linestate);

@@ -13,6 +13,8 @@
 #ifndef FT_21SH_H
 # define FT_21SH_H
 
+//inclure les headers de Vincent et virer leur inclusion de ft_21sh.h
+
 # include "ft_dlst.h"
 # include "stack.h"
 # include "ft_list.h"

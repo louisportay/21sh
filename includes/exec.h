@@ -156,4 +156,7 @@ int						blt_output(t_proc *p);
 
 char					*get_command(t_job *j);
 
+int						do_redir(t_redir *r);
+
+
 #endif

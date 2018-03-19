@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/11 10:26:30 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/11 11:20:54 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 15:00:04 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ void	getrawline(t_ctx *ctx, t_line *l)
 	if (!tmp && ctx->line.linestate->state == UNQUOTED)
 	{
 		if (ctx->fd == STDIN_FILENO)
-			write(STDOUT_FILENO, "exit\n", 5);
+			write(STDERR_FILENO, "exit\n", 5);
 		wrap_exit(EXIT_SUCCESS, ctx);
 	}
 	else if (!tmp)
 		return (err_line(l, BADQUOTES));
 	l->line = str_to_dlst(tmp);
+
 	if (l->heredoc)
 		query_hdocstate(l->line->next, &l->linestate, l->eohdoc);
 	else

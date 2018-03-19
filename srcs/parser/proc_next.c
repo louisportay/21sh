@@ -12,8 +12,8 @@
 
 #include "ft_21sh.h"
 
-#define TK_ASN (REDIR | ASSIGNMENT_WORD)
-#define TK_WORD (REDIR | WORD)
+#define TK_ASN (RDIR | ASSIGNMENT_WORD)
+#define TK_WORD (RDIR | WORD)
 
 static char				**get_args(t_token **toks, t_redir **rdr)
 {

@@ -6,13 +6,15 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/16 13:23:04 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/19 12:53:57 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: clean fclean re all
 
 SRCDIR= srcs/ \
+		srcs/utils \
+		srcs/init \
 		srcs/line \
 		srcs/history \
 		srcs/lexer \
@@ -32,7 +34,7 @@ vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=sanitize
+DEBUG=yes #sanitize
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
@@ -90,6 +92,8 @@ posix_classes.h\
 prompt.h\
 token.h\
 
+#history_expansion.c\
+
 SRCS=	main.c\
 		ft_21sh.c\
 		initvar.c\
@@ -129,7 +133,14 @@ SRCS=	main.c\
 		test_other.c\
 		\
 		lexer.c\
+		tokrules.c\
 		filter_tokens.c\
+		str_from_token.c\
+		token_utils.c\
+		clear_token.c\
+		is.c\
+		handle_tok.c\
+		\
 		redir.c\
 		parser.c\
 		printers.c\
@@ -168,6 +179,7 @@ SRCS=	main.c\
 		builtin_env.c\
 		builtin_history.c\
 		builtin_jobs.c\
+		builtin_exit.c\
 		\
 		expand_exec.c\
 		expand.c\
