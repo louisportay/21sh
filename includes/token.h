@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/18 15:24:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 11:12:45 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,25 @@ enum	e_toktype
 
 	COMMENT = 1 << 20,				// # *ANY_TOKEN NEWLINE
 	TOKERR = 1 << 21
+};
+
+/*
+** Quotes and Heredoc injects '\n'
+** change UNQUOTED to 0b0 ?
+** BQUOTE, 42SH
+*/
+
+enum	e_linestate
+{
+	UNQUOTED = 0b1,
+	BSLASH = 0b10,
+	SQUOTE = 0b100,
+	DQUOTE = 0b1000,
+	PAREN = 0b10000,
+	BRACE = 0b100000,
+	HASH = 0b100000000,
+	HEREDOC = 0b1000000000,
+	ERROR = 0b10000000000,
 };
 
 typedef struct		s_token
@@ -98,5 +117,12 @@ t_token				*tokenizer(t_dlist *line);
 t_token				*filter_tokens(t_token *toklist);// static ?
 
 int					is_metachar(char c);
+int					is_quoting(char c);
+int					is_max_operator(int n);
+int					is_extendable_operator(int n);
+
+int		extend_word(t_token *token, char c, int quote_state);
+int		extend_operator(t_token *token, char c, int quote_state);
+int		token_type(char c, int quote_state);
 
 #endif

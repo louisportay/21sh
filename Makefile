@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/17 21:10:40 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/18 21:01:30 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,6 +80,8 @@ expand_param.h\
 expand_quotes.h\
 expand_tilde.h\
 
+#history_expansion.c\
+
 SRCS=	main.c\
 		ft_21sh.c\
 		initvar.c\
@@ -91,7 +93,6 @@ SRCS=	main.c\
 		utils.c\
 		history.c\
 		history_utils.c\
-		history_expansion.c\
 		quote.c\
 		\
 		rawline.c\
@@ -125,6 +126,8 @@ SRCS=	main.c\
 		str_from_token.c\
 		token_utils.c\
 		clear_token.c\
+		is.c\
+		handle_tok.c\
 		\
 		redir.c\
 		parser.c\

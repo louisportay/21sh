@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/17 20:24:51 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 10:50:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,25 +95,6 @@ enum	e_readcode
 	FINISHREAD,
 	EXITSHELL,
 	ERR_QUOTE,
-};
-
-/*
-** Quotes and Heredoc injects '\n'
-** change UNQUOTED to 0b0 ?
-** BQUOTE, 42SH
-*/
-
-enum	e_linestate
-{
-	UNQUOTED = 0b1,
-	BSLASH = 0b10,
-	SQUOTE = 0b100,
-	DQUOTE = 0b1000,
-	PAREN = 0b10000,
-	BRACE = 0b100000,
-	HASH = 0b100000000,
-	HEREDOC = 0b1000000000,
-	ERROR = 0b10000000000,
 };
 
 struct			s_termcaps

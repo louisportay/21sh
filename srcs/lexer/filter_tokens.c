@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/18 15:15:17 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 11:23:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static void	filter_assignment_word(t_token *toklist)
 	t_dlist *tmp;
 
 	tmp = toklist->first_letter;
-	if (ft_isdigit(*(char *)tmp->data) == true || *(char *)tmp->data == '=')
+	if (ft_isdigit(*(char *)tmp->data) || *(char *)tmp->data == '=')
 			toklist->type = WORD;
 	while (*(char *)tmp->data != '=' && (toklist->type & ASSIGNMENT_WORD))
 	{
-		if (ft_isalnum(*(char *)tmp->data) == false && *(char *)tmp->data != '_')
+		if (!ft_isalnum(*(char *)tmp->data) && *(char *)tmp->data != '_')
 			toklist->type = WORD;
 		tmp = tmp->next;
 	}
@@ -36,7 +36,8 @@ static int	filter_heredoc(t_token *toklist, t_token *prev)
 {
 	t_heredoc *tmp;
 
-	if (!(toklist->next->type & (WORD | ASSIGNMENT_WORD)) || !(tmp = (t_heredoc *)malloc(sizeof(t_heredoc))))
+	if (!(toklist->next->type & (WORD | ASSIGNMENT_WORD))
+			|| !(tmp = (t_heredoc *)malloc(sizeof(t_heredoc))))
 		return (-1);
 	prev->next = (t_token *)tmp;
 	tmp->first_letter = toklist->first_letter;
@@ -50,13 +51,19 @@ static int	filter_heredoc(t_token *toklist, t_token *prev)
 	return (SUCCESS);
 }
 
+/*
+** printf("left:%d|fd:%d|s:%s|dash:%d\n",
+** tmp->lhs, tmp->fd_rhs, tmp->s_rhs, tmp->dash);
+*/
+
 static int	filter_redir(t_token *toklist, t_token *prev)
 {
 	t_redir *tmp;
 
 	if (toklist->type == DLESS)
 		return (filter_heredoc(toklist, prev));
-	if (!(toklist->next->type & (WORD | ASSIGNMENT_WORD /*| DOLLAR*/)) || !(tmp = (t_redir *)malloc(sizeof(t_redir))))
+	if (!(toklist->next->type & (WORD | ASSIGNMENT_WORD))
+			|| !(tmp = (t_redir *)malloc(sizeof(t_redir))))
 		return (-1);
 	prev->next = (t_token *)tmp;
 	tmp->first_letter = toklist->first_letter;
@@ -70,8 +77,6 @@ static int	filter_redir(t_token *toklist, t_token *prev)
 	tmp->s_rhs = str_from_token(toklist->next);
 	tmp->fd_rhs = -1;
 	tmp->dash = false;
-//	get_right_op(tmp);
-//	printf("left:%d|fd:%d|s:%s|dash:%d\n", tmp->lhs, tmp->fd_rhs, tmp->s_rhs, tmp->dash);
 	free(toklist->next);
 	free(toklist);
 	return (SUCCESS);
@@ -79,6 +84,9 @@ static int	filter_redir(t_token *toklist, t_token *prev)
 
 /*
 ** IO_NUMBER filter
+**
+** printf("left:%d|fd:%d|s:%s|dash:%d\n",
+** tmp->lhs, tmp->fd_rhs, tmp->s_rhs, tmp->dash);
 */
 
 static int	filter_io_number(t_token *toklist, t_token *prev)
@@ -86,7 +94,8 @@ static int	filter_io_number(t_token *toklist, t_token *prev)
 	t_redir *tmp;
 	char	*s;
 
-	if (!(toklist->next->next->type & (WORD | ASSIGNMENT_WORD)) || !(tmp = (t_redir *)malloc(sizeof(t_redir))))
+	if (!(toklist->next->next->type & (WORD | ASSIGNMENT_WORD))
+			|| !(tmp = (t_redir *)malloc(sizeof(t_redir))))
 		return (-1);
 	prev->next = (t_token *)tmp;
 	tmp->first_letter = toklist->first_letter;
@@ -99,8 +108,6 @@ static int	filter_io_number(t_token *toklist, t_token *prev)
 	tmp->s_rhs = str_from_token(toklist->next->next);
 	tmp->fd_rhs = -1;
 	tmp->dash = false;
-//	get_right_op(tmp);
-//	printf("left:%d|fd:%d|s:%s|dash:%d\n", tmp->lhs, tmp->fd_rhs, tmp->s_rhs, tmp->dash);
 	free(toklist->next->next);
 	free(toklist->next);
 	free(toklist);
@@ -111,9 +118,7 @@ static int	filter_io_number(t_token *toklist, t_token *prev)
 ** Change the following tokens:
 
 ** ASSIGNMENT_WORD
-
 ** IO_NUMBER
-
 ** LESS		
 ** GREAT	
 ** DLESS	
@@ -123,17 +128,11 @@ static int	filter_io_number(t_token *toklist, t_token *prev)
 ** TLESS	
 ** ANDGREAT	
 ** ANDDGREAT
-
-** DOLLAR	
-
-** BANG		
 ** 
 ** Into:
 **
-** Complete redirections operations with both operands and the operator in a single token |OK|
-** PARAM_EXP
-** CMD_SUB  
-** ARI_EXP  
+** Complete redirections operations with both operands
+** and the operator in a single token
 **
 ** Return the first faulty redirection if any.
 */
