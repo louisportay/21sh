@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:55 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 16:39:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 19:27:18 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ static void			lmultiarg(t_proc *p, t_ctx *ctx)
 
 int					ft_bg(t_proc *p, t_ctx *ctx)
 {
-	t_job			*j;
+//	t_job			*j;
 	char			*str;
 
-	j = NULL;
+//	j = NULL;
 	p->type = BUILTIN;
 	if (p->argv[1] == NULL)
 	{
