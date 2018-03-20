@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:37:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 18:48:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 09:12:05 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void				ldojob(t_job *j, t_ctx *ctx, size_t i)
 	if (j->status & JOB_CMP)
 	{
 		next = (j->status & 0xFF) ? j->err : j->ok;
+		printf("%s is cmp, done? %d\n", j->parent->command, next == NULL);
 		if (next != NULL)
 		{
 			ctx->bg_jobs[i] = next;
@@ -27,9 +28,8 @@ static void				ldojob(t_job *j, t_ctx *ctx, size_t i)
 		}
 		else
 		{
-			j->parent->status = j->parent->status & ~0xFF;
-			j->parent->status |= (j->status & 0xFF) | JOB_DON;
-			j->status = j->parent->status;
+			j->status = (j->status & ~0xFF) | JOB_CMP;
+			j->parent->status = j->status | JOB_DON;
 		}
 	}
 }

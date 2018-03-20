@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 14:27:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 09:12:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int						jc_updatepipe(t_job *j)
 
 	if (j == NULL)
 		return (0);
+	if (j->parent->status & JOB_CMP)
+		return (j->status & 0xFF);
 	p = j->procs;
 	completed = JOB_CMP;
 	while (p != NULL)
