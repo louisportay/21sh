@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 17:40:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 15:25:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ typedef struct			s_typefunc
 
 void					vingtetunsh(char **av, char **environ);
 
-void					exec_pipe(t_dlist *input);
+void					exec_loop(t_dlist *input);
 int						init(t_ctx *ctx, char **av, char **environ);
 t_hdict					*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 13:10:43 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/16 14:29:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 09:11:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char					jc_getstatus(t_job *j)
 
 void					jc_notify(t_job *j, t_ctx *ctx, int i, int all)
 {
-	if (j->status & JOB_DON)
+	if (j->parent->status & JOB_DON)
 	{
 		if ((j->parent->status & 0xFF) == 0)
 			printf("[%d]%-3c%-24s%s\n", i + 1, jc_getstatus(j), "Done",

@@ -6,13 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:37:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 17:47:51 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 11:13:44 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void				ldojob(t_job *j, t_ctx *ctx, size_t i)
+void					jc_updatebgjob(t_ctx *ctx, t_job *j, size_t i)
 {
 	t_job				*next;
 
@@ -56,13 +56,11 @@ void					jc_signal(int signo)
 	if (signo != SIGCHLD)
 		return ;
 	ctx = get_ctxaddr();
-	if (ctx->fg_job != NULL)
-		jc_updatepipe(ctx->fg_job);
 	i = 0;
 	while (i < ctx->bg_cnt)
 	{
 		if (ctx->bg_jobs[i] != NULL)
-			ldojob(ctx->bg_jobs[i], ctx, i);
+			jc_updatebgjob(ctx, ctx->bg_jobs[i], i);
 		i++;
 	}
 	lhandle_rem(ctx);

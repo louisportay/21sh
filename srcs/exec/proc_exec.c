@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 16:59:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 18:44:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,7 @@ static void					exit_err(char *msg)
 	exit(1);
 }
 
-void					setup_fd(int lhs, int rhs)
-{
-	if (lhs != rhs)
-	{
-		dup2(lhs, rhs);
-		close(lhs);
-	}
-}
-
-void					setup_signals(void)
+static void				setup_signals(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGTSTP, SIG_DFL);
@@ -39,28 +30,28 @@ void					setup_signals(void)
 	signal(SIGCHLD, SIG_DFL);
 }
 
-void					set_pid_data(t_ctx *ctx, pid_t pgid, int fg)
+static void				set_pid_data(t_ctx *ctx, t_job *j)
 {
 	pid_t				pid;
 	int					ret;
 
 	pid = getpid();
-	if (pgid == 0)
-		pgid = pid;
+	if (j->pgid == 0)
+		j->pgid = pid;
 	if (ctx->istty == 0)
 		return ;
-	if ((ret = setpgid(pid, pgid)) != 0)
+	if ((ret = setpgid(pid, j->pgid)) != 0)
 		perror("setpgid - set_pid_data");
-	if (fg)
+	if (j->parent->bg == 0)
 	{
-		if ((ret = tcsetpgrp(ctx->fd, pgid)) != 0)
+		if ((ret = tcsetpgrp(ctx->fd, j->pgid)) != 0)
 			perror("tcsetpgrp - set_pid_data");
 	}
 }
 
-void					proc_exec(t_proc *p, pid_t pgid, t_ctx *ctx, int fg)
+void					proc_exec(t_proc *p, t_job *j, t_ctx *ctx)
 {
-	set_pid_data(ctx, pgid, fg);
+	set_pid_data(ctx, j);
 	setup_signals();
 	if (p->pipe_in[0] != -1)
 	{
