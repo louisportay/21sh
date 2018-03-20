@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 15:26:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 19:12:45 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_ctx	t_ctx;
 typedef struct s_proc	t_proc;
 typedef struct s_job	t_job;
 
-typedef int				(*t_blt)(t_proc *p, t_ctx *ctx);
+typedef int				(*t_blt)(t_proc *p, t_ctx *ctx, int pipeline);
 
 enum					e_extype
 {
@@ -107,7 +107,7 @@ struct s_proc			*proc_new(char **argv);
 void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
 void					proc_clear(t_proc **proc);
 
-void					proc_exec(t_proc *p, t_job *, t_ctx *ctx);
+void					proc_exec(t_proc *p, t_job *j, t_ctx *ctx);
 int						proc_chgstat(t_job *job, pid_t pid, int status);
 
 void					proc_foreach(t_proc *p, void (*act)(t_proc *));
@@ -150,7 +150,7 @@ int						loc_path(char *exe, char **env, char **path);
 
 char					*path_fromctx(char *exe, t_ctx *ctx);
 char					*proc_path(t_proc *p, t_ctx *ctx, int locpath);
-int						prepare_fork(t_proc *p, t_ctx *ctx);
+int						prepare_fork(t_proc *p, t_ctx *ctx, int pipeline);
 
 int						blt_output(t_proc *p);
 

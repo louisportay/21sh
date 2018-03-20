@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 14:05:13 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 13:09:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 17:41:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int			test_env_builtin(t_proc *p)
 	return (0);
 }
 
-int						prepare_fork(t_proc *p, t_ctx *ctx)
+int						prepare_fork(t_proc *p, t_ctx *ctx, int pipeline)
 {
 	t_blt				blt;
 	int					pmod;
@@ -50,7 +50,7 @@ int						prepare_fork(t_proc *p, t_ctx *ctx)
 	if (p->type & BU_STR)
 		return (0);
 	if ((blt = get_proc_blt(p->argv[0], ctx->builtins)) != NULL)
-		p->status = blt(p, ctx) & 0xFF;
+		p->status = blt(p, ctx, pipeline) & 0xFF;
 	else
 	{
 		if ((p->data.path = proc_path(p, ctx, pmod)) == NULL)

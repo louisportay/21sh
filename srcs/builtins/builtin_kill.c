@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:52 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 10:14:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 18:34:10 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,16 @@ static void			lmultiargs(t_proc *p, t_ctx *ctx)
 	}
 }
 
-int					ft_kill(t_proc *p, t_ctx *ctx)
+int					ft_kill(t_proc *p, t_ctx *ctx, int pipeline)
 {
 	char			*str;
 
+	if (pipeline)
+	{
+		p->type = BU_STR;
+		p->data.str = ft_strdup("221sh: kill: no job control\n");
+		return (1);
+	}
 	p->type = BUILTIN;
 	if (p->argv[1] == NULL)
 	{

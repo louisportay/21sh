@@ -6,11 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 09:23:25 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 16:50:44 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+#include <errno.h>
 
 static void				lcheck(t_proc *p)
 {
@@ -22,12 +24,20 @@ static void				lcheck(t_proc *p)
 
 void					jc_updateproc(t_job *j, t_proc *p, int status)
 {
+	t_proc				*procs;
+
 	if (WIFEXITED(status))
 		p->status = WEXITSTATUS(status) | JOB_CMP;
 	else if (WIFSTOPPED(status))
 	{
 		p->status |= JOB_STP;
 		j->status |= JOB_STP;
+		procs = j->procs;
+		while (procs != NULL)
+		{
+			procs->status |= JOB_STP;
+			procs = procs->next;
+		}
 		kill(-j->pgid, SIGTSTP);
 	}
 	else if (WIFSIGNALED(status))
@@ -83,7 +93,14 @@ static int				lwaitpid(t_job *j, t_proc *p)
 	else if (pid == 0)
 		;
 	else if (pid == -1)
+	{
+		if (errno == ECHILD)
+		{
+			p->status |= JOB_CMP;
+			return (0);
+		}
 		return (-1);
+	}
 	return (0);
 }
 

@@ -17,7 +17,7 @@ add verbose error messages
 Look for error on 4 stopped jobs, all bg-ed, saying "setpgid" of one them
 		-> Might be error said in kerrisk, errno set by the parent setpgid		--	DONE, to check
 
-Fix handling of background launched jobs (notifying on launch with id and pgid
+Fix handling of background launched jobs (notifying on launch with id and pgid	--	DONE
 Fix continuation of signaled jobs
 Fix notification of launched bg job												--	DONE
 
