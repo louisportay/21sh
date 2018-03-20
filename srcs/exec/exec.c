@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 17:03:12 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 09:38:15 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int						exec(t_job *jobs)
 	bg[0] = NULL;
 	ctx = get_ctxaddr();
 	update_tty(ctx, 1);
-	signal(SIGCHLD, SIG_DFL);
+	signal(SIGCHLD, SIG_IGN);
 	while (jobs != NULL)
 	{
 		tmp = jobs;
@@ -55,7 +55,6 @@ int						exec(t_job *jobs)
 		if (was_bg && id != (size_t)-1)
 			printf("[%zu] %d\n", id + 1, tmp->pgid);
 	}
-	jc_updatebg(ctx);
 	signal(SIGCHLD, &jc_signal);
 	update_tty(ctx, 0);
 	return (0);

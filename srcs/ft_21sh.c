@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 15:25:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 10:16:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	exec_loop(t_dlist *input)
 	delete_toklist(&toklist);
 	if (extree != NULL)
 		exec(extree);
+	jc_updatebg(ctx);
 	jc_print(ctx, 0, 0);
 }
 
