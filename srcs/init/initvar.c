@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 20:04:41 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/20 16:12:14 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,9 @@ int			create_locals(char ***locals)
 	return (SUCCESS);
 }
 
-/*
-** Complete the environ variable with HOME, USER, PATH (if not present)
-** and set SHLVL and PWD
-*/
-
-void		complete_environ(char ***env)
+static void	add_home_user_path_var(char ***env)
 {
 	struct passwd	*pw;
-	char			*tmp;
-	int				i;
 
 	pw = NULL;
 	if ((ft_astr_getkey(*env, "HOME", 4)) == -1)
@@ -53,6 +46,19 @@ void		complete_environ(char ***env)
 	}
 	if ((ft_astr_getkey(*env, "PATH", 4)) == -1)
 		ft_astr_append(env, ft_strjoinc("PATH", PATH, '='));
+}
+
+/*
+** Complete the environ variable with HOME, USER, PATH (if not present)
+** and set SHLVL and PWD
+*/
+
+void		complete_environ(char ***env)
+{
+	char			*tmp;
+	int				i;
+
+	add_home_user_path_var(env);
 	if ((i = ft_astr_getkey(*env, "SHLVL", 5)) == -1)
 		ft_astr_append(env, ft_strjoinc("SHLVL", "1", '='));
 	else
@@ -61,7 +67,8 @@ void		complete_environ(char ***env)
 		ft_astr_replace(*env, i, ft_strjoinc("SHLVL", tmp, '='));
 		free(tmp);
 	}
-	if ((tmp = getcwd(NULL, 0)) && (i = (ft_astr_getkey(*env, "PWD", 3))) == -1)
+	if ((tmp = getcwd(NULL, 0)) &&
+			(i = (ft_astr_getkey(*env, "PWD", 3))) == -1)
 	{
 		ft_astr_append(env, ft_strjoinc("PWD", tmp, '='));
 		free(tmp);
@@ -136,25 +143,4 @@ t_hdict		*getbuiltins(void)
 	hash_add(dict, "fg", &ft_fg);
 	hash_add(dict, "kill", &ft_kill);
 	return (dict);
-}
-
-/*
-** returns an array composed of the different paths to look for binary files
-*/
-
-char		**getpath(char **environ)
-{
-	char			**path;
-	char			*tpath;
-
-	if ((tpath = ft_astr_getval(environ, "PATH")) == NULL)
-		return (NULL);
-	if ((path = ft_strsplit(tpath, ':')) == NULL)
-		return (NULL);
-	if (astr_rmdup(&path) == -1)
-	{
-		ft_astr_clear(&path);
-		return (NULL);
-	}
-	return (path);
 }

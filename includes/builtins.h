@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 17:22:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/20 16:59:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,10 @@ int						bu_hash_getopts(t_proc *p, t_ctx *ctx, int *i);
 int						bu_set_getopts(t_proc *p, t_ctx *ctx, int i);
 int						is_identifier(char *str);
 int						is_sane(char *str, int *end);
+int						env_i_opt(t_proc *p);
+int						env_u_opt(t_proc *p);
+int						env_invalid_opt(t_proc *p);
+int						env_assignment(t_proc *p, int *getopt, char *eq_pos);
+int						dash_opt(int *getopt);
 
 #endif

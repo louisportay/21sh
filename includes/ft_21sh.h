@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 19:38:37 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/20 17:49:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@
 # define HELP1 "21sh, by vbastion and lportay:\n\n-h:\t\tDisplay this help\n"
 # define HELP2 "-f <file>:\tRead <file>\n-c <cmd>:"
 # define HELP3 "\tExecute <cmd>\n\n--rawline:\tdisable advanced line edition\n"
-# define HELP4 "--norc:\t\tdo not read configuration file\n"
+
+/*
+** # define HELP4 "--norc:\t\tdo not read configuration file\n"
+*/
 
 # define AMBIG_REDIR			"ambiguous redirect\n"
 

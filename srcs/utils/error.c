@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 19:11:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/20 17:09:34 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Function which print the right error message
 */
 
-void	dump_err(char errcode)
+void		dump_err(char errcode)
 {
 	if (errcode == BADQUOTES)
 		ft_putstr_fd(BADQUOTES_STR, STDERR_FILENO);
@@ -42,32 +42,38 @@ void		fatal_err(char errcode, t_ctx *ctx)
 	wrap_exit(EXIT_FAILURE, ctx);
 }
 
+static void	free_hist(t_dlist **histlist, t_ctx *ctx)
+{
+	if ((*histlist)->next)
+	{
+		trim_history(&(*histlist)->next, ft_astr_getval(ctx->locals,
+					"HISTFILESIZE"));
+		save_history(ft_astr_getval(ctx->locals, "HISTFILE"),
+				ft_dlstlast(*histlist), O_TRUNC);
+		*histlist = (*histlist)->next;
+		ft_dlstdelone(&(*histlist)->prev, &delvoid);
+		ft_dlstdel(histlist, &del_histentry);
+	}
+	else
+		ft_dlstdelone(histlist, &delvoid);
+}
+
 /*
 ** Free everything
 */
 
-void	wrap_exit(int status, t_ctx *ctx)
+void		wrap_exit(int status, t_ctx *ctx)
 {
+	if (ctx->istty)
+		write(STDERR_FILENO, "exit\n", 5);
 	if (ctx->line.line)
 		ft_dlstdel(&ctx->line.line, &delvoid);
 	if (ctx->line.yank)
 		ft_dlstdel(&ctx->line.yank, &delvoid);
 	if (ctx->line.linestate)
 		stack_del(&ctx->line.linestate);
-
-	if (ctx->hist.list)//faire une fonction dédiée
-	{
-		if (ctx->hist.list->next)
-		{
-			trim_history(&ctx->hist.list->next, ft_astr_getval(ctx->locals, "HISTFILESIZE"));
-			save_history(ft_astr_getval(ctx->locals, "HISTFILE"), ft_dlstlast(ctx->hist.list), O_TRUNC);
-			ctx->hist.list = ctx->hist.list->next;
-			ft_dlstdelone(&ctx->hist.list->prev, &delvoid);
-			ft_dlstdel(&ctx->hist.list, &del_histentry);
-		}
-		else
-			ft_dlstdelone(&ctx->hist.list, &delvoid);
-	}
+	if (ctx->hist.list)
+		free_hist(&ctx->hist.list, ctx);
 	if (ctx->path)
 		ft_astr_clear(&ctx->path);
 	if (ctx->hash)
@@ -77,7 +83,7 @@ void	wrap_exit(int status, t_ctx *ctx)
 	if (ctx->locals)
 		ft_astr_clear(&ctx->locals);
 	if (ctx->line_edition == true)
-		tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);	
+		tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);
 	close(ctx->tty);
 	exit(status);
 }

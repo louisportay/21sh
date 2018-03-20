@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/19 19:38:14 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/20 16:59:34 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=yes #sanitize
+DEBUG=sanitize
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
@@ -181,6 +181,7 @@ SRCS=	main.c\
 		builtin_env_utils.c\
 		builtin_unsetenv.c\
 		builtin_env.c\
+		builtin_envopt.c\
 		builtin_history.c\
 		builtin_jobs.c\
 		builtin_exit.c\

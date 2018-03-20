@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 10:48:13 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 12:51:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/20 16:35:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 int		ft_putchar_stdin(int c)
 {
-
 	write(get_ctxaddr()->tty, &c, 1);
 	return (c);
 }
@@ -58,16 +57,16 @@ bool	is_number(char *str)
 
 bool	is_number_w_dash(char *str)
 {
-		while (*str)
+	while (*str)
+	{
+		if (ft_isdigit(*str) == false)
 		{
-			if (ft_isdigit(*str) == false)
-			{
-				if (*str == '-' && *(str + 1) == '\0')
-					return (true);
-				else
-					return (false);
-			}
-			str++;
+			if (*str == '-' && *(str + 1) == '\0')
+				return (true);
+			else
+				return (false);
 		}
-		return (false);
+		str++;
+	}
+	return (false);
 }
