@@ -13,7 +13,6 @@
 #ifndef EXEC_H
 # define EXEC_H
 
-# include <stdio.h> //
 # include <sys/types.h>
 # include <termios.h>
 # include <stdlib.h>
@@ -155,5 +154,7 @@ int						prepare_fork(t_proc *p, t_ctx *ctx, int pipeline);
 int						blt_output(t_proc *p);
 
 char					*get_command(t_job *j);
+
+int						do_redir(t_redir *r);
 
 #endif

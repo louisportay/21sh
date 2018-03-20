@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 19:37:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 17:40:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "ft_21sh.h"
 
-//typedef struct s_job	t_job;;
 typedef struct s_asmt	t_asmt;
 
 struct					s_asmt
@@ -56,8 +55,8 @@ struct s_redir			*redir_dup(struct s_redir *redir);
 char					**astr_fromlist(struct s_list **list);
 
 /*
- *						DEBUG ONLY | COMMENT SYNTAX ON PURPOSE
- */
+**						DEBUG ONLY | COMMENT SYNTAX ON PURPOSE
+*/
 
 void					asmt_print(struct s_asmt *asmt);
 void					astr_print(char **astr);

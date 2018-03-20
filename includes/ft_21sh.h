@@ -27,6 +27,7 @@
 # include "expand.h"
 # include "job_control.h"
 
+
 # include <signal.h>
 # include <sys/ioctl.h>
 # include <sys/types.h>
@@ -57,8 +58,10 @@
 # define HELP1 "21sh, by vbastion and lportay:\n\n-h:\t\tDisplay this help\n"
 # define HELP2 "-f <file>:\tRead <file>\n-c <cmd>:"
 # define HELP3 "\tExecute <cmd>\n\n--rawline:\tdisable advanced line edition\n"
-# define HELP4 "--norc:\t\tdo not read configuration file\n--nohist:\t"
-# define HELP5 "disable command history\n"
+
+/*
+** # define HELP4 "--norc:\t\tdo not read configuration file\n"
+*/
 
 # define AMBIG_REDIR			"ambiguous redirect\n"
 
@@ -66,9 +69,6 @@
 
 //TO DELETE
 # define DEBUG 		write(STDOUT_FILENO, "DEBUG\n", 6)
-# define DEBUG1 	write(STDOUT_FILENO, "DEBUG1\n", 7)
-# define DEBUG2 	write(STDOUT_FILENO, "DEBUG2\n", 7)
-
 
 # define DFL_BGCNT 8
 
@@ -91,10 +91,13 @@ enum					e_errcode
 ** sizeof struct termios = 60
 */
 
-//padder correctement la struct
+/*
+** padder correctement la struct
+*/
 
 struct					s_ctx
 {
+
 	/*
 	**	JOB CONTROL - Might miss a lot of variables
 	*/
@@ -102,7 +105,7 @@ struct					s_ctx
 	pid_t				pid;
 	pid_t				pgid;
 	int					fd;
-	int	                istty;
+	int					istty;
 	char				**path;
 	t_job				**bg_jobs;
 	size_t				bg_cnt;
@@ -130,7 +133,7 @@ struct					s_ctx
 
 	t_line				line;
 	t_hist				hist;
-	t_line				*cur_line;//line currently modified
+	t_line				*cur_line;
 	char				prompt_mode[4];
 	int					ret_tcget;
 	int					tty;
@@ -140,9 +143,9 @@ struct					s_ctx
 	*/
 
 	int					emacs_mode;
-	int	                line_edition;
+	int					line_edition;
 	int					config_file;
-	int	                history;
+	int					history;
 	int					job_control;
 
 	/*
@@ -157,26 +160,17 @@ struct					s_ctx
 
 };
 
-
-/*
-typedef struct			s_typefunc
-{
-	int type;
-	void	(*f)(void *ptr);
-}
-*/
-
 void					vingtetunsh(char **av, char **environ);
 
 void					exec_loop(t_dlist *input);
 int						init(t_ctx *ctx, char **av, char **environ);
+void					init_ctx(t_ctx *ctx, char **av, char **environ);
 t_hdict					*getbuiltins(void);
 void					init_termcaps(t_ctx *ctx);
 void					get_shell_opt(t_ctx *ctx, char **av);
 void					complete_environ(char ***environ);
 int						create_locals(char ***locals);
 char					**getpath(char **environ);
-
 
 void					dump_err(char errcode);
 void					fatal_err(char errcode, t_ctx *ctx);
@@ -227,10 +221,6 @@ void					ft_assert(void ***arr, size_t len);
 **		UNTIL,
 **		WHILE,
 **	};
-*/
-
-/*
-**	BUILTINS
 */
 
 #endif

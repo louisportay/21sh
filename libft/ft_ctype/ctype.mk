@@ -9,6 +9,7 @@ ft_isspace.c\
 ft_isunicode.c\
 ft_tolower.c\
 ft_toupper.c\
+ft_isblank.c\
 
 CTYPE_DIR=ft_ctype
 

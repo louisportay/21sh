@@ -6,14 +6,11 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/21 16:59:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/18 15:16:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-
-//vérifier si on peut accéder au fichier pour la redirection
 
 int		get_right_op(t_redir *tok)
 {
@@ -61,7 +58,7 @@ int		r_less(t_redir *r)
 	return (0);
 }
 
-int		r_tless(t_redir *r)
+int		r_dless_tless(t_redir *r)
 {
 	int		fd;
 
@@ -74,30 +71,6 @@ int		r_tless(t_redir *r)
 	if (dup2(fd, r->lhs) == -1)
 		return (-1);
 	close(fd);
-	return (0);
-}
-
-int		r_dless(t_heredoc *r)
-{
-	r->hdoc.heredoc = true;
-	r->hdoc.eohdoc = r->s_rhs;
-	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->tios);
-	ft_readline(get_ctxaddr(), &r->hdoc, PS2);
-	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->oldtios);
-	free(r->s_rhs);
-	if (r->hdoc.split_line && r->hdoc.split_line->next)
-		r->s_rhs = dlst_to_str(r->hdoc.split_line);
-	else
-		r->s_rhs = ft_strdup("");
-	r_tless((t_redir *)r);
-
-	if (r->hdoc.split_line)
-		ft_dlstdel(&r->hdoc.split_line, &delvoid);
-	if (r->hdoc.yank)
-		ft_dlstdel(&r->hdoc.yank, &delvoid);
-	if (r->hdoc.linestate)
-		stack_del(&r->hdoc.linestate);
-
 	return (0);
 }
 
@@ -145,11 +118,9 @@ int		do_redir(t_redir *r)
 			ret = r_great_dgreat(r);
 		else if (r->type & LESS)
 			ret = r_less(r);
-		else if (r->type & DLESS)
-			ret = r_dless((t_heredoc *)r);
-		else if (r->type & TLESS)
-			ret = r_tless(r);
-		else if (IS_AND_REDIR(r->type))
+		else if (r->type & (DLESS | TLESS))
+			ret = r_dless_tless(r);
+		else if (r->type & R_AND)
 			ret = r_andgreat_anddgreat(r);
 		else if (r->type & (GREATAND | LESSAND))
 			ret = r_greatand_lessand(r);

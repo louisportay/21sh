@@ -18,18 +18,18 @@
 
 # include "ft_21sh.h"
 
-#define BU_S_USG ("21sh: usage: set [-+][Fabdfhnolx]")
+# define BU_S_USG ("21sh: usage: set [-+][Fabdfhnolx]")
 
-#define BU_S_HPR ("l: displays local variables. With '+l' shows env beforehand")
-#define BU_S_HSE ("o: displays options. '+o' prints it as commands to set them")
-#define BU_S_HEX ("a: assignment commands are exported")
-#define BU_S_HBG ("b: set job notifications to be immediate")
-#define BU_S_HON ("x: prints each action done before execution")
-#define BU_S_HFN ("f: inhib globbing expansion")
-#define BU_S_HDO ("d: adds hidden files to globbing")
-#define BU_S_HNU ("n: if expansion fails, replace it with a null string")
-#define BU_S_HFA ("F: if expansion fails, abords pipe execution")
-#define BU_S_HEL ("h: displays this help. '+h' adds usage beforehand")
+# define BU_S_HPR ("l: displays local variables. With '+l' shows env beforehand")
+# define BU_S_HSE ("o: displays options. '+o' prints it as commands to set them")
+# define BU_S_HEX ("a: assignment commands are exported")
+# define BU_S_HBG ("b: set job notifications to be immediate")
+# define BU_S_HON ("x: prints each action done before execution")
+# define BU_S_HFN ("f: inhib globbing expansion")
+# define BU_S_HDO ("d: adds hidden files to globbing")
+# define BU_S_HNU ("n: if expansion fails, replace it with a null string")
+# define BU_S_HFA ("F: if expansion fails, abords pipe execution")
+# define BU_S_HEL ("h: displays this help. '+h' adds usage beforehand")
 
 # define BU_SET_PRLOC (1 << 0)
 # define BU_SET_PRVAR (1 << 1)
@@ -71,7 +71,6 @@
 # define SH_ENOHOM ("221sh: cd: Variable $HOME not set\n")
 # define SH_ENOOPW ("221sh: cd: Variable $OLDPWD not set\n")
 
-
 # define BU_H_EEMPTY ("121sh: hash empty\n")
 # define BU_H_CLR (1 << 0)
 # define BH_H_INH (1 << 1)
@@ -104,10 +103,16 @@ int						ft_jobs(t_proc *proc, t_ctx *ctx);
 int						ft_fg(t_proc *proc, t_ctx *ctx, int pipeline);
 int						ft_bg(t_proc *proc, t_ctx *ctx, int pipeline);
 int						ft_kill(t_proc *proc, t_ctx *ctx, int pipeline);
+int						ft_exit(t_proc *p, t_ctx *ctx, int pipeline);
 int						modenv(t_proc *p, t_ctx *ctx, char *name);
 int						bu_hash_getopts(t_proc *p, t_ctx *ctx, int *i);
 int						bu_set_getopts(t_proc *p, t_ctx *ctx, int i);
 int						is_identifier(char *str);
 int						is_sane(char *str, int *end);
+int						env_i_opt(t_proc *p);
+int						env_u_opt(t_proc *p);
+int						env_invalid_opt(t_proc *p);
+int						env_assignment(t_proc *p, int *getopt, char *eq_pos);
+int						dash_opt(int *getopt);
 
 #endif

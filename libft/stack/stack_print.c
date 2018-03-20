@@ -6,14 +6,16 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/22 11:26:07 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 16:13:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 16:08:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack.h"
 #include "ft_stdio.h"
 
-//changer le proto et mettre une fonction pour dump le contenu
+/*
+** changer le proto et mettre un pointeur sur fonction pour dump le contenu
+*/
 
 void	stack_print(t_stack *stack, char *sep)
 {

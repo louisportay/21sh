@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/16 10:04:17 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 16:29:24 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,32 @@ size_t					token_count(t_token *tok)
 	return (len);
 }
 
+void	get_hdoc_line(t_heredoc *r)
+{
+	r->hdoc.heredoc = true;
+	r->hdoc.eohdoc = r->s_rhs;
+	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->tios);
+	ft_readline(get_ctxaddr(), &r->hdoc, PS2);
+	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->oldtios);
+	if (ft_strchr(r->s_rhs, '\\') || ft_strchr(r->s_rhs, '\'')
+								|| ft_strchr(r->s_rhs, '"'))
+		r->glob = 0;
+	else
+		r->glob = 1;
+	//quote removal on r->s_rhs
+
+	free(r->s_rhs);
+	if (r->hdoc.split_line && r->hdoc.split_line->next)//tester sans la premiere condition
+		r->s_rhs = str_from_dlst(r->hdoc.split_line);
+	else
+		r->s_rhs = ft_strdup("");
+	//apply expansion on r->s_rhs depending on r->glob
+	if (r->hdoc.split_line)
+		ft_dlstdel(&r->hdoc.split_line, &delvoid);
+	if (r->hdoc.yank)
+		ft_dlstdel(&r->hdoc.yank, &delvoid);
+}
+
 t_redir					*redir_dup(t_redir *redir)
 {
 	t_redir				*rdr;
@@ -59,7 +85,9 @@ t_redir					*redir_dup(t_redir *redir)
 		return (NULL);
 	}
 	rdr->lhs = redir->lhs;
-	if (rdr->type != DLESS)
+	if (rdr->type == DLESS)
+		get_hdoc_line((t_heredoc *)rdr);
+	else
 	{
 		rdr->fd_rhs = redir->fd_rhs;
 		rdr->dash = redir->dash;

@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   randstring.c                                       :+:      :+:    :+:   */
+/*   ft_dlstlast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/11 19:00:42 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 16:04:18 by lportay          ###   ########.fr       */
+/*   Created: 2018/03/15 18:40:19 by lportay           #+#    #+#             */
+/*   Updated: 2018/03/19 13:51:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_string.h"
+#include "ft_dlst.h"
 
-char	*randstring(int len)
+t_dlist	*ft_dlstlast(t_dlist *dlst)
 {
-	char	charset[64];
-	char	*tmp;
-	char	*s;
-
-	if (len <= 0)
-		return (NULL);
-	ft_strncpy(charset,
-	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", 64);
-	if (!(s = ft_strnew(len)))
-		return (NULL);
-	s[len] = '\0';
-	tmp = s;
-	while (*tmp)
-		*tmp++ = charset[rand() % (64 - 1)];
-	return (s);
+	while (dlst->next)
+		dlst = dlst->next;
+	return (dlst);
 }

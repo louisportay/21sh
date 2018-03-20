@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 13:38:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 16:57:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	get_flag(t_ctx *ctx, t_prompt_flag *fl, char **prompt, char c)
 
 static void	print_char(t_ctx *ctx, char *prompt)
 {
-	ctx->cur_line->prompt_len += write(STDOUT_FILENO, prompt, 1);
+	ctx->cur_line->prompt_len += write(STDERR_FILENO, prompt, 1);
 	if (*prompt == '\n')
 	{
 		ctx->cur_line->prompt_len = 0;

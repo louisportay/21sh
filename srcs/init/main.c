@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   randstring.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/11 19:00:42 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 16:04:18 by lportay          ###   ########.fr       */
+/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
+/*   Updated: 2018/03/19 19:21:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_string.h"
+#include "ft_21sh.h"
 
-char	*randstring(int len)
+int		main(int ac, char **av, char **env)
 {
-	char	charset[64];
-	char	*tmp;
-	char	*s;
-
-	if (len <= 0)
-		return (NULL);
-	ft_strncpy(charset,
-	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", 64);
-	if (!(s = ft_strnew(len)))
-		return (NULL);
-	s[len] = '\0';
-	tmp = s;
-	while (*tmp)
-		*tmp++ = charset[rand() % (64 - 1)];
-	return (s);
+	(void)ac;
+	vingtetunsh(av, env);
+	return (0);
 }

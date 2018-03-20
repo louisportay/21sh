@@ -6,13 +6,15 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/19 15:27:51 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/20 16:59:34 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: clean fclean re all
 
 SRCDIR= srcs/ \
+		srcs/utils \
+		srcs/init \
 		srcs/line \
 		srcs/history \
 		srcs/lexer \
@@ -90,18 +92,18 @@ posix_classes.h\
 prompt.h\
 token.h\
 
+#history_expansion.c\
+
 SRCS=	main.c\
 		ft_21sh.c\
 		initvar.c\
 		initshell.c\
+		init_ctx.c\
 		getopt.c\
 		error.c\
 		signal.c\
 		tools.c\
 		utils.c\
-		history.c\
-		history_utils.c\
-		quote.c\
 		\
 		rawline.c\
 		default.c\
@@ -122,14 +124,27 @@ SRCS=	main.c\
 		line_utils.c\
 		clear.c\
 		get_state.c\
+		quote.c\
+		paren.c\
 		test_arrow.c\
 		test_kill_yank.c\
 		test_go_line.c\
 		test_go_to.c\
 		test_other.c\
 		\
+		history.c\
+		manage_history.c\
+		history_utils.c\
+		\
 		lexer.c\
+		tokrules.c\
 		filter_tokens.c\
+		str_from_token.c\
+		token_utils.c\
+		clear_token.c\
+		is.c\
+		handle_tok.c\
+		\
 		redir.c\
 		parser.c\
 		printers.c\
@@ -167,8 +182,10 @@ SRCS=	main.c\
 		builtin_env_utils.c\
 		builtin_unsetenv.c\
 		builtin_env.c\
+		builtin_envopt.c\
 		builtin_history.c\
 		builtin_jobs.c\
+		builtin_exit.c\
 		\
 		expand_exec.c\
 		expand.c\

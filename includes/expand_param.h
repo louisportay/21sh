@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 13:41:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 17:28:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "ft_21sh.h"
 
 # include "expand.h"
-// # include "ft_delegates.h"
 
 # define VACHR ("${} \"")
 # define VAR_OK 1

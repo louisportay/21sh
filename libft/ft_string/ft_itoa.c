@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 13:35:22 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/06 16:28:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 14:54:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int		ft_lwidth(long nb)
 
 char	*ft_itoa(long n)
 {
-	int		i;
-	char		*s;
+	char			*s;
 	unsigned int	m;
+	int				i;
 
 	i = ft_lwidth(n);
 	m = (n < 0) ? -n : n;

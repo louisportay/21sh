@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/15 17:37:51 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 16:35:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 /*
 ** Définit les comportements pour chaque signal
-** SIGINT réaffiche le prompt et kill les process en cours
+** SIGINT	==> Réaffiche le prompt ou kill les process en cours
+** SIGWINCH ==> Window size change
+** SIGTERM ==> Call wrap_exit ?
+** SIGQUIT ==> Block it.
 */
 
 void	sighandler(int signum)
-//static void	sighandler(int signum)
 {
 	t_ctx *ctx;
-	
+
 	ctx = get_ctxaddr();
 	if (signum == SIGWINCH && ctx->line_edition)
 	{
@@ -40,13 +42,13 @@ void	sighandler(int signum)
 
 int		set_sighandler(void)
 {
-	signal(SIGWINCH, &sighandler); // Window size change
+	signal(SIGWINCH, &sighandler);
 	signal(SIGTSTP, &sighandler);
 	signal(SIGINT, &sighandler);
-//	signal(SIGQUIT, &sighandler) == SIG_ERR) // "CTRL-\"
-	signal(SIGTERM, &sighandler); // "kill"
-	signal(SIGTTIN, SIG_IGN); // "kill"
-	signal(SIGTTOU, SIG_IGN); // "kill"
+//	signal(SIGQUIT, &sighandler) // "CTRL-\"
+	signal(SIGTERM, &sighandler);
+	signal(SIGTTIN, SIG_IGN);
+	signal(SIGTTOU, SIG_IGN);
 	signal(SIGCHLD, &jc_signal);
 	return (SUCCESS);
 }

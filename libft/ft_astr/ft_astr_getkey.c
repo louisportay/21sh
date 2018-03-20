@@ -6,13 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 12:40:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 17:49:36 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 13:33:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_astr.h"
 
-int					ft_astr_getkey(char **env, char * const key, int eq_pos)
+int					ft_astr_getkey(char **env, char *const key, int eq_pos)
 {
 	int				i;
 

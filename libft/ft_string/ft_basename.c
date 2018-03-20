@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 09:43:57 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/06 16:02:43 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/19 15:55:50 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@
 
 char	*ft_basename(char *path)
 {
-	char *begin;
-	char *end;
+	char *s;
 
 	if (!path)
 		return (ft_strdup("."));
@@ -29,20 +28,9 @@ char	*ft_basename(char *path)
 		return (ft_strdup(path));
 	else if (ft_stroccur(path, '/') == ft_strlen(path))
 		return (ft_strdup("/"));
-	begin = path;
-	while (*path)
-		path++;
-	path--;
-	while (*path == '/')
-		path--;
-	end = path + 1;
-	while (*path != '/' && path != begin)
-		path--;	
-	if (path != begin)
-		path++;
-	if (!(begin = (char *)malloc(sizeof(char) * (end - path + 1))))
+	path = ft_strrchr(path, '/') + 1;
+	if (!(s = ft_strnew(ft_strlen(path))))
 		return (NULL);
-	ft_memcpy(begin, path, (end - path));
-	begin[end - path] = '\0';
-	return (begin);
+	ft_memcpy(s, path, ft_strlen(path) + 1);
+	return (s);
 }

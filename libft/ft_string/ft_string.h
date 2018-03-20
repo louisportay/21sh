@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:39:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/06 16:30:14 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 15:56:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ char			*ft_strncpy(char *dst, const char *src, size_t len);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
 
 char			*ft_basename(char *path);
-char			*ft_dirname(char *path);
 char			*fullpath(char *dirname, char *basename);
 
 size_t			ft_stroccur(const char *s, char c);
@@ -67,7 +66,7 @@ char			*ft_itoa(long n);
 int				ft_atoi(const char *str);
 char			**ft_strsplit(char const *s, char c);
 char			*ft_strstr(const char *big, const char *little);
-char 			*randstring(int len);
+char			*randstring(int len);
 int				ft_strindex(char *str, char c);
 
 #endif

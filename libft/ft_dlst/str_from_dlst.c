@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dlst_to_str.c                                      :+:      :+:    :+:   */
+/*   str_from_dlst.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/02 13:26:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/11 20:58:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 13:52:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 ** This function is not protected
 */
 
-char	*dlst_to_str(t_dlist *dlst)
+char	*str_from_dlst(t_dlist *dlst)
 {
-	char *s;
-	int len;
+	char	*s;
+	int		len;
 
 	if (!dlst->next)
 		return (NULL);

@@ -6,13 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 17:42:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 16:12:14 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int					create_locals(char ***locals)
+int			create_locals(char ***locals)
 {
 	char			hostname[CUSTOM_HOST_NAME_MAX];
 
@@ -25,21 +25,12 @@ int					create_locals(char ***locals)
 	ft_astr_append(locals, ft_strjoinc("HISTFILESIZE", HISTFILESIZE, '='));
 	ft_astr_append(locals, ft_strjoinc("HOSTNAME", hostname, '='));
 	add_histfile(get_ctxaddr());
-//	ft_astr_append(locals, ft_strjoinc("HISTFILE", get_histfile(ctx), '='));
-
 	return (SUCCESS);
 }
 
-/*
-** Complete the environ variable with HOME, USER, PATH (if not present)
-** and set SHLVL and PWD
-*/
-
-void				complete_environ(char ***env)
+static void	add_home_user_path_var(char ***env)
 {
 	struct passwd	*pw;
-	char			*tmp;
-	int				i;
 
 	pw = NULL;
 	if ((ft_astr_getkey(*env, "HOME", 4)) == -1)
@@ -55,6 +46,19 @@ void				complete_environ(char ***env)
 	}
 	if ((ft_astr_getkey(*env, "PATH", 4)) == -1)
 		ft_astr_append(env, ft_strjoinc("PATH", PATH, '='));
+}
+
+/*
+** Complete the environ variable with HOME, USER, PATH (if not present)
+** and set SHLVL and PWD
+*/
+
+void		complete_environ(char ***env)
+{
+	char			*tmp;
+	int				i;
+
+	add_home_user_path_var(env);
 	if ((i = ft_astr_getkey(*env, "SHLVL", 5)) == -1)
 		ft_astr_append(env, ft_strjoinc("SHLVL", "1", '='));
 	else
@@ -63,7 +67,8 @@ void				complete_environ(char ***env)
 		ft_astr_replace(*env, i, ft_strjoinc("SHLVL", tmp, '='));
 		free(tmp);
 	}
-	if ((tmp = getcwd(NULL, 0)) && (i = (ft_astr_getkey(*env, "PWD", 3))) == -1)
+	if ((tmp = getcwd(NULL, 0)) &&
+			(i = (ft_astr_getkey(*env, "PWD", 3))) == -1)
 	{
 		ft_astr_append(env, ft_strjoinc("PWD", tmp, '='));
 		free(tmp);
@@ -90,7 +95,7 @@ void				complete_environ(char ***env)
 **	rc	->	restore cursor position
 */
 
-void				init_termcaps(t_ctx *ctx)
+void		init_termcaps(t_ctx *ctx)
 {
 	ctx->tc.le = tgetstr("le", NULL);
 	ctx->tc.nd = tgetstr("nd", NULL);
@@ -113,12 +118,16 @@ void				init_termcaps(t_ctx *ctx)
 	}
 }
 
-t_hdict			*getbuiltins(void)
+/*
+** Finish History + exit built-ins
+*/
+
+t_hdict		*getbuiltins(void)
 {
 	t_hdict		*dict;
 
 	dict = hash_create(HASH_SIZE, HASH_PRIME);
-//	hash_add(dict, "bang", &);
+	hash_add(dict, "exit", &ft_exit);
 	hash_add(dict, "history", &ft_history);
 	hash_add(dict, "cd", &ft_cd);
 	hash_add(dict, "echo", &ft_echo);
@@ -134,25 +143,4 @@ t_hdict			*getbuiltins(void)
 	hash_add(dict, "fg", &ft_fg);
 	hash_add(dict, "kill", &ft_kill);
 	return (dict);
-}
-
-/*
-** returns an array composed of the different paths to look for binary files
-*/
-
-char			**getpath(char **environ)
-{
-	char			**path;
-	char			*tpath;
-
-	if ((tpath = ft_astr_getval(environ, "PATH")) == NULL)
-		return (NULL);
-	if ((path = ft_strsplit(tpath, ':')) == NULL)
-		return (NULL);
-	if (astr_rmdup(&path) == -1)
-	{
-		ft_astr_clear(&path);
-		return (NULL);
-	}
-	return (path);
 }

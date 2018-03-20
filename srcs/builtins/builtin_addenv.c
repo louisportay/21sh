@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_builtin_setenv.c                                :+:      :+:    :+:   */
+/*   builtin_addenv.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:25:12 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 22:15:50 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 16:40:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,16 @@ static void			update_locals(char ***locals, char *key, int end)
 static int			add_error(t_proc *p, t_list *lsts[2], char *str, char *bu)
 {
 	char			*lstr;
-	int                     i;
+	int				i;
 
 	if ((i = ft_strindex(str, '=')) == -1)
-	    i = ft_strlen(str);
-	asprintf(&lstr, "221sh: %s: '%*s': not a valid identifier\n",
-	            bu, i, str);
+		i = ft_strlen(str);
+	asprintf(&lstr, "221sh: %s: '%*s': not a valid identifier\n", bu, i, str);
 	lsts[2] = list_create(str);
 	ft_list_insert(&p->data.out, lsts, lsts[1]);
 	return (1);
 }
+
 int					modenv(t_proc *p, t_ctx *ctx, char *name)
 {
 	int				i;

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 17:57:07 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/13 17:59:57 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/14 16:58:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,5 @@
 void	print_flag(t_ctx *ctx, char *s)
 {
 	ctx->cur_line->prompt_len +=
-		write(STDOUT_FILENO, s, ft_strlen(s));
+		write(STDERR_FILENO, s, ft_strlen(s));
 }

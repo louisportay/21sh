@@ -6,13 +6,13 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 14:26:41 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/02 14:28:22 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 13:30:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	handle_bslash(t_stack **line)
+static void	handle_bslash(t_stack **line)
 {
 	if ((*line)->state == BSLASH)
 		stack_pop(line);
@@ -20,7 +20,7 @@ void	handle_bslash(t_stack **line)
 		stack_push(line, stack_create(BSLASH));
 }
 
-void	handle_squote(t_stack **line)
+static void	handle_squote(t_stack **line)
 {
 	if ((*line)->state == SQUOTE)
 		stack_pop(line);
@@ -28,7 +28,7 @@ void	handle_squote(t_stack **line)
 		stack_push(line, stack_create(SQUOTE));
 }
 
-void	handle_dquote(t_stack **line)
+static void	handle_dquote(t_stack **line)
 {
 	if ((*line)->state == DQUOTE)
 		stack_pop(line);
@@ -36,51 +36,24 @@ void	handle_dquote(t_stack **line)
 		stack_push(line, stack_create(DQUOTE));
 }
 
-void	handle_paren(t_stack **line, char c)
-{
-	if ((*line)->state == PAREN && c == ')')
-		stack_pop(line);
-	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE && (*line)->state != DQUOTE && c == '(')
-		stack_push(line, stack_create(PAREN));
-}
-
-void	handle_brace(t_stack **line, char c)
-{
-	if ((*line)->state == BRACE && c == '}')
-		stack_pop(line);
-	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE && (*line)->state != DQUOTE && c == '{')
-		stack_push(line, stack_create(BRACE));
-}
-
-void	handle_bracket(t_stack **line, char c)
-{
-	if ((*line)->state == BRACKET && c == ']')
-		stack_pop(line);
-	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE && (*line)->state != DQUOTE && c == '[')
-		stack_push(line, stack_create(BRACKET));
-}
-
-void handle_hash(t_stack **line)
-{
-	if ((*line)->state == UNQUOTED || (*line)->state == PAREN || (*line)->state == BRACE || (*line)->state == BRACKET)
-		stack_push(line, stack_create(HASH));
-}
-
 /*
 ** 42SH
 */
 
 /*
-void	handle_bquote(t_stack **line)
-{
-	if ((*line)->state == BQUOTE)
-		stack_pop(line);
-	else if ((*line)->state != SQUOTE && (*line)->state != BSLASH)
-		stack_push(line, stack_create(BQUOTE));
-}
+** void	handle_bquote(t_stack **line)
+** {
+** 	if ((*line)->state == BQUOTE)
+** 		stack_pop(line);
+** 	else if ((*line)->state != SQUOTE && (*line)->state != BSLASH)
+** 		stack_push(line, stack_create(BQUOTE));
+** }
+**
+**	else if (c == '`')
+**		handle_bquote(state);
 */
 
-void	update_linestate(t_stack **state, char c)
+void		update_linestate(t_stack **state, char c)
 {
 	if (c == '#')
 		handle_hash(state);
@@ -90,12 +63,8 @@ void	update_linestate(t_stack **state, char c)
 		handle_squote(state);
 	else if (c == '\"')
 		handle_dquote(state);
-//	else if (c == '`')
-//		handle_bquote(state);
 	else if (c == '(' || c == ')')
 		handle_paren(state, c);
 	else if (c == '{' || c == '}')
 		handle_brace(state, c);
-	else if (c == '[' || c == ']')
-		handle_bracket(state, c);
 }

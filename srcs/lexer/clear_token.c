@@ -1,21 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   clear_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/04 12:32:14 by lportay           #+#    #+#             */
-/*   Updated: 2017/12/08 18:26:15 by lportay          ###   ########.fr       */
+/*   Created: 2018/03/17 20:57:56 by lportay           #+#    #+#             */
+/*   Updated: 2018/03/18 15:11:55 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-
-int main(int ac, char **av, char **env)
+void	clear_following_redirs(t_token *toklist)
 {
-	(void)ac;
-	vingtetunsh(av, env);
-	return (0);
+	while (toklist)
+	{
+		if (toklist->type & RDIR)
+			toklist->type = WORD;
+		toklist = toklist->next;
+	}
+}
+
+void	delete_toklist(t_token **toklist)
+{
+	t_token *tmp;
+
+	tmp = *toklist;
+	while (tmp)
+	{
+		*toklist = (*toklist)->next;
+		if (tmp->type & RDIR)
+			free(((t_redir *)tmp)->s_rhs);
+		free(tmp);
+		tmp = *toklist;
+	}
+	*toklist = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 14:14:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 17:38:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,26 +95,6 @@ enum	e_readcode
 	FINISHREAD,
 	EXITSHELL,
 	ERR_QUOTE,
-};
-
-/*
-** Quotes and Heredoc injects '\n'
-** change UNQUOTED to 0b0 ?
-** BQUOTE, 42sh
-*/
-
-enum	e_linestate
-{
-	UNQUOTED = 0b1,
-	BSLASH = 0b10,
-	SQUOTE = 0b100,
-	DQUOTE = 0b1000,
-	PAREN = 0b10000,
-	BRACE = 0b100000,
-	BRACKET = 0b1000000,
-	HASH = 0b100000000,
-	HEREDOC = 0b1000000000,
-	ERROR = 0b10000000000,
 };
 
 struct			s_termcaps
@@ -252,5 +232,9 @@ void			add_newline(t_line *l);
 void			reset_attributes(t_line *l);
 void			reset_line(t_ctx *ctx, t_line *l);
 void			init_line(t_line *l);
+
+void			handle_paren(t_stack **line, char c);
+void			handle_brace(t_stack **line, char c);
+void			handle_hash(t_stack **line);
 
 #endif

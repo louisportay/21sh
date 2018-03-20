@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 17:50:50 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/15 17:55:21 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 14:42:38 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		ft_tmpfile(void)
 
 	i = 0;
 	if (!(name = ft_itoa(i)))
-			return (-1);
+		return (-1);
 	while ((fd = open(name, O_RDWR | O_EXCL | O_CREAT, 0644)) == -1
 			&& i++ < INT_MAX)
 	{

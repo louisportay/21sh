@@ -6,15 +6,15 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 15:16:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/02/22 16:12:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/19 14:55:34 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_string.h"
 
 /*
 **  renvoie un pointeur vers le premier caractere 'c' trouvé sinon renvoie NULL
 */
-
-#include "ft_string.h"
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -28,8 +28,6 @@ char	*ft_strchr(const char *s, int c)
 /*
 **  renvoie un pointeur vers le dernier caractere 'c' trouvé sinon renvoie NULL
 */
-
-#include "ft_string.h"
 
 char	*ft_strrchr(const char *s, int c)
 {
