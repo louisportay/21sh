@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 17:49:22 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/20 19:13:45 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ struct					s_ctx
 
 void					vingtetunsh(char **av, char **environ);
 
-void					exec_pipe(t_dlist *input);
+void					exec_loop(t_dlist *input);
 int						init(t_ctx *ctx, char **av, char **environ);
 void					init_ctx(t_ctx *ctx, char **av, char **environ);
 t_hdict					*getbuiltins(void);

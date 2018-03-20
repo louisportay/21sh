@@ -159,6 +159,7 @@ SRCS=	main.c\
 		exec.c\
 		job_exec.c\
 		proc_exec.c\
+		exec_pipe.c\
 		get_path.c\
 		job_utils.c\
 		job_wait.c\

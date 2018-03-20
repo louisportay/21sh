@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 10:30:48 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 17:37:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/20 19:13:24 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ size_t					jc_findid(t_ctx *ctx, t_job *j);
 char					jc_getstatus(t_job *j);
 
 void					jc_updatebg(t_ctx *ctx);
+void					jc_updatebgjob(t_ctx *ctx, t_job *j, size_t i);
 
 size_t					jc_getbgnext(t_ctx *ctx);
 size_t					jc_bggrow(t_ctx *ctx);

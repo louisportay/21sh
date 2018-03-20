@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 17:34:35 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 09:23:25 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int						jc_updatepipe(t_job *j)
 
 	if (j == NULL)
 		return (0);
+	if ((j->parent->status & JOB_DON) || (j->status & JOB_CMP))
+		return (j->status & 0xFF);
 	p = j->procs;
 	completed = JOB_CMP;
 	while (p != NULL)
@@ -114,11 +116,13 @@ int						jc_updatepipe(t_job *j)
 void					jc_updatebg(t_ctx *ctx)
 {
 	size_t				i;
+	t_job				*j;
 
 	i = 0;
 	while (i < ctx->bg_cnt)
 	{
-		jc_updatepipe(ctx->bg_jobs[i]);
+		if ((j = ctx->bg_jobs[i]) != NULL)
+			jc_updatebgjob(ctx, j, i);
 		i++;
 	}
 }
