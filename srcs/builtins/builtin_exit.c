@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:49:28 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 18:49:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/20 19:33:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 //To finish
 
-int		ft_exit(t_proc *p, t_ctx *ctx)
+int		ft_exit(t_proc *p, t_ctx *ctx, int pipeline)
 {
 	p->type = BU_STR;
-//	if (pas de pipe)
-//	{
+	if (pipeline == 0)
+	{
 		//clear les jobs, process
 		if (p->argv[1])
 		{
@@ -35,7 +35,8 @@ int		ft_exit(t_proc *p, t_ctx *ctx)
 			wrap_exit(EXIT_SUCCESS, ctx);// add stuff which is in ctx but not yet freed
 		}
 		return (0);
-//	}
-//	else if (p->argv[1] && !ft_isnumber(p->argv[1]))
-//				asprintf(&p->data.str, "21sh: exit: %s: numeric argument required\n", p->argv[1]);
+	}
+	else if (p->argv[1] && !ft_isnumber(p->argv[1]))
+				asprintf(&p->data.str, "21sh: exit: %s: numeric argument required\n", p->argv[1]);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 16:59:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/20 17:56:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,10 @@ int						ft_set(t_proc *proc, t_ctx *ctx);
 int						ft_env(t_proc *p);
 int						ft_history(t_proc *p, t_ctx *ctx);
 int						ft_jobs(t_proc *proc, t_ctx *ctx);
-int						ft_fg(t_proc *proc, t_ctx *ctx);
-int						ft_bg(t_proc *proc, t_ctx *ctx);
-int						ft_kill(t_proc *proc, t_ctx *ctx);
-int						ft_exit(t_proc *p, t_ctx *ctx);
+int						ft_fg(t_proc *proc, t_ctx *ctx, int pipeline);
+int						ft_bg(t_proc *proc, t_ctx *ctx, int pipeline);
+int						ft_kill(t_proc *proc, t_ctx *ctx, int pipeline);
+int						ft_exit(t_proc *p, t_ctx *ctx, int pipeline);
 int						modenv(t_proc *p, t_ctx *ctx, char *name);
 int						bu_hash_getopts(t_proc *p, t_ctx *ctx, int *i);
 int						bu_set_getopts(t_proc *p, t_ctx *ctx, int i);

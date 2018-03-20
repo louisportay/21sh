@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 18:10:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 19:22:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int						exec_pipe(t_job *j, t_ctx *ctx)
 		if (p->asmts != NULL && p->argv[0] == NULL && j->bg == 0)
 			prefork_assign(ctx, p->asmts);
 		else if (p->argv[0] != NULL)
-			prepare_fork(p, ctx);
+			prepare_fork(p, ctx, 1);
 		if (fork_do(j, p, ctx) == 1)
 			return (1);
 		pipe_clear(p);
