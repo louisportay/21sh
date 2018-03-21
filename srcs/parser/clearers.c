@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 16:47:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/21 10:03:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ void				asmt_clear(t_asmt **asmt)
 	{
 		t = a;
 		a = a->next;
-		ft_strdel(&a->key);
-		ft_strdel(&a->value);
+		ft_strdel(&t->key);
+		if (t->value != NULL)
+			ft_strdel(&t->value);
 		ft_memdel((void **)&t);
 	}
 }

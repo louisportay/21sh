@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:35:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/10 18:18:22 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/21 10:20:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ char					*dlst_pstr(t_dlist *beg, t_dlist *end)
 	int					i;
 
 	len = dlst_pcount(beg, end);
-	ret = ft_strnew(len);
+	if ((ret = ft_strnew(len)) == NULL)
+		return (NULL);
 	i = 0;
 	while (beg != NULL && beg != end)
 	{
