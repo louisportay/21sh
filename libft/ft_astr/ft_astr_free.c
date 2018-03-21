@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 14:02:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/07 16:00:41 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 10:29:56 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int				ft_astr_clear(char ***astr)
 {
 	char		**c;
 
+	if (astr == NULL || *astr == NULL)
+		return (1);
 	c = *astr;
 	while (*c != NULL)
 	{
