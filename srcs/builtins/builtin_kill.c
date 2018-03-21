@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:52 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 18:34:10 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 19:43:17 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,12 @@ static void			lmultiargs(t_proc *p, t_ctx *ctx)
 {
 	int				i;
 	t_job			*j;
-	t_list			*curr;
 
 	i = 0;
-	curr = NULL;
 	while (p->argv[i] != NULL)
 	{
 		if ((j = jc_jobspec(p, "kill", p->argv[i], ctx)) != NULL)
 			kill(-j->pgid, SIGTERM);
-		else
-			;
 		i++;
 	}
 }

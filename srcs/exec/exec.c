@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 16:13:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/20 19:42:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,9 @@ int						exec(t_job *jobs)
 {
 	t_ctx				*ctx;
 	t_job				*tmp;
-	t_job				*bg[2];
 	int					was_bg;
 	size_t				id;
 
-	bg[0] = NULL;
 	ctx = get_ctxaddr();
 	update_tty(ctx, 1);
 	signal(SIGCHLD, SIG_IGN);
