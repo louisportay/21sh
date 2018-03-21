@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:48:21 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 12:05:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 11:12:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	kill_end(t_ctx *ctx, t_line *l)
 {
 	t_dlist *tmp;
 
-	if (l->yank)
-		ft_dlstdel(&l->yank, &delvoid);
-	l->yank = l->line->next;
+	if (ctx->yank)
+		ft_dlstdel(&ctx->yank, &delvoid);
+	ctx->yank = l->line->next;
 	l->line->next = NULL;
-	l->yank->prev = NULL;
+	ctx->yank->prev = NULL;
 	tmp = l->line;
 	ft_dlsthead(&tmp);
 	clear_line(ctx, l);
@@ -31,13 +31,13 @@ void	kill_beginning(t_ctx *ctx, t_line *l)
 {
 	t_dlist		*tmp;
 
-	if (l->yank)
-		ft_dlstdel(&l->yank, &delvoid);
+	if (ctx->yank)
+		ft_dlstdel(&ctx->yank, &delvoid);
 	tmp = l->line->next;
 	l->line->next = NULL;
 	ft_dlsthead(&l->line);
-	l->yank = l->line->next;
-	l->yank->prev = NULL;
+	ctx->yank = l->line->next;
+	ctx->yank->prev = NULL;
 	l->line->next = tmp;
 	if (tmp)
 		tmp->prev = l->line;
@@ -53,16 +53,16 @@ void	kill_prev_word(t_ctx *ctx, t_line *l)
 {
 	t_dlist *tmp;
 
-	if (l->yank)
-		ft_dlstdel(&l->yank, &delvoid);
+	if (ctx->yank)
+		ft_dlstdel(&ctx->yank, &delvoid);
 	tmp = l->line->next;
 	l->line->next = NULL;
 	if (tmp)
 		tmp->prev = NULL;
 	go_prev_word(ctx, l);
-	l->yank = l->line->next;
-	if (l->yank)
-		l->yank->prev = NULL;
+	ctx->yank = l->line->next;
+	if (ctx->yank)
+		ctx->yank->prev = NULL;
 	l->line->next = tmp;
 	if (tmp)
 		tmp->prev = l->line;
@@ -78,20 +78,20 @@ void	kill_next_word(t_ctx *ctx, t_line *l)
 {
 	t_dlist *tmp;
 
-	if (l->yank)
-		ft_dlstdel(&l->yank, &delvoid);
-	l->yank = l->line->next;
-	l->yank->prev = NULL;
+	if (ctx->yank)
+		ft_dlstdel(&ctx->yank, &delvoid);
+	ctx->yank = l->line->next;
+	ctx->yank->prev = NULL;
 	tmp = l->line;
 	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
 	go_next_word(ctx, l);
 	if (l->line->next)
 		l->line->next->prev = tmp;
 	tmp->next = l->line->next;
-	while (l->yank != l->line)
-		l->yank = l->yank->next;
-	l->yank->next = NULL;
-	ft_dlsthead(&l->yank);
+	while (ctx->yank != l->line)
+		ctx->yank = ctx->yank->next;
+	ctx->yank->next = NULL;
+	ft_dlsthead(&ctx->yank);
 	l->line = tmp;
 	ft_dlsthead(&tmp);
 	clear_line(ctx, l);
@@ -108,7 +108,7 @@ void	yank(t_ctx *ctx, t_line *l)
 	t_dlist *tmp;
 
 	tmp = l->line->next;
-	l->line->next = ft_dlstdup(l->yank);
+	l->line->next = ft_dlstdup(ctx->yank);
 	l->line->next->prev = l->line;
 	ft_dlstend(&l->line);
 	l->line->next = tmp;

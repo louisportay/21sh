@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 16:07:43 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 11:50:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ void		ft_readline(t_ctx *ctx, t_line *l, char *prompt_mode)
 	ctx->cur_line = l;
 	ft_strcpy(ctx->prompt_mode, prompt_mode);
 	stack_push(&l->linestate, stack_create(UNQUOTED));
-	if (l->heredoc)
+	if (l->eohdoc)
 		stack_push(&l->linestate, stack_create(HEREDOC));
 	effective_read(ctx, l);
 	if (l->split_line)
 	{
 		if (dlst_isblank(l->split_line->next) == false)
 			add_histentry(&ctx->hist, l->split_line);
-		if (!l->heredoc)
+		if (!l->eohdoc)
 			ft_dlstaddend(l->split_line, ft_dlstnew("\n", 1));
 	}
 	ctx->cur_line = NULL;

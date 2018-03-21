@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 17:09:34 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 11:01:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void		wrap_exit(int status, t_ctx *ctx)
 		write(STDERR_FILENO, "exit\n", 5);
 	if (ctx->line.line)
 		ft_dlstdel(&ctx->line.line, &delvoid);
-	if (ctx->line.yank)
-		ft_dlstdel(&ctx->line.yank, &delvoid);
+	if (ctx->yank)
+		ft_dlstdel(&ctx->yank, &delvoid);
 	if (ctx->line.linestate)
 		stack_del(&ctx->line.linestate);
 	if (ctx->hist.list)

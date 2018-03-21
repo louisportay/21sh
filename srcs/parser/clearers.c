@@ -6,11 +6,25 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 16:47:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/21 12:37:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+static void		rdir_clear(t_redir **rdirs)
+{
+	t_redir *r;
+
+	r = *rdirs;
+	while (r)
+	{
+		r = *rdirs;
+		*rdirs = (t_redir *)(*rdirs)->next;
+		free(r->s_rhs);
+		ft_memdel((void **)&r);
+	}
+}
 
 void				proc_clear(t_proc **proc)
 {
@@ -37,6 +51,7 @@ void				proc_clear(t_proc **proc)
 			ft_astr_clear(&t->env);
 		if (t->asmts != NULL)
 			asmt_clear(&t->asmts);
+		rdir_clear(&t->redirs);
 		ft_memdel((void **)&t);
 	}
 }

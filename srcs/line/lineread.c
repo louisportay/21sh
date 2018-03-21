@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 17:48:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 12:43:07 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	cleanup_after_read(t_ctx *ctx, t_line *l)
 
 static void	special_read_status(t_ctx *ctx, t_line *l, int status)
 {
-	if (status == READERROR && !l->heredoc)
+	if (status == READERROR && !l->eohdoc)
 		fatal_err(FAILREAD, ctx);
 	else if (status == READERROR)
 		err_line(l, FAILREAD);

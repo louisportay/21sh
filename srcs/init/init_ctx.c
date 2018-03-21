@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 17:09:00 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 11:49:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ static void	init_job_control(t_ctx *ctx)
 static void	init_linevar(t_ctx *ctx)
 {
 	ctx->cur_line = NULL;
+	ctx->yank = NULL;
 	ctx->line.line = NULL;
-	ctx->line.yank = NULL;
 	ctx->line.lastline = NULL;
 	ctx->line.linestate = NULL;
-	ctx->line.heredoc = 0;
+	ctx->line.eohdoc = NULL;
 }
 
 static void	init_parameters(t_ctx *ctx)

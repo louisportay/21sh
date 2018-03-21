@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 17:38:36 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 11:48:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ typedef struct	s_line
 {
 	t_dlist		*line;
 	t_dlist		*split_line;
-	t_dlist		*yank;
 	t_dlist		*lastline;
 	t_stack		*linestate;
 	unsigned	cursor_line;
@@ -142,7 +141,6 @@ typedef struct	s_line
 	unsigned	offset_inline;
 	unsigned	prompt_len;
 	char		*eohdoc;
-	bool		heredoc;
 }				t_line;
 
 typedef struct	s_key

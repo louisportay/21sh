@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 20:05:44 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 16:28:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 11:51:34 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	get_state(t_line *l)
 {
-	if (l->heredoc)
+	if (l->eohdoc)
 		query_hdocstate(l->line, &l->linestate, l->eohdoc);
 	else
 		query_linestate(l->line->next, &l->linestate);

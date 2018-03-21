@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 12:41:22 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 11:51:10 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	join_split_lines(t_line *l)
 
 void	add_newline(t_line *l)
 {
-	if ((l->linestate->state & (SQUOTE | DQUOTE) && !l->heredoc) ||
+	if ((l->linestate->state & (SQUOTE | DQUOTE) && !l->eohdoc) ||
 (l->linestate->state & HEREDOC))
 		ft_dlstaddend(l->split_line, ft_dlstnew("\n", 1));
 }

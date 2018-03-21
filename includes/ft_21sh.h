@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 15:43:58 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/21 11:00:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ struct					s_ctx
 	t_line				line;
 	t_hist				hist;
 	t_line				*cur_line;
+	t_dlist				*yank;
 	char				prompt_mode[4];
 	int					ret_tcget;
 	int					tty;

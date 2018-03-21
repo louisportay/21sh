@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 16:29:24 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 11:49:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ size_t					token_count(t_token *tok)
 
 void	get_hdoc_line(t_heredoc *r)
 {
-	r->hdoc.heredoc = true;
 	r->hdoc.eohdoc = r->s_rhs;
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->tios);
 	ft_readline(get_ctxaddr(), &r->hdoc, PS2);
@@ -66,8 +65,6 @@ void	get_hdoc_line(t_heredoc *r)
 	//apply expansion on r->s_rhs depending on r->glob
 	if (r->hdoc.split_line)
 		ft_dlstdel(&r->hdoc.split_line, &delvoid);
-	if (r->hdoc.yank)
-		ft_dlstdel(&r->hdoc.yank, &delvoid);
 }
 
 t_redir					*redir_dup(t_redir *redir)

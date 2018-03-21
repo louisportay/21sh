@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 13:56:18 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 13:56:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 11:12:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 bool	test_yank(t_ctx *ctx, t_line *l, t_key *key)
 {
-	if (*key->buf == C_Y && ctx->emacs_mode && l->yank)
+	(void)l;
+	if (*key->buf == C_Y && ctx->emacs_mode && ctx->yank)
 		return (true);
 	else
 		return (false);

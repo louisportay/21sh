@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/11 10:26:30 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 16:27:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 11:50:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	getrawline(t_ctx *ctx, t_line *l)
 	else if (!tmp)
 		return (err_line(l, BADQUOTES));
 	l->line = dlst_from_str(tmp);
-	if (l->heredoc)
+	if (l->eohdoc)
 		query_hdocstate(l->line->next, &l->linestate, l->eohdoc);
 	else
 		query_linestate(l->line->next, &l->linestate);
