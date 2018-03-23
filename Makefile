@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/20 16:59:34 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/23 16:44:53 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -256,6 +256,8 @@ SRCS=	main.c\
 		builtin_fg.c\
 		builtin_bg.c\
 		builtin_kill.c\
+		\
+		path_reset.c\
 
 
 OBJDIR= obj

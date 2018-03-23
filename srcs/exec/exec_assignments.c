@@ -33,11 +33,7 @@ void					prefork_assign(t_ctx *ctx, t_asmt *asmt)
 		asmt = asmt->next;
 	}
 	if (pmod)
-	{
-		hash_empty(ctx->hash, &ft_memdel);
-		ft_astr_clear(&ctx->path);
-		ctx->path = getpath(ctx->environ);
-	}
+		path_reset(ctx, 1);
 }
 
 int						proc_update_env(t_proc *p)

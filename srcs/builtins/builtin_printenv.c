@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 13:03:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 15:58:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 19:11:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int		traverse(t_proc *p)
 {
 	t_list		*lsts[2];
-	char		*str;
+//	char		*str;
 	char		*ret;
 	int			err;
 	int			i;
@@ -25,14 +25,20 @@ static int		traverse(t_proc *p)
 	i = 1;
 	while (p->argv[i] != NULL)
 	{
-		if ((str = ft_astr_getval(p->env, p->argv[i])) != NULL)
-			asprintf(&ret, "1%s\n", str);
-		else
+		ret = NULL;
+		size_t len = ft_strlen(p->argv[i]);
+		int pos = ft_astr_getkey(p->env, p->argv[i], len);
+		if (pos != -1)
+			printf("env[%d]: %s\n", pos, p->env[pos]);
+		if (pos == -1)
 		{
 			err |= 1;
 			asprintf(&ret, "221sh: printenv: '%s' not found\n", p->argv[i]);
 		}
-		ft_list_insert(lsts, lsts + 1, list_create(ret));
+		else if (p->env[pos][len] == '=')
+			asprintf(&ret, "1%s\n", p->env[pos] + len + 1);
+		if (ret != NULL)
+			ft_list_insert(lsts, lsts + 1, list_create(ret));
 		i++;
 	}
 	p->data.out = lsts[0];
@@ -54,8 +60,11 @@ int				ft_printenv(t_proc *p, t_ctx *ctx)
 		qbuf_addc(buf, '1');
 		while (p->env[i] != NULL)
 		{
-			qbuf_add(buf, p->env[i]);
-			qbuf_addc(buf, '\n');
+			if (ft_strindex(p->env[i], '=') != -1)
+			{
+				qbuf_add(buf, p->env[i]);
+				qbuf_addc(buf, '\n');
+			}
 			i++;
 		}
 		p->data.str = qbuf_del(&buf);//Not freed

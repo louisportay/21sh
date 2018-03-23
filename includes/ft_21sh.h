@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 11:00:54 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 16:44:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,8 @@ int						job_waitforit(t_job *j, t_ctx *ctx);
 void					sighandler(int signo);
 
 void					ft_assert(void ***arr, size_t len);
+
+void					path_reset(t_ctx *ctx, int regen);
 
 /*
 **	Shell script stuff
