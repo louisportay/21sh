@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 19:25:49 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 13:14:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,29 @@
 ** SIGQUIT ==> Block it.
 */
 
-void	sighandler(int signum)
+static void	reset_line(t_ctx *ctx, t_line *l)
+{
+	write(STDOUT_FILENO, "^C", 2);
+	go_end(ctx, l);
+	write(STDOUT_FILENO, "\n", 1);
+	if (l->split_line)
+		ft_dlstdel(&l->split_line, &delvoid);
+	if (l->line)
+		ft_dlsthead(&l->line);
+	if (l->line && l->line != l->lastline)
+	{
+		ft_dlstdel(&l->line, &delvoid);
+		ft_dlstdel(&l->lastline, &delvoid);
+	}
+	else
+		ft_dlstdel(&l->lastline, &delvoid);
+	stack_del(&l->linestate);
+	stack_push(&l->linestate, stack_create(UNQUOTED));
+	ft_strcpy(ctx->prompt_mode, PS1);
+	init_line(l);
+}
+
+void		sighandler(int signum)
 {
 	t_ctx *ctx;
 
@@ -35,12 +57,12 @@ void	sighandler(int signum)
 		}
 	}
 	else if (signum == SIGINT)
-		{}
+		reset_line(ctx, ctx->cur_line);
 	else if (signum == SIGTSTP)
 		{}
 }
 
-int		set_sighandler(void)
+int			set_sighandler(void)
 {
 	signal(SIGWINCH, &sighandler);
 	signal(SIGTSTP, &sighandler);

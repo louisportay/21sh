@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 12:43:07 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 12:09:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void		lineread(t_ctx *ctx, t_line *l)
 	key.i = 0;
 	status = READON;
 	init_line(l);
+	if (l->linestate->state & BSLASH)
+		stack_pop(&l->linestate);
 	tputs(ctx->tc.im, 1, &ft_putchar_stdin);
 	while (status == READON)
 		status = get_input(ctx, &key, l);

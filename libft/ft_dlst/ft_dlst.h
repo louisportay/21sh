@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/24 21:53:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 13:51:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 14:16:33 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char				*str_from_dlst(t_dlist *dlst);
 t_dlist				*ft_dlstdup(t_dlist *dlst);
 int					move_dlst_head(t_dlist **dlist, int movement);
 t_dlist				*ft_dlstlast(t_dlist *dlst);
+t_dlist				*ft_dlstfirst(t_dlist *dlst);
 void				delvoid(void *as, size_t len);
 
 #endif

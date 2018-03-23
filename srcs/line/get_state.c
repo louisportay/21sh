@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 20:05:44 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 11:51:34 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 12:03:16 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	query_linestate(t_dlist *line, t_stack **linestate)
 			stack_pop(linestate);
 		line = line->next;
 	}
-	if ((*linestate)->state == HASH)
+	if ((*linestate)->state & HASH)
 		stack_pop(linestate);
 }
 

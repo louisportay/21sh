@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:48:21 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 11:12:03 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 14:49:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,13 @@
 
 void	kill_end(t_ctx *ctx, t_line *l)
 {
-	t_dlist *tmp;
-
 	if (ctx->yank)
 		ft_dlstdel(&ctx->yank, &delvoid);
 	ctx->yank = l->line->next;
 	l->line->next = NULL;
 	ctx->yank->prev = NULL;
-	tmp = l->line;
-	ft_dlsthead(&tmp);
 	clear_line(ctx, l);
-	print_line_attributes(ctx, l, tmp->next);
+	print_line_attributes(ctx, l, ft_dlstfirst(l->line)->next);
 }
 
 void	kill_beginning(t_ctx *ctx, t_line *l)
@@ -42,11 +38,10 @@ void	kill_beginning(t_ctx *ctx, t_line *l)
 	if (tmp)
 		tmp->prev = l->line;
 	tmp = l->line;
-	ft_dlsthead(&tmp);
 	clear_line(ctx, l);
-	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
-	print_line_attributes(ctx, l, tmp->next);
-	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
+	redraw_line(ctx, l);
+	while (l->line != tmp)
+		lkey(ctx, l);
 }
 
 void	kill_prev_word(t_ctx *ctx, t_line *l)
@@ -67,11 +62,10 @@ void	kill_prev_word(t_ctx *ctx, t_line *l)
 	if (tmp)
 		tmp->prev = l->line;
 	tmp = l->line;
-	ft_dlsthead(&tmp);
-	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
 	clear_line(ctx, l);
-	print_line_attributes(ctx, l, tmp->next);
-	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
+	redraw_line(ctx, l);
+	while (l->line != tmp)
+		lkey(ctx, l);
 }
 
 void	kill_next_word(t_ctx *ctx, t_line *l)
@@ -83,7 +77,6 @@ void	kill_next_word(t_ctx *ctx, t_line *l)
 	ctx->yank = l->line->next;
 	ctx->yank->prev = NULL;
 	tmp = l->line;
-	tputs(ctx->tc.sc, 1, &ft_putchar_stdin);
 	go_next_word(ctx, l);
 	if (l->line->next)
 		l->line->next->prev = tmp;
@@ -93,15 +86,11 @@ void	kill_next_word(t_ctx *ctx, t_line *l)
 	ctx->yank->next = NULL;
 	ft_dlsthead(&ctx->yank);
 	l->line = tmp;
-	ft_dlsthead(&tmp);
 	clear_line(ctx, l);
-	print_line_attributes(ctx, l, tmp->next);
-	tputs(ctx->tc.rc, 1, &ft_putchar_stdin);
+	redraw_line(ctx, l);
+	while (l->line != tmp)
+		lkey(ctx, l);
 }
-
-/*
-** Slow but okay
-*/
 
 void	yank(t_ctx *ctx, t_line *l)
 {

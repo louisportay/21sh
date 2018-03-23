@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 11:51:10 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 14:53:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,20 @@ void	toggle_emacs_mode(t_ctx *ctx, t_line *l)
 	ctx->emacs_mode = !ctx->emacs_mode;
 }
 
+void	missing_quote_err(int	quote)
+{
+	if (quote == SQUOTE)
+		dprintf(STDERR_FILENO, "while looking for matching `''\n");
+	else if (quote == DQUOTE)
+		dprintf(STDERR_FILENO, "while looking for matching `\"'\n");
+}
+
 void	err_line(t_line *l, int errno)
 {
 	write(STDIN_FILENO, "\n", 1);
 	dump_err(errno);
+	if (errno == BADQUOTES)
+		missing_quote_err(l->linestate->state);
 	ft_dlstdel(&l->split_line, &delvoid);
 	ft_dlstdel(&l->line, &delvoid);
 	stack_push(&l->linestate, stack_create(ERROR));

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 11:48:58 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/21 15:37:30 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 # define M_D 		"\Ed"
 # define M_E 		"\Ee"
 # define M_F 		"\Ef"
+# define M_DEL		"\E\177"
 # define UP_KEY		"\E[A"
 # define DOWN_KEY	"\E[B"
 # define RIGHT_KEY	"\E[C"
@@ -228,7 +229,6 @@ void			err_line(t_line *l, int errno);
 void			add_newline(t_line *l);
 
 void			reset_attributes(t_line *l);
-void			reset_line(t_ctx *ctx, t_line *l);
 void			init_line(t_line *l);
 
 void			handle_paren(t_stack **line, char c);
