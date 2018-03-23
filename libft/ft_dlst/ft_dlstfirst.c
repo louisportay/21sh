@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   default.c                                          :+:      :+:    :+:   */
+/*   ft_dlstfirst.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/13 19:20:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 13:16:23 by lportay          ###   ########.fr       */
+/*   Created: 2018/03/15 18:40:19 by lportay           #+#    #+#             */
+/*   Updated: 2018/03/23 14:15:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_dlst.h"
 
-void	reset_attributes(t_line *l)
+t_dlist	*ft_dlstfirst(t_dlist *dlst)
 {
-	print_prompt();
-	l->cursor_line = l->num_lines;
-	l->offset_inline = l->prompt_len;
-}
-
-void	init_line(t_line *l)
-{
-	l->line = ft_dlstnew("HEAD", 4);
-	l->lastline = l->line;
-	reset_attributes(l);
+	while (dlst->prev)
+		dlst = dlst->prev;
+	return (dlst);
 }

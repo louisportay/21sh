@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 11:00:54 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 11:48:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@
 # include "parser.h"
 # include "exec.h"
 
-# define NOMEM_STR				"Cannot allocate memory\n"
-# define NODIR_STR				"error retrieving current directory\n"
-# define FAILREAD_STR			"closing standard input\n"
-# define BADQUOTES_STR			"unexpected end of file\n"
+# define NOMEM_STR				"21sh: Cannot allocate memory\n"
+# define NODIR_STR				"21sh: error retrieving current directory\n"
+# define FAILREAD_STR			"21sh: closing standard input\n"
+# define BADQUOTES_STR			"21sh: unexpected end of file\n"
 # define BADOPT_C_STR			"21sh: -c: option requires an argument\n"
 # define BADOPT_F_STR			"21sh: -f: option requires an argument\n"
 
@@ -63,7 +63,6 @@
 ** # define HELP4 "--norc:\t\tdo not read configuration file\n"
 */
 
-# define AMBIG_REDIR			"ambiguous redirect\n"
 
 # define PATH					"/usr/local/bin/:/usr/bin:/bin"
 

@@ -19,6 +19,7 @@ ft_dlstremove.c\
 move_dlst_head.c\
 str_from_dlst.c\
 ft_dlstlast.c\
+ft_dlstfirst.c\
 
 DLST_DIR=ft_dlst
 

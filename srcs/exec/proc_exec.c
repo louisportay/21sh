@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 18:44:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/22 10:33:50 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,7 @@ void					proc_exec(t_proc *p, t_job *j, t_ctx *ctx)
 			close(p->pipe_out[0]);
 	}
 	if (do_redir(p->redirs) == -1)
-	{
-		dprintf(2, "Ambiguous redirection\n");
 		exit(1);
-	}
 	if (p->argv[0] == NULL)
 		exit(0);
 	if (p->type == EXERR)
