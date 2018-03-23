@@ -6,25 +6,44 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:25:12 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 16:40:43 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 11:45:08 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
+static char			*lgetval(char *key, int end)
+{
+	size_t			len;
+	char			*ret;
+
+	if (key[end] == '\0')
+	{
+		len = ft_strlen(key);
+		ret = ft_strnew(len + 1);
+		ft_strncpy(ret, key, len);
+		ret[len] = '=';
+		return (ret);
+	}
+	else
+		return (ft_strdup(key));
+}
+
 static void			update_env(char ***env, char *key, int end)
 {
 	int				i;
+	char			*val;
 
+	val = lgetval(key, end);
 	if ((i = ft_astr_getkey(*env, key, end)) != -1)
 	{
 		if (ft_strcmp(key, (*env)[i]) == 0)
 			return ;
 		ft_strdel((*env) + i);
-		(*env)[i] = ft_strdup(key);
+		(*env)[i] = val;
 	}
 	else
-		ft_astr_append(env, ft_strdup(key));
+		ft_astr_append(env, val);
 }
 
 static void			update_locals(char ***locals, char *key, int end)
@@ -43,12 +62,13 @@ static int			add_error(t_proc *p, t_list *lsts[2], char *str, char *bu)
 {
 	char			*lstr;
 	int				i;
+	t_list			*l;
 
 	if ((i = ft_strindex(str, '=')) == -1)
 		i = ft_strlen(str);
 	asprintf(&lstr, "221sh: %s: '%*s': not a valid identifier\n", bu, i, str);
-	lsts[2] = list_create(str);
-	ft_list_insert(&p->data.out, lsts, lsts[1]);
+	l = list_create(lstr);
+	ft_list_insert(&p->data.out, lsts, l);
 	return (1);
 }
 

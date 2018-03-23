@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 12:45:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/23 11:21:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_job					*parse(struct s_token *tokens)
 		}
 		else if ((tokens->type & (SEMICOL | AND)) != 0)
 		{
-			job[2]->bg = tokens->type == AND;
+			job[2]->bg = tokens->type == AND && get_ctxaddr()->istty;
 			job_insert(job, job + 1, job[2]);
 			if (tokens->next == NULL || tokens->next->type == NEWLINE)
 				break ;
