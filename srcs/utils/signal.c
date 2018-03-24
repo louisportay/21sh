@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 13:14:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/24 15:07:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,15 @@ void		sighandler(int signum)
 		}
 	}
 	else if (signum == SIGINT)
-		reset_line(ctx, ctx->cur_line);
+	{
+		if (ctx->line_edition)
+			reset_line(ctx, ctx->cur_line);
+		else
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			print_prompt();
+		}
+	}
 	else if (signum == SIGTSTP)
 		{}
 }

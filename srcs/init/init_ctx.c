@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 11:49:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 15:38:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->fd = STDIN_FILENO;
 	ctx->tty = open("/dev/tty", O_RDWR);
 	ctx->istty = isatty(STDIN_FILENO);
-	if (ioctl(ctx->fd, TIOCGWINSZ, &ctx->ws) == -1)
+	if (!ctx->istty || ioctl(ctx->fd, TIOCGWINSZ, &ctx->ws) == -1)
 		ctx->line_edition = 0;
 	ctx->environ = ft_astr_dup(environ);
 	ctx->hash = hash_create(HASH_SIZE, HASH_PRIME);

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:18:58 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/24 13:57:32 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/24 15:04:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int					expand(char *str, t_ctx *ctx,
 		ft_strdel(&o);
 		return (0);
 	}
-	if ((ret = expand_glob(&o, ctx)) < 1)
+	if ((ret = expand_glob(&o, ctx)) < 0)
 	{
 		ft_strdel(&o);
 		return (ret);
@@ -56,7 +56,14 @@ int					expand(char *str, t_ctx *ctx,
 		ft_strdel(&o);
 		return (0);
 	}
+	ft_strdel(&o);
 	expand_quotes(lst);
-	*conv = (converter != NULL) ? converter(lst) : (void *)lst;
+	if (converter != NULL)
+	{
+		*conv = converter(lst);
+		ft_list_clear(&lst, &ft_memdel);
+	}
+	else
+		*conv = (void *)lst;
 	return (*conv != NULL ? 1 : -1);
 }

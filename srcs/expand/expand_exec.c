@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   proc_expand.c                                      :+:      :+:    :+:   */
+/*   expand_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 15:05:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/21 10:37:12 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/24 15:05:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int						expand_argv(t_proc *p, t_ctx *ctx)
 			else if (ret == -2)
 			{
 				dprintf(STDERR_FILENO, "21sh: no match: %s\n", p->argv[i]);
-				ft_list_clear(lst, &ft_memdel);
+				ft_list_clear(&lst[0], &ft_memdel);
 				return (-2);
 			}
 		}
@@ -98,7 +98,7 @@ int						expand_asmt(t_proc *p, t_ctx *ctx)
 		else
 		{
 			ft_strdel(&a->value);
-			a->value = ft_strdup(s);
+			a->value = s;	//ft_strdup(s);
 		}
 		a = a->next;
 	}

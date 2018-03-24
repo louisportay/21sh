@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 15:59:40 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 16:08:24 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/24 15:05:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void				push_str_til(char **str, t_qbuf *buf, char c)
 	s = *str + 1;
 	while (*s != c)
 	{
+		if (*s == '\\' && c == '\"' && *(s + 1) == '\"')
+			s++;
 		qbuf_addc(buf, *s);
 		s++;
 	}
@@ -34,19 +36,20 @@ int					do_expand_quotes(t_list *elem)
 	str = (char *)elem->content;
 	while (*str != '\0')
 	{
-		if (*str == '\'')
-			push_str_til(&str, buf, '\'');
-		else if (*str == '\"')
-			push_str_til(&str, buf, '\"');
-		else if (*str == '\\')
+		if (*str == '\\')
 		{
 			str++;
 			qbuf_addc(buf, *str);
 			str++;
 		}
+		else if (*str == '\'')
+			push_str_til(&str, buf, '\'');
+		else if (*str == '\"')
+			push_str_til(&str, buf, '\"');
 		else
 			qbuf_addc(buf, *(str++));
 	}
+	free(elem->content);
 	elem->content = (void *)qbuf_del(&buf);
 	return (elem->content != NULL);
 }

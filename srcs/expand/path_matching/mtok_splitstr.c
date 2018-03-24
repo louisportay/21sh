@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 10:56:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 19:41:03 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/24 14:36:57 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,27 @@ static t_list	*l_strsplitlist(char *str)
 		lst[2] = list_create(tmp);
 		ft_list_insert(lst, lst + 1, lst[2]);
 	}
+	ft_strdel(&buf->buffer);
+	ft_memdel((void **)&buf);
 	return (lst[0]);
 }
-
-//added (void)head;
 
 static t_mtok	*mtok_split(t_mtok *t)
 {
 	t_list		*lst;
-	t_list		*head;
+	t_list		*prev;
 	t_mtok		*to[3];
 
-	(void)head;
 	if ((lst = l_strsplitlist(t->data.str)) == NULL)
 		return (NULL);
-	head = lst;
 	to[0] = NULL;
 	while (lst != NULL)
 	{
-		to[2] = mtok_create_str(STRIN, (char *)lst->content);
-		mtok_insert(to, to + 1, to[2]);
+		prev = lst;
 		lst = lst->next;
+		to[2] = mtok_create_str(STRIN, (char *)prev->content);
+		mtok_insert(to, to + 1, to[2]);
+		free(prev);
 	}
 	return (to[0]);
 }

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/11 10:26:30 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/21 11:50:25 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 15:54:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,7 @@ void	getrawline(t_ctx *ctx, t_line *l)
 	if (get_next_line(ctx->fd, &tmp) == -1)
 		fatal_err(FAILREAD, ctx);
 	if (!tmp && ctx->line.linestate->state == UNQUOTED)
-	{
-		if (ctx->fd == STDIN_FILENO)
-			write(STDERR_FILENO, "exit\n", 5);
 		wrap_exit(EXIT_SUCCESS, ctx);
-	}
 	else if (!tmp)
 		return (err_line(l, BADQUOTES));
 	l->line = dlst_from_str(tmp);

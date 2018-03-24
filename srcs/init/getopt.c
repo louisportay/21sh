@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:13:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 19:12:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 15:38:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	f_opt(t_ctx *ctx, char **av)
 		fatal_err(BADOPT_F, ctx);
 	ctx->fd = open(av[1], O_RDONLY);
 	ctx->istty = isatty(ctx->fd);
+	ctx->line_edition = 0;
 }
 
 void		get_shell_opt(t_ctx *ctx, char **av)

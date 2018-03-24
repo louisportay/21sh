@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 11:37:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 18:31:54 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/24 14:47:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ static int			l_cd(t_proc *p, t_ctx *ctx, char *path, int prt)
 			return (1);
 		}
 	}
-	astr_env_replace(&ctx->environ, "OLDPWD", ft_strdup(cwd));
+	astr_env_replace(&ctx->environ, "OLDPWD", cwd);	// ft_strdup(cwd));
 	getcwd(cwd, MAXPATHLEN + 1);
-	astr_env_replace(&ctx->environ, "PWD", ft_strdup(cwd));
+	astr_env_replace(&ctx->environ, "PWD", cwd); //ft_strdup(cwd));
 	return (prt ? lp(p, cwd) : 0);
 }
 

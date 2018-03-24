@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 11:51:16 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/23 14:53:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 15:57:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,7 @@ int			user_input(t_ctx *ctx, t_line *l, t_key *key)
 	if ((ret = read_state(ctx, l, key)) != READON)
 		return (ret);
 	if (ft_isprint(*key->buf))
-	{
-		if (!l->num_lines)
 			insert_char(key->buf, ctx, l);
-		else
-			insert_char_slow(key->buf, ctx, l);
-	}
 	else
 		line_switch(ctx, l, key);
 	reset_buffer(key);

@@ -6,13 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/22 10:33:50 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 15:32:41 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-#define ENOCMD ("Command not found")
+#define ENOCMD ("command not found")
 
 static void					exit_err(char *msg)
 {

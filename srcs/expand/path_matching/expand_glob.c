@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 17:13:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/24 12:05:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int				expand_glob(char **str, t_ctx *ctx)
 			return (-3);
 		return (0);
 	}
+	ft_strdel(str);
 	*str = bufferize(lst);
 	ft_list_clear(&lst, &ft_memdel);
 	return (*str != NULL ? 1 : -1);
