@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/25 17:01:50 by lportay           #+#    #+#              #
-#    Updated: 2018/03/16 11:29:28 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/24 15:28:50 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ include qbuf/qbuf.mk
 include stack/stack.mk
 include ft_list/list.mk
 include ft_dlst/dlst.mk
+#include ft_printf/ft_printf.mk
 
 vpath %.c $(SRCDIR)
 vpath %.h $(SRCDIR)

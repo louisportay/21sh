@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 17:22:35 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 18:39:46 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/23 16:42:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void	lrm(t_ctx *ctx, char *str)
 	i = ft_strlen(str);
 	if ((j = ft_astr_getkey(ctx->environ, str, i)) != -1)
 	{
+		if (ft_strcmp(str, "PATH") == 0)
+			path_reset(ctx, 0);
 		s = ft_astr_remove_at(&ctx->environ, j);
 		ft_strdel(&s);
 	}

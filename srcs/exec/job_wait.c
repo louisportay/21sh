@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 18:36:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/23 18:09:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,19 @@ int						job_next(t_job *j, t_ctx *ctx)
 	return (job_donext(j, ctx) & 0xFF);
 }
 
+static int				get_last_status(t_job *j)
+{
+	t_proc				*p;
+
+	p = j->procs;
+
+	if (p == NULL)
+		return (0);
+	while (p->next != NULL)
+		p = p->next;
+	return (p->status & 0xFF);
+}
+
 int						job_putfg(t_job *j, t_ctx *ctx)
 {
 	int					ret;
@@ -58,6 +71,7 @@ int						job_putfg(t_job *j, t_ctx *ctx)
 		jc_updatepipe(j);
 		jc_updatebg(ctx);
 	}
+	j->status = get_last_status(j) | (j->status & ~0xFF);;
 	if (j->status & JOB_STP)
 		jc_addtobg(ctx, j);
 	ctx->fg_job = NULL;

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 17:56:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/23 18:53:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 # define BU_S_USG ("21sh: usage: set [-+][Fabdfhnolx]")
 
-# define BU_S_HPR ("l: displays local variables. With '+l' shows env beforehand")
-# define BU_S_HSE ("o: displays options. '+o' prints it as commands to set them")
+# define BU_S_HPR ("l: shows local variables. With '+l' shows env beforehand")
+# define BU_S_HSE ("o: shows options. '+o' prints it as commands to set them")
 # define BU_S_HEX ("a: assignment commands are exported")
 # define BU_S_HBG ("b: set job notifications to be immediate")
 # define BU_S_HON ("x: prints each action done before execution")
