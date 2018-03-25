@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 16:50:44 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:40:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 	}
 	else if (WIFSIGNALED(status))
 	{
+		printf("sig\n");
 		if (WTERMSIG(status) == SIGPIPE)
 		{
 			waitpid(p->pid, &status, WUNTRACED);
@@ -86,7 +87,7 @@ static int				lwaitpid(t_job *j, t_proc *p)
 	pid_t				pid;
 	int					status;
 
-	if ((p->status & JOB_CMP) != 0)
+	if ((p->status & JOB_CMP) == JOB_CMP)
 		;
 	else if ((pid = waitpid(p->pid, &status, WNOHANG | WUNTRACED)) > 0)
 		jc_updateproc(j, p, status);
@@ -94,7 +95,7 @@ static int				lwaitpid(t_job *j, t_proc *p)
 		;
 	else if (pid == -1)
 	{
-		if (errno == ECHILD)
+		if (errno == ECHILD && p->pid == j->pgid)
 		{
 			p->status |= JOB_CMP;
 			return (0);
@@ -122,11 +123,12 @@ int						jc_updatepipe(t_job *j)
 		completed &= p->status & JOB_CMP;
 		if (p->status & JOB_STP)
 			return (lstopall(j));
-		j->status = ((j->status & ~0xFF) | (p->status & 0xFF));
+		if (p->next == NULL)
+			break ;
 		p = p->next;
 	}
 	if (completed)
-		j->status = (j->status & 0xFF) | JOB_CMP;
+		j->status = JOB_CMP | (p->status & 0xFF);
 	return (j->status & 0xFF);
 }
 

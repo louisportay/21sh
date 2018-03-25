@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:06:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/23 18:09:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:39:40 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int						job_putfg(t_job *j, t_ctx *ctx)
 		jc_updatepipe(j);
 		jc_updatebg(ctx);
 	}
-	j->status = get_last_status(j) | (j->status & ~0xFF);;
+	j->status = get_last_status(j) | (j->status & ~0xFF);
 	if (j->status & JOB_STP)
 		jc_addtobg(ctx, j);
 	ctx->fg_job = NULL;
