@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 16:40:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 18:42:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static int				lwaitpid(t_job *j, t_proc *p)
 		;
 	else if (pid == -1)
 	{
-		if (errno == ECHILD && p->pid == j->pgid)
+		if (errno == ECHILD)
 		{
 			p->status |= JOB_CMP;
 			return (0);

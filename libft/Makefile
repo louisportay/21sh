@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/25 17:01:50 by lportay           #+#    #+#              #
-#    Updated: 2018/03/24 15:28:50 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/25 20:57:43 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,13 @@
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=yes	#sanitize
+DEBUG=yes#sanitize
 ARCH:= $(shell uname)
 
 ifeq ($(ARCH), Darwin)
 	CC= clang
 endif
+
 
 ifeq ($(DEBUG),yes)
 	CFLAGS+= -g3
