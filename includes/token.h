@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 18:22:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/25 17:10:46 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ enum	e_linestate
 	HASH = 0b100000000,
 	HEREDOC = 0b1000000000,
 	ERROR = 0b10000000000,
+	DOLLAR = 0b100000000000,
+	DOLLBRACE = DOLLAR | BRACE,
 };
 
 typedef struct		s_token

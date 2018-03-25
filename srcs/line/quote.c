@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 14:26:41 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 13:30:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/25 17:19:10 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,6 @@ void		update_linestate(t_stack **state, char c)
 		handle_paren(state, c);
 	else if (c == '{' || c == '}')
 		handle_brace(state, c);
+	else if (c == '$')
+		handle_dollar(state);
 }
