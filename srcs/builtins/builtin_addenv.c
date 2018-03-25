@@ -6,16 +6,24 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:25:12 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/23 16:54:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 13:52:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-static void			update_env(char ***env, char *key, int end)
+static void			update_env(char ***env, char *key, int end, char ***locals)
 {
 	int				i;
+	int				lpos;
 
+	if (ft_strindex(key, '=') == -1
+		&& (lpos = ft_astr_getkey(*locals, key, ft_strlen(key))) != -1)
+	{
+		ft_astr_append(env, (*locals)[lpos]);
+		ft_astr_remove_at(locals, lpos);
+		return ;
+	}
 	if ((i = ft_astr_getkey(*env, key, end)) != -1)
 	{
 		if (ft_strcmp(key, (*env)[i]) == 0)
@@ -70,7 +78,7 @@ int					modenv(t_proc *p, t_ctx *ctx, char *name)
 		if (is_sane(p->argv[i], &j))
 		{
 			pmod |= ft_strcmp(p->argv[i], "PATH") == 0;
-			update_env(&ctx->environ, p->argv[i], j);
+			update_env(&ctx->environ, p->argv[i], j, &ctx->locals);
 			update_locals(&ctx->locals, p->argv[i], j);
 		}
 		else
