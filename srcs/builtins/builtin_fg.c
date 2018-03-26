@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:53 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 20:30:48 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 16:01:26 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void				jc_remove(t_ctx *ctx, t_job *job, size_t i)
 	}
 }
 
-static void 		lrestore(t_ctx *ctx, t_job *j, t_proc *p, t_list **curr)
+static void			lrestore(t_ctx *ctx, t_job *j, t_proc *p, t_list **curr)
 {
 	size_t			i;
 
@@ -67,11 +67,21 @@ static void			lmultiarg(t_proc *p, t_ctx *ctx)
 	}
 }
 
+static int			lbg_err(t_proc *p)
+{
+	char			*str;
+	t_list			*l;
+
+	ft_asprintf(&str, BU_JOB_ERR, "fg", BU_JOB_NO);
+	l = list_create(str);
+	ft_assert((void **[]){(void **)&str, (void **)&l}, 2);
+	p->data.out = l;
+	return (1);
+}
+
 int					ft_fg(t_proc *p, t_ctx *ctx, int pipeline)
 {
 	t_job			*j;
-	char			*str;
-	t_list			*l;
 
 	if (pipeline)
 	{
@@ -83,19 +93,11 @@ int					ft_fg(t_proc *p, t_ctx *ctx, int pipeline)
 	if (p->argv[1] == NULL)
 	{
 		if (ctx->bgs == NULL)
-		{
-			ft_asprintf(&str, BU_JOB_ERR, "fg", BU_JOB_NO);
-			l = list_create(str);
-			ft_assert((void **[]){(void **)&str, (void **)&l}, 2);
-			p->data.out = l;
-		}
-		else
-		{
-			j = (t_job *)ctx->bgs->content;
-			lrestore(ctx, j, p, &p->data.out);
-		}
+			return (lbg_err(p));
+		j = (t_job *)ctx->bgs->content;
+		lrestore(ctx, j, p, &p->data.out);
+		return (0);
 	}
-	else
-		lmultiarg(p, ctx);
+	lmultiarg(p, ctx);
 	return (0);
 }

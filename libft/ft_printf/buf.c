@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:36:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 20:19:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 17:43:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int					fpf_buf_clear(t_buf *buf)
 	}
 	else
 		write(buf->out.fd, buf->buf->buffer, buf->buf->used);
-	qbuf_del(&buf->buf);
+	ft_strdel(&buf->buf->buffer);
+	ft_memdel((void **)&buf->buf);
 	return (1);
 }
 

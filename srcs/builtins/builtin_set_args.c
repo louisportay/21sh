@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 17:37:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 20:36:10 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 17:33:24 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,48 @@ static int			lusage(t_proc *p, char c, char ec)
 	return (-1);
 }
 
+static inline int	laddarg(u_short *tmp, char c)
+{
+	if (c == 'a')
+		*tmp |= BU_SET_EXPOR;
+	else if (c == 'b')
+		*tmp |= BU_SET_BGCMD;
+	else if (c == 'f')
+		*tmp |= BU_SET_FNEXP;
+	else if (c == 'x')
+		*tmp |= BU_SET_ONCMD;
+	else if (c == 'd')
+		*tmp |= DOTGLOB;
+	else if (c == 'n')
+		*tmp |= NULLGLOB;
+	else if (c == 'F')
+		*tmp |= FAILGLOB;
+	else
+		return (0);
+	return (1);
+}
+
+static inline int	lrmarg(u_short *tmp, char c)
+{
+	if (c == 'a')
+		*tmp &= ~BU_SET_EXPOR;
+	else if (c == 'b')
+		*tmp &= ~BU_SET_BGCMD;
+	else if (c == 'f')
+		*tmp &= ~BU_SET_FNEXP;
+	else if (c == 'x')
+		*tmp &= ~BU_SET_ONCMD;
+	else if (c == 'd')
+		*tmp &= ~DOTGLOB;
+	else if (c == 'n')
+		*tmp &= ~NULLGLOB;
+	else if (c == 'F')
+		*tmp &= ~FAILGLOB;
+	else
+		return (0);
+	return (1);
+}
+
 static int			lget_min(t_proc *p, int i, u_short *tmp)
 {
 	int				j;
@@ -54,20 +96,8 @@ static int			lget_min(t_proc *p, int i, u_short *tmp)
 			ret |= BU_SET_PRLOC;
 		else if (p->argv[i][j] == 'o')
 			ret |= BU_SET_PRSET;
-		else if (p->argv[i][j] == 'a')
-			*tmp |= BU_SET_EXPOR;
-		else if (p->argv[i][j] == 'b')
-			*tmp |= BU_SET_BGCMD;
-		else if (p->argv[i][j] == 'f')
-			*tmp |= BU_SET_FNEXP;
-		else if (p->argv[i][j] == 'x')
-			*tmp |= BU_SET_ONCMD;
-		else if (p->argv[i][j] == 'd')
-			*tmp |= DOTGLOB;
-		else if (p->argv[i][j] == 'n')
-			*tmp |= NULLGLOB;
-		else if (p->argv[i][j] == 'F')
-			*tmp |= FAILGLOB;
+		else if (laddarg(tmp, p->argv[i][j]))
+			;
 		else if (p->argv[i][j] == 'h')
 			return (set_help(p, 0));
 		else
@@ -90,20 +120,8 @@ static int			lget_max(t_proc *p, int i, u_short *tmp)
 			ret |= BU_SET_PRVAR;
 		else if (p->argv[i][j] == 'o')
 			ret |= BU_SET_PRCMD;
-		else if (p->argv[i][j] == 'a')
-			*tmp &= ~BU_SET_EXPOR;
-		else if (p->argv[i][j] == 'b')
-			*tmp &= ~BU_SET_BGCMD;
-		else if (p->argv[i][j] == 'f')
-			*tmp &= ~BU_SET_FNEXP;
-		else if (p->argv[i][j] == 'x')
-			*tmp &= ~BU_SET_ONCMD;
-		else if (p->argv[i][j] == 'd')
-			*tmp &= ~DOTGLOB;
-		else if (p->argv[i][j] == 'n')
-			*tmp &= ~NULLGLOB;
-		else if (p->argv[i][j] == 'F')
-			*tmp &= ~FAILGLOB;
+		else if (lrmarg(tmp, p->argv[i][j]))
+			;
 		else if (p->argv[i][j] == 'h')
 			return (set_help(p, 1));
 		else

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 14:38:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 15:09:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 15:39:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void					prefork_assign(t_ctx *ctx, t_asmt *asmt)
 	{
 		pmod |= ft_strcmp(asmt->key, "PATH") == 0;
 		k = asmt->key;
-		if ((i = ft_astr_getkey(ctx->environ, k, ft_strlen(k))) != -1)
+		if ((i = ft_astr_getlowkey(ctx->environ, k)) != -1)
 		{
 			ft_strdel(ctx->environ + i);
 			ctx->environ[i] = ft_strjoinc(asmt->key, asmt->value, '=');
