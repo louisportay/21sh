@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 17:32:59 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 18:09:21 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 17:12:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ static void			prepare_double(t_exp *e)
 	int				negpre;
 
 	neg = e->d < 0;
-	neg && (e->d = -(e->d));
-	neg && (e->buf[e->len++] = '-');
+	if (neg)
+	{
+		e->d = -(e->d);
+		e->buf[e->len++] = '-';
+	}
 	negpre = (e->d) < 1;
 	if (negpre)
 	{
@@ -78,10 +81,12 @@ static void			endbuffering(t_exp *e, t_flag *flag, u_char *spec)
 	e->buf[e->len++] = (e->sz % 10) + '0';
 	if (e->rem == 0 && ((*spec) & 3) == 3)
 	{
-		(((*spec) & 12) == 12) && fpf_buf_addc('+');
+		if (((*spec) & 12) == 12)
+			fpf_buf_addc('+');
 		fpf_buf_addfillers(((*spec) & 8) == 0,
 							flag->min - e->len - (((*spec) & 4) == 4));
-		(((*spec) & 12) == 4) && fpf_buf_addc('+');
+		if (((*spec) & 12) == 4)
+			fpf_buf_addc('+');
 	}
 	fpf_buf_add(e->buf, e->len);
 	if ((*spec) == 2)
@@ -105,10 +110,12 @@ int					fpf_handle_exp(va_list *ap, t_flag *flag)
 	{
 		if ((spec & 3) == 3)
 		{
-			((spec & 12) == 12) && fpf_buf_addc('+');
+			if ((spec & 12) == 12)
+				fpf_buf_addc('+');
 			fpf_buf_addfillers((spec & 8) == 0,
 								flag->min - e.rem - 55 - ((spec & 4) == 4));
-			((spec & 12) == 4) && fpf_buf_addc('+');
+			if ((spec & 12) == 4)
+				fpf_buf_addc('+');
 		}
 		fpf_buf_add(e.buf, e.len);
 		fpf_buf_addfillers(0, e.rem);

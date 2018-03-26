@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:26:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 18:06:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 17:08:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static int		conv_iswildcard(const char *str, size_t *i, va_list *ap,
 		if (sz >= 0 || (sz < 0 && flag->sz_flag & 1))
 		{
 			flag->sz_flag |= 2;
-			flag->pre = (sz >= 0) ? sz : flag->min;
+			flag->pre = (sz >= 0) ? (size_t)sz : flag->min;
 		}
 		else
 			flag->sz_flag = 0;
@@ -96,7 +96,8 @@ static int		conv_iswildcard(const char *str, size_t *i, va_list *ap,
 	{
 		flag->sz_flag |= 1;
 		flag->min = sz < 0 ? -sz : sz;
-		(sz < 0) && (flag->flag |= (1 << 10));
+		if (sz < 0)
+			flag->flag |= (1 << 10);
 	}
 	return (1);
 }
@@ -114,7 +115,10 @@ int				fpf_handle_flag(const char *str, size_t *i, va_list ap)
 		else if (c != '0' && fpf_isnum(c))
 			conv_precision(str, i, &flag);
 		else if (c == '.')
-			((flag.sz_flag |= 4) && ((*i)++));
+		{
+			flag.sz_flag |= 4;
+			(*i)++;
+		}
 		else if (c == '*')
 			conv_iswildcard(str, i, (va_list *)ap, &flag);
 		else if (conv_typeflag(str, i, &flag))
@@ -123,7 +127,10 @@ int				fpf_handle_flag(const char *str, size_t *i, va_list ap)
 			break ;
 	}
 	if ((flag.sz_flag & 6) == 4)
-		((flag.sz_flag |= 6) && (flag.pre = 0));
+	{
+		flag.sz_flag |= 6;
+		flag.pre = 0;
+	}
 	fpf_correct_fmt(&flag);
 	return (fpf_flag_print(str, i, &flag, ap));
 }

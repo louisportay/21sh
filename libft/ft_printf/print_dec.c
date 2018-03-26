@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/05 18:21:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 18:11:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 17:41:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int					fpf_handle_prefix(t_flag *flag, u_char spec, size_t len)
 		return (pad_before(flag, len));
 	}
 	ft_bzero(buf, 3);
-	((spec & 1) != 0) && (fpf_buf_addc('-'));
+	if ((spec & 1) != 0)
+		fpf_buf_addc('-');
 	if ((spec & (1 << 1)) != 0)
 		fpf_strcpy(buf, "0");
 	if ((spec & (1 << 2)) != 0)
@@ -53,9 +54,11 @@ int					fpf_handle_prefix(t_flag *flag, u_char spec, size_t len)
 	if ((spec & (1 << 4)) != 0)
 		fpf_strcpy(buf, " ");
 	sz = fpf_strlen(buf);
-	((flag->flag & (1 << 9)) == 0) && (pad_before(flag, len + sz));
+	if ((flag->flag & (1 << 9)) == 0)
+		pad_before(flag, len + sz);
 	fpf_buf_add(buf, sz);
-	((flag->flag & (1 << 9)) != 0) && (pad_before(flag, len + sz));
+	if ((flag->flag & (1 << 9)) != 0)
+		pad_before(flag, len + sz);
 	return (sz);
 }
 
@@ -83,21 +86,29 @@ int					fpf_handle_pre(char **str, t_flag *flag, size_t *len)
 	if ((flag->sz_flag & 4) != 0 && flag->pre == 0 && (*str)[0] == '0')
 		return (((spec & (1 << 1)) && fpf_buf_addc('0')) * 0);
 	biggest = (flag->pre > *len) ? flag->pre : *len;
-	(spec & (1 << 3)) && fpf_buf_add(flag->c == 'x' ? "0x" : "0X", 2);
+	if (spec & (1 << 3))
+		fpf_buf_add(flag->c == 'x' ? "0x" : "0X", 2);
 	if ((flag->sz_flag & 1) && flag->min > biggest
 			&& !(flag->flag & (1 << 10)))
 	{
 		tmp = flag->pre + ((spec & 1) != 0) + ((spec & (1 << 4)) != 0);
 		if ((flag->sz_flag & 1) && (tmp != flag->min))
-			fpf_buf_addfillers(1, flag->min - biggest - ((spec & (1 << 2)) == 2)
+			fpf_buf_addfillers(1, flag->min - biggest
 									- (((spec & 1) && flag->pre > *len))
 									- (((spec & (1 << 4)) != 0)));
 	}
-	(spec & 1) && (fpf_buf_addc('-') && ((*str)++) && ((*len)--));
-	((spec & 17) == 16) && fpf_buf_addc('+');
+	if (spec & 1)
+	{
+		fpf_buf_addc('-');
+		(*str)++;
+		(*len)--;
+	}
+	if ((spec & 17) == 16)
+		fpf_buf_addc('+');
 	if (flag->pre > (*len + ((spec & (1 << 2)) != 0)))
 		fpf_buf_addfillers(0, flag->pre - (*len + ((spec & (1 << 2)) != 0)));
-	(spec & (1 << 1)) && fpf_buf_addc('0');
+	if (spec & (1 << 1))
+		fpf_buf_addc('0');
 	return (1);
 }
 
@@ -116,7 +127,8 @@ void				fpf_strwithsize(char *str, t_flag *flag)
 	{
 		if (fpf_handle_pre(&str, flag, &len) == 0)
 		{
-			(flag->sz_flag & 1) && (fpf_buf_addfillers(1, flag->min));
+			if (flag->sz_flag & 1)
+				fpf_buf_addfillers(1, flag->min);
 			pad_after(flag, 0);
 			return ;
 		}
@@ -124,7 +136,7 @@ void				fpf_strwithsize(char *str, t_flag *flag)
 	else
 		fpf_handle_prefix(flag, spec, len);
 	fpf_buf_add(str + ((spec & 1) && !(flag->sz_flag & 6)),
-			((fpf_strchr("dDiuUoOxXp", flag->c)) ? len : pre)
+			((fpf_strchr("dDiuUoOxXp", flag->c)) ? len : (size_t)pre)
 				- ((spec & 1) && !(flag->sz_flag & 6)));
 	pad_after(flag, fpf_buf_gettotal(NULL) - written);
 }
