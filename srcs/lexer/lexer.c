@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 13:18:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 13:25:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	err_tok(t_token **toklist, t_token *bad_tok)
 	init_token_table(tok);
 	while ((unsigned long)tok[i].key != bad_tok->type && tok[i].key)
 		i++;
-	dprintf(STDERR_FILENO,
-"-LEXER- 21sh: syntax error near unexpected token `%s'\n", (char *)tok[i].val);
+	ft_dprintf(STDERR_FILENO,
+			"-LEXER- 21sh: syntax error near unexpected token `%s'\n",
+			(char *)tok[i].val);
 	clear_following_redirs(bad_tok);
 	delete_toklist(toklist);
 }

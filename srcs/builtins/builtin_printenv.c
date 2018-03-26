@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 13:03:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/23 19:11:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:34:21 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static int		traverse(t_proc *p)
 		size_t len = ft_strlen(p->argv[i]);
 		int pos = ft_astr_getkey(p->env, p->argv[i], len);
 		if (pos != -1)
-			printf("env[%d]: %s\n", pos, p->env[pos]);
+			ft_printf("env[%d]: %s\n", pos, p->env[pos]);
 		if (pos == -1)
 		{
 			err |= 1;
-			asprintf(&ret, "221sh: printenv: '%s' not found\n", p->argv[i]);
+			ft_asprintf(&ret, "221sh: printenv: '%s' not found\n", p->argv[i]);
 		}
 		else if (p->env[pos][len] == '=')
-			asprintf(&ret, "1%s\n", p->env[pos] + len + 1);
+			ft_asprintf(&ret, "1%s\n", p->env[pos] + len + 1);
 		if (ret != NULL)
 			ft_list_insert(lsts, lsts + 1, list_create(ret));
 		i++;

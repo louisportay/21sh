@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 16:38:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 13:27:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int						exec(t_job *jobs)
 		else
 			job_safeclear(&tmp->parent);
 		if (was_bg && id != (size_t)-1)
-			printf("[%zu] %d\n", id + 1, tmp->pgid);
+			ft_printf("[%zu] %d\n", id + 1, tmp->pgid);
 	}
 	signal(SIGCHLD, &jc_signal);
 	update_tty(ctx, 0);

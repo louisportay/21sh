@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/05 15:46:26 by vbastion          #+#    #+#             */
-/*   Updated: 2017/08/26 12:32:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 18:08:23 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int						fpf_handle_bin(va_list *ap, t_flag *flag)
 	size_t				to_write;
 
 	buf = fpf_buf_get()->tmp_buf;
-	fpf_bzero(buf, 75);
+	ft_bzero(buf, 75);
 	fpf_bin_get_val((va_list *)ap, flag, &sz, &bin);
 	len = fpf_tobin(bin, sz, buf, flag);
 	if ((flag->sz_flag & 4) != 0)

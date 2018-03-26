@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:36:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/21 12:02:54 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:19:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@ t_buf				*fpf_buf_get(void)
 {
 	static t_buf	buf = (t_buf) {.init = 0};
 
+//	if (buf.init == 0)
+//	{
+//		if (buf.type != FPF_S)
+//		{
+//			printf("Allocation qbuf_new\n");
+//			buf.buf = qbuf_new(1 << 8);
+//			printf("qbuf_new: %p\n", buf.buf);
+//		}
+//		buf.init = 1;
+//	}
 	return (&buf);
 }
 
@@ -39,14 +49,21 @@ int					fpf_buf_clear(t_buf *buf)
 		buf->init = 0;
 		return (1);
 	}
-	else if (buf->type == FPS_A)
+	else if (buf->type == FPF_A)
 	{
 		str = ft_strndup(buf->buf->buffer,
-							(size_t)buf->ret > buf->len ? buf->len : buf->ret);
+							((size_t)buf->ret > buf->len) ? buf->len : buf->ret);
 		*(buf->out.out) = str;
 	}
 	else
 		write(buf->out.fd, buf->buf->buffer, buf->buf->used);
 	qbuf_del(&buf->buf);
 	return (1);
+}
+
+size_t				fpf_buf_gettotal(t_buf *buf)
+{
+	if (buf == NULL)
+		buf = fpf_buf_get();
+	return (buf->ret);
 }

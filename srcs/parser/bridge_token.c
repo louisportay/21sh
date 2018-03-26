@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/21 11:49:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/25 20:40:15 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,18 +101,18 @@ int						token_issep(t_token *tok)
 void					*token_dumperror(t_token *tok)
 {
 	if (tok == NULL || tok->type == NEWLINE)
-		dprintf(STDERR_FILENO, FMT_SYN, FMT_EOF);
+		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_EOF);
 	else if (tok->type == AND)
-		dprintf(STDERR_FILENO, FMT_SYN, FMT_AND);
+		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_AND);
 	else if (tok->type == SEMICOL)
-		dprintf(STDERR_FILENO, FMT_SYN, FMT_SEM);
+		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_SEM);
 	else if (tok->type == COMMENT)
-		dprintf(STDERR_FILENO, FMT_SYN, FMT_COM);
+		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_COM);
 	else if (tok->type == OR)
-		dprintf(STDERR_FILENO, FMT_SYN, FMT_OR);
+		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_OR);
 	else if (tok->type == OR_IF)
-		dprintf(STDERR_FILENO, FMT_SYN, FMT_ORI);
+		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_ORI);
 	else if (tok->type == AND_IF)
-		dprintf(STDERR_FILENO, FMT_SYN, FMT_ANI);
+		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_ANI);
 	return (NULL);
 }

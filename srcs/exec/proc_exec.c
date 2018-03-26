@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/23 15:32:41 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 13:27:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void					proc_exec(t_proc *p, t_job *j, t_ctx *ctx)
 		exit(0);
 	if (p->type == EXERR)
 	{
-		dprintf(STDERR_FILENO, "%s: %s: %s\n", "21sh", p->argv[0], ENOCMD);
+		ft_dprintf(STDERR_FILENO, "%s: %s: %s\n", "21sh", p->argv[0], ENOCMD);
 		exit(127);
 	}
 	if (p->type & BUILTIN)	// And what about BU_STR ?

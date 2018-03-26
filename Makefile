@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/24 15:10:12 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/25 18:04:14 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,8 @@ INCLUDE=\
 -I$(LIBDIR)ft_hashset\
 -I$(LIBDIR)ft_list\
 -I$(LIBDIR)ft_dlst\
--I$(LIBDIR)kvp
+-I$(LIBDIR)kvp\
+-I$(LIBDIR)ft_printf\
 
 HEADERS=\
 ft_21sh.h\
@@ -91,8 +92,6 @@ pattern_matching.h\
 posix_classes.h\
 prompt.h\
 token.h\
-
-#history_expansion.c\
 
 SRCS=	main.c\
 		ft_21sh.c\

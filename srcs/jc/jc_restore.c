@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 11:17:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 16:32:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:45:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static void			proc_restore(t_proc *p, void *data)
 		caller = (t_proc *)(((void **)data)[0]);
 		curr = (t_list **)(((void **)data)[1]);
 		cmd = get_cmd(p);
-		asprintf(&str, "%d signaled: %d | %s\n", p->pid, p->status & 0xFF, cmd);
+		ft_asprintf(&str, "%d signaled: %d | %s\n", p->pid, p->status & 0xFF,
+					cmd);
 		l = list_create(cmd);
 		ft_assert((void **[]){(void **)&str, (void **)&cmd, (void **)l}, 3);
 		ft_list_insert(&caller->data.out, curr, l);

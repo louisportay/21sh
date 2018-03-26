@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/29 14:34:11 by vbastion          #+#    #+#             */
-/*   Updated: 2017/08/08 13:05:47 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 18:01:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int						fpf_handle_bun(va_list *ap, t_flag *flag)
 		u = va_arg(*ap, unsigned long long);
 	else
 		u = va_arg(*ap, u_long);
-	fpf_bzero(buf, 30);
-	fpf_ultobuf((uintmax_t)u, fpf_get_base(flag), 0, buf);
+	ft_bzero(buf, 30);
+	ft_ultobuf((uintmax_t)u, fpf_get_base(flag), 0, buf);
 	fpf_strwithsize(buf, flag);
 	return (1);
 }
@@ -44,7 +44,7 @@ int						fpf_handle_uns(va_list *ap, t_flag *flag)
 	char				*buf;
 
 	buf = fpf_buf_get()->tmp_buf;
-	fpf_bzero(buf, 30);
+	ft_bzero(buf, 30);
 	if ((flag->flag & 0xFF) == 32)
 		u = (unsigned long long)va_arg(*ap, size_t);
 	else if ((flag->flag & 0xFF) == 16)
@@ -59,7 +59,7 @@ int						fpf_handle_uns(va_list *ap, t_flag *flag)
 		u = (unsigned long long)(u_char)va_arg(*ap, u_int);
 	else
 		u = va_arg(*ap, u_int);
-	fpf_ultobuf(u, fpf_get_base(flag), flag->c == 'X', buf);
+	ft_ultobuf(u, fpf_get_base(flag), flag->c == 'X', buf);
 	fpf_strwithsize(buf, flag);
 	return (1);
 }

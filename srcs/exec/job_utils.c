@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 13:46:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 17:04:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 13:27:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ int						job_completed(t_job *job)
 
 void					job_fmtinfo(t_job *job, char *status)
 {
-	dprintf(STDERR_FILENO, "%d %s: %s\n", job->pgid, status, job->command);
+	ft_dprintf(STDERR_FILENO, "%d %s: %s\n", job->pgid, status, job->command);
 }

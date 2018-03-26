@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:52:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/10 20:35:23 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/25 20:44:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	redraw_line(t_ctx *ctx, t_line *l)
 void	clear_line(t_ctx *ctx, t_line *l)
 {
 	if (l->cursor_line)
-		dprintf(ctx->tty, "\033[%dA", l->cursor_line);
+		ft_dprintf(ctx->tty, "\033[%dA", l->cursor_line);
 	tputs(ctx->tc.cr, 1, &ft_putchar_stdin);
 	tputs(ctx->tc.cd, 1, &ft_putchar_stdin);
 	reset_attributes(l);

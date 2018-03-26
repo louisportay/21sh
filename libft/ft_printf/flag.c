@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:26:17 by vbastion          #+#    #+#             */
-/*   Updated: 2017/08/26 11:40:46 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 18:06:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ static void		conv_precision(const char *str, size_t *i,
 {
 	if ((flag->sz_flag & 4) != 0)
 	{
-		flag->pre = fpf_atoi(str + *i);
+		flag->pre = ft_atoi(str + *i);
 		flag->sz_flag |= 2;
 	}
 	else
 	{
-		flag->min = fpf_atoi(str + *i);
+		flag->min = ft_atoi(str + *i);
 		flag->sz_flag |= 1;
 	}
 	while (fpf_isnum(str[*i]))

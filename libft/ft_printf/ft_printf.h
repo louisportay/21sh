@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:28:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/23 15:01:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:12:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef enum				e_outtype
 {
 	FPF_FD = 0,
 	FPF_S = 1,
-	FPS_A = 2
+	FPF_A = 2
 }							t_outtype;
 
 typedef union				u_output
@@ -81,15 +81,6 @@ typedef struct				s_buf
 	int						ret;
 }							t_buf;
 
-//	typedef struct				s_buf
-//	{
-//		char					buf[FT_PBSZ];
-//		char					tmp_buf[FT_TMPBSZ];
-//		size_t					size;
-//		size_t					printed;
-//		t_output				output;
-//	}							t_buf;
-
 typedef struct				s_exp
 {
 	char					*buf;
@@ -106,6 +97,9 @@ int							ft_sprintf(char *str, const char *format, ...);
 int							ft_snprintf(char *str, size_t size,
 										const char *format, ...);
 int							ft_dprintf(int fd, const char *format, ...);
+int							ft_asprintf(char **str, const char *format, ...);
+int							ft_asnprintf(char **str, size_t size,
+											const char *format, ...);
 
 int							ft_vprintf(const char *format, va_list ap);
 int							ft_vfprintf(FILE *stream, const char *format,
@@ -115,6 +109,10 @@ int							ft_vsprintf(char *str, const char *format,
 int							ft_vsnprintf(char *str, size_t size,
 										const char *format, va_list ap);
 int							ft_vdprintf(int fd, const char *format, va_list ap);
+int							ft_vasprintf(char **str, const char *format,
+											va_list ap);
+int							ft_vasnprintf(char **str, size_t size,
+											const char *format, va_list ap);
 
 int							fpf_worker(const char *format, va_list ap);
 
@@ -123,6 +121,7 @@ int							fpf_worker(const char *format, va_list ap);
 */
 
 t_buf						*fpf_buf_get(void);
+void						fpf_buf_init(t_buf *buf);
 int							fpf_buf_add(const char *str, size_t n);
 int							fpf_buf_addc(const char c);
 int							fpf_buf_addfillers(int ws, size_t n);
@@ -144,7 +143,6 @@ int							fpf_print_dec(char **str, t_flag *flag,
 void						fpf_putstr_fd(const char *str, int fd);
 void						fpf_putstr(const char *str);
 size_t						fpf_strlen(const char *str);
-void						fpf_bzero(void *s, size_t n);
 
 char						*fpf_strcpy(char *dst, const char *src);
 char						*fpf_strncpy(char *dst, const char *src,
@@ -182,6 +180,7 @@ int							fpf_atoi(char const *str);
 long						fpf_atol(char const *str);
 int							fpf_get_base(t_flag *flag);
 double						rounder(int p);
+
 
 /*
 **	FLAG

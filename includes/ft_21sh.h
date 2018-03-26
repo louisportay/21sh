@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/24 15:10:35 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/25 17:02:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include "builtins.h"
 # include "expand.h"
 # include "job_control.h"
-
+# include "ft_printf.h"
 
 # include <signal.h>
 # include <sys/ioctl.h>

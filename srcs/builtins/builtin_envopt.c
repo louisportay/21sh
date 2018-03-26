@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/20 16:42:34 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 17:04:16 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/25 20:29:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ int		env_u_opt(t_proc *p)
 
 	if (p->argv[1] == NULL)
 	{
-		asprintf(&p->data.str,
+		ft_asprintf(&p->data.str,
 	"221sh: env: option requires an argument -- 'u'\n");
 		return (-1);
 	}
 	if (ft_strchr(p->argv[1], '='))
 	{
-		asprintf(&p->data.str,
+		ft_asprintf(&p->data.str,
 	"221sh: env: Cannot unset '%s': Invalid argument\n", p->argv[1]);
 		return (-1);
 	}
@@ -44,7 +44,7 @@ int		env_u_opt(t_proc *p)
 
 int		env_invalid_opt(t_proc *p)
 {
-	asprintf(&p->data.str, "221sh: env: invalid option -- '%c'\n",
+	ft_asprintf(&p->data.str, "221sh: env: invalid option -- '%c'\n",
 			p->argv[0][1]);
 	return (-1);
 }

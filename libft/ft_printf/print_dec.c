@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/05 18:21:54 by vbastion          #+#    #+#             */
-/*   Updated: 2017/08/10 09:42:13 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 18:11:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int					fpf_handle_prefix(t_flag *flag, u_char spec, size_t len)
 			fpf_buf_addc('0');
 		return (pad_before(flag, len));
 	}
-	fpf_bzero(buf, 3);
+	ft_bzero(buf, 3);
 	((spec & 1) != 0) && (fpf_buf_addc('-'));
 	if ((spec & (1 << 1)) != 0)
 		fpf_strcpy(buf, "0");

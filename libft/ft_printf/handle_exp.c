@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 17:32:59 by vbastion          #+#    #+#             */
-/*   Updated: 2017/08/09 17:17:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 18:09:21 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int					fpf_handle_exp(va_list *ap, t_flag *flag)
 	t_exp			e;
 
 	e = (t_exp){ .buf = fpf_buf_get()->tmp_buf, .len = 0, .sz = 0 };
-	fpf_bzero(e.buf, FT_TMPBSZ);
+	ft_bzero(e.buf, FT_TMPBSZ);
 	e.d = va_arg(*ap, double);
 	e.negpre = (e.d > 0 && e.d < 1) || (e.d < 0 && e.d > -1);
 	prepare_double(&e);

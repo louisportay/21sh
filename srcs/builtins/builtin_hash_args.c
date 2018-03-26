@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 18:58:08 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 20:12:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:33:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int				l_isdir(char *path, t_proc *p)
 	{
 		if (S_ISDIR(stats.st_mode))
 		{
-			asprintf(&str, "221sh: hash: %s is a directory\n", path);
+			ft_asprintf(&str, "221sh: hash: %s is a directory\n", path);
 			l = list_create(str);
 			if (p->data.out != NULL)
 				ft_list_last(p->data.out)->next = l;
@@ -91,7 +91,7 @@ static int				lget_opt(t_proc *p, t_ctx *ctx, int i, int *f)
 			*f |= BU_H_LST;
 		else
 		{
-			asprintf(&str, BU_H_EINVAL, p->argv[i][j], BU_H_USAGE_);
+			ft_asprintf(&str, BU_H_EINVAL, p->argv[i][j], BU_H_USAGE_);
 			p->data.out = list_create(str);
 			return (-1);
 		}

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 17:22:35 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/23 16:42:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:36:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	ladd_err(t_proc *p, int i, char *name,
 	t_list	*n;
 	char	*str;
 
-	asprintf(&str, "221sh: %s: %s: not a valid identifier\n",
+	ft_asprintf(&str, "221sh: %s: %s: not a valid identifier\n",
 			name, p->argv[i]);
 	n = list_create(str);
 	ft_list_insert(&p->data.out, curr, n);

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:35:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 18:32:29 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/25 20:38:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@ void		d_opt(t_proc *p, t_ctx *ctx)
 	if (!ft_isnumber(p->argv[2]) ||
 	ft_atoi(p->argv[2]) < (int)T_HISTENTRY(tmp->data)->index ||
 	(offset = ft_atoi(p->argv[2])) >= ctx->hist.index)
-		asprintf(&p->data.str,
-		"221sh: history: %s: history position out of range\n", p->argv[2]);
+	{
+		ft_asprintf(&p->data.str,
+						"221sh: history: %s: history position out of range\n",
+						p->argv[2]);
+	}
 	else
 	{
 		while (T_HISTENTRY(tmp->data)->index != offset && tmp->prev)

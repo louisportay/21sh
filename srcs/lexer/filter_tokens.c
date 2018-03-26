@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 13:05:29 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 13:28:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	filter_heredoc(t_token *toklist, t_token *prev)
 }
 
 /*
-** printf("left:%d|fd:%d|s:%s|dash:%d\n",
+** ft_printf("left:%d|fd:%d|s:%s|dash:%d\n",
 ** tmp->lhs, tmp->fd_rhs, tmp->s_rhs, tmp->dash);
 */
 
@@ -85,7 +85,7 @@ static int	filter_redir(t_token *toklist, t_token *prev)
 /*
 ** IO_NUMBER filter
 **
-** printf("left:%d|fd:%d|s:%s|dash:%d\n",
+** ft_printf("left:%d|fd:%d|s:%s|dash:%d\n",
 ** tmp->lhs, tmp->fd_rhs, tmp->s_rhs, tmp->dash);
 */
 

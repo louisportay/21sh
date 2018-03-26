@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 15:37:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 10:27:22 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:45:29 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void			*lamb(char *builtin, char *str)
 {
-	dprintf(STDERR_FILENO, "21sh: %s: %s: %s\n", builtin, str, BU_JOB_AMB);
+	ft_dprintf(STDERR_FILENO, "21sh: %s: %s: %s\n", builtin, str, BU_JOB_AMB);
 	return (NULL);
 }
 
@@ -117,7 +117,7 @@ t_job				*jc_jobspec(t_proc *p, char *caller, char *argv,
 		n = ft_atoi(argv + i) - 1;
 		if (n < 0 || (size_t)n > ctx->bg_cnt || ctx->bg_jobs[n] == NULL)
 		{
-			asprintf(&str, "221sh: %s: %s: %s\n", caller, argv, BU_JOB_NO);
+			ft_asprintf(&str, "221sh: %s: %s: %s\n", caller, argv, BU_JOB_NO);
 			l = list_create(str);
 			ft_assert((void **[]){(void **)&str, (void **)&l}, 2);
 			if (p->data.out == NULL)

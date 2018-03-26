@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 19:27:34 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 21:02:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:32:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int			lhash_del(t_proc *p, t_ctx *ctx, int i)
 	{
 		if ((e = hash_lookup(ctx->hash, p->argv[i])) == NULL)
 		{
-			asprintf(&str, "221sh: hash: %s not found\n", p->argv[i]);
+			ft_asprintf(&str, "221sh: hash: %s not found\n", p->argv[i]);
 			lsts[1] = list_create(str);
 			ft_list_insert(&p->data.out, lsts, lsts[1]);
 			ret |= 1;
@@ -57,9 +57,9 @@ static int			lhash_prt(t_proc *p, t_ctx *ctx, int i)
 	while (p->argv[i] != NULL)
 	{
 		if ((e = hash_lookup(ctx->hash, p->argv[i])) == NULL)
-			asprintf(&str, "221sh: hash: %s not found\n", p->argv[i]);
+			ft_asprintf(&str, "221sh: hash: %s not found\n", p->argv[i]);
 		else
-			asprintf(&str, "1%s\n", (char *)e->content);
+			ft_asprintf(&str, "1%s\n", (char *)e->content);
 		lsts[1] = list_create(str);
 		ft_list_insert(&p->data.out, lsts, lsts[1]);
 		ret |= 1;
@@ -78,7 +78,7 @@ static void			hashprint(char *key, void *value, void *data)
 	v = (char *)value;
 	l = (size_t *)((void **)data)[0];
 	buf = (t_qbuf *)((void **)data)[1];
-	asprintf(&str, "%-*s    %-*s\n", (int)l[0], key, (int)l[1], v);
+	ft_asprintf(&str, "%-*s    %-*s\n", (int)l[0], key, (int)l[1], v);
 	qbuf_add(buf, str);
 	ft_strdel(&str);
 }
@@ -123,7 +123,7 @@ static int			lhash_print(t_proc *p, t_hdict *dict)
 	buf = qbuf_new(1 << 8);
 	max(len, 4);
 	max(len + 1, 5);
-	asprintf(&str, "1%-*s    %-*s\n", (int)len[0], "bin:", (int)len[1],
+	ft_asprintf(&str, "1%-*s    %-*s\n", (int)len[0], "bin:", (int)len[1],
 				"path:");
 	qbuf_add(buf, str);
 	ft_strdel(&str);
@@ -145,7 +145,7 @@ static int			lhash_find(t_proc *p, t_ctx *ctx, int i)
 	{
 		if ((path = path_fromctx(p->argv[i], ctx)) == NULL)
 		{
-			asprintf(&str, "221sh: hash: %s not found\n", p->argv[i]);
+			ft_asprintf(&str, "221sh: hash: %s not found\n", p->argv[i]);
 			lsafe_list_last(p, str);
 			hash_remove(ctx->hash, p->argv[i], &ft_memdel);
 			ret |= 1;

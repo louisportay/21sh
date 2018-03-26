@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:53 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 18:31:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:30:48 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int					ft_fg(t_proc *p, t_ctx *ctx, int pipeline)
 	{
 		if (ctx->bgs == NULL)
 		{
-			asprintf(&str, BU_JOB_ERR, "fg", BU_JOB_NO);
+			ft_asprintf(&str, BU_JOB_ERR, "fg", BU_JOB_NO);
 			l = list_create(str);
 			ft_assert((void **[]){(void **)&str, (void **)&l}, 2);
 			p->data.out = l;

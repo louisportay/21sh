@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:13:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/23 15:38:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 13:28:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void		get_shell_opt(t_ctx *ctx, char **av)
 			c_opt(ctx, av);
 		else if (!ft_strcmp(*av, "-h"))
 		{
-			printf("%s%s%s", HELP1, HELP2, HELP3);
+			ft_printf("%s%s%s", HELP1, HELP2, HELP3);
 			ctx->istty = 0;
 			wrap_exit(0, ctx);
 		}

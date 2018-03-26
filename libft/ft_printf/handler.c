@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 17:19:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/21 12:10:10 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:19:24 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int					fpf_worker(const char *format, va_list ap)
 	t_buf		*buf;
 
 	buf = fpf_buf_get();
-	fpf_buf_clear(buf);
+	fpf_buf_init(buf);
 	if (handle_format(format, ap) == -1)
 		return (-1);
 	ret = buf->ret;

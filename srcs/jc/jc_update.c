@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 14:04:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 16:40:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 13:33:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 	}
 	else if (WIFSIGNALED(status))
 	{
-		printf("sig\n");
+		ft_printf("sig\n");
 		if (WTERMSIG(status) == SIGPIPE)
 		{
 			waitpid(p->pid, &status, WUNTRACED);
@@ -60,12 +60,12 @@ void					jc_updateproc(t_job *j, t_proc *p, int status)
 			j->status = j->parent->status;
 			if ((p->status & 0xFF) == SIGPIPE)
 				return ;
-			dprintf(STDERR_FILENO, "%d: Terminated: %d\n", j->pgid,
-					WTERMSIG(status));
+			ft_dprintf(STDERR_FILENO, "%d: Terminated: %d\n", j->pgid,
+						WTERMSIG(status));
 		}
 	}
 	else
-		printf("Received unhandled status\n");
+		ft_printf("Received unhandled status\n");
 }
 
 static void				lstp(t_proc *p)
@@ -95,7 +95,7 @@ static int				lwaitpid(t_job *j, t_proc *p)
 		;
 	else if (pid == -1)
 	{
-		if (errno == ECHILD && p->pid == j->pgid)
+		if (errno == ECHILD)
 		{
 			p->status |= JOB_CMP;
 			return (0);

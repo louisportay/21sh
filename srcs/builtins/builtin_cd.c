@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 11:37:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/24 14:47:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/25 20:28:05 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int			lp(t_proc *p, char *path)
 {
 	char			*str;
 
-	asprintf(&str, "1%s\n", path);
+	ft_asprintf(&str, "1%s\n", path);
 	p->data.str = str;
 	return (0);
 }
@@ -32,13 +32,13 @@ static int			l_cd(t_proc *p, t_ctx *ctx, char *path, int prt)
 	{
 		if (stat(path, &stats) == -1)
 		{
-			asprintf(&str, "221sh: cd: %s: %s\n", path, SH_ENOFOD);
+			ft_asprintf(&str, "221sh: cd: %s: %s\n", path, SH_ENOFOD);
 			p->data.str = str;
 			return (1);
 		}
 		else if (access(path, X_OK) == -1)
 		{
-			asprintf(&str, "221sh: cd: %s: %s\n", path, SH_ERIGHT);
+			ft_asprintf(&str, "221sh: cd: %s: %s\n", path, SH_ERIGHT);
 			p->data.str = str;
 			return (1);
 		}

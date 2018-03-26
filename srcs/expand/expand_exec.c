@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 15:05:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/24 15:05:12 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 13:27:56 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int						expand_argv(t_proc *p, t_ctx *ctx)
 			}
 			else if (ret == -2)
 			{
-				dprintf(STDERR_FILENO, "21sh: no match: %s\n", p->argv[i]);
+				ft_dprintf(STDERR_FILENO, "21sh: no match: %s\n", p->argv[i]);
 				ft_list_clear(&lst[0], &ft_memdel);
 				return (-2);
 			}
@@ -91,7 +91,7 @@ int						expand_asmt(t_proc *p, t_ctx *ctx)
 				on_emem(NOMEM);
 			else if (ret == -2)
 			{
-				dprintf(STDERR_FILENO, "21sh: no match: %s\n", a->value);
+				ft_dprintf(STDERR_FILENO, "21sh: no match: %s\n", a->value);
 				return (-2);
 			}
 		}
@@ -123,7 +123,7 @@ int						expand_redir(t_proc *p, t_ctx *ctx)
 				else if (ret == -2)
 				{
 					r->type = TOKERR;
-					dprintf(STDERR_FILENO, "21sh: no match: %s\n", r->s_rhs);
+					ft_dprintf(STDERR_FILENO, "21sh: no match: %s\n", r->s_rhs);
 					return (-2);
 				}
 			}

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:25:12 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 13:52:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 17:02:15 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static int			add_error(t_proc *p, t_list *lsts[2], char *str, char *bu)
 
 	if ((i = ft_strindex(str, '=')) == -1)
 		i = ft_strlen(str);
-	asprintf(&lstr, "221sh: %s: '%*s': not a valid identifier\n", bu, i, str);
+	ft_asprintf(&lstr, "221sh: %s: '%*s': not a valid identifier\n", bu, i,
+				str);
 	l = list_create(lstr);
 	ft_list_insert(&p->data.out, lsts, l);
 	return (1);

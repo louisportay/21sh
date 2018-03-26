@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/12 11:10:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:39:26 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void					asmt_print(t_asmt *asmt)
 {
 	while (asmt != NULL)
 	{
-		printf("%s=%s\n", asmt->key, asmt->value);
+		ft_printf("%s=%s\n", asmt->key, asmt->value);
 		asmt = asmt->next;
 	}
 }
@@ -28,7 +28,7 @@ void					astr_print(char **astr)
 	i = 0;
 	while (astr[i] != NULL)
 	{
-		printf("argv[%d]: %s\n", i, astr[i]);
+		ft_printf("argv[%d]: %s\n", i, astr[i]);
 		i++;
 	}
 }
@@ -46,17 +46,17 @@ void					job_print(t_job *job)
 		i = 0;
 		while (asmt != NULL)
 		{
-			printf("%s=%s ", asmt->key, asmt->value);
+			ft_printf("%s=%s ", asmt->key, asmt->value);
 			asmt = asmt->next;
 		}
 		while (proc->argv[i] != NULL)
 		{
-			printf("%s ", proc->argv[i]);
+			ft_printf("%s ", proc->argv[i]);
 			i++;
 		}
-		printf("\nREDIRS:\n");
+		ft_printf("\nREDIRS:\n");
 		redir_print(proc->redirs);
-		printf("\n");
+		ft_printf("\n");
 		proc = proc->next;
 	}
 }
@@ -65,8 +65,8 @@ void					redir_print(t_redir *redir)
 {
 	while (redir != NULL)
 	{
-		printf("\tleft: %d - right: %s | %d - has dash: %d\n",
-				redir->lhs, redir->s_rhs, redir->fd_rhs, redir->dash);
+		ft_printf("\tleft: %d - right: %s | %d - has dash: %d\n",
+					redir->lhs, redir->s_rhs, redir->fd_rhs, redir->dash);
 		redir = (t_redir *)redir->next;
 	}
 }

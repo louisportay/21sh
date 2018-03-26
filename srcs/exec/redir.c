@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/23 14:44:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/25 20:40:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,19 @@ int		err_close_fd(int fd)
 
 int		err_open(char *s)
 {
-	dprintf(STDERR_FILENO, "21sh: %s: No such file or directory\n", s);
+	ft_dprintf(STDERR_FILENO, "21sh: %s: No such file or directory\n", s);
 	return (-1);
 }
 
 int		err_ambig_redir(char *s)
 {
-	dprintf(STDERR_FILENO, "21sh: %s: ambiguous redirect\n", s);
+	ft_dprintf(STDERR_FILENO, "21sh: %s: ambiguous redirect\n", s);
 	return (-1);
 }
 
 int		err_tmpfile(void)
 {
-	dprintf(STDERR_FILENO, "21sh: error creating temporary file\n");
+	ft_dprintf(STDERR_FILENO, "21sh: error creating temporary file\n");
 	return (-1);
 }
 

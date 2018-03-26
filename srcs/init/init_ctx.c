@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/23 15:38:00 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 13:28:33 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	init_job_control(t_ctx *ctx)
 		perror("setpgid");
 	}
 	if (tcsetpgrp(ctx->fd, ctx->pgid) != 0)
-		dprintf(STDERR_FILENO, "init job ctrl tcsetgrp error\n");
+		ft_dprintf(STDERR_FILENO, "init job ctrl tcsetgrp error\n");
 	ctx->bg_cnt = DFL_BGCNT;
 	ctx->bg_jobs = (t_job **)ft_pmemalloc(sizeof(t_job *) * DFL_BGCNT,
 											&on_emem, NOMEM);

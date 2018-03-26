@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:52 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 19:43:17 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/25 20:35:16 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int					ft_kill(t_proc *p, t_ctx *ctx, int pipeline)
 	{
 		if (ctx->bgs == NULL)
 		{
-			asprintf(&str, BU_JOB_ERR, "kill", BU_JOB_NO);
+			ft_asprintf(&str, BU_JOB_ERR, "kill", BU_JOB_NO);
 			p->data.out = list_create(str);
 		}
 		else

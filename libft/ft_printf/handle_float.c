@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 14:34:19 by vbastion          #+#    #+#             */
-/*   Updated: 2017/08/09 17:17:41 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 18:09:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int					fpf_handle_flo(va_list *ap, t_flag *flag)
 	u_char		neg;
 
 	buf = fpf_buf_get()->tmp_buf;
-	fpf_bzero(buf, FT_TMPBSZ);
+	ft_bzero(buf, FT_TMPBSZ);
 	f = va_arg(*ap, double);
 	neg = f < 0;
 	if (neg)
@@ -73,7 +73,7 @@ int					fpf_handle_flo(va_list *ap, t_flag *flag)
 	}
 	len = neg;
 	real = (long long)f;
-	fpf_ltobuf(real, 10, 0, buf + len);
+	ft_ltobuf(real, 10, 0, buf + len);
 	len = fpf_strlen(buf);
 	f -= real;
 	if (((flag->sz_flag & 6) && flag->pre != 0) || ((flag->sz_flag & 6) == 0))

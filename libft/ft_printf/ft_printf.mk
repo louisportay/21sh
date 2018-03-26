@@ -9,6 +9,7 @@ flag_print.c\
 flag_utils.c\
 fpf_ptrget.c\
 fpf_string.c\
+ft_asprintf.c\
 ft_atoi.c\
 ft_bzero.c\
 ft_printf.c\
@@ -24,7 +25,6 @@ handle_ptr.c\
 handle_str.c\
 handle_uns.c\
 handler.c\
-integer.c\
 padding.c\
 print_dec.c\
 
