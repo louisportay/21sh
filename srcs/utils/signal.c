@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/24 15:07:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 16:14:10 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,24 @@ static void	reset_line(t_ctx *ctx, t_line *l)
 	write(STDOUT_FILENO, "\n", 1);
 	if (l->split_line)
 		ft_dlstdel(&l->split_line, &delvoid);
-	if (l->line)
-		ft_dlsthead(&l->line);
+	ft_dlsthead(&l->line);
 	if (l->line && l->line != l->lastline)
 	{
 		ft_dlstdel(&l->line, &delvoid);
 		ft_dlstdel(&l->lastline, &delvoid);
 	}
 	else
+	{
+		l->line = NULL;
 		ft_dlstdel(&l->lastline, &delvoid);
+	}
 	stack_del(&l->linestate);
 	stack_push(&l->linestate, stack_create(UNQUOTED));
 	ft_strcpy(ctx->prompt_mode, PS1);
-	init_line(l);
+	if (l->eohdoc)
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	else
+		init_line(l);
 }
 
 void		sighandler(int signum)

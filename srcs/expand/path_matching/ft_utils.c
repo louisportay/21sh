@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:53:53 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 16:46:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 10:00:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ char			*ft_strrmdup(char **str)
 	{
 		ft_strdel(str);
 		*str = qbuf_del(&buf);
+	}
+	else
+	{
+		free(buf->buffer);
+		free(buf);
 	}
 	return (*str);
 }
