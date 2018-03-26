@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/21 11:49:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 16:15:16 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,14 @@ void	get_hdoc_line(t_heredoc *r)
 		r->glob = 1;
 	//quote removal on r->s_rhs
 
-	free(r->s_rhs);
-	if (r->hdoc.split_line && r->hdoc.split_line->next)//tester sans la premiere condition
+	ft_strdel(&r->s_rhs);
+	if (r->hdoc.split_line && r->hdoc.split_line->next)
 		r->s_rhs = str_from_dlst(r->hdoc.split_line);
-	else
+	else if (r->hdoc.split_line)
 		r->s_rhs = ft_strdup("");
+//	else
+//			ERROR stop parsing here.
+
 	//apply expansion on r->s_rhs depending on r->glob
 	if (r->hdoc.split_line)
 		ft_dlstdel(&r->hdoc.split_line, &delvoid);
@@ -76,6 +79,7 @@ t_redir					*redir_dup(t_redir *redir)
 	else
 		rdr = (t_redir *)ft_pmemalloc(sizeof(t_heredoc), &on_emem, NOMEM);
 	rdr->type = redir->type;
+
 	if ((rdr->s_rhs = ft_strdup(redir->s_rhs)) == NULL)
 	{
 		on_emem(NOMEM);
@@ -83,7 +87,11 @@ t_redir					*redir_dup(t_redir *redir)
 	}
 	rdr->lhs = redir->lhs;
 	if (rdr->type == DLESS)
+	{
 		get_hdoc_line((t_heredoc *)rdr);
+		//if (r->s_rhs == NULL)
+			//fin du parsing les enfants
+	}
 	else
 	{
 		rdr->fd_rhs = redir->fd_rhs;

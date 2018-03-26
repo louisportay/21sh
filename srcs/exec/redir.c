@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/23 14:44:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 16:50:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ int		r_less(t_redir *r)
 int		r_dless_tless(t_redir *r)
 {
 	int		fd;
+
+	if (!r->s_rhs)//
+		return (-1);// A enlever et a checker en amont
 
 	if ((fd = ft_tmpfile()) == -1)
 		return (err_tmpfile());

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/23 12:09:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 16:09:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ void		lineread(t_ctx *ctx, t_line *l)
 	while (status == READON)
 		status = get_input(ctx, &key, l);
 	tputs(ctx->tc.ei, 1, &ft_putchar_stdin);
+	if (!l->line && l->eohdoc)
+	{
+		ft_dlsthead(&ctx->hist.list);
+		return ;
+	}
 	cleanup_after_read(ctx, l);
 	if (status != FINISHREAD)
 	{
