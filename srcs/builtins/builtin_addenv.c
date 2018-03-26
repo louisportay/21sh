@@ -6,45 +6,58 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:25:12 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 17:02:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 15:48:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-static void			update_env(char ***env, char *key, int end, char ***locals)
+static void			linloc(t_ctx *ctx, char *key, int pos, int eq)
 {
-	int				i;
-	int				lpos;
+	char			*str;
 
-	if (ft_strindex(key, '=') == -1
-		&& (lpos = ft_astr_getkey(*locals, key, ft_strlen(key))) != -1)
+	str = ft_astr_remove_at(&ctx->locals, pos);
+	if (eq)
 	{
-		ft_astr_append(env, (*locals)[lpos]);
-		ft_astr_remove_at(locals, lpos);
-		return ;
-	}
-	if ((i = ft_astr_getkey(*env, key, end)) != -1)
-	{
-		if (ft_strcmp(key, (*env)[i]) == 0)
-			return ;
-		ft_strdel((*env) + i);
-		(*env)[i] = ft_strdup(key);
+		ft_astr_append(&ctx->environ, ft_strdup(key));
+		ft_strdel(&str);
 	}
 	else
-		ft_astr_append(env, ft_strdup(key));
+		ft_astr_append(&ctx->environ, str);
 }
 
-static void			update_locals(char ***locals, char *key, int end)
+static void			linenv(t_ctx *ctx, char *key, int pos, int eq)
 {
-	int				k;
-	char			*tmp;
-
-	if ((k = ft_astr_getkey(*locals, key, end)) != -1)
+	if (eq)
 	{
-		tmp = ft_astr_remove_at(locals, k);
-		ft_strdel(&tmp);
+		ft_strdel(ctx->environ + pos);
+		ctx->environ[pos] = ft_strdup(key);
 	}
+	return ;
+}
+
+static void			update_ctx(t_ctx *ctx, char *key)
+{
+	int				i;
+	int				eq;
+	int				penv;
+	int				ploc;
+
+	if ((i = ft_strindex(key, '=')) == -1)
+	{
+		eq = 0;
+		i = ft_strlen(key);
+	}
+	else
+		eq = 1;
+	penv = ft_astr_getlowkey(ctx->environ, key);
+	ploc = ft_astr_getlowkey(ctx->locals, key);
+	if (ploc != -1)
+		linloc(ctx, key, ploc, eq);
+	else if (penv != -1)
+		linenv(ctx, key, penv, eq);
+	else
+		ft_astr_append(&ctx->environ, ft_strdup(key));
 }
 
 static int			add_error(t_proc *p, t_list *lsts[2], char *str, char *bu)
@@ -79,8 +92,7 @@ int					modenv(t_proc *p, t_ctx *ctx, char *name)
 		if (is_sane(p->argv[i], &j))
 		{
 			pmod |= ft_strcmp(p->argv[i], "PATH") == 0;
-			update_env(&ctx->environ, p->argv[i], j, &ctx->locals);
-			update_locals(&ctx->locals, p->argv[i], j);
+			update_ctx(ctx, p->argv[i]);
 		}
 		else
 			ret |= add_error(p, lsts, p->argv[i], name);

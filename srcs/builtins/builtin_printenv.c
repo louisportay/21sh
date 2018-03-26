@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 13:03:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 20:34:21 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 17:44:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 static int		traverse(t_proc *p)
 {
 	t_list		*lsts[2];
-//	char		*str;
 	char		*ret;
 	int			err;
 	int			i;
+	size_t		len;
+	int			pos;
 
 	err = 0;
 	lsts[0] = NULL;
@@ -26,8 +27,8 @@ static int		traverse(t_proc *p)
 	while (p->argv[i] != NULL)
 	{
 		ret = NULL;
-		size_t len = ft_strlen(p->argv[i]);
-		int pos = ft_astr_getkey(p->env, p->argv[i], len);
+		len = ft_strlen(p->argv[i]);
+		pos = ft_astr_getkey(p->env, p->argv[i], len);
 		if (pos != -1)
 			ft_printf("env[%d]: %s\n", pos, p->env[pos]);
 		if (pos == -1)
@@ -67,7 +68,7 @@ int				ft_printenv(t_proc *p, t_ctx *ctx)
 			}
 			i++;
 		}
-		p->data.str = qbuf_del(&buf);//Not freed
+		p->data.str = qbuf_del(&buf);
 		return (0);
 	}
 	return (traverse(p));

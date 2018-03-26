@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 18:58:08 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 20:33:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 17:27:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,20 @@ static int				l_isdir(char *path, t_proc *p)
 	return (0);
 }
 
+static int				ladderr(t_proc *p)
+{
+	p->data.out = list_create(ft_strdup(BU_H_EPREQU));
+	return (-1);
+}
+
+static char				*lnewval(t_proc *p, char *str, int *k, int newk)
+{
+	if (l_isdir(str, p))
+		return (NULL);
+	*k = newk;
+	return (ft_strdup(str));
+}
+
 static int				lhash_inh(t_proc *p, t_ctx *ctx, int i, int j)
 {
 	char				*key;
@@ -43,26 +57,16 @@ static int				lhash_inh(t_proc *p, t_ctx *ctx, int i, int j)
 	if (p->argv[i][j + 1] != '\0')
 	{
 		if (p->argv[i + 1] == NULL)
-		{
-			p->data.out = list_create(ft_strdup(BU_H_EPREQU));
+			return (ladderr(p));
+		if ((value = lnewval(p, p->argv[i] + j + 1, &k, i + 1)) == NULL)
 			return (-1);
-		}
-		k = i + 1;
-		if (l_isdir(p->argv[i] + j + 1, p))
-			return (-1);
-		value = ft_strdup(p->argv[i] + j + 1);
 	}
 	else
 	{
 		if (p->argv[i + 1] == NULL || p->argv[i + 2] == NULL)
-		{
-			p->data.out = list_create(ft_strdup(BU_H_EPREQU));
+			return (ladderr(p));
+		if ((value = lnewval(p, p->argv[i + 1], &k, i + 2)) == NULL)
 			return (-1);
-		}
-		if (l_isdir(p->argv[i + 1], p))
-			return (-1);
-		value = ft_strdup(p->argv[i + 1]);
-		k = i + 2;
 	}
 	while (p->argv[k + 1] != NULL)
 		k++;
