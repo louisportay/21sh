@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 12:51:49 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 20:56:54 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 13:27:33 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,15 @@ static int		no_exp(t_mtok *new)
 	return (1);
 }
 
+static void		preclear_mtok(t_mtok *tok)
+{
+	while (tok)
+	{
+		ft_strdel(&tok->data.str);
+		tok = tok->next;
+	}
+}
+
 int				do_expand_glob(char **str)
 {
 	t_mtok		*or;
@@ -90,6 +99,7 @@ int				do_expand_glob(char **str)
 	}
 	if ((lret = path_match(new, &matched)) <= 0)
 	{
+		preclear_mtok(new);
 		mtok_clear(&new);
 		return (lret);
 	}
