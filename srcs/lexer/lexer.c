@@ -63,6 +63,8 @@ t_token	*tokenizer(t_dlist *line)
 	}
 	if ((last_tok = filter_tokens(toklist)))
 		err_tok(&toklist, last_tok);
+//	 if (toklist)
+//		print_toklist(toklist->next);
 	stack_del(&quote_state);
 	return (toklist);
 }

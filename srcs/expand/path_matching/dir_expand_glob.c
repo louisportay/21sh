@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 12:51:49 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 18:59:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/25 20:56:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,19 @@ int				do_expand_glob(char **str)
 		mtok_clear(&new);
 		return (1);
 	}
-	if ((lret = path_match(new, &matched)) == 0)
-		return (0);
-	else if (lret == -1)
-		return (-1);
+	if ((lret = path_match(new, &matched)) <= 0)
+	{
+		mtok_clear(&new);
+		return (lret);
+	}
 	else if (matched == NULL)
+	{
+		mtok_clear(&new);
 		return (0);
+	}
+	free(*str);// peut-etre que ca va t'eclater dans les dents. peut-etre pas, tu verras.
 	*str = ent_cat(matched);
 	ent_clear(&matched);
+	mtok_clear(&new);
 	return (*str != NULL ? 1 : -1);
 }

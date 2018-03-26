@@ -21,6 +21,7 @@ ifeq ($(ARCH), Darwin)
 	CC= clang
 endif
 
+
 ifeq ($(DEBUG),yes)
 	CFLAGS+= -g3
 else ifeq ($(DEBUG),sanitize)
