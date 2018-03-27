@@ -24,14 +24,17 @@ int						job_donext(t_job *j, t_ctx *ctx)
 		else
 		{
 			if ((ret = job_exec(j->ok, ctx)) == 0
-					&& (j->parent->status & 0xFF) == 0)
+//					&& (j->parent->status & 0xFF) == 0)
+		)
 				return (j->parent->status & 0xFF);
-			else
+			else if (j->err != NULL)
 				return (job_exec(j->err, ctx) & 0xFF);
+			else
+				return (ret);
 
 		}
 	}
-	if (j->err != NULL)
+	else if ((j->status & 0xFF) != 0 && j->err != NULL)
 		return (job_exec(j->err, ctx) & 0xFF);
 	return (j->status & 0xFF);
 }
