@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 15:05:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 13:27:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/27 12:08:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int						expand_asmt(t_proc *p, t_ctx *ctx)
 		else
 		{
 			ft_strdel(&a->value);
-			a->value = s;	//ft_strdup(s);
+			a->value = ft_strdup(s);
 		}
 		a = a->next;
 	}

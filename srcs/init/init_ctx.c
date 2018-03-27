@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/26 13:28:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/26 18:34:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ static void	init_job_control(t_ctx *ctx)
 		kill(-ctx->pgid, SIGTTIN);
 	ctx->pgid = getpid();
 	if (setpgid(ctx->pgid, ctx->pgid) < 0)
-	{
 		ctx->job_control = 0;
-		perror("setpgid");
-	}
 	if (tcsetpgrp(ctx->fd, ctx->pgid) != 0)
 		ft_dprintf(STDERR_FILENO, "init job ctrl tcsetgrp error\n");
 	ctx->bg_cnt = DFL_BGCNT;

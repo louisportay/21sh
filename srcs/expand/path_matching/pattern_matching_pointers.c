@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 15:34:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/26 18:23:08 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int			f_brac(char **matcher, t_mtok **tmp)
 static int			f_dflt(char **matcher, t_mtok **tmp)
 {
 	(void)tmp;
-	dprintf(STDERR_FILENO, "Error, you should not be here.\n%s\n", *matcher);
+	ft_dprintf(STDERR_FILENO, "Error, you should not be here.\n%s\n", *matcher);
 	return (-1);
 }
 
