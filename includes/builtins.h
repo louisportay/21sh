@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/23 18:53:22 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/28 13:55:26 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,18 @@
 # define BU_S_HFA ("F: if expansion fails, abords pipe execution")
 # define BU_S_HEL ("h: displays this help. '+h' adds usage beforehand")
 
-# define BU_SET_PRLOC (1 << 0)
-# define BU_SET_PRVAR (1 << 1)
-# define BU_SET_PRSET (1 << 2)
-# define BU_SET_PRCMD (1 << 3)
+# define BU_SET_PRLOC	0x01
+# define BU_SET_PRVAR	0x02
+# define BU_SET_PRSET	0x04
+# define BU_SET_PRCMD	0x08
 
-# define BU_SET_EXPOR (1 << 0)
-# define BU_SET_BGCMD (1 << 1)
-# define BU_SET_FNEXP (1 << 2)
-# define BU_SET_ONCMD (1 << 3)
-# define DOTGLOB (1 << 4)
-# define NULLGLOB (1 << 5)
-# define FAILGLOB (1 << 6)
+# define BU_SET_EXPOR	0x01
+# define BU_SET_BGCMD	0x02
+# define BU_SET_FNEXP	0x04
+# define BU_SET_ONCMD	0x08
+# define DOTGLOB		0x10
+# define NULLGLOB		0x20
+# define FAILGLOB		0x40
 
 # define BU_SET_ON ("\ton\n")
 # define BU_SET_OFF ("\toff\n")
@@ -72,11 +72,11 @@
 # define SH_ENOOPW ("221sh: cd: Variable $OLDPWD not set\n")
 
 # define BU_H_EEMPTY ("121sh: hash empty\n")
-# define BU_H_CLR (1 << 0)
-# define BH_H_INH (1 << 1)
-# define BU_H_DEL (1 << 2)
-# define BU_H_PRT (1 << 3)
-# define BU_H_LST (1 << 4)
+# define BU_H_CLR 0x01
+# define BH_H_INH 0x02
+# define BU_H_DEL 0x04
+# define BU_H_PRT 0x08
+# define BU_H_LST 0x10
 
 # define BU_H_ETREQU ("221sh: hash: -t: option requires an argument\n")
 # define BU_H_EDREQU ("221sh: hash: -d: option requires an argument\n")
@@ -84,6 +84,16 @@
 # define BU_H_USAGE_ ("21sh: usage: hash [-lr] [-p path] [-dt] [name ...]\n")
 
 # define BU_H_EINVAL ("221sh: hash: -%c: invalid option\n%s")
+
+#define BU_J_L 0x01
+#define BU_J_S 0x02
+#define BU_J_R 0x04
+#define BU_J_P 0x08
+#define BU_J_A 0x10
+
+#define EOPT ("invalid option")
+
+#define BU_J_USAGE ("jobs: usage: jobs [-lprs] [jobspec ...]")
 
 typedef struct s_ctx	t_ctx;
 typedef struct s_proc	t_proc;

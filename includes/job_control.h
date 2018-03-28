@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 10:30:48 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 19:13:24 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/28 13:39:48 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ t_job					*jc_jobspec(t_proc *p, char *caller, char *argv,
 
 void					jc_restore(t_job *j, t_proc *caller, t_list **curr);
 
-void					jc_remove(t_ctx *ctx, t_job *job, size_t i);
+void					jc_unlistjob(t_ctx *ctx, t_job *j, size_t i);
 
 #endif

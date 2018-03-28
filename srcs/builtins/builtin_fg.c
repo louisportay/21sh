@@ -6,34 +6,11 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 14:35:53 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 16:01:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/28 12:55:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-void				jc_remove(t_ctx *ctx, t_job *job, size_t i)
-{
-	t_list			*prev;
-	t_list			*curr;
-
-	prev = NULL;
-	curr = ctx->bgs;
-	ctx->bg_jobs[i] = NULL;
-	while (curr != NULL)
-	{
-		if ((t_job *)curr->content == job)
-		{
-			if (prev == NULL)
-				ctx->bgs = curr->next;
-			else
-				prev->next = curr->next;
-			break ;
-		}
-		prev = curr;
-		curr = curr->next;
-	}
-}
 
 static void			lrestore(t_ctx *ctx, t_job *j, t_proc *p, t_list **curr)
 {
@@ -42,7 +19,7 @@ static void			lrestore(t_ctx *ctx, t_job *j, t_proc *p, t_list **curr)
 	if (j->parent->status & JOB_DON)
 		return ;
 	i = jc_findid(ctx, j);
-	jc_remove(ctx, j, i);
+	jc_unlistjob(ctx, j, i);
 	signal(SIGCHLD, SIG_IGN);
 	jc_restore(j, p, curr);
 	j->bg = 0;
