@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/25 18:04:14 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/28 16:04:48 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -183,7 +183,6 @@ SRCS=	main.c\
 		builtin_env.c\
 		builtin_envopt.c\
 		builtin_history.c\
-		builtin_jobs.c\
 		builtin_exit.c\
 		\
 		expand_exec.c\
@@ -246,15 +245,18 @@ SRCS=	main.c\
 		jc_find.c\
 		jc_signal.c\
 		jc_update.c\
-		jc_print.c\
 		jc_addbg.c\
 		jc_rmbg.c\
 		jc_jobspec.c\
 		jc_restore.c\
+		jc_notify.c\
 		job_safeclear.c\
 		builtin_fg.c\
 		builtin_bg.c\
 		builtin_kill.c\
+		builtin_jobs.c\
+		builtin_jobs_args.c\
+		builtin_jobs_print.c\
 		\
 		path_reset.c\
 
@@ -270,7 +272,7 @@ NAME= 21sh
 GREEN="\033[32m"
 RESET="\033[0m"
 
-.SILENT:
+#.SILENT:
 
 all: $(LIB) $(NAME)
 

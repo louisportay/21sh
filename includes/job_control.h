@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 10:30:48 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/28 13:39:48 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/28 15:45:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int						jc_jobfind(t_ctx *ctx, pid_t pid, t_proc **p);
 size_t					jc_ctxfind(t_ctx *ctx, int pgid);
 
 void					jc_print(t_ctx *ctx, int all, int verbose);
-void					jc_notify(t_job *j, t_ctx *ctx, int i, int all);
 size_t					jc_findid(t_ctx *ctx, t_job *j);
 char					jc_getstatus(t_job *j);
 
@@ -44,7 +43,6 @@ size_t					jc_getbgnext(t_ctx *ctx);
 size_t					jc_bggrow(t_ctx *ctx);
 
 size_t					jc_addtobg(t_ctx *ctx, t_job *j);
-void					jc_rmbg(t_ctx *ctx, t_job *j);
 
 t_job					*jc_jobspec(t_proc *p, char *caller, char *argv,
 									t_ctx *ctx);
@@ -52,5 +50,6 @@ t_job					*jc_jobspec(t_proc *p, char *caller, char *argv,
 void					jc_restore(t_job *j, t_proc *caller, t_list **curr);
 
 void					jc_unlistjob(t_ctx *ctx, t_job *j, size_t i);
+void					jc_notify(t_ctx *ctx);
 
 #endif

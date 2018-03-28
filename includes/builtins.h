@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/28 13:55:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/28 16:03:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,8 @@ int						env_u_opt(t_proc *p);
 int						env_invalid_opt(t_proc *p);
 int						env_assignment(t_proc *p, int *getopt, char *eq_pos);
 int						dash_opt(int *getopt);
+
+void					bu_jobs_print(t_ctx *ctx, size_t i, int flag);
+int						bu_jobs_args(t_proc *p);
 
 #endif

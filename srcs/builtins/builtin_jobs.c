@@ -6,57 +6,55 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 11:59:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/28 13:52:54 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/28 15:55:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int			ljob_args(t_proc *p)
+static void				lprint_pgid(t_ctx *ctx, int flag)
 {
-	size_t			i;
-	size_t			j;
-	int				flag;
-	char			*arg;
+	size_t				i;
+	t_job				*j;
 
-	i = 1;
-	flag = 0;
-	while (p->argv[i] != NULL)
+	i = 0;
+	while (i < ctx->bg_cnt)
 	{
-		arg = p->argv[i];
-		if (arg[0] != '-')
-			break ;
-		j = 1;
-		while (arg[j] != '\0')
+		if ((j = ctx->bg_jobs[i]) != NULL)
 		{
-			if (arg[j] == 'l')
-				flag |= BU_J_L;
-			else if (arg[j] == 's')
-				flag = (flag & ~BU_J_R) | BU_J_S;
-			else if (arg[j] == 'r')
-				flag = (flag & ~BU_J_S) | BU_J_R;
-			else if (arg[j] == 'p')
-				flag |= BU_J_P;
-			else
-			{
-				ft_dprintf(STDERR_FILENO, "21sh: jobs: -%c: %s\n%s\n",
-							arg[j], EOPT, BU_J_USAGE);
-				return (-1);
-			}
-			j++;
+			if ((flag & (BU_J_R | BU_J_S)) == 0
+				|| ((flag & BU_J_S) && (j->status & JOB_STP))
+				|| ((flag & BU_J_R) && (j->status & JOB_STP) == 0))
+				ft_printf("%d\n", j->pgid);
 		}
 		i++;
 	}
-	return (flag);
 }
 
-int					ft_jobs(t_proc *p, t_ctx *ctx)
+static void				lprint_all(t_ctx *ctx, int flag)
 {
-	int				flag;
+	size_t				i;
+
+	i = 0;
+	while (i < ctx->bg_cnt)
+	{
+		if (ctx->bg_jobs[i] != NULL)
+			bu_jobs_print(ctx, i, flag);
+		i++;
+	}
+}
+
+int						ft_jobs(t_proc *p, t_ctx *ctx)
+{
+	int					flag;
 
 	p->type = BU_STR;
-	if ((flag = ljob_args(p)) == -1)
+	if ((flag = bu_jobs_args(p)) == -1)
 		return (1);
-	jc_print(ctx, 1, flag);
+	if (flag & BU_J_P)
+		lprint_pgid(ctx, flag);
+	else
+		lprint_all(ctx, flag);
+	jc_notify(ctx);
 	return (0);
 }
