@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/28 16:04:48 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/28 17:38:59 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -257,6 +257,7 @@ SRCS=	main.c\
 		builtin_jobs.c\
 		builtin_jobs_args.c\
 		builtin_jobs_print.c\
+		builtin_jobs_long.c\
 		\
 		path_reset.c\
 

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 11:59:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/28 15:55:54 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/28 17:34:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int						ft_jobs(t_proc *p, t_ctx *ctx)
 		return (1);
 	if (flag & BU_J_P)
 		lprint_pgid(ctx, flag);
+	else if (flag & BU_J_L)
+		bu_jobs_long(ctx, flag);
 	else
 		lprint_all(ctx, flag);
 	jc_notify(ctx);

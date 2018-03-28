@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/28 15:48:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/28 16:02:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/28 17:38:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 static int			lupdate_flag(char c, int *flag)
 {
 	if (c == 'l')
-		*flag |= BU_J_L;
+		*flag = (*flag & ~BU_J_P) | BU_J_L;
 	else if (c == 's')
 		*flag = (*flag & ~BU_J_R) | BU_J_S;
 	else if (c == 'r')
 		*flag = (*flag & ~BU_J_S) | BU_J_R;
 	else if (c == 'p')
-		*flag |= BU_J_P;
+		*flag = (*flag & ~BU_J_L) | BU_J_P;
 	else
 	{
 		ft_dprintf(STDERR_FILENO, "21sh: jobs: -%c: %s\n%s\n", c, EOPT,
