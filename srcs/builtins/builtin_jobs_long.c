@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/28 15:44:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/28 18:52:37 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/29 12:52:50 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,20 @@ static void				ljob_print(t_ctx *ctx, size_t i, int flag)
 	ft_printf("[%zu]%c  %-5d %-24s%s\n", i + 1, jc_getstatus(j), p->pid,
 				lgetstatus(j), cmd);
 	ft_strdel(&cmd);
+	p = p->next;
 	while (p->next != NULL)
 	{
-		{	/*	DO INTERMEDIARY JOBS	*/	}
+		cmd = lproc_cmd(p);
+		ft_printf("%5s%-5d%25s | %s\n", " ", p->pid, " ", cmd);
+		ft_strdel(&cmd);
 		p = p->next;
 	}
 	if (p != NULL)
-		ft_printf("%5s%-5d%25s | %s &\n", " ", p->pid, " ", lproc_cmd(p));
+	{
+		cmd = lproc_cmd(p);
+		ft_printf("%5s%-5d%25s | %s &\n", " ", p->pid, " ", cmd);
+		ft_strdel(&cmd);
+	}
 }
 
 void					bu_jobs_long(t_ctx *ctx, int flag)
