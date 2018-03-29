@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/25 17:21:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/28 19:01:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,4 +236,5 @@ void			handle_brace(t_stack **line, char c);
 void			handle_hash(t_stack **line);
 void			handle_dollar(t_stack **line);
 
+void	warning_heredoc(t_line *l);
 #endif

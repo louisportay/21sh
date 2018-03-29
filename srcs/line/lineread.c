@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/26 16:09:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/28 19:10:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,12 @@ static void	special_read_status(t_ctx *ctx, t_line *l, int status)
 	else if (status == READERROR)
 		err_line(l, FAILREAD);
 	else if (status == ERR_QUOTE)
-		err_line(l, BADQUOTES);
+	{
+		if (l->eohdoc)
+			warning_heredoc(l);
+		else
+			err_line(l, BADQUOTES);
+	}
 	else if (status == EXITSHELL)
 		wrap_exit(EXIT_SUCCESS, ctx);
 }

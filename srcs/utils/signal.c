@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/26 16:14:10 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/28 17:42:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,20 @@
 ** SIGQUIT ==> Block it.
 */
 
+
 static void	reset_line(t_ctx *ctx, t_line *l)
 {
-	write(STDOUT_FILENO, "^C", 2);
-	go_end(ctx, l);
-	write(STDOUT_FILENO, "\n", 1);
+	if (ctx->line_edition)
+	{
+		write(STDOUT_FILENO, "^C", 2);
+		go_end(ctx, l);
+	}
+	if (ctx->line_edition || (!ctx->line_edition && !l->eohdoc))
+		write(STDOUT_FILENO, "\n", 1);
 	if (l->split_line)
 		ft_dlstdel(&l->split_line, &delvoid);
-	ft_dlsthead(&l->line);
+	if (l->line)
+		ft_dlsthead(&l->line);
 	if (l->line && l->line != l->lastline)
 	{
 		ft_dlstdel(&l->line, &delvoid);
@@ -62,17 +68,7 @@ void		sighandler(int signum)
 		}
 	}
 	else if (signum == SIGINT)
-	{
-		if (ctx->line_edition)
 			reset_line(ctx, ctx->cur_line);
-		else
-		{
-			write(STDOUT_FILENO, "\n", 1);
-			print_prompt();
-		}
-	}
-	else if (signum == SIGTSTP)
-		{}
 }
 
 int			set_sighandler(void)

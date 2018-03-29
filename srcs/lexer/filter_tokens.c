@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/26 13:28:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/28 14:13:18 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	filter_heredoc(t_token *toklist, t_token *prev)
 	tmp->next = toklist->next->next;
 	tmp->type = toklist->type;
 	tmp->lhs = STDIN_FILENO;
-	tmp->s_rhs = str_from_token(toklist->next);
+	tmp->s_rhs = str_from_token(toklist->next, DLESS);
 	free(toklist->next);
 	free(toklist);
 	return (SUCCESS);
@@ -74,7 +74,7 @@ static int	filter_redir(t_token *toklist, t_token *prev)
 		tmp->lhs = STDIN_FILENO;
 	else if (tmp->type & R_GREAT)
 		tmp->lhs = STDOUT_FILENO;
-	tmp->s_rhs = str_from_token(toklist->next);
+	tmp->s_rhs = str_from_token(toklist->next, toklist->type);
 	tmp->fd_rhs = -1;
 	tmp->dash = false;
 	free(toklist->next);
@@ -102,10 +102,10 @@ static int	filter_io_number(t_token *toklist, t_token *prev)
 	tmp->last_letter = toklist->next->next->last_letter;
 	tmp->next = toklist->next->next->next;
 	tmp->type = toklist->next->type;
-	s = str_from_token(toklist);
+	s = str_from_token(toklist, IO_NUMBER);
 	tmp->lhs = ft_atoi(s);
 	free(s);
-	tmp->s_rhs = str_from_token(toklist->next->next);
+	tmp->s_rhs = str_from_token(toklist->next->next, toklist->type);
 	tmp->fd_rhs = -1;
 	tmp->dash = false;
 	free(toklist->next->next);
