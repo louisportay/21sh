@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/25 17:10:46 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/28 19:44:23 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ typedef struct		s_heredoc
 	t_line			hdoc;
 }					t_heredoc;
 
-char				*str_from_token(t_token *tok);
+char				*str_from_token(t_token *tok, int toktype);
 
 void				init_token_table(t_kvp *tok);
 void				dump_token(t_token *tok);

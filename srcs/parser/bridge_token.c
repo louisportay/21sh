@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 16:57:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/29 11:32:24 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,10 @@ void	get_hdoc_line(t_heredoc *r)
 		ft_dlstdel(&r->hdoc.split_line, &delvoid);
 }
 
+//much leaks around here
+// cat <<eof <<eof1 <<eof2 <<eof3
+//C-c
+
 t_redir					*redir_dup(t_redir *redir)
 {
 	t_redir				*rdr;
@@ -78,6 +82,7 @@ t_redir					*redir_dup(t_redir *redir)
 		rdr = (t_redir *)ft_pmemalloc(sizeof(t_redir), &on_emem, NOMEM);
 	else
 		rdr = (t_redir *)ft_pmemalloc(sizeof(t_heredoc), &on_emem, NOMEM);
+
 	rdr->type = redir->type;
 
 	if ((rdr->s_rhs = ft_strdup(redir->s_rhs)) == NULL)

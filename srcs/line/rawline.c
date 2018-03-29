@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/11 10:26:30 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/23 15:54:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/28 18:51:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,14 @@ void	getrawline(t_ctx *ctx, t_line *l)
 	print_prompt();
 	if (get_next_line(ctx->fd, &tmp) == -1)
 		fatal_err(FAILREAD, ctx);
-	if (!tmp && ctx->line.linestate->state == UNQUOTED)
+	if (!tmp && l->linestate->state == UNQUOTED)
 		wrap_exit(EXIT_SUCCESS, ctx);
+	else if (!tmp && l->eohdoc)
+		return (warning_heredoc(l));
 	else if (!tmp)
 		return (err_line(l, BADQUOTES));
 	l->line = dlst_from_str(tmp);
-	if (l->eohdoc)
-		query_hdocstate(l->line->next, &l->linestate, l->eohdoc);
-	else
-		query_linestate(l->line->next, &l->linestate);
+	get_state(l);
 	if (l->linestate->state != UNQUOTED)
 		ft_strcpy(ctx->prompt_mode, PS2);
 	join_split_lines(l);

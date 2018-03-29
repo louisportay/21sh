@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/25 20:42:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/28 19:25:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,17 @@ void	missing_quote_err(int	quote)
 		ft_dprintf(STDERR_FILENO, "while looking for matching `\"'\n");
 }
 
+void	warning_heredoc(t_line *l)
+{
+	ft_dprintf(STDERR_FILENO, "21sh: warning: here-document delimited by end-of-file (wanted `%s')\n", l->eohdoc);
+	if (get_ctxaddr()->line_edition)
+		ft_dlstdel(&l->line, &delvoid);
+	stack_pop(&l->linestate);
+}
+
 void	err_line(t_line *l, int errno)
 {
-	write(STDIN_FILENO, "\n", 1);
+	write(STDOUT_FILENO, "\n", 1);
 	dump_err(errno);
 	if (errno == BADQUOTES)
 		missing_quote_err(l->linestate->state);
