@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 19:26:21 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/29 12:55:26 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,60 @@ static int				print_err(char *msg)
 	return (1);
 }
 
+size_t					ft_read(int fd, char *buffer, size_t size)
+{
+	size_t				ret;
+	size_t				total;
+
+	total = 0;
+	while (size)
+	{
+		if ((ret = read(fd, buffer + total, size)) == (size_t)-1)
+		{
+			perror("read, ft_read, getpid");
+			return ((size_t)-1);
+		}
+		total += ret;
+		size -= ret;
+	}
+	return (0);
+}
+
+static void				lgetpid(t_job *j, int fd)
+{
+	t_proc				*p;
+	int					pid;
+
+	p = j->procs;
+	while (p->next != NULL)
+	{
+		if (ft_read(fd, (char*)&pid, 4) == (size_t)-1)
+		{
+			dprintf(STDERR_FILENO, "Could not get pipe pids\n");
+			return ;
+		}
+		p->pid = pid;
+		p = p->next;
+	}
+}
+
 int						job_pipe(t_job *j, t_ctx *ctx)
 {
 	pid_t				pid;
 	int					ret;
+	int					mypipe[2];
 
-	if ((pid = fork()) < 0)
+	if (pipe(mypipe) == -1)
+	{
+		ft_dprintf(STDERR_FILENO, "Could not retrieve pids of the pipe\n");
 		return (1);
+	}
+	if ((pid = fork()) < 0)
+	{
+		close(mypipe[0]);
+		close(mypipe[1]);
+		return (1);
+	}
 	else if (pid != 0)
 	{
 		j->pgid = pid;
@@ -43,13 +90,18 @@ int						job_pipe(t_job *j, t_ctx *ctx)
 				p->pid = pid;
 			p = p->next;
 		}
+		close(mypipe[1]);
+		lgetpid(j, mypipe[0]);
+		close(mypipe[0]);
 	}
 	else
 	{
 		j->pgid = getpid();
 		if ((ret = setpgid(j->pgid, j->pgid)) != 0 && errno != ESRCH)
 			perror("job_pipe setpgid");
-		exec_pipe(j, ctx);
+		close(mypipe[0]);
+		exec_pipe(j, ctx, mypipe[1]);
+		close(mypipe[1]);
 	}
 	return (0);
 }

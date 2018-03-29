@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 19:22:43 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/29 12:47:45 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int				print_err(char *msg, int i)
 	return (i);
 }
 
-static int				fork_do(t_job *j, t_proc *p, t_ctx *ctx)
+static int				fork_do(t_job *j, t_proc *p, t_ctx *ctx, int fd)
 {
 	pid_t				pid;
 	int					ret;
@@ -38,6 +38,7 @@ static int				fork_do(t_job *j, t_proc *p, t_ctx *ctx)
 	if (p->next == NULL)
 	{
 		p->pid = j->pgid;
+		close(fd);
 		proc_exec(p, j, ctx);
 	}
 	else if ((pid = fork()) == 0)
@@ -47,6 +48,11 @@ static int				fork_do(t_job *j, t_proc *p, t_ctx *ctx)
 	else
 	{
 		p->pid = pid;
+		if (write(fd, (char*)&pid, 4) == -1)
+		{
+			perror("write fork_do");
+			return (-1);
+		}
 		if (ctx->istty != 0)
 		{
 			if ((ret = setpgid(pid, j->pgid)) != 0 && errno != ESRCH)
@@ -77,7 +83,7 @@ static void				pipe_clear(t_proc *p)
 	}
 }
 
-int						exec_pipe(t_job *j, t_ctx *ctx)
+int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 {
 	t_proc				*p;
 
@@ -89,7 +95,7 @@ int						exec_pipe(t_job *j, t_ctx *ctx)
 			prefork_assign(ctx, p->asmts);
 		else if (p->argv[0] != NULL)
 			prepare_fork(p, ctx, 1);
-		if (fork_do(j, p, ctx) == 1)
+		if (fork_do(j, p, ctx, fd) == 1)
 			return (1);
 		pipe_clear(p);
 		p = p->next;

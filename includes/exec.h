@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 19:12:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/29 11:54:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ struct					s_job
 
 int						exec(t_job *jobs);
 
-int						exec_pipe(t_job *j, t_ctx *ctx);
+int						exec_pipe(t_job *j, t_ctx *ctx, int fd);
 
 struct s_proc			*proc_cr(void);
 struct s_proc			*proc_new(char **argv);
