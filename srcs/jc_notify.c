@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/28 15:21:35 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/28 15:29:50 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/29 16:38:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void					jc_notify(t_ctx *ctx)
 							j->parent->command);
 			}
 			jc_unlistjob(ctx, j, i);
+			job_safeclear(&j->parent);
 		}
 		i++;
 	}

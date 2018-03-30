@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/28 19:44:23 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/29 11:57:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ typedef struct		s_redir
 	t_dlist			*last_letter;
 	struct s_token	*next;
 	enum e_toktype	type;
-
 	int				lhs;
 	char			*s_rhs;
 	int				fd_rhs;
@@ -117,7 +116,6 @@ typedef struct		s_heredoc
 	t_dlist			*last_letter;
 	struct s_token	*next;
 	enum e_toktype	type;
-
 	int				lhs;
 	char			*s_rhs;
 	int				glob;

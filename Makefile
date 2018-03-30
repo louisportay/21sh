@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/28 17:38:59 by vbastion         ###   ########.fr        #
+#    Updated: 2018/03/29 11:54:35 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -250,7 +250,6 @@ SRCS=	main.c\
 		jc_jobspec.c\
 		jc_restore.c\
 		jc_notify.c\
-		job_safeclear.c\
 		builtin_fg.c\
 		builtin_bg.c\
 		builtin_kill.c\
@@ -273,7 +272,7 @@ NAME= 21sh
 GREEN="\033[32m"
 RESET="\033[0m"
 
-#.SILENT:
+.SILENT:
 
 all: $(LIB) $(NAME)
 
