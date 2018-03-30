@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 15:05:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/27 12:08:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/29 15:14:45 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int						expand_argv(t_proc *p, t_ctx *ctx)
 	return (ret);
 }
 
-static void				*flatten_list(t_list *l)
+static char				*flatten_list(t_list *l)
 {
 	t_qbuf				*buf;
 
@@ -69,6 +69,7 @@ static void				*flatten_list(t_list *l)
 	while (l != NULL)
 	{
 		qbuf_add(buf, (char *)l->content);
+		l->content = NULL;
 		if (l->next != NULL)
 			qbuf_addc(buf, ' ');
 		l = l->next;
@@ -79,13 +80,13 @@ static void				*flatten_list(t_list *l)
 int						expand_asmt(t_proc *p, t_ctx *ctx)
 {
 	t_asmt				*a;
-	char				*s;
 	int					ret;
+	t_list				*lst;
 
 	a = p->asmts;
 	while (a != NULL)
 	{
-		if ((ret = expand(a->value, ctx, &flatten_list, (void **)&s)) < 1)
+		if ((ret = expand(a->value, ctx, NULL, (void **)&lst)) < 1)
 		{
 			if (ret == -1)
 				on_emem(NOMEM);
@@ -97,8 +98,16 @@ int						expand_asmt(t_proc *p, t_ctx *ctx)
 		}
 		else
 		{
+
 			ft_strdel(&a->value);
-			a->value = ft_strdup(s);
+			if (lst->next == NULL)
+			{
+				a->value = lst->content;
+				lst->content = NULL;
+			}
+			else
+				a->value = flatten_list(lst);
+			ft_list_clear(&lst, &ft_memdel);
 		}
 		a = a->next;
 	}

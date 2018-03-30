@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 11:28:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/17 16:51:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/30 17:34:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static char				**get_args(t_token **toks, t_redir **rdr)
 	t_list				*lsts[3];
 	t_token				*t;
 	t_token				*tmp;
+	t_token				*t2;
 	char				*word;
 	char				**av;
 
@@ -37,8 +38,14 @@ static char				**get_args(t_token **toks, t_redir **rdr)
 		}
 		else
 		{
-			token_insert((t_token **)rdr, (t_token **)rdr + 1,
-							(t_token *)redir_dup((t_redir *)tmp));
+
+			if ((t2 = (t_token *)redir_dup((t_redir *)tmp)) == NULL)
+			{
+				ft_list_clear(lsts, &ft_memdel);
+				return ((void *)-1);
+}
+			else
+				token_insert((t_token **)rdr, (t_token **)rdr + 1, t2);
 		}
 	}
 	av = astr_fromlist(lsts);
@@ -50,6 +57,7 @@ static t_asmt			*get_asmt(t_token **toks, t_redir **rdr)
 {
 	t_token				*t;
 	t_token				*tmp;
+	t_token				*t2;
 	t_asmt				*asmt[3];
 	t_asmt				*exist;
 
@@ -69,8 +77,13 @@ static t_asmt			*get_asmt(t_token **toks, t_redir **rdr)
 		}
 		else
 		{
-			token_insert((t_token **)rdr, (t_token **)rdr + 1,
-							(t_token *)redir_dup((t_redir *)tmp));
+			if ((t2 = (t_token *)redir_dup((t_redir *)tmp)) == NULL)
+			{
+				asmt_clear(asmt);
+				return ((void *)-1);
+			}
+			else
+				token_insert((t_token **)rdr, (t_token **)rdr + 1, t2);
 		}
 	}
 	*toks = t;
@@ -92,6 +105,16 @@ t_proc					*proc_next(t_token **tokz)
 	p->asmts = get_asmt(tokz, rdr);
 	p->argv = get_args(tokz, rdr);
 	p->redirs = rdr[0];
+	if (p->asmts == (void *)-1 || p->argv == (void *)-1)
+	{
+		if (p->asmts != (void *)-1)
+			asmt_clear(&p->asmts);
+		if (p->argv != (void *)-1)
+			ft_astr_clear(&p->argv);
+		rdir_clear(&p->redirs);
+		ft_memdel((void **)&p);
+		return (NULL);
+	}
 	p->pipe_in[0] = -1;
 	p->pipe_in[1] = -1;
 	p->pipe_out[0] = -1;

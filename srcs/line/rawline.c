@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/11 10:26:30 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/28 18:51:39 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/30 16:24:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ void	getrawline(t_ctx *ctx, t_line *l)
 		return (warning_heredoc(l));
 	else if (!tmp)
 		return (err_line(l, BADQUOTES));
+	if (l->eohdoc && !l->linestate->down)
+	{
+		free(tmp);
+		return ;
+	}
 	l->line = dlst_from_str(tmp);
 	get_state(l);
 	if (l->linestate->state != UNQUOTED)

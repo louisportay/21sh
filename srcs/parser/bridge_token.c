@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/29 11:32:24 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/30 17:27:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,8 @@ size_t					token_count(t_token *tok)
 void	get_hdoc_line(t_heredoc *r)
 {
 	r->hdoc.eohdoc = r->s_rhs;
-	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->tios);
 	ft_readline(get_ctxaddr(), &r->hdoc, PS2);
-	tcsetattr(STDIN_FILENO, TCSADRAIN, &get_ctxaddr()->oldtios);
+
 	if (ft_strchr(r->s_rhs, '\\') || ft_strchr(r->s_rhs, '\'')
 								|| ft_strchr(r->s_rhs, '"'))
 		r->glob = 0;
@@ -69,10 +68,6 @@ void	get_hdoc_line(t_heredoc *r)
 	if (r->hdoc.split_line)
 		ft_dlstdel(&r->hdoc.split_line, &delvoid);
 }
-
-//much leaks around here
-// cat <<eof <<eof1 <<eof2 <<eof3
-//C-c
 
 t_redir					*redir_dup(t_redir *redir)
 {
@@ -94,8 +89,11 @@ t_redir					*redir_dup(t_redir *redir)
 	if (rdr->type == DLESS)
 	{
 		get_hdoc_line((t_heredoc *)rdr);
-		//if (r->s_rhs == NULL)
-			//fin du parsing les enfants
+		if (rdr->s_rhs == NULL)
+		{
+			free(rdr);
+			return (NULL);
+		}
 	}
 	else
 	{

@@ -6,13 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/21 12:46:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/29 17:45:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void		rdir_clear(t_redir **rdirs)
+void		rdir_clear(t_redir **rdirs)
 {
 	t_redir *r;
 
@@ -23,6 +23,7 @@ static void		rdir_clear(t_redir **rdirs)
 		*rdirs = (t_redir *)(*rdirs)->next;
 		free(r->s_rhs);
 		ft_memdel((void **)&r);
+		r = *rdirs;
 	}
 }
 
