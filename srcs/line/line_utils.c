@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/28 19:25:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/30 16:34:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	warning_heredoc(t_line *l)
 	ft_dprintf(STDERR_FILENO, "21sh: warning: here-document delimited by end-of-file (wanted `%s')\n", l->eohdoc);
 	if (get_ctxaddr()->line_edition)
 		ft_dlstdel(&l->line, &delvoid);
+	else if (!l->split_line)
+		l->split_line = ft_dlstnew("", 0);
 	stack_pop(&l->linestate);
 }
 

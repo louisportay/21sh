@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 20:39:44 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/30 15:37:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ t_job					*parse(struct s_token *tokens)
 	while (1)
 	{
 		if ((job[2] = job_getnext(&tokens, NULL)) == NULL)
-			return (job_safeclear(job));
+			return (job_safeclear(&job[0]));
 		if (tokens->type == NEWLINE)
 		{
 			job_insert(job, job + 1, job[2]);
