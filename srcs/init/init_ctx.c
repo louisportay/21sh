@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/31 10:46:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 16:28:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,16 @@ void		init_ctx(t_ctx *ctx, char **av, char **environ)
 	init_parameters(ctx);
 	ctx->hist.list = ft_dlstnew("HEAD", 4);
 	ctx->hist.index = 1;
-	ctx->fd = STDIN_FILENO;
+	ctx->std_fd[0] = dup(STDIN_FILENO);
+	ctx->std_fd[1] = dup(STDOUT_FILENO);
+	ctx->std_fd[2] = dup(STDERR_FILENO);
 	ctx->tty = open("/dev/tty", O_RDWR);
 	ctx->istty = isatty(STDIN_FILENO);
-	if (!ctx->istty || ioctl(ctx->fd, TIOCGWINSZ, &ctx->ws) == -1)
+	if (!ctx->istty || ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws) == -1)
 		ctx->line_edition = 0;
 	ctx->environ = ft_astr_dup(environ);
 	ctx->hash = hash_create(HASH_SIZE, HASH_PRIME);
-	ctx->ret_tcget = tcgetattr(ctx->fd, &ctx->oldtios);
+	ctx->ret_tcget = tcgetattr(STDIN_FILENO, &ctx->oldtios); // Why?
 	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 	create_locals(&ctx->locals);
 	ctx->builtins = getbuiltins();

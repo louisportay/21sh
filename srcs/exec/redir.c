@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/26 16:57:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/31 13:57:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ int		r_great_dgreat(t_redir *r)
 {
 	int fd;
 
-	if ((fd = open(r->s_rhs, O_WRONLY | O_CREAT | ((r->type & GREAT) ? O_TRUNC : O_APPEND), 0644)) == -1)
+	if ((fd = open(r->s_rhs, O_WRONLY | O_CREAT | ((r->type & GREAT)
+													? O_TRUNC : O_APPEND),
+					0644)) == -1)
 		return (err_open(r->s_rhs));
 	if (dup2(fd, r->lhs) == -1)
 		return (err_close_fd(fd));

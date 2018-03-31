@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 17:37:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 17:33:24 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 16:22:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,24 @@
 
 static int			set_help(t_proc *p, int usage)
 {
-	char			*str;
-
-	ft_asprintf(&str, "1%s%c%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
+	p->type = BU_STR;
+	ft_dprintf(STDERR_FILENO, "%s%c%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
 				usage ? BU_S_USG : "", usage ? '\n' : '\r',
 				BU_S_HPR, BU_S_HSE, BU_S_HEX, BU_S_HBG, BU_S_HON, BU_S_HFN,
 				BU_S_HDO, BU_S_HNU, BU_S_HFA, BU_S_HEL);
-	p->type = BU_STR;
-	p->data.str = str;
 	return (-1);
 }
 
 static int			lusage(t_proc *p, char c, char ec)
 {
-	char			*str;
-
 	if (ec)
 	{
-		ft_asprintf(&str, "221sh: set: -%c: invalid argument\n%s\n", c,
-					BU_S_USG);
+		ft_dprintf(STDERR_FILENO, "21sh: set: -%c: invalind argument\n%s\n",
+					c, BU_S_USG);
 	}
 	else
-		ft_asprintf(&str, "2%s\n", BU_S_USG);
+		ft_dprintf(STDERR_FILENO, "%s\n", BU_S_USG);
 	p->type = BU_STR;
-	p->data.str = str;
 	return (-1);
 }
 

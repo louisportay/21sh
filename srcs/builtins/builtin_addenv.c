@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:25:12 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 15:48:46 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 15:26:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,14 @@ static void			update_ctx(t_ctx *ctx, char *key)
 		ft_astr_append(&ctx->environ, ft_strdup(key));
 }
 
-static int			add_error(t_proc *p, t_list *lsts[2], char *str, char *bu)
+static int			add_error(char *str, char *bu)
 {
-	char			*lstr;
 	int				i;
-	t_list			*l;
 
 	if ((i = ft_strindex(str, '=')) == -1)
 		i = ft_strlen(str);
-	ft_asprintf(&lstr, "221sh: %s: '%*s': not a valid identifier\n", bu, i,
-				str);
-	l = list_create(lstr);
-	ft_list_insert(&p->data.out, lsts, l);
+	ft_dprintf(STDERR_FILENO, "21sh: %s: '%*s': not a valid identifier\n",
+				bu, i, str);
 	return (1);
 }
 
@@ -80,7 +76,6 @@ int					modenv(t_proc *p, t_ctx *ctx, char *name)
 	int				i;
 	int				j;
 	int				ret;
-	t_list			*lsts[2];
 	int				pmod;
 
 	pmod = 0;
@@ -95,7 +90,7 @@ int					modenv(t_proc *p, t_ctx *ctx, char *name)
 			update_ctx(ctx, p->argv[i]);
 		}
 		else
-			ret |= add_error(p, lsts, p->argv[i], name);
+			ret |= add_error(p->argv[i], name);
 		i++;
 	}
 	if (pmod)

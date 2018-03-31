@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/28 17:35:41 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 16:09:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@
 
 # define SH_ENOFOD ("No such file or directory")
 # define SH_ERIGHT ("Permission denied")
-# define SH_EARGTO ("221sh: cd: Too much arguments\n")
-# define SH_ENOHOM ("221sh: cd: Variable $HOME not set\n")
-# define SH_ENOOPW ("221sh: cd: Variable $OLDPWD not set\n")
+# define SH_EARGTO ("21sh: cd: Too much arguments\n")
+# define SH_ENOHOM ("21sh: cd: Variable $HOME not set\n")
+# define SH_ENOOPW ("21sh: cd: Variable $OLDPWD not set\n")
 
 # define BU_H_EEMPTY ("121sh: hash empty\n")
 # define BU_H_CLR 0x01
@@ -78,22 +78,31 @@
 # define BU_H_PRT 0x08
 # define BU_H_LST 0x10
 
-# define BU_H_ETREQU ("221sh: hash: -t: option requires an argument\n")
-# define BU_H_EDREQU ("221sh: hash: -d: option requires an argument\n")
-# define BU_H_EPREQU ("221sh: hash: -p: option requires two arguments\n")
-# define BU_H_USAGE_ ("21sh: usage: hash [-lr] [-p path] [-dt] [name ...]\n")
+# define BU_H_ETREQU	("21sh: hash: -t: option requires an argument\n")
+# define BU_H_EDREQU	("21sh: hash: -d: option requires an argument\n")
+# define BU_H_EPREQU	("21sh: hash: -p: option requires two arguments\n")
+# define BU_H_ENOKEY	("21sh: hash: %s not found\n")
+# define BU_H_USAGE		("21sh: usage: hash [-lr] [-p path] [-dt] [name ...]\n")
 
 # define BU_H_EINVAL ("221sh: hash: -%c: invalid option\n%s")
 
-#define BU_J_L 0x01
-#define BU_J_S 0x02
-#define BU_J_R 0x04
-#define BU_J_P 0x08
-#define BU_J_A 0x10
+# define BU_J_L 0x01
+# define BU_J_S 0x02
+# define BU_J_R 0x04
+# define BU_J_P 0x08
+# define BU_J_A 0x10
 
-#define EOPT ("invalid option")
+# define EOPT ("invalid option")
 
-#define BU_J_USAGE ("jobs: usage: jobs [-lprs] [jobspec ...]")
+# define BU_J_USAGE ("jobs: usage: jobs [-lprs] [jobspec ...]")
+
+# define BU_EX_ENUMARG "21sh: exit: %s: numeric argument required\n"
+
+# define BU_HI_EEORNG "21sh: history, %s: history position out of range\n"
+
+# define BU_E_EARG "21sh: env: option requires an argument -- 'u'\n"
+# define BU_E_EINVARG "21sh: env: Cannot unset '%s': Invalid argument\n"
+# define BU_E_EINVOPT "221sh: env: invalid option -- '%c'\n"
 
 typedef struct s_ctx	t_ctx;
 typedef struct s_proc	t_proc;

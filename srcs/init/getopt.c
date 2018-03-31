@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:13:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/27 12:30:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/31 16:30:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static void	f_opt(t_ctx *ctx, char **av)
 {
 	if (av[1] == NULL)
 		fatal_err(BADOPT_F, ctx);
-	ctx->fd = open(av[1], O_RDONLY);
-	ctx->istty = isatty(ctx->fd);
+	ctx->std_fd[0] = open(av[1], O_RDONLY); // Qui a la prio entre ca et le dup de fd?
+	ctx->istty = isatty(ctx->std_fd[0]);
 	ctx->line_edition = 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/20 16:42:34 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/25 20:29:13 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 16:09:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,12 @@ int		env_u_opt(t_proc *p)
 
 	if (p->argv[1] == NULL)
 	{
-		ft_asprintf(&p->data.str,
-	"221sh: env: option requires an argument -- 'u'\n");
+		ft_dprintf(STDERR_FILENO, BU_E_EARG);
 		return (-1);
 	}
 	if (ft_strchr(p->argv[1], '='))
 	{
-		ft_asprintf(&p->data.str,
-	"221sh: env: Cannot unset '%s': Invalid argument\n", p->argv[1]);
+		ft_dprintf(STDERR_FILENO, BU_E_EINVARG, p->argv[1]);
 		return (-1);
 	}
 	i = ft_astr_getkey(p->env, p->argv[1], ft_strlen(p->argv[1]));
@@ -44,8 +42,7 @@ int		env_u_opt(t_proc *p)
 
 int		env_invalid_opt(t_proc *p)
 {
-	ft_asprintf(&p->data.str, "221sh: env: invalid option -- '%c'\n",
-			p->argv[0][1]);
+	ft_dprintf(STDERR_FILENO, BU_E_EINVOPT, p->argv[0][1]);
 	return (-1);
 }
 

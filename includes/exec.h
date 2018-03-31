@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 11:37:57 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 14:38:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ enum					e_extype
 	EXERR = 4
 };
 
+/*
+**	Somewhat legacy, should be removed
+*/
+
 union					u_ebin
 {
-	char				*str;
 	char				*path;
-	struct s_list		*out;
 };
 
 /*

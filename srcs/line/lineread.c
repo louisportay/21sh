@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/28 19:10:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/31 13:31:44 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	get_input(t_ctx *ctx, t_key *key, t_line *l)
 {
 	int ret;
 
-	if (read(ctx->fd, &key->buf[key->i++], 1) == -1)
+	if (read(ctx->std_fd[0], &key->buf[key->i++], 1) == -1)
 		ret = READERROR;
 	else
 		ret = user_input(ctx, l, key);

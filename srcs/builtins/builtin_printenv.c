@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 13:03:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 17:44:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 14:50:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,13 @@ static int		traverse(t_proc *p)
 		if (pos == -1)
 		{
 			err |= 1;
-			ft_asprintf(&ret, "221sh: printenv: '%s' not found\n", p->argv[i]);
+			ft_dprintf(STDERR_FILENO, "21sh: printenv: '%s' not found\n",
+						p->argv[i]);
 		}
 		else if (p->env[pos][len] == '=')
-			ft_asprintf(&ret, "1%s\n", p->env[pos] + len + 1);
-		if (ret != NULL)
-			ft_list_insert(lsts, lsts + 1, list_create(ret));
+			ft_printf("%s\n", p->env[pos] + len + 1);
 		i++;
 	}
-	p->data.out = lsts[0];
 	return (err);
 }
 
@@ -58,7 +56,6 @@ int				ft_printenv(t_proc *p, t_ctx *ctx)
 		p->type = BU_STR;
 		i = 0;
 		buf = qbuf_new(1 << 8);
-		qbuf_addc(buf, '1');
 		while (p->env[i] != NULL)
 		{
 			if (ft_strindex(p->env[i], '=') != -1)
@@ -68,7 +65,7 @@ int				ft_printenv(t_proc *p, t_ctx *ctx)
 			}
 			i++;
 		}
-		p->data.str = qbuf_del(&buf);
+		ft_putstr_fd(qbuf_del(&buf), STDOUT_FILENO);
 		return (0);
 	}
 	return (traverse(p));

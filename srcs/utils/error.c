@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/23 15:56:08 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/31 16:27:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ static void	free_hist(t_dlist **histlist, t_ctx *ctx)
 
 void		wrap_exit(int status, t_ctx *ctx)
 {
-	if (ctx->fd == STDIN_FILENO && ctx->istty)
-		write(STDERR_FILENO, "exit\n", 5);
+	if (ctx->istty)
+		ft_putstr_fd("exit\n", ctx->std_fd[0]);
 	if (ctx->line.line)
 		ft_dlstdel(&ctx->line.line, &delvoid);
 	if (ctx->yank)
@@ -84,7 +84,9 @@ void		wrap_exit(int status, t_ctx *ctx)
 		ft_astr_clear(&ctx->locals);
 	if (ctx->line_edition == true)
 		tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);
-	close(ctx->fd);
+	close(ctx->std_fd[0]);
+	close(ctx->std_fd[1]);
+	close(ctx->std_fd[2]);
 	close(ctx->tty);
 	exit(status);
 }

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 15:11:22 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 18:47:45 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/31 16:04:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char	*dump_history(t_dlist *histlist, int n)
 	while (--n > 0 && histlist->next)
 		histlist = histlist->next;
 	buf = qbuf_new(256);
-	qbuf_addc(buf, '1');
 	while (histlist->prev)
 	{
 		qbuf_addl(buf, T_HISTENTRY(histlist->data)->index);

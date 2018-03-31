@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:18:08 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 21:06:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 16:12:18 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@ int				ft_echo(t_proc *p, t_ctx *ctx)
 	p->type = BU_STR;
 	if (p->argv[1] == NULL)
 	{
-		p->data.str = ft_strdup("1\n");
+		write(STDOUT_FILENO, "\n", 1);
 		return (0);
 	}
 	nl = (ft_strcmp("-n", p->argv[1]) != 0);
 	i = (nl ? 0 : 1) + 1;
 	buf = qbuf_new(1 << 8);
-	qbuf_addc(buf, '1');
 	while (p->argv[i] != NULL)
 	{
 		qbuf_add(buf, p->argv[i++]);
@@ -37,6 +36,6 @@ int				ft_echo(t_proc *p, t_ctx *ctx)
 	}
 	if (nl)
 		qbuf_addc(buf, '\n');
-	p->data.str = qbuf_del(&buf);
+	ft_putstr(qbuf_del(&buf));
 	return (0);
 }

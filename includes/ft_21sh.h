@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/31 11:29:57 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 13:27:33 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ struct					s_ctx
 	**	JOB CONTROL - Might miss a lot of variables
 	*/
 
-	int					fd;
+	int					std_fd[3];
 	int					istty;
 	char				**path;
 

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 17:22:35 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 20:36:31 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 15:56:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,10 @@ static void	lrm(t_ctx *ctx, char *str)
 	}
 }
 
-static int	ladd_err(t_proc *p, int i, char *name,
-		t_list **curr)
+static int	ladd_err(char *av, char *name)
 {
-	t_list	*n;
-	char	*str;
-
-	ft_asprintf(&str, "221sh: %s: %s: not a valid identifier\n",
-			name, p->argv[i]);
-	n = list_create(str);
-	ft_list_insert(&p->data.out, curr, n);
+	ft_dprintf(STDERR_FILENO, "21sh: %s: %s: not a valid identifier\n",
+				name, av);
 	return (1);
 }
 
@@ -45,7 +39,6 @@ int			ft_rmenv(t_proc *p, t_ctx *ctx, char *name)
 {
 	int		i;
 	int		ret;
-	t_list	*curr;
 
 	p->type = BUILTIN;
 	i = 1;
@@ -55,7 +48,7 @@ int			ft_rmenv(t_proc *p, t_ctx *ctx, char *name)
 		if (is_identifier(p->argv[i]))
 			lrm(ctx, p->argv[i]);
 		else
-			ret |= ladd_err(p, i, name, &curr);
+			ret |= ladd_err(p->argv[i], name);
 		i++;
 	}
 	return (ret);

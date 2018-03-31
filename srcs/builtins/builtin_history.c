@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:35:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/25 20:38:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 16:08:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,7 @@ void		d_opt(t_proc *p, t_ctx *ctx)
 	if (!ft_isnumber(p->argv[2]) ||
 	ft_atoi(p->argv[2]) < (int)T_HISTENTRY(tmp->data)->index ||
 	(offset = ft_atoi(p->argv[2])) >= ctx->hist.index)
-	{
-		ft_asprintf(&p->data.str,
-						"221sh: history: %s: history position out of range\n",
-						p->argv[2]);
-	}
+		ft_dprintf(STDERR_FILENO, BU_HI_EEORNG, p->argv[2]);
 	else
 	{
 		while (T_HISTENTRY(tmp->data)->index != offset && tmp->prev)
@@ -73,9 +69,9 @@ int			ft_history(t_proc *p, t_ctx *ctx)
 {
 	p->type = BU_STR;
 	if (p->argv[1] == NULL)
-		p->data.str = dump_history(ctx->hist.list->next, ctx->hist.index);
+		ft_putstr(dump_history(ctx->hist.list->next, ctx->hist.index));
 	else if (ft_isnumber(p->argv[1]) && p->argv[2] == NULL)
-		p->data.str = dump_history(ctx->hist.list->next, ft_atoi(p->argv[1]));
+		ft_putstr(dump_history(ctx->hist.list->next, ft_atoi(p->argv[1])));
 	else if (!ft_strcmp(p->argv[1], "-c") && p->argv[2] == NULL)
 		ft_dlstdel(&ctx->hist.list->next, &del_histentry);
 	else if (!ft_strcmp(p->argv[1], "-d") && p->argv[2])

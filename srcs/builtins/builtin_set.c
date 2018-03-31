@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 15:20:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/24 15:18:25 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 15:22:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int					ft_set(t_proc *p, t_ctx *ctx)
 		lset(ctx, buf);
 	if (opt & BU_SET_PRCMD)
 		lcmd(ctx, buf);
-	p->data.str = opt != 0 ? qbuf_del(&buf) : NULL;
+	if (opt != 0)
+		ft_putstr(qbuf_del(&buf));
 	return (0);
 }
