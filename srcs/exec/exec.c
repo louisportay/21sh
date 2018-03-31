@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 13:27:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 11:35:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,19 @@ int						exec(t_job *jobs)
 {
 	t_ctx				*ctx;
 	t_job				*tmp;
-	int					was_bg;
-	size_t				id;
 
 	ctx = get_ctxaddr();
 	update_tty(ctx, 1);
-	signal(SIGCHLD, SIG_DFL);
+	signal(SIGINT, SIG_IGN);
 	while (jobs != NULL)
 	{
 		tmp = jobs;
 		jobs = jobs->next;
 		tmp->next = NULL;
-		was_bg = tmp->parent->bg;
-		if (tmp->parent->bg == 0)
-			ctx->fg_job = tmp;
 		job_exec(tmp, ctx);
-		id = (size_t)-1;
-		if (tmp->parent->bg != 0)
-			id = jc_addtobg(ctx, tmp);
-		else
-			job_safeclear(&tmp->parent);
-		if (was_bg && id != (size_t)-1)
-			ft_printf("[%zu] %d\n", id + 1, tmp->pgid);
+		job_safeclear(&tmp->parent);
 	}
-	signal(SIGCHLD, &jc_signal);
+	signal(SIGINT, &sighand_int);
 	update_tty(ctx, 0);
 	return (0);
 }

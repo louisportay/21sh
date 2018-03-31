@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/29 11:54:35 by lportay          ###   ########.fr        #
+#    Updated: 2018/03/31 11:39:45 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ SRCDIR= srcs/ \
 		srcs/lexer \
 		srcs/parser \
 		srcs/exec \
-		srcs/jc \
 		srcs/builtins \
 		srcs/expand \
 		srcs/expand/path_matching \
@@ -157,11 +156,11 @@ SRCS=	main.c\
 		clearers.c\
 		exec.c\
 		job_exec.c\
+		job_pipe.c\
+		job_one.c\
 		proc_exec.c\
 		exec_pipe.c\
 		get_path.c\
-		job_utils.c\
-		job_wait.c\
 		job_lifecycle.c\
 		bridge_exec_astr.c\
 		exec_assignments.c\
@@ -242,22 +241,6 @@ SRCS=	main.c\
 		mtok_print.c\
 		mtok_sort.c\
 		\
-		jc_find.c\
-		jc_signal.c\
-		jc_update.c\
-		jc_addbg.c\
-		jc_rmbg.c\
-		jc_jobspec.c\
-		jc_restore.c\
-		jc_notify.c\
-		builtin_fg.c\
-		builtin_bg.c\
-		builtin_kill.c\
-		builtin_jobs.c\
-		builtin_jobs_args.c\
-		builtin_jobs_print.c\
-		builtin_jobs_long.c\
-		\
 		path_reset.c\
 
 
@@ -272,7 +255,7 @@ NAME= 21sh
 GREEN="\033[32m"
 RESET="\033[0m"
 
-.SILENT:
+#.SILENT:
 
 all: $(LIB) $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/25 17:02:43 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 11:29:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,15 +101,9 @@ struct					s_ctx
 	**	JOB CONTROL - Might miss a lot of variables
 	*/
 
-	pid_t				pid;
-	pid_t				pgid;
 	int					fd;
 	int					istty;
 	char				**path;
-	t_job				**bg_jobs;
-	size_t				bg_cnt;
-	t_job				*fg_job;
-	t_list				*bgs;
 
 	/*
 	**	EXECUTION HASH (for HASH builtin)
@@ -200,6 +194,10 @@ void					sighandler(int signo);
 void					ft_assert(void ***arr, size_t len);
 
 void					path_reset(t_ctx *ctx, int regen);
+
+void					sighand_int(int signo);
+
+size_t					ft_read(int fd, char *buffer, size_t size);
 
 /*
 **	Shell script stuff

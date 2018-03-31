@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/28 17:42:26 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/31 11:05:08 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,24 @@ void		sighandler(int signum)
 			redraw_line(ctx, ctx->cur_line);
 		}
 	}
-	else if (signum == SIGINT)
-			reset_line(ctx, ctx->cur_line);
+}
+
+void		sighand_int(int signo)
+{
+	t_ctx	*ctx;
+
+	(void)signo;
+	ctx = get_ctxaddr();
+	reset_line(ctx, ctx->cur_line);
 }
 
 int			set_sighandler(void)
 {
 	signal(SIGWINCH, &sighandler);
-	signal(SIGTSTP, &sighandler);
-	signal(SIGINT, &sighandler);
-//	signal(SIGQUIT, &sighandler) // "CTRL-\"
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGINT, &sighand_int);
 	signal(SIGTERM, &sighandler);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
-	signal(SIGCHLD, &jc_signal);
 	return (SUCCESS);
 }

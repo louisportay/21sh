@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 11:27:18 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 16:30:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 11:19:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void				proc_foreach(t_proc *p, void (*act)(t_proc *))
 }
 
 void				proc_foreach_data(t_proc *p, void (*act)(t_proc *, void *),
-										void * data)
+										void *data)
 {
 	while (p != NULL)
 	{

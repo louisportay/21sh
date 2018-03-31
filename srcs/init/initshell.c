@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/30 15:51:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/31 10:45:05 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ static void		init_line_edition(t_ctx *ctx)
 
 	if (ctx->istty)
 	{
-		if (ctx->ret_tcget == -1 || ctx->line_edition == 0 ||
-	(tmp = getenv("TERM")) == NULL || tgetent(NULL, tmp) == ERR)
+		if (ctx->ret_tcget == -1 || ctx->line_edition == 0
+			|| (tmp = getenv("TERM")) == NULL || tgetent(NULL, tmp) == ERR)
 			ctx->line_edition = 0;
 		else
 			init_termios(ctx);

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/29 11:54:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 11:37:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,7 @@ struct					s_job
 {
 	char				*command;
 	struct s_proc		*procs;
-	pid_t				pgid;
-	char				notified;
 	int					status;
-	int					bg;
 	struct s_job		*ok;
 	struct s_job		*err;
 	struct s_job		*next;
@@ -106,7 +103,7 @@ struct s_proc			*proc_new(char **argv);
 void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
 void					proc_clear(t_proc **proc);
 
-void					proc_exec(t_proc *p, t_job *j, t_ctx *ctx);
+void					proc_exec(t_proc *p);
 int						proc_chgstat(t_job *job, pid_t pid, int status);
 
 void					proc_foreach(t_proc *p, void (*act)(t_proc *));
@@ -121,8 +118,6 @@ void					job_ctxinsert(t_job *job, t_ctx *ctx);
 struct s_job			*job_find(pid_t pid, t_job *job_list);
 int						job_stopped(t_job *job);
 int						job_completed(t_job *job);
-
-int						job_exec(t_job *j, t_ctx *ctx);
 
 int						job_wait(t_job *j);
 int						job_putfg(t_job *j, t_ctx *ctx);
@@ -156,5 +151,9 @@ int						blt_output(t_proc *p);
 char					*get_command(t_job *j);
 
 int						do_redir(t_redir *r);
+
+int						job_exec(t_job *j, t_ctx *ctx);
+int						job_one(t_job *j, t_ctx *ctx);
+int						job_pipe(t_job *j, t_ctx *ctx);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:59:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/15 10:25:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 11:31:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,23 @@ void				ft_assert(void ***arr, size_t len)
 		}
 		on_emem(NOMEM);
 	}
+}
+
+size_t				ft_read(int fd, char *buffer, size_t size)
+{
+	size_t				ret;
+	size_t				total;
+
+	total = 0;
+	while (size)
+	{
+		if ((ret = read(fd, buffer + total, size)) == (size_t)-1)
+		{
+			perror("read, ft_read, getpid");
+			return ((size_t)-1);
+		}
+		total += ret;
+		size -= ret;
+	}
+	return (total);
 }

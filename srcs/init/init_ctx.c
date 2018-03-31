@@ -6,25 +6,11 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/26 18:34:22 by lportay          ###   ########.fr       */
+/*   Updated: 2018/03/31 10:46:42 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-static void	init_job_control(t_ctx *ctx)
-{
-	while (tcgetpgrp(ctx->fd) != (ctx->pid = getpgrp()))
-		kill(-ctx->pgid, SIGTTIN);
-	ctx->pgid = getpid();
-	if (setpgid(ctx->pgid, ctx->pgid) < 0)
-		ctx->job_control = 0;
-	if (tcsetpgrp(ctx->fd, ctx->pgid) != 0)
-		ft_dprintf(STDERR_FILENO, "init job ctrl tcsetgrp error\n");
-	ctx->bg_cnt = DFL_BGCNT;
-	ctx->bg_jobs = (t_job **)ft_pmemalloc(sizeof(t_job *) * DFL_BGCNT,
-											&on_emem, NOMEM);
-}
 
 /*
 ** mettre les variables dans l'ordre dans lequel elles ont ete declarees
@@ -68,6 +54,4 @@ void		init_ctx(t_ctx *ctx, char **av, char **environ)
 	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 	create_locals(&ctx->locals);
 	ctx->builtins = getbuiltins();
-	if (ctx->istty)
-		init_job_control(ctx);
 }

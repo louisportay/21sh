@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/28 15:27:46 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 10:28:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	exec_loop(t_dlist *input)
 	delete_toklist(&toklist);
 	if (extree != NULL)
 		exec(extree);
-	jc_updatebg(ctx);
-	jc_notify(ctx);
 }
 
 void	vingtetunsh(char **av, char **environ)

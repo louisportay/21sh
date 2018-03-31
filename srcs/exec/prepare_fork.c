@@ -6,15 +6,15 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 14:05:13 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/20 17:41:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 11:18:55 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static t_blt		get_proc_blt(char *name, t_hdict *blts)
+static t_blt			get_proc_blt(char *name, t_hdict *blts)
 {
-	t_hentry		*e;
+	t_hentry			*e;
 
 	if (name == NULL)
 		return (NULL);
@@ -23,7 +23,7 @@ static t_blt		get_proc_blt(char *name, t_hdict *blts)
 	return (NULL);
 }
 
-static int			test_env_builtin(t_proc *p)
+static int				test_env_builtin(t_proc *p)
 {
 	if (!ft_strcmp("env", p->argv[0]))
 	{
