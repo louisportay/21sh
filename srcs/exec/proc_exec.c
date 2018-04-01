@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 16:57:35 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 17:01:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,5 @@ void					proc_exec(t_proc *p)
 	if (p->type & BUILTIN)
 		exit(blt_output(p));
 	execve(p->data.path, p->argv, p->env);
-/*
-**	NEED BETTER EXIT HANDLING, ASK LPORTAY
-*/
 	exit_err("Could not exec...\n");
 }

@@ -6,30 +6,59 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 14:38:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 15:39:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 17:43:02 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
+static void				l_export(t_ctx *ctx, t_asmt *asmt)
+{
+	int					i;
+	char				*str;
+
+	if ((i = ft_astr_getlowkey(ctx->locals, asmt->key)) != -1)
+	{
+		str = ft_astr_remove_at(&ctx->locals, i);
+		ft_strdel(&str);
+	}
+	str = ft_strjoinc(asmt->key, asmt->value, '=');
+	if ((i = ft_astr_getlowkey(ctx->environ, asmt->key)) != -1)
+	{
+		ft_strdel(ctx->environ + i);
+		ctx->environ[i] = str;
+	}
+	else
+		ft_astr_append(&ctx->environ, str);
+}
+
+static void				l_update(t_ctx *ctx, t_asmt *asmt)
+{
+	int					i;
+
+	if ((i = ft_astr_getlowkey(ctx->environ, asmt->key)) != -1)
+	{
+		ft_strdel(ctx->environ + i);
+		ctx->environ[i] = ft_strjoinc(asmt->key, asmt->value, '=');
+	}
+	else
+		astr_env_replace(&ctx->locals, asmt->key, asmt->value);
+}
+
 void					prefork_assign(t_ctx *ctx, t_asmt *asmt)
 {
 	int					pmod;
-	int					i;
-	char				*k;
+	int					export;
 
+	export = ctx->set & BU_SET_EXPOR;
 	pmod = 0;
 	while (asmt != NULL)
 	{
 		pmod |= ft_strcmp(asmt->key, "PATH") == 0;
-		k = asmt->key;
-		if ((i = ft_astr_getlowkey(ctx->environ, k)) != -1)
-		{
-			ft_strdel(ctx->environ + i);
-			ctx->environ[i] = ft_strjoinc(asmt->key, asmt->value, '=');
-		}
+		if (export)
+			l_export(ctx, asmt);
 		else
-			astr_env_replace(&ctx->locals, asmt->key, asmt->value);
+			l_update(ctx, asmt);
 		asmt = asmt->next;
 	}
 	if (pmod)

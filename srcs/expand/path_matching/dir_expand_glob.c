@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 12:51:49 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 13:27:33 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/01 17:23:45 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int				path_match(t_mtok *tok, t_entry **matched)
 			ret = dir_explore(tok->data.str, &dats);
 	}
 	else
-		ret = dir_explore(".", &dats);
+		ret = dir_explore(NULL, &dats);
 	if (ret < 1)
 		return (ret);
 	return (tok == NULL ? 0 : proceed(tok, matched, dats));
@@ -99,7 +99,7 @@ int				do_expand_glob(char **str)
 	}
 	if ((lret = path_match(new, &matched)) <= 0)
 	{
-		preclear_mtok(new);
+		preclear_mtok(new);	//	TO BE CHECKED, but seems DUMB AF and duplicate
 		mtok_clear(&new);
 		return (lret);
 	}
@@ -108,7 +108,7 @@ int				do_expand_glob(char **str)
 		mtok_clear(&new);
 		return (0);
 	}
-	free(*str);// peut-etre que ca va t'eclater dans les dents. peut-etre pas, tu verras.
+	free(*str);
 	*str = ent_cat(matched);
 	ent_clear(&matched);
 	mtok_clear(&new);

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/01 13:13:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 17:07:47 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,10 @@ void					path_reset(t_ctx *ctx, int regen);
 void					sighand_int(int signo);
 
 size_t					ft_read(int fd, char *buffer, size_t size);
+
+int						print_err(char *msg, int fd);
+
+char					*env_path_get(char *exe, char **pathes);
 
 /*
 **	Shell script stuff

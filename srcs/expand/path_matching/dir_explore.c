@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 16:42:57 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/05 18:56:44 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 17:22:55 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ int				dir_explore(char *path, t_entry **ret)
 	t_entry		*ent[3];
 	DIR			*pdir;
 	t_dir		*dir;
+	int			curr;
 
+	curr = (path == NULL);
+	path = curr ? "." : path;
 	if (access(path, X_OK | R_OK) == -1)
 		return (0);
 	if ((pdir = opendir(path)) == NULL)
@@ -27,7 +30,7 @@ int				dir_explore(char *path, t_entry **ret)
 	ent[1] = NULL;
 	while ((dir = readdir(pdir)) != NULL)
 	{
-		if ((ent[2] = ent_create(path, dir->d_name)) == NULL)
+		if ((ent[2] = ent_create(curr ? NULL : path, dir->d_name)) == NULL)
 		{
 			ent_clear(ent);
 			return (-1);

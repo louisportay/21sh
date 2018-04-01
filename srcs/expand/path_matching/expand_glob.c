@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 12:49:51 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 17:13:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ static int		multi_expand(t_list *lst)
 	{
 		s = (char *)lst->content;
 		if ((ret = do_expand_glob(&s)) < 1)
-		{
-			ft_list_clear(&lst, &ft_memdel);	//faut lui passer l'adresse, parce que la il met personne a NULL
 			return (ret);
-		}
 		lst->content = (void *)s;
 		lst = lst->next;
 	}
@@ -59,8 +56,9 @@ int				expand_glob(char *str, char **ret, t_ctx *ctx)
 	lst = bridge_strsplit(str);
 	if ((r = multi_expand(lst)) < 1)
 	{
+		ft_list_clear(&lst, &ft_memdel);
 		if (r == -1)
-			return (r);
+			return (-1);
 		if (ctx->set & FAILGLOB)
 			return (-2);
 		else if (ctx->set & NULLGLOB)

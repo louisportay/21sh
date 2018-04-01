@@ -6,33 +6,34 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 13:32:40 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 18:13:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 #include <errno.h>
 
-static int				print_err(char *msg, int i)
+static void				l_last_job(t_proc *p, int fd, t_ctx *ctx)
 {
-	ft_putstr_fd(msg, STDERR_FILENO);
-	return (i);
+	close(fd);
+	if (ctx->set & BU_SET_ONCMD)
+		proc_print(p, ctx);
+	if (p->status & JOB_CMP)
+		exit(1);
+	else
+		proc_exec(p);
 }
 
-static int				fork_do(t_proc *p, int fd)
+static int				fork_do(t_proc *p, int fd, t_ctx *ctx)
 {
 	pid_t				pid;
 
 	if (p->next == NULL)
-	{
-		close(fd);
-		if (p->status & JOB_CMP)
-			exit(1);
-		else
-			proc_exec(p);
-	}
+		l_last_job(p, fd, ctx);
 	else if ((pid = fork()) == 0)
 	{
+		if (ctx->set & BU_SET_ONCMD)
+			proc_print(p, ctx);
 		if (p->status & JOB_CMP)
 			exit(1);
 		else
@@ -96,7 +97,7 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 			else if (p->argv[0] != NULL)
 				prepare_fork(p, ctx, 1);
 		}
-		if (fork_do(p, fd) == 1)
+		if (fork_do(p, fd, ctx) == 1)
 			return (1);
 		pipe_clear(p);
 		p = p->next;

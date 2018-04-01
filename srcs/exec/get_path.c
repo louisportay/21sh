@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 16:36:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 17:07:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int				path_handle(char *path, t_proc *p, int hash)
 	return (0);
 }
 
-static char				*env_path_get(char *exe, char **pathes)
+char					*env_path_get(char *exe, char **pathes)
 {
 	static char			buffer[PATH_MAX + 1];
 	size_t				i;
@@ -56,28 +56,6 @@ static char				*env_path_get(char *exe, char **pathes)
 	return (NULL);
 }
 
-char					*path_fromcache(char *exe, t_ctx *ctx)
-{
-	char				*dkey;
-	char				*dpath;
-	char				*path;
-
-	if ((path = env_path_get(exe, ctx->path)) == NULL)
-		return (NULL);
-	if ((path = ft_strdup(path)) == NULL)
-		on_emem(NOMEM);
-	dkey = ft_strdup(exe);
-	if ((dpath = ft_strdup(path)) == NULL || dkey == NULL)
-	{
-		ft_strdel(&dkey);
-		ft_strdel(&dpath);
-		on_emem(NOMEM);
-		return (NULL);
-	}
-	hash_add(ctx->hash, dkey, dpath);
-	return (path);
-}
-
 static char				*path_fromctx(char *exe, t_ctx *ctx, t_proc *p)
 {
 	t_hentry			*e;
@@ -94,7 +72,6 @@ static char				*path_fromctx(char *exe, t_ctx *ctx, t_proc *p)
 		}
 		if ((path = ft_strdup((char *)e->content)) == NULL)
 			on_emem(NOMEM);
-		{	/*	ADD path_handle VERIFICATION ON PATHES FROM HASH	*/	}
 		return (path);
 	}
 	else

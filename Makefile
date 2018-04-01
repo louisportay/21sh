@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/01 13:18:14 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/01 17:06:51 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -164,6 +164,7 @@ SRCS=	main.c\
 		proc_exec.c\
 		exec_pipe.c\
 		get_path.c\
+		path_fromcache.c\
 		job_lifecycle.c\
 		exec_assignments.c\
 		prepare_fork.c\
