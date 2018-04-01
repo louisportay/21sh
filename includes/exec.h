@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 14:38:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 13:16:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <fcntl.h>
 
 # include "ft_21sh.h"
+# include "bridge.h"
 
 # define EXE_LCHD ("launched")
 
@@ -135,9 +136,6 @@ void					prefork_assign(t_ctx *ctx, t_asmt *asmt);
 int						proc_update_env(t_proc *p);
 void					handle_assign(char ***astrenv, t_asmt *asmt,
 										int *locpath);
-
-void					astr_to_buf(char **argv, t_qbuf *buf, int last);
-void					astr_env_replace(char ***env, char *key, char *new_v);
 
 int						get_path(char *exe, char **env, char **path,
 									int locpath);

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:48:30 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 17:28:00 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/01 11:58:12 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@
 
 # include "dir_explorer.h"
 
+#define WHITESPACES (" \t\v")
+
 typedef struct s_job		t_job;
 typedef struct s_proc		t_proc;
 typedef struct s_ctx		t_ctx;
 
-int							expand(char *str, t_ctx *ctx,
-									void *(*converter)(t_list *lst),
-									void **conv);
+int							expand(char *str, t_ctx *ctx, t_list **lst);
 
 char						*ft_list_join(t_list *head, char *jstr, char *pre);
 void						ft_list_insert_last(t_list **head, t_list **curr,

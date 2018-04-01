@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 13:03:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 14:50:13 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 17:49:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ static int		traverse(t_proc *p)
 		ret = NULL;
 		len = ft_strlen(p->argv[i]);
 		pos = ft_astr_getkey(p->env, p->argv[i], len);
-		if (pos != -1)
-			ft_printf("env[%d]: %s\n", pos, p->env[pos]);
 		if (pos == -1)
 		{
 			err |= 1;

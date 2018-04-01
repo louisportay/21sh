@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 15:05:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/29 15:14:45 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/01 13:10:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int						expand_argv(t_proc *p, t_ctx *ctx)
 	lst[0] = NULL;
 	while (p->argv[i] != NULL)
 	{
-		if ((ret = expand(p->argv[i], ctx, NULL, (void **)lst + 2)) < 1)
+		if ((ret = expand(p->argv[i], ctx, lst + 2)) < 1)
 		{
 			if (ret == -1)
 				on_emem(NOMEM);
@@ -61,22 +61,6 @@ int						expand_argv(t_proc *p, t_ctx *ctx)
 	return (ret);
 }
 
-static char				*flatten_list(t_list *l)
-{
-	t_qbuf				*buf;
-
-	buf = qbuf_new(1 << 8);
-	while (l != NULL)
-	{
-		qbuf_add(buf, (char *)l->content);
-		l->content = NULL;
-		if (l->next != NULL)
-			qbuf_addc(buf, ' ');
-		l = l->next;
-	}
-	return ((void *)qbuf_del(&buf));
-}
-
 int						expand_asmt(t_proc *p, t_ctx *ctx)
 {
 	t_asmt				*a;
@@ -86,7 +70,7 @@ int						expand_asmt(t_proc *p, t_ctx *ctx)
 	a = p->asmts;
 	while (a != NULL)
 	{
-		if ((ret = expand(a->value, ctx, NULL, (void **)&lst)) < 1)
+		if ((ret = expand(a->value, ctx, &lst)) < 1)
 		{
 			if (ret == -1)
 				on_emem(NOMEM);
@@ -98,7 +82,6 @@ int						expand_asmt(t_proc *p, t_ctx *ctx)
 		}
 		else
 		{
-
 			ft_strdel(&a->value);
 			if (lst->next == NULL)
 			{
@@ -106,7 +89,7 @@ int						expand_asmt(t_proc *p, t_ctx *ctx)
 				lst->content = NULL;
 			}
 			else
-				a->value = flatten_list(lst);
+				a->value = list_flatten(lst);
 			ft_list_clear(&lst, &ft_memdel);
 		}
 		a = a->next;
@@ -125,7 +108,7 @@ int						expand_redir(t_proc *p, t_ctx *ctx)
 	{
 		if (r->type != DLESS)
 		{
-			if ((ret = expand(r->s_rhs, ctx, NULL, (void **)&l)) < 1)
+			if ((ret = expand(r->s_rhs, ctx, &l)) < 1)
 			{
 				if (ret == -1)
 					on_emem(NOMEM);
@@ -154,9 +137,6 @@ int						expand_redir(t_proc *p, t_ctx *ctx)
 	}
 	return (0);
 }
-
-//	int expand_redir(t_proc *p, t_ctx *ctx) { (void)p; (void)ctx; return (0); }
-//	int expand_asmt(t_proc *p, t_ctx *ctx) { (void)p; (void)ctx; return (0); }
 
 int						expand_proc(t_proc *p, t_ctx *ctx)
 {

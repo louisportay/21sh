@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 20:39:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/01 12:49:51 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,28 +47,27 @@ static char		*bufferize(t_list *lst)
 	return (qbuf_del(&buf));
 }
 
-int				expand_glob(char **str, t_ctx *ctx)
+int				expand_glob(char *str, char **ret, t_ctx *ctx)
 {
 	t_list		*lst;
-	int			ret;
+	int			r;
 
 	if (ctx->set & BU_SET_FNEXP)
-		return (1);
-	if (str == NULL || *str == NULL || **str == '\0')
-		return (1);
-	lst = bridge_strsplit(*str);
-	if ((ret = multi_expand(lst)) < 1)
+		return (0);
+	if (str == NULL || *str == '\0')
+		return (0);
+	lst = bridge_strsplit(str);
+	if ((r = multi_expand(lst)) < 1)
 	{
-		if (ret == -1)
-			return (ret);
+		if (r == -1)
+			return (r);
 		if (ctx->set & FAILGLOB)
 			return (-2);
 		else if (ctx->set & NULLGLOB)
 			return (-3);
 		return (0);
 	}
-	ft_strdel(str);
-	*str = bufferize(lst);
+	*ret = bufferize(lst);
 	ft_list_clear(&lst, &ft_memdel);
-	return (*str != NULL ? 1 : -1);
+	return (*ret == NULL ? -1 : 1);
 }

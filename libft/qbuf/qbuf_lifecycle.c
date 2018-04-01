@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 19:19:30 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/19 15:50:23 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/01 11:16:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ void				qbuf_clear(t_qbuf *buf)
 {
 	ft_bzero(buf->buffer, buf->used);
 	buf->used = 0;
+}
+
+void				qbuf_nuke(t_qbuf **buf)
+{
+	ft_strdel(&((*buf)->buffer));
+	ft_memdel((void **)buf);
 }
 
 int					qbuf_grow(t_qbuf *buf)

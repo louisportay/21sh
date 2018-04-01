@@ -6,14 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 11:39:56 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/14 12:43:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 12:24:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define WHITESPACES (" \t\v")
-
 #include "ft_string.h"
 #include "ft_list.h"
+#include "expand.h"
 
 static void			l_skipsquote(char **str)
 {

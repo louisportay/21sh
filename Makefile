@@ -6,13 +6,14 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/03/31 11:39:45 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/01 13:18:14 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: clean fclean re all
 
 SRCDIR= srcs/ \
+		srcs/bridge \
 		srcs/utils \
 		srcs/init \
 		srcs/line \
@@ -149,7 +150,9 @@ SRCS=	main.c\
 		asmt.c\
 		bridge_token.c\
 		bridge_dlist.c\
+		\
 		bridge_astr.c\
+		bridge_list.c\
 		proc_next.c\
 		proc_func.c\
 		ptok_lifecycle.c\
@@ -162,7 +165,6 @@ SRCS=	main.c\
 		exec_pipe.c\
 		get_path.c\
 		job_lifecycle.c\
-		bridge_exec_astr.c\
 		exec_assignments.c\
 		prepare_fork.c\
 		blt_output.c\

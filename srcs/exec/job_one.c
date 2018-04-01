@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 11:37:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 17:43:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,32 @@ static int				fork_do(t_proc *p)
 	return (0);
 }
 
+static void				restore_fds(t_ctx *ctx)
+{
+	dup2(ctx->std_fd[0], STDIN_FILENO);
+	dup2(ctx->std_fd[1], STDOUT_FILENO);
+	dup2(ctx->std_fd[2], STDERR_FILENO);
+}
+
 int						job_one(t_job *j, t_ctx *ctx)
 {
 	t_proc				*p;
+	int					ret;
 
+	ret = 0;
 	p = j->procs;
-	if (p->asmts != NULL && p->argv[0] == NULL)
+	if (do_redir(p->redirs) == -1)
+	{
+		restore_fds(ctx);
+		return (1);
+	}
+	if (p->asmts != NULL
+		&& p->argv[0] == NULL)
 		prefork_assign(ctx, p->asmts);
 	else if (p->argv[0] != NULL)
 		prepare_fork(p, ctx, 0);
 	if (fork_do(p) == 1)
-		return (1);
-	return (0);
+		ret = 1;
+	restore_fds(ctx);
+	return (ret);
 }

@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bridge_astr.c                                      :+:      :+:    :+:   */
+/*   bridge_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/10 19:59:53 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 19:34:32 by vbastion         ###   ########.fr       */
+/*   Created: 2018/04/01 13:07:48 by vbastion          #+#    #+#             */
+/*   Updated: 2018/04/01 13:09:33 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-char					**astr_fromlist(t_list **lst)
+char					*list_flatten(t_list *list)
 {
-	t_list				*curr;
-	t_list				*tmp;
-	char				**arr;
-	size_t				len;
-	int					i;
+	t_qbuf				*buf;
 
-	curr = *lst;
-	len = ft_list_len(curr) + 1;
-	arr = (char **)ft_pmemalloc(sizeof(char *) * len, &on_emem, NOMEM);
-	i = 0;
-	while (curr != NULL)
+	buf = qbuf_new(1 << 8);
+	while (list != NULL)
 	{
-		tmp = curr;
-		curr = curr->next;
-		arr[i] = (char *)tmp->content;
-		ft_memdel((void **)&tmp);
-		i++;
+		qbuf_add(buf, (char *)list->content);
+		if (list->next != NULL)
+			qbuf_addc(buf, ' ');
+		list = list->next;
 	}
-	return (arr);
+	return (qbuf_del(&buf));
 }

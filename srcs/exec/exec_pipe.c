@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 11:18:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/03/31 17:35:01 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,18 @@ static int				fork_do(t_proc *p, int fd)
 	if (p->next == NULL)
 	{
 		close(fd);
-		proc_exec(p);
+		if (p->status & JOB_CMP)
+			exit(1);
+		else
+			proc_exec(p);
 	}
 	else if ((pid = fork()) == 0)
-		proc_exec(p);
+	{
+		if (p->status & JOB_CMP)
+			exit(1);
+		else
+			proc_exec(p);
+	}
 	else if (pid < 0)
 		return (print_err("fork error\n", 1));
 	else
@@ -79,10 +87,15 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 	while (p != NULL)
 	{
 		pipe_do(p);
-		if (p->asmts != NULL && p->argv[0] == NULL)
-			prefork_assign(ctx, p->asmts);
-		else if (p->argv[0] != NULL)
-			prepare_fork(p, ctx, 1);
+		if (do_redir(p->redirs) == -1)
+			p->status = 1 | JOB_CMP;
+		if ((p->status & JOB_CMP) == 0)
+		{
+			if (p->asmts != NULL && p->argv[0] == NULL)
+				prefork_assign(ctx, p->asmts);
+			else if (p->argv[0] != NULL)
+				prepare_fork(p, ctx, 1);
+		}
 		if (fork_do(p, fd) == 1)
 			return (1);
 		pipe_clear(p);

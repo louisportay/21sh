@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_tilde.h                                     :+:      :+:    :+:   */
+/*   bridge.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/21 16:18:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 11:53:28 by vbastion         ###   ########.fr       */
+/*   Created: 2018/04/01 13:13:17 by vbastion          #+#    #+#             */
+/*   Updated: 2018/04/01 13:14:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPAND_TILDE_H
-# define EXPAND_TILDE_H
+#ifndef BRIDGE_H
+# define BRIDGE_H
 
-# include "ft_21sh.h"
+typedef struct s_list	t_list;
 
-# define USR_PATH ("/Users/")
+char					*list_flatten(t_list *list);
 
-typedef struct s_job		t_job;
-typedef struct s_proc		t_proc;
-typedef struct s_ctx		t_ctx;
-
-int							expand_tilde(char *str, char **ret, t_ctx *ctx);
+void					astr_to_buf(char **argv, t_qbuf *buf, int last);
+void					astr_env_replace(char ***env, char *key, char *new_v);
 
 #endif

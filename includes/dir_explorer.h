@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:47:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 17:25:18 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/01 11:55:55 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ struct					s_entry
 	t_entry				*next;
 };
 
-int						expand_glob(char **str, t_ctx *ctx);
+int						expand_glob(char *str, char **ret, t_ctx *ctx);
 int						do_expand_glob(char **str);
 
 t_entry					*ent_create(char *path, char *name);

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 17:28:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/01 11:54:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ struct					s_lvar
 	void				(*next)(t_lvar *lvar);
 };
 
-int						expand_param(char **str, t_ctx *ctx);
+int						expand_param(char *str, char **ret, t_ctx *ctx);
 
 int						scan_dollar(char *str);
 

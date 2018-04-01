@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/15 14:23:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 12:10:38 by vbastion         ###   ########.fr       */
+/*   Created: 2018/04/01 13:12:46 by vbastion          #+#    #+#             */
+/*   Updated: 2018/04/01 13:20:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,27 @@ void					astr_env_replace(char ***env, char *key, char *new_v)
 		e[i] = str;
 	}
 	*env = e;
+}
+
+char					**astr_fromlist(t_list **lst)
+{
+	t_list				*curr;
+	t_list				*tmp;
+	char				**arr;
+	size_t				len;
+	int					i;
+
+	curr = *lst;
+	len = ft_list_len(curr) + 1;
+	arr = (char **)ft_pmemalloc(sizeof(char *) * len, &on_emem, NOMEM);
+	i = 0;
+	while (curr != NULL)
+	{
+		tmp = curr;
+		curr = curr->next;
+		arr[i] = (char *)tmp->content;
+		ft_memdel((void **)&tmp);
+		i++;
+	}
+	return (arr);
 }

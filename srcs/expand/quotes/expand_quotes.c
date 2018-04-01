@@ -6,13 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 15:59:40 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/24 15:05:53 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/01 12:31:44 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand_quotes.h"
 
-void				push_str_til(char **str, t_qbuf *buf, char c)
+static void			push_str_til(char **str, t_qbuf *buf, char c)
 {
 	char			*s;
 
@@ -27,13 +27,11 @@ void				push_str_til(char **str, t_qbuf *buf, char c)
 	*str = s + 1;
 }
 
-int					do_expand_quotes(t_list *elem)
+static int			do_expand_quotes(char *str, char **ret)
 {
 	t_qbuf			*buf;
-	char			*str;
 
 	buf = qbuf_new(1 << 8);
-	str = (char *)elem->content;
 	while (*str != '\0')
 	{
 		if (*str == '\\')
@@ -49,19 +47,27 @@ int					do_expand_quotes(t_list *elem)
 		else
 			qbuf_addc(buf, *(str++));
 	}
-	free(elem->content);
-	elem->content = (void *)qbuf_del(&buf);
-	return (elem->content != NULL);
+	*ret = qbuf_del(&buf);
+	return (*ret != NULL);
 }
 
 int					expand_quotes(t_list *list)
 {
+	char			*str;
+	char			*tmp;
+
 	while (list != NULL)
 	{
-		if (do_expand_quotes(list) == 0)
+		str = (char *)list->content;
+		if (do_expand_quotes(str, &tmp) == 0)
 		{
 			ft_list_clear(&list, &ft_memdel);
 			return (-1);
+		}
+		else
+		{
+			ft_strdel(&str);
+			list->content = tmp;
 		}
 		list = list->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 16:48:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/21 19:05:41 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 11:52:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ struct					s_ttok
 	t_ttok				*next;
 };
 
-int						expand_braces(char **str);
+int						expand_braces(char *str, char **ret);
 
 int						braces_scan(char *str);
 
