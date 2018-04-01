@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 17:35:01 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 13:32:40 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int				fork_do(t_proc *p, int fd)
 		p->pid = pid;
 		if (write(fd, (char*)&pid, 4) == -1)
 		{
-			perror("write fork_do");
+			ft_dprintf(STDERR_FILENO, "Closed IPC pipe.\n");
 			return (-1);
 		}
 	}

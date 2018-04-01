@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 11:22:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 16:57:35 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,21 @@ static void				setup_pipe(t_proc *p)
 	}
 }
 
+static void				lprint_err(enum e_extype type, char *path)
+{
+	char				*fmt;
+
+	if (type == EXDIR)
+		fmt = "21sh: %s: Is a directory\n";
+	else if (type == EXPERM)
+		fmt = "21sh: %s: Permission denied\n";
+	else if (type == EXNFD)
+		fmt = "21sh: %s: command not found\n";
+	else if (type == EXNFOD)
+		fmt = "21sh: %s: No such file or directory\n";
+	ft_dprintf(STDERR_FILENO, fmt, path);
+}
+
 void					proc_exec(t_proc *p)
 {
 	setup_signals();
@@ -62,9 +77,9 @@ void					proc_exec(t_proc *p)
 		exit(1);
 	if (p->argv[0] == NULL)
 		exit(0);
-	if (p->type == EXERR)
+	if (p->type & EXERR)
 	{
-		ft_dprintf(STDERR_FILENO, "%s: %s: %s\n", "21sh", p->argv[0], ENOCMD);
+		lprint_err(p->type, p->type == EXNFOD ? p->data.path : p->argv[0]);
 		exit(127);
 	}
 	if (p->type & BUILTIN)

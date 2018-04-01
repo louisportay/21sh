@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 15:20:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 15:22:32 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 14:07:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ int					ft_set(t_proc *p, t_ctx *ctx)
 	int				opt;
 	t_qbuf			*buf;
 
+	p->type = BUILTIN;
 	if ((opt = bu_set_getopts(p, ctx, 1)) == -1)
 		return (1);
 	buf = opt != 0 ? qbuf_new(1 << 8) : NULL;
 	if (buf != NULL)
 		qbuf_addc(buf, '1');
-	p->type = BU_STR;
 	if (opt & BU_SET_PRLOC)
 		lloc(ctx, buf);
 	if (opt & BU_SET_PRVAR)

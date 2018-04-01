@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 19:27:34 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 16:16:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 16:18:51 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static int			lhash_find(t_proc *p, t_ctx *ctx, int i)
 	ret = 0;
 	while (p->argv[i] != NULL)
 	{
-		if ((path = path_fromctx(p->argv[i], ctx)) == NULL)
+		if ((path = path_fromcache(p->argv[i], ctx)) == NULL)
 		{
 			ft_dprintf(STDERR_FILENO, BU_H_ENOKEY, p->argv[i]);
 			hash_remove(ctx->hash, p->argv[i], &ft_memdel);

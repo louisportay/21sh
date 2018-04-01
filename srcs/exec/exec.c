@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 16:23:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 13:31:24 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 static void				update_tty(t_ctx *ctx, int old)
 {
-	int					ret;
-
 	if (ctx->istty == 0)
 		return ;
-	ret = tcsetattr(STDIN_FILENO, TCSADRAIN, old ? &ctx->oldtios
+	tcsetattr(STDIN_FILENO, TCSADRAIN, old ? &ctx->oldtios
 												: &ctx->tios);
-	if (ret != 0)
-		perror(old ? "tcsetattr reset" : "tcsetattr set");
 }
 
 int						exec(t_job *jobs)

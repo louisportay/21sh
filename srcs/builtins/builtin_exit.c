@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:49:28 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/31 16:08:32 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 14:08:12 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		ft_exit(t_proc *p, t_ctx *ctx, int pipeline)
 {
-	p->type = BU_STR;
+	p->type = BUILTIN;
 	if (pipeline == 0)
 	{
 		if (p->argv[1])

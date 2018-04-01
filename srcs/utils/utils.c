@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:59:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 11:31:17 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 13:34:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ size_t				ft_read(int fd, char *buffer, size_t size)
 	{
 		if ((ret = read(fd, buffer + total, size)) == (size_t)-1)
 		{
-			perror("read, ft_read, getpid");
+			ft_dprintf(STDERR_FILENO,
+						"Critical error in ft_read. FD or buffer error\n");
 			return ((size_t)-1);
 		}
 		total += ret;

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 17:37:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 16:22:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 14:07:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int			set_help(t_proc *p, int usage)
 {
-	p->type = BU_STR;
+	p->type = BUILTIN;
 	ft_dprintf(STDERR_FILENO, "%s%c%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
 				usage ? BU_S_USG : "", usage ? '\n' : '\r',
 				BU_S_HPR, BU_S_HSE, BU_S_HEX, BU_S_HBG, BU_S_HON, BU_S_HFN,
@@ -31,7 +31,7 @@ static int			lusage(t_proc *p, char c, char ec)
 	}
 	else
 		ft_dprintf(STDERR_FILENO, "%s\n", BU_S_USG);
-	p->type = BU_STR;
+	p->type = BUILTIN;
 	return (-1);
 }
 

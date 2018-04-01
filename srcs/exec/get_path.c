@@ -6,13 +6,36 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/14 17:16:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 16:36:42 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-char					*env_path_get(char *exe, char **pathes)
+static int				path_handle(char *path, t_proc *p, int hash)
+{
+	struct stat			stats;
+
+	if (lstat(path, &stats) == -1)
+	{
+		p->type = hash ? EXNFOD : EXNFD;
+		return (1);
+	}
+	else if ((S_IXUSR & stats.st_mode) == 0)
+	{
+		p->type = EXPERM;
+		return (1);
+	}
+	else if (S_ISDIR(stats.st_mode))
+	{
+		p->type = EXDIR;
+		return (1);
+	}
+	p->type = BINARY;
+	return (0);
+}
+
+static char				*env_path_get(char *exe, char **pathes)
 {
 	static char			buffer[PATH_MAX + 1];
 	size_t				i;
@@ -33,47 +56,7 @@ char					*env_path_get(char *exe, char **pathes)
 	return (NULL);
 }
 
-int						ctx_path(char *exe, t_ctx *ctx, char **path)
-{
-	t_hentry		*e;
-
-	*path = NULL;
-	if ((e = hash_lookup(ctx->hash, exe)) != NULL)
-		*path = (char *)e->content;
-	else
-		*path = env_path_get(exe, ctx->path);
-	if (*path != NULL)
-	{
-		hash_add(ctx->hash, exe, (void *)*path);
-		return (1);
-	}
-	return (0);
-}
-
-int						loc_path(char *exe, char **env, char **path)
-{
-	char				*lpath;
-	char				**pathes;
-
-	lpath = ft_astr_getval(env, "PATH");
-	if (lpath == NULL)
-		return (0);
-	if ((pathes = ft_strsplit(lpath, ':')) == NULL)
-		return (0);
-	*path = env_path_get(exe, pathes);
-	ft_astr_clear(&pathes);
-	return (*path != NULL);
-}
-
-int						get_path(char *exe, char **env, char **path,
-									int locpath)
-{
-	if (locpath)
-		return (loc_path(exe, env, path));
-	return (ctx_path(exe, get_ctxaddr(), path));
-}
-
-static char				*lnpath(char *exe, t_ctx *ctx)
+char					*path_fromcache(char *exe, t_ctx *ctx)
 {
 	char				*dkey;
 	char				*dpath;
@@ -95,7 +78,7 @@ static char				*lnpath(char *exe, t_ctx *ctx)
 	return (path);
 }
 
-char					*path_fromctx(char *exe, t_ctx *ctx)
+static char				*path_fromctx(char *exe, t_ctx *ctx, t_proc *p)
 {
 	t_hentry			*e;
 	char				*path;
@@ -103,12 +86,19 @@ char					*path_fromctx(char *exe, t_ctx *ctx)
 	path = NULL;
 	if ((e = hash_lookup(ctx->hash, exe)) != NULL)
 	{
+		if (path_handle((char *)e->content, p, 1))
+		{
+			if (p->type == EXNFOD)
+				p->data.path = ft_strdup((char *)e->content);
+			return (p->data.path);
+		}
 		if ((path = ft_strdup((char *)e->content)) == NULL)
 			on_emem(NOMEM);
+		{	/*	ADD path_handle VERIFICATION ON PATHES FROM HASH	*/	}
 		return (path);
 	}
 	else
-		return (lnpath(exe, ctx));
+		return (path_fromcache(exe, ctx));
 }
 
 static char				*llocpath(t_proc *p)
@@ -131,17 +121,23 @@ static char				*llocpath(t_proc *p)
 
 char					*proc_path(t_proc *p, t_ctx *ctx, int locpath)
 {
-	char				*path;
-
-	if (ft_strindex(p->argv[0], '/') != -1)
+	if (p->argv[0][0] == '\0')
 	{
-		if (access(p->argv[0], X_OK) == 0)
-		{
-			if ((path = ft_strdup(p->argv[0])) == NULL)
-				on_emem(NOMEM);
-			return (path);
-		}
+		p->type = EXERR;
 		return (NULL);
 	}
-	return (locpath == 0 ? path_fromctx(p->argv[0], ctx) : llocpath(p));
+	if (ft_strindex(p->argv[0], '/') != -1)
+	{
+		if (path_handle(p->argv[0], p, 0) != 0)
+			return (NULL);
+		if ((p->data.path = ft_strdup(p->argv[0])) == NULL)
+			on_emem(NOMEM);
+		return (p->data.path);
+	}
+	p->data.path = ((locpath == 0) ? path_fromctx(p->argv[0], ctx, p)
+					: llocpath(p));
+	if (p->type == EXNFOD)
+		return (NULL);
+	p->type = (p->data.path == NULL) ? EXNFD : BINARY;
+	return (p->data.path);
 }

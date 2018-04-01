@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:18:58 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 13:05:10 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 16:51:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int					expand(char *str, t_ctx *ctx, t_list **lst)
 		return (0);
 	exp = 0;
 	ret = expand_braces(str, &tmp);
-	tmp = (ret == 0) ? ft_strdup(str) : NULL;
+	tmp = (ret == 0) ? ft_strdup(str) : tmp;
 	exp |= (ret != 0);
 	ret = expand_tilde(tmp, &swp, ctx);
 	lcleanup(ret, &exp, &tmp, &swp);

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 13:16:03 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 16:25:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ enum					e_extype
 {
 	BINARY = 0,
 	BUILTIN = 1,
-	BU_STR = 3,
-	EXERR = 4
+	EXERR = 2,
+	EXDIR = EXERR | 4,
+	EXPERM = EXERR | 8,
+	EXNFD = EXERR | 16,
+	EXNFOD = EXERR | 32
 };
 
 /*
@@ -137,12 +140,7 @@ int						proc_update_env(t_proc *p);
 void					handle_assign(char ***astrenv, t_asmt *asmt,
 										int *locpath);
 
-int						get_path(char *exe, char **env, char **path,
-									int locpath);
-int						ctx_path(char *exe, t_ctx *ctx, char **path);
-int						loc_path(char *exe, char **env, char **path);
-
-char					*path_fromctx(char *exe, t_ctx *ctx);
+char					*path_fromcache(char *exe, t_ctx *ctx);
 char					*proc_path(t_proc *p, t_ctx *ctx, int locpath);
 int						prepare_fork(t_proc *p, t_ctx *ctx, int pipeline);
 

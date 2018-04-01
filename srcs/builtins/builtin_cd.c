@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 11:37:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 16:34:55 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 14:06:05 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int			lcd_tar(t_ctx *ctx, char *key, char *err)
 
 int					ft_cd(t_proc *p, t_ctx *ctx)
 {
-	p->type = BU_STR;
+	p->type = BUILTIN;
 	if (ft_astr_len(p->argv) > 2)
 	{
 		ft_putstr_fd(SH_EARGTO + 1, STDERR_FILENO);

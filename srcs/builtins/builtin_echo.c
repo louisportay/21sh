@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:18:08 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 16:12:18 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 14:06:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int				ft_echo(t_proc *p, t_ctx *ctx)
 	t_qbuf		*buf;
 
 	(void)ctx;
-	p->type = BU_STR;
+	p->type = BUILTIN;
 	if (p->argv[1] == NULL)
 	{
 		write(STDOUT_FILENO, "\n", 1);

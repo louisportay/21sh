@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 13:03:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 17:49:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/01 14:06:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int				ft_printenv(t_proc *p, t_ctx *ctx)
 	p->type = BUILTIN;
 	if (p->argv[1] == NULL)
 	{
-		p->type = BU_STR;
 		i = 0;
 		buf = qbuf_new(1 << 8);
 		while (p->env[i] != NULL)

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:22:38 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/20 17:02:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/01 14:07:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		env_getopt(t_proc *p, int *getopt)
 
 int		err_getopt(t_proc *p, char **av_addr)
 {
-	p->type = BU_STR;
+	p->type = BUILTIN;
 	ft_astr_nfree(p->argv, ft_astr_len(p->argv));
 	free(av_addr);
 	p->argv = ft_astr_dup((char *[]){"env", NULL});
