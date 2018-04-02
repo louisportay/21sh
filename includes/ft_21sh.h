@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/01 17:07:47 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 19:45:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void					wrap_exit(int status, t_ctx *ctx);
 void					on_emem(int status);
 void					max(size_t *a, size_t b);
 
-int						set_sighandler(void);
+void					set_sighandler(void);
 t_ctx					*get_ctxaddr(void);
 
 /*

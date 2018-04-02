@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/31 11:05:08 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 19:59:49 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,12 @@ void		sighand_int(int signo)
 	reset_line(ctx, ctx->cur_line);
 }
 
-int			set_sighandler(void)
+void			set_sighandler(void)
 {
 	signal(SIGWINCH, &sighandler);
 	signal(SIGTSTP, SIG_IGN);
-	signal(SIGINT, &sighand_int);
+	signal(SIGINT, SIG_IGN);
 	signal(SIGTERM, &sighandler);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
-	return (SUCCESS);
 }

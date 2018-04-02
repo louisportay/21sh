@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/02 14:07:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 19:59:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void		dump_err(char errcode)
 
 void		fatal_err(char errcode, t_ctx *ctx)
 {
+	signal(SIGINT, SIG_IGN);
 	dump_err(errcode);
 	wrap_exit(EXIT_FAILURE, ctx);
 }
