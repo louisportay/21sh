@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:47:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 11:23:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 19:06:33 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int		normal_matcher(char *matcher, t_mtok **tokens)
 	char		*orig;
 
 	tok[0] = NULL;
+	tok[1] = NULL;
 	tok[2] = NULL;
 	orig = matcher;
 	while (*matcher != '\0')
@@ -68,6 +69,7 @@ static int		normal_matcher(char *matcher, t_mtok **tokens)
 			mtok_insert(tok, tok + 1, tok[2]);
 		else
 			break ;
+		tok[2] = NULL;
 	}
 	*tokens = tok[0];
 	return (1);
