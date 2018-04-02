@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 17:58:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 16:33:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,6 @@ void					handle_assign(char ***astrenv, t_asmt *asmt,
 char					*path_fromcache(char *exe, t_ctx *ctx);
 char					*proc_path(t_proc *p, t_ctx *ctx, int locpath);
 int						prepare_fork(t_proc *p, t_ctx *ctx, int pipeline);
-
-int						blt_output(t_proc *p);
 
 char					*get_command(t_job *j);
 

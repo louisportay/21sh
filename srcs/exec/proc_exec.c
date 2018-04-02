@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 17:01:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 16:37:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,21 @@ void					proc_exec(t_proc *p)
 	if (do_redir(p->redirs) == -1)
 		exit(1);
 	if (p->argv[0] == NULL)
+	{
+		proc_clear(&p);
 		exit(0);
+	}
 	if (p->type & EXERR)
 	{
 		lprint_err(p->type, p->type == EXNFOD ? p->data.path : p->argv[0]);
+		proc_clear(&p);
 		exit(127);
 	}
 	if (p->type & BUILTIN)
-		exit(blt_output(p));
+	{
+		proc_clear(&p);
+		exit(p->status & 0xFF);
+	}
 	execve(p->data.path, p->argv, p->env);
 	exit_err("Could not exec...\n");
 }

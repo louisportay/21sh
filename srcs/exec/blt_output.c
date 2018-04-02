@@ -6,13 +6,8 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:53:38 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 14:39:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 16:33:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-int						blt_output(t_proc *p)
-{
-	return (p->status & 0xFF);
-}
