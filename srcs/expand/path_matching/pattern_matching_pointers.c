@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 18:23:08 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/02 19:17:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static int			f_brac(char **matcher, t_mtok **tmp)
 		return (-1);
 	}
 	*matcher = end + 1;
-	ft_strdel(&str);
 	return (1);
 }
 
@@ -63,8 +62,6 @@ static int			f_dflt(char **matcher, t_mtok **tmp)
 	ft_dprintf(STDERR_FILENO, "Error, you should not be here.\n%s\n", *matcher);
 	return (-1);
 }
-
-//added static
 
 t_mptr				get_matcher(int id)
 {

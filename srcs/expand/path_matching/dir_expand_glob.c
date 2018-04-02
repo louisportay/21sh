@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 12:51:49 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 17:23:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 19:04:25 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int				do_expand_glob(char **str)
 	t_entry		*matched;
 	int			lret;
 
+	or = NULL;
 	get_matcher_tokens(*str, &or, NONE);
 	new = mtok_splitstr(or);
 	mtok_clear(&or);
