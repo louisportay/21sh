@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:48:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/18 20:16:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 16:05:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void			hash_add_or_mod(t_hdict *dict, char *key, char *value,
 	{
 		ptr(&e->content);
 		e->content = value;
+		ft_strdel(&key);
 		return ;
 	}
 	hash_add(dict, key, value);

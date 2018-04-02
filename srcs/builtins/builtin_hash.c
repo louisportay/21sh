@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 19:27:34 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 16:18:51 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 16:03:48 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,7 @@ static int			lhash_find(t_proc *p, t_ctx *ctx, int i)
 			ret |= 1;
 		}
 		else
-		{
-			path = ft_strdup(path);
 			hash_add_or_mod(ctx->hash, ft_strdup(p->argv[i]), path, &ft_memdel);
-		}
 		i++;
 	}
 	return (ret);

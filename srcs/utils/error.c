@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/31 16:27:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 14:07:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,9 @@ void		wrap_exit(int status, t_ctx *ctx)
 		ft_astr_clear(&ctx->locals);
 	if (ctx->line_edition == true)
 		tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);
+	if (ctx->builtins != NULL)
+		hash_free(&ctx->builtins, NULL);
+	hash_free(&ctx->hash, &ft_memdel);
 	close(ctx->std_fd[0]);
 	close(ctx->std_fd[1]);
 	close(ctx->std_fd[2]);

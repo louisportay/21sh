@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 13:12:46 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 13:20:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 14:21:35 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,6 @@ char					**astr_fromlist(t_list **lst)
 		ft_memdel((void **)&tmp);
 		i++;
 	}
+	*lst = NULL;
 	return (arr);
 }

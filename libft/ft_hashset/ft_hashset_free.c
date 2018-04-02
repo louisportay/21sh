@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 10:49:37 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 14:34:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/02 13:56:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void			hash_free(t_hdict **dict,
 void			del_entry(t_hentry **e, void (*ptr)(void **))
 {
 	ft_strdel(&(*e)->key);
-	ptr(&(*e)->content);
+	if (ptr != NULL)
+		ptr(&(*e)->content);
 	ft_memdel((void **)e);
 }
 

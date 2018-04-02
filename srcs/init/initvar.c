@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 15:55:36 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 10:27:47 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/02 13:58:05 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,16 +127,16 @@ t_hdict		*getbuiltins(void)
 	t_hdict		*dict;
 
 	dict = hash_create(HASH_SIZE, HASH_PRIME);
-	hash_add(dict, "exit", &ft_exit);
-	hash_add(dict, "history", &ft_history);
-	hash_add(dict, "cd", &ft_cd);
-	hash_add(dict, "echo", &ft_echo);
-	hash_add(dict, "printenv", &ft_printenv);
-	hash_add(dict, "hash", &ft_hash);
-	hash_add(dict, "set", &ft_set);
-	hash_add(dict, "setenv", &ft_setenv);
-	hash_add(dict, "export", &ft_export);
-	hash_add(dict, "unsetenv", &ft_unsetenv);
-	hash_add(dict, "unset", &ft_unset);
+	hash_add(dict, ft_strdup("exit"), &ft_exit);
+	hash_add(dict, ft_strdup("history"), &ft_history);
+	hash_add(dict, ft_strdup("cd"), &ft_cd);
+	hash_add(dict, ft_strdup("echo"), &ft_echo);
+	hash_add(dict, ft_strdup("printenv"), &ft_printenv);
+	hash_add(dict, ft_strdup("hash"), &ft_hash);
+	hash_add(dict, ft_strdup("set"), &ft_set);
+	hash_add(dict, ft_strdup("setenv"), &ft_setenv);
+	hash_add(dict, ft_strdup("export"), &ft_export);
+	hash_add(dict, ft_strdup("unsetenv"), &ft_unsetenv);
+	hash_add(dict, ft_strdup("unset"), &ft_unset);
 	return (dict);
 }
