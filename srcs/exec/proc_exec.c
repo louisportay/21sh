@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 15:44:50 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:00:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,6 @@ static void				setup_signals(void)
 	signal(SIGTTOU, SIG_DFL);
 	signal(SIGTTIN, SIG_DFL);
 	signal(SIGCHLD, SIG_DFL);
-}
-
-static void				setup_pipe(t_proc *p)
-{
-	if (p->pipe_in[0] != -1)
-	{
-		if (p->pipe_in[0] != STDIN_FILENO)
-		{
-			dup2(p->pipe_in[0], STDIN_FILENO);
-			close(p->pipe_in[0]);
-		}
-		if (p->pipe_in[1] != STDOUT_FILENO)
-			close(p->pipe_in[1]);
-	}
-	if (p->pipe_out[1] != -1)
-	{
-		if (p->pipe_out[1] != STDOUT_FILENO)
-		{
-			dup2(p->pipe_out[1], STDOUT_FILENO);
-			close(p->pipe_out[1]);
-		}
-		if (p->pipe_out[0] != STDIN_FILENO)
-			close(p->pipe_out[0]);
-	}
 }
 
 void					exec_print_err(enum e_extype type, char *path)
@@ -68,7 +44,6 @@ void					proc_exec(t_proc *p)
 	int					s;
 
 	setup_signals();
-	setup_pipe(p);
 	if (p->argv[0] == NULL)
 	{
 		proc_clear(&p);

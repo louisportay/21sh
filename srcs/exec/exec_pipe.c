@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 10:28:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/04 19:56:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,18 @@ static int				fork_do(t_proc *p, int fd, t_ctx *ctx)
 	return (0);
 }
 
-static void				pipe_do(t_proc *p)
+static void				pipingation(t_proc *p)
 {
+	int					fd[2];
+
+	if (p->pipe_in[0] != -1)
+	{
+		dup2(p->pipe_in[0], STDIN_FILENO);
+		close(p->pipe_in[0]);
+	}
 	if (p->next != NULL)
 	{
-		if (pipe(p->pipe_out) < 0)
+		if (pipe(fd) < 0)
 		{
 			if (errno == EMFILE)
 				ft_dprintf(STDERR_FILENO, "Too many descriptors are active.\n");
@@ -65,19 +72,12 @@ static void				pipe_do(t_proc *p)
 				ft_dprintf(STDERR_FILENO, "The system table is full\n");
 			wrap_exit(EXIT_FAILURE, get_ctxaddr());
 		}
-		ft_memcpy(p->next->pipe_in, p->pipe_out, sizeof(int[2]));
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+		p->next->pipe_in[0] = fd[0];
 	}
-}
-
-static void				pipe_clear(t_proc *p)
-{
-	if (p->pipe_in[0] != -1)
-	{
-		if (p->pipe_in[0] != STDIN_FILENO)
-			close(p->pipe_in[0]);
-		if (p->pipe_in[1] != STDOUT_FILENO)
-			close(p->pipe_in[1]);
-	}
+	else
+		dup2(get_ctxaddr()->std_fd[1], STDOUT_FILENO);
 }
 
 int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
@@ -87,7 +87,7 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 	p = j->procs;
 	while (p != NULL)
 	{
-		pipe_do(p);
+		pipingation(p);
 		if (do_redir(p->redirs) == -1)
 			p->status = 1 | JOB_CMP;
 		if ((p->status & JOB_CMP) == 0)
@@ -99,7 +99,6 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 		}
 		if (fork_do(p, fd, ctx) == 1)
 			return (1);
-		pipe_clear(p);
 		p = p->next;
 	}
 	_exit(-1);

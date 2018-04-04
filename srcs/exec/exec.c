@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 13:31:24 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 19:56:15 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int						exec(t_job *jobs)
 		tmp->next = NULL;
 		job_exec(tmp, ctx);
 		job_safeclear(&tmp->parent);
+		dup2(ctx->std_fd[1], STDOUT_FILENO);
+		dup2(ctx->std_fd[0], STDIN_FILENO);
 	}
 	signal(SIGINT, &sighand_int);
 	update_tty(ctx, 0);
