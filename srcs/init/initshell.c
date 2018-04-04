@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/02 19:48:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/04 19:07:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,7 @@ static void		init_termios(t_ctx *ctx)
 	if (tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->tios) == -1)
 		ctx->line_edition = 0;
 	else
-	{
 		init_termcaps(ctx);
-		signal(SIGINT, &sighand_int);
-	}
 }
 
 static void		init_line_edition(t_ctx *ctx)
