@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 20:00:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:28:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void					proc_exec(t_proc *p)
 	if (p->argv[0] == NULL)
 	{
 		proc_clear(&p);
-		exit(0);
+		exit(1);
 	}
 	if (p->type & EXERR)
 	{

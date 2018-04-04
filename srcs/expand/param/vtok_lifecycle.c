@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 18:03:58 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/09 19:25:40 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:23:02 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_vtok			*vtok_new(enum e_vtype type, char c)
 {
 	t_vtok		*tok;
 
-	if ((tok = (t_vtok *)ft_memalloc(sizeof(t_vtok))) == NULL)
+	if ((tok = (t_vtok *)ft_pmemalloc(sizeof(t_vtok), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	tok->data.c = c;
 	tok->type = type;
@@ -36,7 +36,7 @@ t_vtok			*vtok_newstr(enum e_vtype type, char *str)
 {
 	t_vtok		*tok;
 
-	if ((tok = (t_vtok *)ft_memalloc(sizeof(t_vtok))) == NULL)
+	if ((tok = (t_vtok *)ft_pmemalloc(sizeof(t_vtok), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	tok->data.str = str;
 	tok->type = type;

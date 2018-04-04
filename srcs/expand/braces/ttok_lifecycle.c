@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 19:04:25 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/11 16:59:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:22:58 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_ttok					*ttok_newrng(enum e_ttoktype type, int l, int r)
 {
 	t_ttok				*tok;
 
-	if ((tok = (t_ttok *)ft_memalloc(sizeof(t_ttok))) == NULL)
+	if ((tok = (t_ttok *)ft_pmemalloc(sizeof(t_ttok), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	tok->type = type;
 	tok->data.rng[0] = l;
@@ -31,7 +31,7 @@ t_ttok					*ttok_newmix(t_list *lst)
 
 	if (lst == NULL)
 		return (NULL);
-	if ((tok = (t_ttok *)ft_memalloc(sizeof(t_ttok))) == NULL)
+	if ((tok = (t_ttok *)ft_pmemalloc(sizeof(t_ttok), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	tok->type = TMIXRNG;
 	tok->data.elem[0] = lst;
@@ -45,7 +45,7 @@ t_ttok					*ttok_newstr(char *str)
 
 	if (str == NULL)
 		return (NULL);
-	if ((tok = (t_ttok *)ft_memalloc(sizeof(t_ttok))) == NULL)
+	if ((tok = (t_ttok *)ft_pmemalloc(sizeof(t_ttok), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	tok->type = TSTRING;
 	tok->data.str = str;
