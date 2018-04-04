@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 11:52:02 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 14:42:45 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static int				l_wait_for_job(t_job *j)
 	int					status;
 	pid_t				pid;
 
+	status = 0;
 	p = j->procs;
 	while (p != NULL)
 	{

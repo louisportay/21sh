@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 17:57:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 14:52:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int						job_one(t_job *j, t_ctx *ctx)
 		prefork_assign(ctx, p->asmts);
 	else if (p->argv[0] != NULL)
 		prepare_fork(p, ctx, 0);
-	if (fork_do(p) == 1)
+	if (p->type == BINARY && fork_do(p) == 1)
 		ret = 1;
 	restore_fds(ctx);
 	return (ret);
