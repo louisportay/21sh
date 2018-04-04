@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 15:43:44 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:11:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ struct					s_proc
 	pid_t				pid;
 	int					status;
 	struct s_redir		*redirs;
-	int					pipe_in[2];
-	int					pipe_out[2];
+	int					pipe_in;
 	enum e_extype		type;
 	union u_ebin		data;
 };

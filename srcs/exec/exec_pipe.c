@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 19:56:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:12:35 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ static void				pipingation(t_proc *p)
 {
 	int					fd[2];
 
-	if (p->pipe_in[0] != -1)
+	if (p->pipe_in != -1)
 	{
-		dup2(p->pipe_in[0], STDIN_FILENO);
-		close(p->pipe_in[0]);
+		dup2(p->pipe_in, STDIN_FILENO);
+		close(p->pipe_in);
 	}
 	if (p->next != NULL)
 	{
@@ -74,7 +74,7 @@ static void				pipingation(t_proc *p)
 		}
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
-		p->next->pipe_in[0] = fd[0];
+		p->next->pipe_in = fd[0];
 	}
 	else
 		dup2(get_ctxaddr()->std_fd[1], STDOUT_FILENO);
