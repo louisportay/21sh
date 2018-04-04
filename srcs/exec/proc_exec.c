@@ -6,19 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 15:25:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 15:44:50 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
 #define ENOCMD ("command not found")
-
-static void				exit_err(char *msg)
-{
-	ft_putstr_fd(msg, STDERR_FILENO);
-	exit(1);
-}
 
 static void				setup_signals(void)
 {
@@ -54,7 +48,7 @@ static void				setup_pipe(t_proc *p)
 	}
 }
 
-static void				lprint_err(enum e_extype type, char *path)
+void					exec_print_err(enum e_extype type, char *path)
 {
 	char				*fmt;
 
@@ -82,7 +76,7 @@ void					proc_exec(t_proc *p)
 	}
 	if (p->type & EXERR)
 	{
-		lprint_err(p->type, p->type == EXNFOD ? p->data.path : p->argv[0]);
+		exec_print_err(p->type, p->type == EXNFOD ? p->data.path : p->argv[0]);
 		proc_clear(&p);
 		exit(127);
 	}

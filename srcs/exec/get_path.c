@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 17:07:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 15:34:15 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ static int				path_handle(char *path, t_proc *p, int hash)
 		p->type = hash ? EXNFOD : EXNFD;
 		return (1);
 	}
-	else if ((S_IXUSR & stats.st_mode) == 0)
-	{
-		p->type = EXPERM;
-		return (1);
-	}
 	else if (S_ISDIR(stats.st_mode))
 	{
 		p->type = EXDIR;
+		return (1);
+	}
+	else if ((S_IXUSR & stats.st_mode) == 0)
+	{
+		p->type = EXPERM;
 		return (1);
 	}
 	p->type = BINARY;
