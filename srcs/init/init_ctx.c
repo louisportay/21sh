@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/31 16:28:54 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 14:20:37 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		init_ctx(t_ctx *ctx, char **av, char **environ)
 		ctx->line_edition = 0;
 	ctx->environ = ft_astr_dup(environ);
 	ctx->hash = hash_create(HASH_SIZE, HASH_PRIME);
-	ctx->ret_tcget = tcgetattr(STDIN_FILENO, &ctx->oldtios); // Why?
+	ctx->ret_tcget = tcgetattr(STDIN_FILENO, &ctx->oldtios);
 	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 	create_locals(&ctx->locals);
 	ctx->builtins = getbuiltins();

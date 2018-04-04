@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/02 16:37:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 14:18:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ static void				lprint_err(enum e_extype type, char *path)
 
 void					proc_exec(t_proc *p)
 {
+	int					s;
+
 	setup_signals();
 	setup_pipe(p);
-	if (do_redir(p->redirs) == -1)
-		exit(1);
 	if (p->argv[0] == NULL)
 	{
 		proc_clear(&p);
@@ -84,13 +84,14 @@ void					proc_exec(t_proc *p)
 	{
 		lprint_err(p->type, p->type == EXNFOD ? p->data.path : p->argv[0]);
 		proc_clear(&p);
-		exit(127);
+		exit(127);//leak de fork
 	}
 	if (p->type & BUILTIN)
 	{
+		s = p->status & 0xFF;
 		proc_clear(&p);
-		exit(p->status & 0xFF);
+		exit(s);
 	}
 	execve(p->data.path, p->argv, p->env);
-	exit_err("Could not exec...\n");
+	exit_err("Could not exec...\n");//tej ca 
 }

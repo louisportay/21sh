@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 18:13:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 10:28:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int				fork_do(t_proc *p, int fd, t_ctx *ctx)
 			proc_exec(p);
 	}
 	else if (pid < 0)
-		return (print_err("fork error\n", 1));
+		return (print_err("21sh: fork: could not fork\n", 1));
 	else
 	{
 		p->pid = pid;

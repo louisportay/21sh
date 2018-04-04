@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 13:03:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 14:06:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 14:08:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int				ft_printenv(t_proc *p, t_ctx *ctx)
 			}
 			i++;
 		}
-		ft_putstr_fd(qbuf_del(&buf), STDOUT_FILENO);
+		qbuf_printclose(&buf, STDOUT_FILENO);
 		return (0);
 	}
 	return (traverse(p));
