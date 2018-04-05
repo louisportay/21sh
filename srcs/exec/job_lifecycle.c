@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:03:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 10:48:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:22:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_job					*job_new(t_proc *plist)
 {
 	t_job				*job;
 
-	if ((job = (t_job *)ft_memalloc(sizeof(t_job))) == NULL)
+	if ((job = (t_job *)ft_pmemalloc(sizeof(t_job), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	job->procs = plist;
 	job->parent = job;

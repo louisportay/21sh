@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 18:28:52 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 17:22:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:23:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_entry			*ent_create(char *path, char *name)
 {
 	t_entry		*ret;
 
-	if ((ret = (t_entry *)ft_memalloc(sizeof(t_entry))) == NULL)
+	if ((ret = (t_entry *)ft_pmemalloc(sizeof(t_entry), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	ret->name = ft_strdup(name);
 	ret->path = path == NULL ? ft_strdup(name) : ft_strjoinc(path, name, '/');

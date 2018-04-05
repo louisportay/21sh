@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 16:19:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:31:40 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ int						job_one(t_job *j, t_ctx *ctx)
 	if (p->type == BINARY && fork_do(p) == 1)
 		ret = 1;
 	else if ((p->type & (EXDIR | EXPERM | EXNFD | EXNFOD)) != 0)
+	{
 		exec_print_err(p->type, p->type == EXNFOD ? p->data.path : p->argv[0]);
+		p->status |= 1 | JOB_CMP;
+		j->status |= 1 | JOB_CMP;
+	}
 	restore_fds(ctx);
 	return (ret);
 }

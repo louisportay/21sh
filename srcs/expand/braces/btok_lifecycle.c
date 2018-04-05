@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 17:09:15 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/13 15:23:55 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:22:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_btok					*btok_new(enum e_btoktype type, char *str)
 {
 	t_btok				*ret;
 
-	if ((ret = (t_btok *)ft_memalloc(sizeof(t_btok))) == NULL)
+	if ((ret = (t_btok *)ft_pmemalloc(sizeof(t_btok), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	ret->type = type;
 	ret->val = str;

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 12:43:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/05 13:10:16 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/04 20:24:23 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_mtok			*mtok_create(enum e_mt_type type)
 {
 	t_mtok		*ret;
 
-	if ((ret = (t_mtok *)ft_memalloc(sizeof(t_mtok))) == NULL)
+	if ((ret = (t_mtok *)ft_pmemalloc(sizeof(t_mtok), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	ret->type = type;
 	ret->data.str = NULL;
@@ -39,7 +39,7 @@ t_mtok			*mtok_create_mod(enum e_mt_type type, enum e_modtype mod)
 {
 	t_mtok		*ret;
 
-	if ((ret = (t_mtok *)ft_memalloc(sizeof(t_mtok))) == NULL)
+	if ((ret = (t_mtok *)ft_pmemalloc(sizeof(t_mtok), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	ret->type = type;
 	ret->data.mod = mod;
@@ -50,7 +50,7 @@ t_mtok			*mtok_create_str(enum e_mt_type type, char *str)
 {
 	t_mtok		*ret;
 
-	if ((ret = (t_mtok *)ft_memalloc(sizeof(t_mtok))) == NULL)
+	if ((ret = (t_mtok *)ft_pmemalloc(sizeof(t_mtok), &on_emem, NOMEM)) == NULL)
 		return (NULL);
 	ret->type = type;
 	ret->data.str = str;
