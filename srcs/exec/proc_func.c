@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 11:27:18 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 18:18:10 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/06 20:56:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void			l_add_argv_to_buf(t_proc *p, t_qbuf *buf)
 	}
 }
 
-void				proc_print(t_proc *p, t_ctx *ctx)
+void				proc_print(t_proc *p)
 {
 	t_qbuf			*buf;
 	t_asmt			*a;
@@ -65,6 +65,6 @@ void				proc_print(t_proc *p, t_ctx *ctx)
 	if (p->argv[0] != NULL)
 		l_add_argv_to_buf(p, buf);
 	str = qbuf_del(&buf);
-	ft_putstr_fd(str, ctx->tty);
+	ft_putstr_fd(str, STDIN_FILENO);
 	ft_strdel(&str);
 }

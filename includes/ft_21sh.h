@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/02 19:45:36 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/06 20:53:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ struct					s_ctx
 	t_dlist				*yank;
 	char				prompt_mode[4];
 	int					ret_tcget;
-	int					tty;
 
 	/*
 	**	SHOPT BOOLS

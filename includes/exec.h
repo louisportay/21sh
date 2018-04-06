@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 20:11:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/06 20:56:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void					proc_insert(t_proc **head, t_proc **curr, t_proc *p);
 void					proc_clear(t_proc **proc);
 
 void					proc_exec(t_proc *p);
-void					proc_print(t_proc *p, t_ctx *ctx);
+void					proc_print(t_proc *p);
 int						proc_chgstat(t_job *job, pid_t pid, int status);
 
 void					proc_foreach(t_proc *p, void (*act)(t_proc *));

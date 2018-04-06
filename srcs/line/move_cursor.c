@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 16:52:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/25 20:42:02 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/06 20:54:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int			move_cursor_backward(t_ctx *ctx, t_line *l)
 		tputs(ctx->tc.up, 1, &ft_putchar_stdin);
 		l->cursor_line--;
 		l->offset_inline--;
-		ft_dprintf(ctx->tty, "\E[%dC", ctx->ws.ws_col);
+		ft_dprintf(STDIN_FILENO, "\E[%dC", ctx->ws.ws_col);
 		return (1);
 	}
 	else
