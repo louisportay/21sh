@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/30 16:34:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/06 19:42:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	toggle_emacs_mode(t_ctx *ctx, t_line *l)
 	ctx->emacs_mode = !ctx->emacs_mode;
 }
 
-void	missing_quote_err(int	quote)
+void	missing_quote_err(int quote)
 {
 	if (quote == SQUOTE)
 		ft_dprintf(STDERR_FILENO, "while looking for matching `''\n");
@@ -64,7 +64,9 @@ void	missing_quote_err(int	quote)
 
 void	warning_heredoc(t_line *l)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: warning: here-document delimited by end-of-file (wanted `%s')\n", l->eohdoc);
+	ft_dprintf(STDERR_FILENO,
+	"21sh: warning: here-document delimited by end-of-file (wanted `%s')\n",
+	l->eohdoc);
 	if (get_ctxaddr()->line_edition)
 		ft_dlstdel(&l->line, &delvoid);
 	else if (!l->split_line)

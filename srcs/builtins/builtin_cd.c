@@ -6,66 +6,87 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 11:37:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 14:06:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/06 19:36:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-static int			lp(char *path)
+int			remove_prev_dir(char *trim_path, unsigned *i, char *argpath)
 {
-	ft_printf("%s\n", path);
+	struct stat	st;
+
+	if (*i > 1 && trim_path[*i - 1] == '/')
+		trim_path[--(*i)] = '\0';
+	if (stat(trim_path, &st) == -1)
+	{
+		ft_dprintf(STDERR_FILENO, "21sh: cd: %s: %s\n", argpath, SH_ENOFOD);
+		return (-1);
+	}
+	else if (!S_ISDIR(st.st_mode))
+	{
+		ft_dprintf(STDERR_FILENO, "21sh: cd: %s: %s\n", argpath, SH_ENODIR);
+		return (-1);
+	}
+	while (*i != 0 && trim_path[*i - 1] != '/')
+		trim_path[--(*i)] = '\0';
 	return (0);
 }
 
-static int			l_cd(t_ctx *ctx, char *path, int prt)
+static void	cd_getopt(char **operand, char *opt, char **av)
 {
-	char			cwd[MAXPATHLEN + 1];
-	struct stat		stats;
-
-	getcwd(cwd, MAXPATHLEN + 1);
-	if (chdir(path) != 0)
+	*operand = av[1];
+	*opt = 0;
+	if (ft_astr_len(av) == 3)
 	{
-		if (stat(path, &stats) == -1)
+		*operand = av[2];
+		if (av[1][1] == 'P')
+			*opt |= 1;
+	}
+}
+
+static int	cd_special_operand(char **operand, char *opt, char **environ)
+{
+	if (*operand == NULL)
+	{
+		if ((*operand = ft_astr_getval(environ, "HOME")) == NULL)
 		{
-			ft_dprintf(STDERR_FILENO, "21sh: cd: %s: %s\n", path, SH_ENOFOD);
-			return (1);
-		}
-		else if (access(path, X_OK) == -1)
-		{
-			ft_dprintf(STDERR_FILENO, "21sh: cd: %s: %s\n", path, SH_ERIGHT);
+			ft_putstr_fd(SH_ENOHOM, STDERR_FILENO);
 			return (1);
 		}
 	}
-	astr_env_replace(&ctx->environ, "OLDPWD", cwd);
-	getcwd(cwd, MAXPATHLEN + 1);
-	astr_env_replace(&ctx->environ, "PWD", cwd);
-	return (prt ? lp(cwd) : 0);
-}
-
-static int			lcd_tar(t_ctx *ctx, char *key, char *err)
-{
-	char			*str;
-
-	if ((str = ft_astr_getval(ctx->environ, key)) == NULL)
+	else if (!ft_strcmp(*operand, "-"))
 	{
-		ft_putstr_fd(err + 1, STDERR_FILENO);
-		return (1);
+		if ((*operand = ft_astr_getval(environ, "OLDPWD")) == NULL)
+		{
+			ft_putstr_fd(SH_ENOOPW, STDERR_FILENO);
+			return (1);
+		}
+		*opt |= 2;
 	}
-	return (l_cd(ctx, str, ft_strcmp(key, "HOME")));
+	return (0);
 }
 
-int					ft_cd(t_proc *p, t_ctx *ctx)
+int			ft_cd(t_proc *p, t_ctx *ctx)
 {
+	char *operand;
+	char opt;
+
 	p->type = BUILTIN;
-	if (ft_astr_len(p->argv) > 2)
+	if (ft_astr_len(p->argv) > 3 || (ft_astr_len(p->argv) == 3 &&
+	ft_strcmp(p->argv[1], "-P") && ft_strcmp(p->argv[1], "-L")))
 	{
-		ft_putstr_fd(SH_EARGTO + 1, STDERR_FILENO);
+		ft_putstr_fd(SH_EARGTO, STDERR_FILENO);
 		return (1);
 	}
-	if (p->argv[1] == NULL)
-		return (lcd_tar(ctx, "HOME", SH_ENOHOM));
-	else if (ft_strcmp("-", p->argv[1]) == 0)
-		return (lcd_tar(ctx, "OLDPWD", SH_ENOOPW));
-	return (l_cd(ctx, p->argv[1], 0));
+	cd_getopt(&operand, &opt, p->argv);
+	if (cd_special_operand(&operand, &opt, ctx->environ) == 1)
+		return (1);
+	if (ft_strlen(operand) >= MAXPATHLEN)
+	{
+		ft_dprintf(STDERR_FILENO,
+				"21sh: cd: %s: File name too long\n", operand);
+		return (1);
+	}
+	return (cd_pipeline(ctx, operand, opt));
 }

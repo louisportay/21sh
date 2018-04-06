@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 14:26:41 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/27 11:48:57 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/06 19:44:30 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static void	handle_squote(t_stack **line)
 
 static void	handle_dquote(t_stack **line)
 {
-
 	if ((*line)->state == DOLLAR)
 		stack_pop(line);
 	if ((*line)->state == DQUOTE)
