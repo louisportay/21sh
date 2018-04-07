@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/06 20:57:17 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 20:28:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int						job_one(t_job *j, t_ctx *ctx)
 	p = j->procs;
 	if (ctx->set & BU_SET_ONCMD)
 		proc_print(p);
-	if (do_redir(p->redirs) == -1)
+	if (do_redir(p->redirs, ctx->std_fd) == -1)
 	{
 		restore_fds(ctx);
 		return (1);

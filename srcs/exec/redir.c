@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/05 12:33:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 20:32:15 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ int		err_open(char *s)
 int		err_ambig_redir(char *s)
 {
 	ft_dprintf(STDERR_FILENO, "21sh: %s: ambiguous redirect\n", s);
+	return (-1);
+}
+
+int		err_busyfd(int	fd)
+{
+	ft_dprintf(STDERR_FILENO, "21sh: %d: protected file descriptor\n", fd);
 	return (-1);
 }
 
@@ -115,10 +121,12 @@ int		r_andgreat_anddgreat(t_redir *r)
 	return (0);
 }
 
-int		r_greatand_lessand(t_redir *r)
+int		r_greatand_lessand(t_redir *r, int fd[3])
 {
 	if (get_right_op(r) == -1)
 		return (err_ambig_redir(r->s_rhs));
+	else if (r->fd_rhs == fd[0] || r->fd_rhs == fd[1] || r->fd_rhs == fd[2])
+		return (err_busyfd(r->fd_rhs));
 	if (r->fd_rhs != -1 && r->fd_rhs == r->lhs)
 		return (0);
 	if (r->fd_rhs != -1 && dup2(r->fd_rhs, r->lhs) == -1)
@@ -130,12 +138,14 @@ int		r_greatand_lessand(t_redir *r)
 	return (0);
 }
 
-int		do_redir(t_redir *r)
+int		do_redir(t_redir *r, int fd[3])
 {
 	int ret;
 
 	while (r)
 	{
+		if (r->lhs ==  fd[0] || r->lhs ==  fd[1] || r->lhs ==  fd[2])
+			return (err_busyfd(r->lhs));
 		if (r->type & (GREAT | DGREAT))
 			ret = r_great_dgreat(r);
 		else if (r->type & LESS)
@@ -145,7 +155,7 @@ int		do_redir(t_redir *r)
 		else if (r->type & R_AND)
 			ret = r_andgreat_anddgreat(r);
 		else if (r->type & (GREATAND | LESSAND))
-			ret = r_greatand_lessand(r);
+			ret = r_greatand_lessand(r, fd);
 		else
 			return (-1);
 		if (ret == -1)

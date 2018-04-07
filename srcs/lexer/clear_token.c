@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 20:57:56 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/18 15:11:55 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 20:47:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	delete_toklist(t_token **toklist)
 	{
 		*toklist = (*toklist)->next;
 		if (tmp->type & RDIR)
-			free(((t_redir *)tmp)->s_rhs);
+			free(((t_redir *)tmp)->s_rhs);//may cause a crash with /dev/random
 		free(tmp);
 		tmp = *toklist;
 	}

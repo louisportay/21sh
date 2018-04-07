@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/28 14:13:18 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 20:49:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,8 @@ t_token		*filter_tokens(t_token *toklist)
 	{
 		if (toklist->type & ASSIGNMENT_WORD)
 			filter_assignment_word(toklist);
+		else if (toklist->type & AND)
+			toklist->type = WORD;
 		else if (toklist->type & IO_NUMBER)
 		{
 			if (filter_io_number(toklist, prev) == -1)

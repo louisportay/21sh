@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 14:38:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/07 20:16:46 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void				proc_clear(t_proc **proc)
 	{
 		t = p;
 		p = p->next;
-		if (t->type == BINARY)
+		if (t->type == BINARY || t->type == EXNFOD)
 			ft_strdel(&t->data.path);
 		if (t->argv != NULL)
 			ft_astr_clear(&t->argv);

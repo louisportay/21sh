@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/18 21:00:46 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 12:59:11 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 18:50:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@
 
 int		extend_word(t_token *token, char c, int quote_state)
 {
-	if (token->type == IO_NUMBER && ((!ft_isdigit(c) && c != '<' && c != '>') ||
-				quote_state != UNQUOTED))
+	if (token->type == IO_NUMBER && ((!ft_isdigit(c) && c != '<' && c != '>')
+				|| quote_state != UNQUOTED))
 		token->type = WORD;
-	if (((is_metachar(c)) && quote_state == UNQUOTED) ||
-			(c == '#' && quote_state == HASH))
+	if ((is_metachar(c)) && quote_state == UNQUOTED)
 		return (0);
 	else if (token->type == WORD && c == '=')
 		token->type = ASSIGNMENT_WORD;
@@ -65,8 +64,6 @@ int		token_type(char c, int quote_state)
 {
 	if (c == '\n')
 		return (NEWLINE);
-	else if (c == '#' && quote_state == HASH)
-		return (COMMENT);
 	else if (quote_state != UNQUOTED)
 		return (WORD);
 	else if (c == ';')

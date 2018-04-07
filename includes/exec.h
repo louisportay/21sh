@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/06 20:56:35 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 20:27:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ int						prepare_fork(t_proc *p, t_ctx *ctx, int pipeline);
 
 char					*get_command(t_job *j);
 
-int						do_redir(t_redir *r);
+int						do_redir(t_redir *r, int fd[3]);
 
 int						job_exec(t_job *j, t_ctx *ctx);
 int						job_one(t_job *j, t_ctx *ctx);

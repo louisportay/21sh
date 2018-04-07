@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 13:22:28 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/25 18:11:09 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 18:55:15 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,6 @@ void	handle_brace(t_stack **line, char c)
 	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE
 			&& (*line)->state != DQUOTE && c == '{')
 		stack_push(line, stack_create(BRACE));
-}
-
-void	handle_hash(t_stack **line)
-{
-	if ((*line)->state == UNQUOTED || (*line)->state == PAREN
-			|| (*line)->state == BRACE)
-		stack_push(line, stack_create(HASH));
 }
 
 void	handle_dollar(t_stack **line)

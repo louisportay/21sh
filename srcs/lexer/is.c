@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/18 20:58:07 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/25 17:07:36 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 18:49:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@
 
 int	is_quoting(char c)
 {
-	if (c == '\\' ||
-		c == '\'' ||
-		c == '"' ||
-		c == '#' ||
-		c == '$' ||
-		c == '(' ||
-		c == ')' ||
-		c == '{' ||
-		c == '}')
+	if (c == '\\' 
+		|| c == '\''
+		|| c == '"'
+		|| c == '$'
+		|| c == '('
+		|| c == ')'
+		|| c == '{'
+		|| c == '}')
 		return (1);
 	return (0);
 }
@@ -35,15 +34,15 @@ int	is_quoting(char c)
 int	is_metachar(char c)
 {
 	if (c == '|' || c == '&' || c == ';' || c == '<' || c == '>'
-				|| ft_isblank(c))
+			|| ft_isblank(c))
 		return (1);
 	return (0);
 }
 
 int	is_max_operator(int n)
 {
-	if (n & (OR_IF | AND_IF |
-				DGREAT | LESSAND | GREATAND | ANDDGREAT | TLESS |
+	if (n & (OR_IF | AND_IF
+			| DGREAT | LESSAND | GREATAND | ANDDGREAT | TLESS |
 				NEWLINE | SEMICOL))
 		return (1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 19:08:40 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 13:17:02 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 18:53:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ void	init_token_table(t_kvp *t)
 	t[15] = (t_kvp){.key = (void *)TLESS, .val = (char *)"TLESS"};
 	t[16] = (t_kvp){.key = (void *)ANDGREAT, .val = (char *)"ANDGREAT"};
 	t[17] = (t_kvp){.key = (void *)ANDDGREAT, .val = (char *)"ANDDGREAT"};
-	t[18] = (t_kvp){.key = (void *)COMMENT, .val = (char *)"COMMENT"};
-	t[19] = (t_kvp){.key = (void *)0, .val = NULL};
+	t[18] = (t_kvp){.key = (void *)0, .val = NULL};
 }
 
 void	print_toklist(t_token *toklist)

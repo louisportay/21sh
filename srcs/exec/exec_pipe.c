@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/06 20:57:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 20:28:07 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,10 @@ static int				fork_do(t_proc *p, int fd, t_ctx *ctx)
 	return (0);
 }
 
+/*
+** wowsuchnameinmuchshell
+*/
+
 static void				pipingation(t_proc *p)
 {
 	int					fd[2];
@@ -88,7 +92,7 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 	while (p != NULL)
 	{
 		pipingation(p);
-		if (do_redir(p->redirs) == -1)
+		if (do_redir(p->redirs, ctx->std_fd) == -1)
 			p->status = 1 | JOB_CMP;
 		if ((p->status & JOB_CMP) == 0)
 		{

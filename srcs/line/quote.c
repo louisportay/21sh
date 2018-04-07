@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 14:26:41 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/06 19:44:30 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 18:54:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ static void	handle_dquote(t_stack **line)
 
 void		update_linestate(t_stack **state, char c)
 {
-	if (c == '#')
-		handle_hash(state);
-	else if (c == '\\')
+	if (c == '\\')
 		handle_bslash(state);
 	else if (c == '\'')
 		handle_squote(state);
