@@ -134,17 +134,23 @@ int					bu_set_getopts(t_proc *p, t_ctx *ctx, int i)
 	tmp = ctx->set;
 	while (p->argv[i] != NULL)
 	{
-		if (p->argv[i][0] == '-')
+		if (p->argv[i][0] == '-' && ft_isalpha(p->argv[i][1]))
 		{
 			if ((opts[1] = lget_min(p, i, &tmp)) == -1)
 				return (-1);
 			opts[0] |= opts[1];
 		}
-		else if (p->argv[i][0] == '+')
+		else if (p->argv[i][0] == '+' && ft_isalpha(p->argv[i][1]))
 		{
 			if ((opts[1] = lget_max(p, i, &tmp)) == -1)
 				return (-1);
 			opts[0] |= opts[1];
+		}
+		else if (p->argv[i][0] == '-' || p->argv[i][0] == '+')
+		{
+			ft_dprintf(STDERR_FILENO, "21sh: set: %s: Invalid argument\n%s\n",
+						p->argv[i], BU_S_USG);
+			return (-1);
 		}
 		else
 			break ;

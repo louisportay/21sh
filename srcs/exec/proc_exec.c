@@ -36,6 +36,8 @@ void					exec_print_err(enum e_extype type, char *path)
 		fmt = "21sh: %s: command not found\n";
 	else if (type == EXNFOD)
 		fmt = "21sh: %s: No such file or directory\n";
+        else
+            fmt = "21sh: %s: Invalid file\n";
 	ft_dprintf(STDERR_FILENO, fmt, path);
 }
 

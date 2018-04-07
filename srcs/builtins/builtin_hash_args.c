@@ -73,6 +73,12 @@ static int				lget_opt(t_proc *p, t_ctx *ctx, int i, int *f)
 	int					j;
 
 	j = 1;
+	if (p->argv[i][j] == '-')
+	{
+		ft_dprintf(STDERR_FILENO, "21sh: hash: '%s': Invalid argument\n",
+					p->argv[i]);
+		return (-1);
+	}
 	while (p->argv[i][j] != '\0')
 	{
 		if (p->argv[i][j] == 'r')
