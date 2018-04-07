@@ -84,7 +84,7 @@
 # define BU_H_ENOKEY	("21sh: hash: %s not found\n")
 # define BU_H_USAGE		("21sh: usage: hash [-lr] [-p path] [-dt] [name ...]\n")
 
-# define BU_H_EINVAL ("221sh: hash: -%c: invalid option\n%s")
+# define BU_H_EINVAL ("21sh: hash: -%c: invalid option\n%s")
 
 # define BU_J_L 0x01
 # define BU_J_S 0x02
