@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 13:12:14 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 13:36:23 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/06 12:14:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,19 @@
 
 void	w_flag(t_ctx *ctx)
 {
-	char *cwd;
-	char *homedir;
-	char *tmp;
+	char	*cwd;
+	char	*homedir;
+	char	*tmp;
+	int		alloc;
 
 	homedir = ft_astr_getval(ctx->environ, "HOME");
-	cwd = getcwd(NULL, 0);
+	alloc = 0;
+	cwd = ft_astr_getval(ctx->environ, "PWD");
+	if (!cwd)
+	{
+		cwd = getcwd(NULL, 0);
+		alloc = 1;
+	}
 	if (cwd && homedir && (tmp = ft_strstr(cwd, homedir)) && tmp == cwd
 			&& cwd[ft_strlen(homedir)] == '/')
 	{
@@ -33,7 +40,8 @@ void	w_flag(t_ctx *ctx)
 	}
 	else if (cwd)
 		print_flag(ctx, cwd);
-	free(cwd);
+	if (alloc == 1)
+		free(cwd);
 }
 
 /*
@@ -42,16 +50,24 @@ void	w_flag(t_ctx *ctx)
 
 void	cap_w_flag(t_ctx *ctx)
 {
-	char *cwd;
-	char *basename_cwd;
+	char	*cwd;
+	char	*basename;
+	int		alloc;
 
-	if ((cwd = getcwd(NULL, 0)) &&
-			(basename_cwd = ft_basename(cwd)))
+	alloc = 0;
+	cwd = ft_astr_getval(ctx->environ, "PWD");
+	if (!cwd)
 	{
-		print_flag(ctx, basename_cwd);
-		free(basename_cwd);
+		cwd = getcwd(NULL, 0);
+		alloc = 1;
 	}
-	free(cwd);
+	if ((cwd) && (basename = ft_basename(cwd)))
+	{
+		print_flag(ctx, basename);
+		free(basename);
+	}
+	if (alloc == 1)
+		free(cwd);
 }
 
 /*

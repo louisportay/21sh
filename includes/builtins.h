@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 12:25:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/06 19:36:15 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@
 # define SH_EXIT ("exit")
 
 # define SH_ENOFOD ("No such file or directory")
+# define SH_ENODIR ("Not a directory")
 # define SH_ERIGHT ("Permission denied")
 # define SH_EARGTO ("21sh: cd: Too much arguments\n")
 # define SH_ENOHOM ("21sh: cd: Variable $HOME not set\n")
@@ -108,6 +109,8 @@ typedef struct s_ctx	t_ctx;
 typedef struct s_proc	t_proc;
 
 int						ft_cd(t_proc *p, t_ctx *ctx);
+int						cd_pipeline(t_ctx *ctx, char *path, int opt);
+int						remove_prev_dir(char *trim_path, unsigned *i, char *argpath);
 int						ft_echo(t_proc *p, t_ctx *ctx);
 int						ft_printenv(t_proc *p, t_ctx *ctx);
 int						ft_setenv(t_proc *p, t_ctx *ctx);

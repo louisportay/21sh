@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:57:13 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 13:35:25 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/05 12:42:20 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,13 @@ void	s_flag(t_ctx *ctx)
 {
 	char	*c;
 
-	if ((c = ft_strrchr(ctx->av[0], '/')))
-		print_flag(ctx, c + 1);
-	else
-		print_flag(ctx, ctx->av[0]);
+	if (ctx->av[0])
+	{
+		if ((c = ft_strrchr(ctx->av[0], '/')))
+			print_flag(ctx, c + 1);
+		else
+			print_flag(ctx, ctx->av[0]);
+	}
 }
 
 /*

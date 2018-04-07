@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 19:23:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/31 10:28:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/07 09:27:08 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ void	exec_loop(t_dlist *input)
 {
 	t_token *toklist;
 	t_job	*extree;
-	t_ctx	*ctx;
 
-	ctx = get_ctxaddr();
 	extree = NULL;
 	toklist = NULL;
 	if (input != NULL)

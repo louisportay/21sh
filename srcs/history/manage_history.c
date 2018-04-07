@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 18:40:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 18:50:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 10:54:50 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	save_history(char *histfile, t_dlist *histlist, int flags)
 
 	fd = open(histfile ? histfile : HISTFILE,
 			O_CREAT | flags | O_RDWR, S_IWUSR | S_IRUSR);
-	if (fd == -1)
+	if (fd == -1 || histlist->data == NULL)
 		return ;
 	while (histlist->prev)
 	{
@@ -58,25 +58,35 @@ void	save_history(char *histfile, t_dlist *histlist, int flags)
 	close(fd);
 }
 
+void	insert_histlist(t_dlist *dup, t_hist *hist);
+
 void	init_hist(t_hist *hist, char *histfile)
 {
 	char	*histentry;
 	int		file;
+	t_dlist		*dup;
 
 	histentry = NULL;
-	file = open(histfile, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR);
-	get_next_line(file, &histentry);
+	if ((file = open(histfile, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR)) == -1
+			|| (get_next_line(file, &histentry) == -1))
+	{
+		close(file);
+		hist->first_entry = hist->index;
+		return ;
+	}
 	while (histentry)
 	{
 		if (ft_strlen(histentry))
-			ft_dlstinsert(hist->list, ft_dlstnewaddr(new_histentry(
-		dlst_from_str(histentry), hist->index++), sizeof(t_histentry)));
+		{
+			if ((dup = dlst_from_str(histentry)) == NULL)
+					wrap_exit(-1, get_ctxaddr());
+			insert_histlist(dup, hist);
+		}
 		free(histentry);
 		if (get_next_line(file, &histentry) == -1)
 			break ;
 	}
 	close(file);
 	hist->first_entry = hist->index;
-	trim_history(&hist->list, ft_astr_getval(get_ctxaddr()->locals,
-				"HISTSIZE"));
+	trim_history(&hist->list, ft_astr_getval(get_ctxaddr()->locals, "HISTSIZE"));
 }

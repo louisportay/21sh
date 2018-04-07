@@ -1,6 +1,7 @@
 *.o
 *.a
 *.swp
+*.swo
 *.out
 *.dSYM/
 *.DS_Store
@@ -10,19 +11,15 @@
 TESTS
 
 #normal files
-WATCH
-READ
+OUT
+tags
 
 #test file
-dump.c
+a.c
 
 #sample history
-hist
+.21sh_history
 
 #executable
 21sh
 test
-TODAY
-REMAIN
-err.log
-*.swo

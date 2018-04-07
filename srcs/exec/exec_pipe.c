@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 20:12:35 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/06 20:57:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void				l_last_job(t_proc *p, int fd, t_ctx *ctx)
 {
 	close(fd);
 	if (ctx->set & BU_SET_ONCMD)
-		proc_print(p, ctx);
+		proc_print(p);
 	if (p->status & JOB_CMP)
 		exit(1);
 	else
@@ -33,7 +33,7 @@ static int				fork_do(t_proc *p, int fd, t_ctx *ctx)
 	else if ((pid = fork()) == 0)
 	{
 		if (ctx->set & BU_SET_ONCMD)
-			proc_print(p, ctx);
+			proc_print(p);
 		if (p->status & JOB_CMP)
 			exit(1);
 		else

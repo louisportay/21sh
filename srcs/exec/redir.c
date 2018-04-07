@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/04 10:42:23 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/05 12:33:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ int		err_tmpfile(void)
 {
 	ft_dprintf(STDERR_FILENO, "21sh: error creating temporary file\n");
 	return (-1);
+}
+
+int		err_badfd(char *fd)
+{
+	ft_dprintf(STDERR_FILENO, "21sh: %s: Bad file descriptor\n", fd);
+	return(-1);
 }
 
 int		r_great_dgreat(t_redir *r)
@@ -113,8 +119,10 @@ int		r_greatand_lessand(t_redir *r)
 {
 	if (get_right_op(r) == -1)
 		return (err_ambig_redir(r->s_rhs));
+	if (r->fd_rhs != -1 && r->fd_rhs == r->lhs)
+		return (0);
 	if (r->fd_rhs != -1 && dup2(r->fd_rhs, r->lhs) == -1)
-			return (-1);
+			return (err_badfd(r->s_rhs));
 	if (r->dash == true && r->fd_rhs != -1)
 		close(r->fd_rhs);
 	else if (r->dash == true)

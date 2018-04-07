@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/26 13:25:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/06 20:42:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ t_token	*tokenizer(t_dlist *line)
 	}
 	if ((last_tok = filter_tokens(toklist)))
 		err_tok(&toklist, last_tok);
-//	 if (toklist)
-//		print_toklist(toklist->next);
 	stack_del(&quote_state);
 	return (toklist);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/02 19:59:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/06 20:55:23 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,5 @@ void		wrap_exit(int status, t_ctx *ctx)
 	close(ctx->std_fd[0]);
 	close(ctx->std_fd[1]);
 	close(ctx->std_fd[2]);
-	close(ctx->tty);
 	exit(status);
 }

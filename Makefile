@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/04 16:21:06 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/06 19:35:45 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -172,6 +172,7 @@ SRCS=	main.c\
 		get_command.c\
 		\
 		builtin_cd.c\
+		builtin_cd_utils.c\
 		builtin_echo.c\
 		builtin_printenv.c\
 		builtin_hash.c\

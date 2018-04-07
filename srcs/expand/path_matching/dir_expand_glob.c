@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 12:51:49 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/02 19:04:25 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/07 09:25:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int				do_expand_glob(char **str)
 	if (no_exp(new))
 	{
 		mtok_clear(&new);
+		//======= leak here
 		return (1);
 	}
 	if ((lret = path_match(new, &matched)) <= 0)

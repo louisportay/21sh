@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:49:28 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/01 14:08:12 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/06 19:38:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		ft_exit(t_proc *p, t_ctx *ctx, int pipeline)
 				wrap_exit(2, ctx);
 			}
 		}
-		else 
+		else
 			wrap_exit(EXIT_SUCCESS, ctx);
 		return (0);
 	}
