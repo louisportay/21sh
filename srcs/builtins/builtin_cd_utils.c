@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 19:24:29 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/06 19:26:49 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 10:44:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,12 @@ int				cd_pipeline(t_ctx *ctx, char *path, int opt)
 		return (1);
 	}
 	if (chdir_print_err(newpath, path) != 0)
+	{
+		free(curpath);
+		if (newpath != curpath)
+			free(newpath);
 		return (1);
+	}
 	set_pwd_vars(&ctx->environ, opt, newpath);
 	if (opt & 2)
 		ft_printf("%s\n", curpath);

@@ -6,15 +6,15 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:04:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 17:36:51 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/07 09:39:49 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HISTORY_H
 # define HISTORY_H
 
-# define HISTSIZE		"50"
-# define HISTFILESIZE	"50"
+# define HISTSIZE		"100"
+# define HISTFILESIZE	"100"
 # define HISTFILE		".21sh_history"
 
 # define T_HISTENTRY(ptr)	((t_histentry *)ptr)

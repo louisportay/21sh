@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:25:12 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 17:19:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/07 09:30:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int					modenv(t_proc *p, t_ctx *ctx, char *name)
 		if (is_sane(p->argv[i], &j))
 		{
 			k = ft_strindex(p->argv[i], '=');
-			k = (k == -1) ? ft_strlen(p->argv[i]) : k;
+			k = (k == -1) ? (int)ft_strlen(p->argv[i]) : k;
 			pmod |= ft_strncmp(p->argv[i], "PATH", k) == 0;
 			update_ctx(ctx, p->argv[i]);
 		}
