@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/22 11:19:07 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 16:06:25 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/08 17:29:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ void				stack_push(t_stack **stack, t_stack *new);
 void				stack_pop(t_stack **stack);
 void				stack_del(t_stack **stack);
 void				stack_print(t_stack *stack, char *sep);
+t_stack				*stack_dup(t_stack *stack);
 
 #endif

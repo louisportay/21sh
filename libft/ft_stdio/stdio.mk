@@ -2,6 +2,7 @@ STDIO=\
 ft_putstr_fd.c\
 get_next_line.c\
 ft_tmpfile.c\
+ft_putnbr.c\
 
 STDIO_DIR=ft_stdio
 
