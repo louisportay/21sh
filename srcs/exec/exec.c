@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 19:56:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/08 19:48:48 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void				update_tty(t_ctx *ctx, int old)
 	tcsetattr(STDIN_FILENO, TCSADRAIN, old ? &ctx->oldtios
 												: &ctx->tios);
 }
+
 
 int						exec(t_job *jobs)
 {
@@ -34,6 +35,7 @@ int						exec(t_job *jobs)
 		jobs = jobs->next;
 		tmp->next = NULL;
 		job_exec(tmp, ctx);
+		ctx->last_ret = tmp->parent->status & 0xFF;
 		job_safeclear(&tmp->parent);
 		dup2(ctx->std_fd[1], STDOUT_FILENO);
 		dup2(ctx->std_fd[0], STDIN_FILENO);

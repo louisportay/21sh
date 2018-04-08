@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/07 10:50:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/08 19:33:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,8 @@ struct					s_ctx
 	struct termios		oldtios;
 	char				**av;
 
+	char				last_ret;
+	char				*last_argv;
 };
 
 void					vingtetunsh(char **av, char **environ);

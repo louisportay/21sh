@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/08 17:47:43 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/08 19:47:37 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,8 @@ int						do_redir(t_redir *r, int fd[3]);
 int						job_exec(t_job *j, t_ctx *ctx);
 int						job_one(t_job *j, t_ctx *ctx);
 int						job_pipe(t_job *j, t_ctx *ctx);
+
+char					*job_last_argv(t_job *j);
 
 void					exec_print_err(enum e_extype, char *path);
 
