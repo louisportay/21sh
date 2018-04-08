@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 14:05:13 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 14:41:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/08 17:28:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int						prepare_fork(t_proc *p, t_ctx *ctx, int pipeline)
 
 	p->env = ft_astr_dup(ctx->environ);
 	pmod = (p->asmts != NULL && p->argv[0] != NULL) ? proc_update_env(p) : 0;
+	if (pmod)
+		hash_empty(ctx->hash, &ft_memdel);
 	pmod |= test_env_builtin(p);
 	if (p->type & BUILTIN)
 		return (0);

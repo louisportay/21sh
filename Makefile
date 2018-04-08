@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/06 19:35:45 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/08 17:47:11 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -246,6 +246,8 @@ SRCS=	main.c\
 		mtok_sort.c\
 		\
 		path_reset.c\
+		\
+		exec_pipe_error.c\
 
 
 OBJDIR= obj
