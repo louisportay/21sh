@@ -4,6 +4,7 @@ stack_del.c\
 stack_pop.c\
 stack_print.c\
 stack_push.c\
+stack_dup.c\
 
 STACK_DIR=stack
 

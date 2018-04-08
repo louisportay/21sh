@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/07 20:39:33 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/08 17:24:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ void		init_ctx(t_ctx *ctx, char **av, char **environ)
 	init_parameters(ctx);
 	ctx->hist.list = ft_dlstnew("HEAD", 4);
 	ctx->hist.index = 1;
-	ctx->std_fd[0] = dup2(STDIN_FILENO, 10);
-	ctx->std_fd[1] = dup2(STDOUT_FILENO, 11);
-	ctx->std_fd[2] = dup2(STDERR_FILENO, 12);
-	if (ctx->std_fd[0] != 10 || ctx->std_fd[1] != 11 || ctx->std_fd[2] != 12)
+	ctx->std_fd[0] = dup(STDIN_FILENO);
+	ctx->std_fd[1] = dup(STDOUT_FILENO);
+	ctx->std_fd[2] = dup(STDERR_FILENO);
+	if (ctx->std_fd[0] == -1 || ctx->std_fd[1] == -1 || ctx->std_fd[2] == -1)
 		exit(-1);
 	ctx->istty = isatty(STDIN_FILENO);
 	if (!ctx->istty || ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws) == -1)

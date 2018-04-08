@@ -6,12 +6,65 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 17:13:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/08 19:30:17 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pattern_matching.h"
 #include "dir_explorer.h"
+
+static int             matching_bracket(char *s, t_stack *quote)
+{
+	char *opening_bracket;
+
+	opening_bracket = s++;
+	quote = stack_dup(quote);
+	while (*s)
+	{
+		if (quote->state == BSLASH && *s != '\\')
+			stack_pop(&quote);
+		if (*s == '\\' || *s == '\'' || *s == '\"')
+			update_linestate(&quote, *s);
+		if (*s == ']' && quote->state == UNQUOTED && s - 1 != opening_bracket)
+		{
+			stack_del(&quote);
+			return (1);
+		}
+		s++;
+	}
+	stack_del(&quote);
+	return (0);
+}
+
+
+
+static int             scan_glob(char *s)
+{
+	t_stack *quote;
+
+	quote = NULL;
+	stack_push(&quote, stack_create(UNQUOTED));
+	while (*s != '\0')
+	{
+		if (*s == '\\' || *s == '\'' || *s == '\"')
+			update_linestate(&quote, *s);
+		if (quote->state == BSLASH && *s != '\\')
+			stack_pop(&quote);
+		else if ((*s == '*' || *s == '?') && quote->state == UNQUOTED)
+		{
+			stack_del(&quote);
+			return (1);
+		}
+		else if (*s == '[' && matching_bracket(s, quote) == 1)
+		{
+			stack_del(&quote);
+			return (1);
+		}
+		s++;
+	}
+	stack_del(&quote);
+	return (0);
+}
 
 static int		multi_expand(t_list *lst)
 {
@@ -21,8 +74,13 @@ static int		multi_expand(t_list *lst)
 	while (lst != NULL)
 	{
 		s = (char *)lst->content;
-		if ((ret = do_expand_glob(&s)) < 1)
-			return (ret);
+		if (scan_glob(s) == 1)
+		{
+			//	printf("RET=1\n");
+			if ((ret = do_expand_glob(&s)) < 1)
+				return (ret);
+		}
+		//	printf("RET=0\n");
 		lst->content = (void *)s;
 		lst = lst->next;
 	}

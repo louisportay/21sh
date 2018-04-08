@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 20:05:44 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/25 18:03:37 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/08 18:15:10 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	query_linestate(t_dlist *line, t_stack **linestate)
 {
 	if ((*linestate)->state == BSLASH)
 		stack_pop(linestate);
-	while (line && (*linestate)->state != HASH)
+	while (line)
 	{
 		update_linestate(linestate, *(char *)(line->data));
 		if ((*(char *)(line->data) != '\\' && (*linestate)->state == BSLASH)
@@ -32,8 +32,6 @@ void	query_linestate(t_dlist *line, t_stack **linestate)
 			stack_pop(linestate);
 		line = line->next;
 	}
-	if ((*linestate)->state & HASH)
-		stack_pop(linestate);
 }
 
 void	query_hdocstate(t_dlist *line, t_stack **linestate, char *eof)

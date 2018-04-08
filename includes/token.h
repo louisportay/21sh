@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/29 11:57:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/08 18:14:50 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,15 @@ enum	e_toktype
 
 enum	e_linestate
 {
-	UNQUOTED = 0b1,
-	BSLASH = 0b10,
-	SQUOTE = 0b100,
-	DQUOTE = 0b1000,
-	PAREN = 0b10000,
-	BRACE = 0b100000,
-	HASH = 0b100000000,
-	HEREDOC = 0b1000000000,
-	ERROR = 0b10000000000,
-	DOLLAR = 0b100000000000,
+	UNQUOTED = 1 << 0,
+	BSLASH = 1 << 1,
+	SQUOTE = 1 << 2,
+	DQUOTE = 1 << 3,
+	PAREN = 1 << 4,
+	BRACE = 1 << 5,
+	HEREDOC = 1 << 6,
+	ERROR = 1 << 7,
+	DOLLAR = 1 << 8,
 	DOLLBRACE = DOLLAR | BRACE,
 };
 
