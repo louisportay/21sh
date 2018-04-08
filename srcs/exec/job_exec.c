@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 14:42:45 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/08 18:00:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static int				l_wait_for_job(t_job *j)
 static int				l_job_exec_loop(t_job **job, t_ctx *ctx, int exp_err)
 {
 	t_job				*j;
+	int					ret;
 
 	j = *job;
 	if (exp_err)
@@ -86,9 +87,15 @@ static int				l_job_exec_loop(t_job **job, t_ctx *ctx, int exp_err)
 	}
 	else
 	{
-		if (((j->procs->next != NULL) ? job_pipe(j, ctx)
-							: job_one(j, ctx)) == 1)
+		if ((ret = ((j->procs->next != NULL) ? job_pipe(j, ctx)
+					: job_one(j, ctx))) == 1)
 			return (1);
+		else if (ret == -1)
+		{
+			waitpid(j->procs->pid, &ret, WUNTRACED);
+			j->status = JOB_CMP | (-42 & 0xFF);
+			return (1);
+		}
 		l_wait_for_job(j);
 		if ((j->status & 0xFF) && j->err != NULL)
 			*job = j->err;

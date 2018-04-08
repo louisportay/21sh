@@ -6,33 +6,39 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:32:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 11:32:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/08 17:58:37 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void				lgetpid(t_job *j, int fd)
+static int				lgetpid(t_job *j, int fd)
 {
 	t_proc				*p;
 	int					pid;
+	int					err;
 
 	p = j->procs;
+	err = 0;
 	while (p->next != NULL)
 	{
-		if (ft_read(fd, (char*)&pid, 4) == (size_t)-1)
+		if (ft_read(fd, (char*)&pid, sizeof(int)) == (size_t)-1)
 		{
 			ft_dprintf(STDERR_FILENO, "Could not get pipe pids\n");
-			return ;
+			return (1);
 		}
+		else if (pid == -1)
+			err = 1;
 		p->pid = pid;
 		p = p->next;
 	}
+	return (err);
 }
 
-static void				l_job_pipe(t_job *j, pid_t pid, int mypipe[2])
+static int				l_job_pipe(t_job *j, pid_t pid, int mypipe[2])
 {
 	t_proc				*p;
+	int					ret;
 
 	p = j->procs;
 	while (p != NULL)
@@ -42,8 +48,11 @@ static void				l_job_pipe(t_job *j, pid_t pid, int mypipe[2])
 		p = p->next;
 	}
 	close(mypipe[1]);
-	lgetpid(j, mypipe[0]);
+	ret = lgetpid(j, mypipe[0]);
 	close(mypipe[0]);
+	if (ret)
+		j->procs->pid = pid;
+	return (ret);
 }
 
 int						job_pipe(t_job *j, t_ctx *ctx)
@@ -63,7 +72,7 @@ int						job_pipe(t_job *j, t_ctx *ctx)
 		return (1);
 	}
 	else if (pid != 0)
-		l_job_pipe(j, pid, mypipe);
+		return (l_job_pipe(j, pid, mypipe) ? -1 : 0);
 	else
 	{
 		close(mypipe[0]);

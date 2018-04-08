@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/07 20:28:07 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/08 17:41:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int				fork_do(t_proc *p, int fd, t_ctx *ctx)
 	else
 	{
 		p->pid = pid;
-		if (write(fd, (char*)&pid, 4) == -1)
+		if (write(fd, (char*)&pid, sizeof(int)) == -1)
 		{
 			ft_dprintf(STDERR_FILENO, "Closed IPC pipe.\n");
 			return (-1);
@@ -102,9 +102,13 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 				prepare_fork(p, ctx, 1);
 		}
 		if (fork_do(p, fd, ctx) == 1)
-			return (1);
+		{
+			clear_pipe(j, p, fd);
+			exit(-42);
+		}
+//			return (1);
 		p = p->next;
 	}
-	_exit(-1);
+	exit(-1);
 	return (0);
 }
