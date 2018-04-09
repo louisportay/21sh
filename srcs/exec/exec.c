@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/08 19:48:48 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 20:14:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void				update_tty(t_ctx *ctx, int old)
 	tcsetattr(STDIN_FILENO, TCSADRAIN, old ? &ctx->oldtios
 												: &ctx->tios);
 }
-
 
 int						exec(t_job *jobs)
 {

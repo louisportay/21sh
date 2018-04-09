@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 12:18:58 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 20:24:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,12 @@ int						ft_kill(t_proc *proc, t_ctx *ctx, int pipeline);
 int						ft_exit(t_proc *p, t_ctx *ctx, int pipeline);
 int						modenv(t_proc *p, t_ctx *ctx, char *name);
 int						bu_hash_getopts(t_proc *p, t_ctx *ctx, int *i);
+int						hash_inh(t_proc *p, t_ctx *ctx, int i, int j);
+int						hash_print(t_hdict *dict);
 int						bu_set_getopts(t_proc *p, t_ctx *ctx, int i);
+int						lget_min(t_proc *p, int i, u_short *tmp);
+int						lget_max(t_proc *p, int i, u_short *tmp);
+int						set_help(t_proc *p, int usage);
 int						is_identifier(char *str);
 int						is_sane(char *str, int *end);
 int						env_i_opt(t_proc *p);

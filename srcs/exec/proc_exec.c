@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 20:28:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 21:07:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void					exec_print_err(enum e_extype type, char *path)
 		fmt = "21sh: %s: command not found\n";
 	else if (type == EXNFOD)
 		fmt = "21sh: %s: No such file or directory\n";
-        else
-            fmt = "21sh: %s: Invalid file\n";
+	else
+		fmt = "21sh: %s: Invalid file\n";
 	ft_dprintf(STDERR_FILENO, fmt, path);
 }
 

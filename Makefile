@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/08 18:29:47 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/09 22:19:27 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -145,6 +145,8 @@ SRCS=	main.c\
 		handle_tok.c\
 		\
 		redir.c\
+		redir_and.c\
+		redir_err.c\
 		parser.c\
 		printers.c\
 		asmt.c\
@@ -159,6 +161,7 @@ SRCS=	main.c\
 		clearers.c\
 		exec.c\
 		job_exec.c\
+		job_exec_loop.c\
 		job_pipe.c\
 		job_one.c\
 		proc_exec.c\
@@ -177,8 +180,11 @@ SRCS=	main.c\
 		builtin_printenv.c\
 		builtin_hash.c\
 		builtin_hash_args.c\
+		builtin_hash_args2.c\
+		builtin_hash_print.c\
 		builtin_set.c\
 		builtin_set_args.c\
+		builtin_set_args2.c\
 		builtin_setenv.c\
 		builtin_addenv.c\
 		builtin_env_utils.c\

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:25:12 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/07 09:30:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 19:59:34 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ int					modenv(t_proc *p, t_ctx *ctx, char *name)
 	int				pmod;
 
 	pmod = 0;
-	p->type = BUILTIN;
-	i = 1;
 	ret = 0;
+	i = 1;
+	p->type = BUILTIN;
 	while (p->argv[i] != NULL)
 	{
 		if (is_sane(p->argv[i], &j))
@@ -90,11 +90,10 @@ int					modenv(t_proc *p, t_ctx *ctx, char *name)
 			k = ft_strindex(p->argv[i], '=');
 			k = (k == -1) ? (int)ft_strlen(p->argv[i]) : k;
 			pmod |= ft_strncmp(p->argv[i], "PATH", k) == 0;
-			update_ctx(ctx, p->argv[i]);
+			update_ctx(ctx, p->argv[i++]);
 		}
 		else
-			ret |= add_error(p->argv[i], name);
-		i++;
+			ret |= add_error(p->argv[i++], name);
 	}
 	if (pmod)
 		path_reset(ctx, 1);

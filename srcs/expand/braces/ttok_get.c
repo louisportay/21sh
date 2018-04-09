@@ -6,13 +6,11 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 19:01:55 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 19:40:27 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 21:07:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand_braces.h"
-
-//added (unsigned)
 
 int					btok_match(t_btok *head, int *es)
 {

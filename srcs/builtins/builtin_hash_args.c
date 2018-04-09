@@ -6,66 +6,17 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 18:58:08 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 15:19:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 20:09:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int				l_isdir(char *path)
-{
-	struct stat			stats;
 
-	if (stat(path, &stats) != -1)
-	{
-		if (S_ISDIR(stats.st_mode))
-		{
-			ft_dprintf(STDERR_FILENO, "21sh: hash: %s is a directory\n", path);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-static int				ladderr(void)
+static int				hash_invalid_arg(char *s)
 {
-	ft_dprintf(STDERR_FILENO, BU_H_EPREQU);
+	ft_dprintf(STDERR_FILENO, "21sh: hash: '%s': Invalid argument\n", s);
 	return (-1);
-}
-
-static char				*lnewval(char *str, int *k, int newk)
-{
-	if (l_isdir(str))
-		return (NULL);
-	*k = newk;
-	return (ft_strdup(str));
-}
-
-static int				lhash_inh(t_proc *p, t_ctx *ctx, int i, int j)
-{
-	char				*key;
-	char				*value;
-	int					k;
-
-	if (p->argv[i][j + 1] != '\0')
-	{
-		if (p->argv[i + 1] == NULL)
-			return (ladderr());
-		if ((value = lnewval(p->argv[i] + j + 1, &k, i + 1)) == NULL)
-			return (-1);
-	}
-	else
-	{
-		if (p->argv[i + 1] == NULL || p->argv[i + 2] == NULL)
-			return (ladderr());
-		if ((value = lnewval(p->argv[i + 1], &k, i + 2)) == NULL)
-			return (-1);
-	}
-	while (p->argv[k + 1] != NULL)
-		k++;
-	key = ft_strdup(p->argv[k]);
-	hash_add_or_mod(ctx->hash, key, value, &ft_memdel);
-	return (0);
 }
 
 static int				lget_opt(t_proc *p, t_ctx *ctx, int i, int *f)
@@ -74,17 +25,13 @@ static int				lget_opt(t_proc *p, t_ctx *ctx, int i, int *f)
 
 	j = 1;
 	if (p->argv[i][j] == '-')
-	{
-		ft_dprintf(STDERR_FILENO, "21sh: hash: '%s': Invalid argument\n",
-					p->argv[i]);
-		return (-1);
-	}
+		return (hash_invalid_arg(p->argv[1]));
 	while (p->argv[i][j] != '\0')
 	{
 		if (p->argv[i][j] == 'r')
 			*f |= BU_H_CLR;
 		else if (p->argv[i][j] == 'p')
-			return (lhash_inh(p, ctx, i, j) == 0 ? -2 : -1);
+			return (hash_inh(p, ctx, i, j) == 0 ? -2 : -1);
 		else if (p->argv[i][j] == 'd' && (*f & BU_H_PRT) == 0)
 			*f |= BU_H_DEL;
 		else if (p->argv[i][j] == 't')

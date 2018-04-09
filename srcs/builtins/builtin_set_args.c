@@ -6,13 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 17:37:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 12:15:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 20:35:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int			set_help(t_proc *p, int usage)
+int			set_help(t_proc *p, int usage)
 {
 	p->type = BUILTIN;
 	ft_dprintf(STDERR_FILENO, "%s%c%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
@@ -22,107 +22,20 @@ static int			set_help(t_proc *p, int usage)
 	return (-1);
 }
 
-static int			lusage(t_proc *p, char c, char ec)
+static	int			lget_switch(int opts[2], t_proc *p, int i, u_short *tmp)
 {
-	if (ec)
+	if (p->argv[i][0] == '-')
 	{
-		ft_dprintf(STDERR_FILENO, "21sh: set: -%c: invalind argument\n%s\n",
-					c, BU_S_USG);
+		if ((opts[1] = lget_min(p, i, tmp)) == -1)
+			return (-1);
 	}
-	else
-		ft_dprintf(STDERR_FILENO, "%s\n", BU_S_USG);
-	p->type = BUILTIN;
-	return (-1);
-}
-
-static inline int	laddarg(u_short *tmp, char c)
-{
-	if (c == 'a')
-		*tmp |= BU_SET_EXPOR;
-	else if (c == 'B')
-		*tmp |= BRACE_EXPAND;
-	else if (c == 'f')
-		*tmp |= BU_SET_FNEXP;
-	else if (c == 'x')
-		*tmp |= BU_SET_ONCMD;
-	else if (c == 'd')
-		*tmp |= DOTGLOB;
-	else if (c == 'n')
-		*tmp |= NULLGLOB;
-	else if (c == 'F')
-		*tmp |= FAILGLOB;
-	else
-		return (0);
-	return (1);
-}
-
-static inline int	lrmarg(u_short *tmp, char c)
-{
-	if (c == 'a')
-		*tmp &= ~BU_SET_EXPOR;
-	else if (c == 'B')
-		*tmp &= ~BRACE_EXPAND;
-	else if (c == 'f')
-		*tmp &= ~BU_SET_FNEXP;
-	else if (c == 'x')
-		*tmp &= ~BU_SET_ONCMD;
-	else if (c == 'd')
-		*tmp &= ~DOTGLOB;
-	else if (c == 'n')
-		*tmp &= ~NULLGLOB;
-	else if (c == 'F')
-		*tmp &= ~FAILGLOB;
-	else
-		return (0);
-	return (1);
-}
-
-static int			lget_min(t_proc *p, int i, u_short *tmp)
-{
-	int				j;
-	int				ret;
-
-	ret = 0;
-	j = 1;
-	while (p->argv[i][j] != '\0')
+	else if (p->argv[i][0] == '+')
 	{
-		if (p->argv[i][j] == 'l')
-			ret |= BU_SET_PRLOC;
-		else if (p->argv[i][j] == 'o')
-			ret |= BU_SET_PRSET;
-		else if (laddarg(tmp, p->argv[i][j]))
-			;
-		else if (p->argv[i][j] == 'h')
-			return (set_help(p, 0));
-		else
-			return (lusage(p, p->argv[i][j], 1));
-		j++;
+		if ((opts[1] = lget_max(p, i, tmp)) == -1)
+			return (-1);
 	}
-	return (ret);
-}
-
-static int			lget_max(t_proc *p, int i, u_short *tmp)
-{
-	int				j;
-	int				ret;
-
-	ret = 0;
-	j = 1;
-	while (p->argv[i][j] != '\0')
-	{
-		if (p->argv[i][j] == 'l')
-			ret |= BU_SET_PRVAR;
-		else if (p->argv[i][j] == 'o')
-			ret |= BU_SET_PRCMD;
-		else if (lrmarg(tmp, p->argv[i][j]))
-			;
-		else if (p->argv[i][j] == 'h')
-			return (set_help(p, 1));
-		else
-			return (lusage(p, p->argv[i][j], 1));
-		j++;
-	}
-	return (ret);
+	opts[0] |= opts[1];
+	return (0);
 }
 
 int					bu_set_getopts(t_proc *p, t_ctx *ctx, int i)
@@ -134,18 +47,8 @@ int					bu_set_getopts(t_proc *p, t_ctx *ctx, int i)
 	tmp = ctx->set;
 	while (p->argv[i] != NULL)
 	{
-		if (p->argv[i][0] == '-' && ft_isalpha(p->argv[i][1]))
-		{
-			if ((opts[1] = lget_min(p, i, &tmp)) == -1)
-				return (-1);
-			opts[0] |= opts[1];
-		}
-		else if (p->argv[i][0] == '+' && ft_isalpha(p->argv[i][1]))
-		{
-			if ((opts[1] = lget_max(p, i, &tmp)) == -1)
-				return (-1);
-			opts[0] |= opts[1];
-		}
+		if ((p->argv[i][0] == '-' || p->argv[i][0] == '+') && ft_isalpha(p->argv[i][1]))
+			lget_switch(opts, p, i, &tmp);
 		else if (p->argv[i][0] == '-' || p->argv[i][0] == '+')
 		{
 			ft_dprintf(STDERR_FILENO, "21sh: set: %s: Invalid argument\n%s\n",
