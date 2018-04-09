@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/06 20:55:23 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 11:24:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void		wrap_exit(int status, t_ctx *ctx)
 		ft_astr_clear(&ctx->environ);
 	if (ctx->locals)
 		ft_astr_clear(&ctx->locals);
+	if (ctx->last_argv !+ NULL)
+		ft_strdel(&ctx->last_argv);
 	if (ctx->line_edition == true)
 		tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);
 	if (ctx->builtins != NULL)

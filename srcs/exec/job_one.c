@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/08 19:55:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 11:25:33 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,5 @@ int						job_one(t_job *j, t_ctx *ctx)
 		j->status = p->status;
 	}
 	restore_fds(ctx);
-	if (ctx->last_argv != NULL)
-		ft_strdel(&ctx->last_argv);
-	ctx->last_argv = job_last_argv(j);
 	return (ret);
 }
