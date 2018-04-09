@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 11:31:46 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/23 15:33:43 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 16:18:07 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,7 @@ char						*create_range(char *beg, char *end);
 t_mptr						get_matcher(int id);
 int							get_string(char **matcher, t_mtok **tmp);
 
-int							get_matcher_tokens(char *matcher, t_mtok **tmp,
-												int flags);
+int							get_matcher_tokens(char *matcher, t_mtok **tmp);
 
 int							match(char *str, t_mtok *tokens);
 int							compare(char *str, size_t pos, t_mtok *token);

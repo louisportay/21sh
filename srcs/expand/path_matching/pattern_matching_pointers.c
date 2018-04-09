@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/02 19:17:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 16:45:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ static int			f_brac(char **matcher, t_mtok **tmp)
 	char		*str;
 
 	beg = *matcher + 1;
-	end = beg;
+	end = (*beg == ']') ? beg + 1 : beg;
+	printf("%c\n", *beg);
 	while (*end != '\0' && *end != ']')
 		end++;
+	printf("%c\n", *end);
 	if (*end == '\0')
 		return (0);
 	if ((str = create_range(beg, end)) == NULL)

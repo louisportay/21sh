@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:53:53 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 10:00:26 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 16:48:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ char			*ft_strrmdup(char **str)
 	while (*s != '\0')
 	{
 		c = *(s++);
-		if (prz[c] == 0)
+		if (c >= UCHAR_MAX)
+			continue ;
+		if (c < UCHAR_MAX && prz[c] == 0)
 			qbuf_addc(buf, c);
 		else
 			mod = 1;

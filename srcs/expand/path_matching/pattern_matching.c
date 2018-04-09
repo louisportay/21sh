@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:47:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/02 19:06:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 16:18:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ static int		normal_matcher(char *matcher, t_mtok **tokens)
 	return (1);
 }
 
-int				get_matcher_tokens(char *matcher, t_mtok **tokens, int flags)
+int				get_matcher_tokens(char *matcher, t_mtok **tokens)
 {
-	if (flags == EXTOP)
-		return (extended_matcher(matcher, tokens));
 	return (normal_matcher(matcher, tokens));
 }
