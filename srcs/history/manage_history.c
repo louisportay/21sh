@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 18:40:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/07 10:54:50 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 14:30:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,29 @@ void	trim_history(t_dlist **histlist, char *s_histsize)
 	*histlist = tmp;
 }
 
-void	save_history(char *histfile, t_dlist *histlist, int flags)
+void	save_history(char *histfile, t_dlist *histlist, int flags, int exiting)
 {
 	char	*tmp;
 	int		fd;
 
 	fd = open(histfile ? histfile : HISTFILE,
-			O_CREAT | flags | O_RDWR, S_IWUSR | S_IRUSR);
+				O_CREAT | flags | O_RDWR, S_IWUSR | S_IRUSR);
 	if (fd == -1 || histlist->data == NULL)
+	{
+		close(fd);
 		return ;
+	}
 	while (histlist->prev)
 	{
-		tmp = str_from_dlst(T_HISTENTRY(histlist->data)->line);
-		if (tmp && !str_isblank(tmp))
+		if ((tmp = str_from_dlst(T_HISTENTRY(histlist->data)->line)) == NULL)
 		{
-			write(fd, tmp, ft_strlen(tmp));
-			write(fd, "\n", 1);
+			if (exiting == 1)
+				break ;
+			else
+				fatal_err(NOMEM, get_ctxaddr());
 		}
+		write(fd, tmp, ft_strlen(tmp));
+		write(fd, "\n", 1);
 		ft_strdel(&tmp);
 		histlist = histlist->prev;
 	}
@@ -79,7 +85,7 @@ void	init_hist(t_hist *hist, char *histfile)
 		if (ft_strlen(histentry))
 		{
 			if ((dup = dlst_from_str(histentry)) == NULL)
-					wrap_exit(-1, get_ctxaddr());
+					fatal_err(NOMEM, get_ctxaddr());
 			insert_histlist(dup, hist);
 		}
 		free(histentry);

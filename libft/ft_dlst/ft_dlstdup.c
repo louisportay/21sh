@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/04 16:17:34 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 13:50:46 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 14:05:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@ t_dlist	*ft_dlstdup(t_dlist *dlst)
 	ft_dlstend(&dlst);
 	while (dlst)
 	{
-		ft_dlstadd(&dup, ft_dlstnew(dlst->data, dlst->content_size));
+		if (ft_dlstnewadd(&dup, dlst->data, dlst->content_size, &ft_dlstnew)
+				== -1)
+		{
+			ft_dlstdel(&dup, &delvoid);
+			return (NULL);
+		}
 		dlst = dlst->prev;
 	}
 	return (dup);

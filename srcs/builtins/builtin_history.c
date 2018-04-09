@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:35:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/01 14:07:58 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 14:35:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void		a_opt(t_proc *p, t_ctx *ctx)
 	if (T_HISTENTRY(tmp->data)->index < ctx->hist.first_entry)
 		tmp = tmp->prev;
 	if (p->argv[2])
-		save_history(p->argv[2], tmp, O_APPEND);
+		save_history(p->argv[2], tmp, O_APPEND, 0);
 	else
-		save_history(ft_astr_getval(ctx->locals, "HISTFILE"), tmp, O_APPEND);
+		save_history(ft_astr_getval(ctx->locals, "HISTFILE"), tmp, O_APPEND, 0);
 	ctx->hist.first_entry = ctx->hist.index;
 }
 
@@ -59,10 +59,10 @@ void		r_opt(t_proc *p, t_ctx *ctx)
 void		w_opt(t_proc *p, t_ctx *ctx)
 {
 	if (p->argv[2])
-		save_history(p->argv[2], ft_dlstlast(ctx->hist.list), O_APPEND);
+		save_history(p->argv[2], ft_dlstlast(ctx->hist.list), O_APPEND, 0);
 	else
 		save_history(ft_astr_getval(ctx->locals, "HISTFILE"),
-				ft_dlstlast(ctx->hist.list), O_APPEND);
+				ft_dlstlast(ctx->hist.list), O_APPEND, 0);
 }
 
 int			ft_history(t_proc *p, t_ctx *ctx)

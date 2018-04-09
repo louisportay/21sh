@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/04 16:30:32 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 10:18:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static void	reset_line(t_ctx *ctx, t_line *l)
 		ft_dlstdel(&l->lastline, &delvoid);
 	}
 	stack_del(&l->linestate);
-	stack_push(&l->linestate, stack_create(UNQUOTED));
+	if (stack_create_push(&l->linestate, UNQUOTED) == -1)
+		fatal_err(NOMEM, ctx);
 	ft_strcpy(ctx->prompt_mode, PS1);
 	if (l->eohdoc)
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");

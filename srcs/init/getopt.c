@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:13:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/31 16:30:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 14:22:35 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ static void	c_opt(t_ctx *ctx, char **av)
 		fatal_err(BADOPT_C, ctx);
 	ctx->path = getpath(ctx->environ);
 	l_av = dlst_from_str(av[1]);
-	ft_dlstaddend(l_av, ft_dlstnew("\n", 1));
+	if (ft_dlstnewaddend(l_av, "\n", 1, &ft_dlstnew) == 1)
+		fatal_err(NOMEM, get_ctxaddr());
 	exec_loop(l_av);
 	ft_dlstdel(&l_av, &delvoid);
 	ctx->istty = 0;
-	wrap_exit(0, ctx);
+	wrap_exit(EXIT_SUCCESS, ctx);
 }
 
 static void	f_opt(t_ctx *ctx, char **av)
@@ -52,7 +53,7 @@ void		get_shell_opt(t_ctx *ctx, char **av)
 		{
 			ft_printf("%s%s%s", HELP1, HELP2, HELP3);
 			ctx->istty = 0;
-			wrap_exit(0, ctx);
+			wrap_exit(EXIT_SUCCESS, ctx);
 		}
 		av++;
 	}

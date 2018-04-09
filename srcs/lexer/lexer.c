@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/06 20:42:03 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 15:20:04 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ void	init_tokenizer(t_dlist **line, t_token **tlist,
 		t_token **ltok, t_stack **qstate)
 {
 	*qstate = NULL;
-	stack_push(qstate, stack_create(UNQUOTED));
-	*tlist = new_token(*line);
+	if (stack_create_push(qstate, UNQUOTED) == -1)
+		fatal_err(NOMEM, get_ctxaddr());
+	if ((*tlist = new_token(*line)) == NULL)
+		fatal_err(NOMEM, get_ctxaddr());
 	(*tlist)->last_letter = *line;
 	(*tlist)->type = HEAD;
 	*ltok = *tlist;

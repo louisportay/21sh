@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 18:44:52 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/23 15:58:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 14:17:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ void		insert_char(char *buf, t_ctx *ctx, t_line *l)
 {
 	t_dlist *tmp;
 
-	ft_dlstinsert(l->line, ft_dlstnew(buf, 1));
+	if ((tmp = ft_dlstnew(buf, 1)) == NULL)
+		fatal_err(NOMEM, get_ctxaddr());
+	ft_dlstinsert(l->line, tmp);
 	tmp = l->line->next;
 	clear_line(ctx, l);
 	redraw_line(ctx, l);

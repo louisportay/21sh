@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/08 19:30:17 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 10:20:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static int             scan_glob(char *s)
 	t_stack *quote;
 
 	quote = NULL;
-	stack_push(&quote, stack_create(UNQUOTED));
+	if (stack_create_push(&quote, UNQUOTED) == -1)
+		fatal_err(NOMEM, get_ctxaddr());
 	while (*s != '\0')
 	{
 		if (*s == '\\' || *s == '\'' || *s == '\"')

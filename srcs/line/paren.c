@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 13:22:28 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/07 18:55:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 10:16:03 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	handle_paren(t_stack **line, char c)
 		stack_pop(line);
 	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE
 			&& (*line)->state != DQUOTE && c == '(')
-		stack_push(line, stack_create(PAREN));
+		if (stack_create_push(line, PAREN) == -1)
+			fatal_err(NOMEM, get_ctxaddr());
 }
 
 void	handle_brace(t_stack **line, char c)
@@ -29,11 +30,14 @@ void	handle_brace(t_stack **line, char c)
 		(*line)->state |= BRACE;
 	else if ((*line)->state != BSLASH && (*line)->state != SQUOTE
 			&& (*line)->state != DQUOTE && c == '{')
-		stack_push(line, stack_create(BRACE));
+		if (stack_create_push(line, BRACE) == -1)
+			fatal_err(NOMEM, get_ctxaddr());
+
 }
 
 void	handle_dollar(t_stack **line)
 {
 	if ((*line)->state != SQUOTE && (*line)->state != BSLASH)
-		stack_push(line, stack_create(DOLLAR));
+		if (stack_create_push(line, DOLLAR) == -1)
+			fatal_err(NOMEM, get_ctxaddr());
 }

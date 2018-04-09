@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/06 19:42:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 14:18:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	add_newline(t_line *l)
 {
 	if ((l->linestate->state & (SQUOTE | DQUOTE) && !l->eohdoc) ||
 (l->linestate->state & HEREDOC))
-		ft_dlstaddend(l->split_line, ft_dlstnew("\n", 1));
+		if (ft_dlstnewaddend(l->split_line, "\n", 1, &ft_dlstnew) == -1)
+			fatal_err(NOMEM, get_ctxaddr());
 }
 
 void	toggle_emacs_mode(t_ctx *ctx, t_line *l)
@@ -70,7 +71,8 @@ void	warning_heredoc(t_line *l)
 	if (get_ctxaddr()->line_edition)
 		ft_dlstdel(&l->line, &delvoid);
 	else if (!l->split_line)
-		l->split_line = ft_dlstnew("", 0);
+		if ((l->split_line = ft_dlstnew("", 0)) == NULL)
+			fatal_err(NOMEM, get_ctxaddr());
 	stack_pop(&l->linestate);
 }
 
@@ -82,5 +84,6 @@ void	err_line(t_line *l, int errno)
 		missing_quote_err(l->linestate->state);
 	ft_dlstdel(&l->split_line, &delvoid);
 	ft_dlstdel(&l->line, &delvoid);
-	stack_push(&l->linestate, stack_create(ERROR));
+	if (stack_create_push(&l->linestate, ERROR) == -1)
+		fatal_err(NOMEM, get_ctxaddr());
 }

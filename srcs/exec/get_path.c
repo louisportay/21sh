@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 15:34:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 09:31:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char					*env_path_get(char *exe, char **pathes)
 	i = 0;
 	while (pathes[i] != NULL)
 	{
+		if ((ft_strlen(pathes[i]) + ft_strlen(exe)) > PATH_MAX)
+			return (NULL);
 		ft_bzero(buffer, PATH_MAX + 1);
 		ft_strcat(buffer, pathes[i]);
 		ft_strcat(buffer, "/");

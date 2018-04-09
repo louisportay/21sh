@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/08 17:24:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 14:20:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ static void	init_parameters(t_ctx *ctx)
 void		init_ctx(t_ctx *ctx, char **av, char **environ)
 {
 	ctx->av = av;
+	ctx->ret_tcget = tcgetattr(STDIN_FILENO, &ctx->oldtios);
 	init_linevar(ctx);
 	init_parameters(ctx);
-	ctx->hist.list = ft_dlstnew("HEAD", 4);
+	if ((ctx->hist.list = ft_dlstnew("HEAD", 4)) == NULL)
+		fatal_err(NOMEM, ctx);
 	ctx->hist.index = 1;
 	ctx->std_fd[0] = dup(STDIN_FILENO);
 	ctx->std_fd[1] = dup(STDOUT_FILENO);
@@ -51,10 +53,12 @@ void		init_ctx(t_ctx *ctx, char **av, char **environ)
 	ctx->istty = isatty(STDIN_FILENO);
 	if (!ctx->istty || ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws) == -1)
 		ctx->line_edition = 0;
-	ctx->environ = ft_astr_dup(environ);
+	if ((ctx->environ = ft_astr_dup(environ)) == NULL)
+		fatal_err(NOMEM, ctx);
 	ctx->hash = hash_create(HASH_SIZE, HASH_PRIME);
-	ctx->ret_tcget = tcgetattr(STDIN_FILENO, &ctx->oldtios);
 	ft_memcpy(&ctx->tios, &ctx->oldtios, sizeof(struct termios));
 	create_locals(&ctx->locals);
+	if (ctx->locals == NULL)
+		fatal_err(NOMEM, ctx);
 	ctx->builtins = getbuiltins();
 }

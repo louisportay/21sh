@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/30 17:27:54 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 15:26:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,26 @@ size_t					token_count(t_token *tok)
 	return (len);
 }
 
+/*
+**	if (ft_strchr(r->s_rhs, '\\') || ft_strchr(r->s_rhs, '\'') || ft_strchr(r->s_rhs, '"'))
+**		r->glob = 0;
+**	else
+**		r->glob = 1;
+** quote removal on r->s_rhs
+**
+** after getting the heredoc,
+** apply expansion on r->s_rhs depending on r->glob
+*/
+
 void	get_hdoc_line(t_heredoc *r)
 {
 	r->hdoc.eohdoc = r->s_rhs;
 	ft_readline(get_ctxaddr(), &r->hdoc, PS2);
-
-	if (ft_strchr(r->s_rhs, '\\') || ft_strchr(r->s_rhs, '\'')
-								|| ft_strchr(r->s_rhs, '"'))
-		r->glob = 0;
-	else
-		r->glob = 1;
-	//quote removal on r->s_rhs
-
+	r->hdoc.eohdoc = NULL;
 	ft_strdel(&r->s_rhs);
-	if (r->hdoc.split_line && r->hdoc.split_line->next)
-		r->s_rhs = str_from_dlst(r->hdoc.split_line);
-	else if (r->hdoc.split_line)
-		r->s_rhs = ft_strdup("");
-//	else
-//			ERROR stop parsing here.
-
-	//apply expansion on r->s_rhs depending on r->glob
+	if (r->hdoc.split_line &&
+		(r->s_rhs = str_from_dlst(r->hdoc.split_line)) == NULL)
+			fatal_err(NOMEM, get_ctxaddr());
 	if (r->hdoc.split_line)
 		ft_dlstdel(&r->hdoc.split_line, &delvoid);
 }

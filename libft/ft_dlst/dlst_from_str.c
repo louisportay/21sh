@@ -6,12 +6,18 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 11:40:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 13:49:16 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 12:57:38 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_dlst.h"
 #include "ft_string.h"
+
+static void	*del_list_return_null(t_dlist **lst)
+{
+	ft_dlstdel(lst, &delvoid);
+	return (NULL);
+}
 
 t_dlist	*dlst_from_str(char *str)
 {
@@ -25,11 +31,14 @@ t_dlist	*dlst_from_str(char *str)
 	len = ft_strlen(str);
 	while (len--)
 	{
-		buf = (char *)malloc(sizeof(char) + 1);
+		if ((buf = (char *)malloc(sizeof(char) + 1)) == NULL)
+			return (del_list_return_null(&lst));
 		buf[0] = str[len];
 		buf[1] = '\0';
-		ft_dlstadd(&lst, ft_dlstnewaddr(buf, 1));
+		if (ft_dlstnewadd(&lst, buf, 1, &ft_dlstnewaddr) == -1)
+			return (del_list_return_null(&lst));
 	}
-	ft_dlstadd(&lst, ft_dlstnew("HEAD", 5));
+	if (ft_dlstnewadd(&lst, "HEAD", 5, &ft_dlstnew) == -1)
+		return (del_list_return_null(&lst));
 	return (lst);
 }

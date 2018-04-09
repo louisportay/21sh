@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/02 13:26:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/19 13:52:09 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 11:07:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ char	*str_from_dlst(t_dlist *dlst)
 	char	*s;
 	int		len;
 
-	if (!dlst->next)
+	if (!dlst)
 		return (NULL);
 	len = ft_dlstcount(dlst) + 1;
-	s = (char *)malloc(sizeof(char) * len);
+	if ((s = (char *)malloc(sizeof(char) * len)) == NULL)
+		return (NULL);
 	len = 0;
 	dlst = dlst->next;
 	while (dlst)

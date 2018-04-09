@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/06 20:55:23 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 14:32:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	free_hist(t_dlist **histlist, t_ctx *ctx)
 		trim_history(&(*histlist)->next, ft_astr_getval(ctx->locals,
 					"HISTFILESIZE"));
 		save_history(ft_astr_getval(ctx->locals, "HISTFILE"),
-				ft_dlstlast(*histlist), O_TRUNC);
+				ft_dlstlast(*histlist), O_TRUNC, 1);
 		*histlist = (*histlist)->next;
 		ft_dlstdelone(&(*histlist)->prev, &delvoid);
 		ft_dlstdel(histlist, &del_histentry);
@@ -67,6 +67,7 @@ void		wrap_exit(int status, t_ctx *ctx)
 {
 	if (ctx->istty)
 		ft_putstr_fd("exit\n", ctx->std_fd[0]);
+	tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);
 	if (ctx->line.line)
 		ft_dlstdel(&ctx->line.line, &delvoid);
 	if (ctx->yank)
@@ -83,8 +84,6 @@ void		wrap_exit(int status, t_ctx *ctx)
 		ft_astr_clear(&ctx->environ);
 	if (ctx->locals)
 		ft_astr_clear(&ctx->locals);
-	if (ctx->line_edition == true)
-		tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);
 	if (ctx->builtins != NULL)
 		hash_free(&ctx->builtins, NULL);
 	hash_free(&ctx->hash, &ft_memdel);

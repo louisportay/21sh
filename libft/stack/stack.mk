@@ -5,6 +5,7 @@ stack_pop.c\
 stack_print.c\
 stack_push.c\
 stack_dup.c\
+stack_create_push.c\
 
 STACK_DIR=stack
 
