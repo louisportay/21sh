@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 14:45:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 15:37:34 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@
 /*
 ** # define HELP4 "--norc:\t\tdo not read configuration file\n"
 */
-
 
 # define PATH					"/usr/local/bin/:/usr/bin:/bin"
 
@@ -152,6 +151,8 @@ struct					s_ctx
 	struct termios		oldtios;
 	char				**av;
 
+	char				last_ret;
+	char				*last_argv;
 };
 
 void					vingtetunsh(char **av, char **environ);

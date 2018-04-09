@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/08 17:41:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 15:28:35 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 	p = j->procs;
 	while (p != NULL)
 	{
+		restore_fds(ctx);
 		pipingation(p);
 		if (do_redir(p->redirs, ctx->std_fd) == -1)
 			p->status = 1 | JOB_CMP;
@@ -106,7 +107,6 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 			clear_pipe(j, p, fd);
 			exit(-42);
 		}
-//			return (1);
 		p = p->next;
 	}
 	exit(-1);

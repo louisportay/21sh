@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 10:53:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 14:01:25 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/08 19:34:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ void				vtok_vadoll(t_lvar *lvar)
 		vtok_dollnull(lvar);
 	else if (vtok_assert(lvar->curr_tok, 1, VADOLL))
 		vtok_dolldoll(lvar);
+	else if (vtok_assert(lvar->curr_tok, 1, VUNDER))
+		vtok_dollunder(lvar);
+	else if (vtok_assert(lvar->curr_tok, 1, VQUEST))
+		vtok_dollquest(lvar);
 	else if (vtok_assert(lvar->curr_tok, 1, VAWORD))
 		vtok_dollword(lvar);
 	else if (vtok_assert(lvar->curr_tok, 1, VDQUOT))

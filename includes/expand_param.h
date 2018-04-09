@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 11:54:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/08 19:32:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 # include "expand.h"
 
-# define VACHR ("${} \"")
+# define VACHR ("${} \"_?")
 # define VAR_OK 1
 # define VAR_ERR -1
 # define VAR_KO 0
@@ -34,6 +34,8 @@ enum					e_vtype
 	VACBRA,
 	VSPACE,
 	VDQUOT,
+	VUNDER,
+	VQUEST,
 	VAWORD,
 	VOTHER
 };
@@ -102,6 +104,8 @@ void					vtok_addvar(t_qbuf *buf, t_ctx *ctx, char *key);
 void					vtok_vadoll(t_lvar *lvar);
 void					vtok_dollvaobra(t_lvar *lvar);
 void					vtok_dolldoll(t_lvar *lvar);
+void					vtok_dollunder(t_lvar *lvar);
+void					vtok_dollquest(t_lvar *lvar);
 void					vtok_addpid(t_qbuf *buf, int clear);
 void					vtok_dollexec(t_lvar *lvar, char *str[2], char c);
 

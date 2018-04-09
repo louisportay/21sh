@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 17:31:19 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/13 17:33:55 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/08 19:20:43 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,8 @@ void			vtok_printone(t_vtok *tok)
 		ft_putendl("VAWORD");
 	if (tok->type == VOTHER)
 		ft_putendl("VOTHER");
+	if (tok->type == VUNDER)
+		ft_putendl("VUNDER");
+	if (tok->type == VQUEST)
+		ft_putendl("VQUEST");
 }

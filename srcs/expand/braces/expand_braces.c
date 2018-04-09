@@ -6,17 +6,20 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 16:46:39 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 12:48:08 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 12:25:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand_braces.h"
+#include "builtins.h"
 
 int					expand_braces(char *str, char **ret)
 {
 	t_btok			*tok;
 	t_ttok			*ttok;
 
+	if ((get_ctxaddr()->set & BRACE_EXPAND) == 0)
+		return (0);
 	if (braces_scan(str) == 0)
 		return (0);
 	*ret = NULL;

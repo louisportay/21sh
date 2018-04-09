@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 19:07:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 12:26:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int				init(t_ctx *ctx, char **av, char **environ)
 	init_line_edition(ctx);
 	complete_environ(&ctx->environ);
 	ctx->path = getpath(ctx->environ);
+	ctx->set |= BRACE_EXPAND;
 	init_hist(&ctx->hist, ft_astr_getval(ctx->locals, "HISTFILE"));
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/08 18:00:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 11:21:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,8 @@ int						job_exec(t_job *j, t_ctx *ctx)
 		if (l_job_exec_loop(&j, ctx, exp_err) == 1)
 			return (1);
 	}
+	if (ctx->last_argv != NULL)
+		ft_strdel(&ctx->last_argv);
+	ctx->last_argv = job_last_argv(j);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:28:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/25 20:12:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 11:39:51 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include <sys/types.h>
 
 # include "qbuf.h"
-
-//# include "libft.h"
 
 # define FT_PBSZ 2048
 # define FT_TMPBSZ 100
@@ -78,7 +76,6 @@ typedef struct				s_buf
 	enum e_outtype			type;
 	union u_output			out;
 	size_t					len;
-	int						ret;
 }							t_buf;
 
 typedef struct				s_exp

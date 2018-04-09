@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/06 19:36:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 12:18:58 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define BU_SET_PRCMD	0x08
 
 # define BU_SET_EXPOR	0x01
-# define BU_SET_BGCMD	0x02
+# define BRACE_EXPAND	0x02
 # define BU_SET_FNEXP	0x04
 # define BU_SET_ONCMD	0x08
 # define DOTGLOB		0x10
@@ -47,7 +47,7 @@
 # define BU_SET_ON ("\ton\n")
 # define BU_SET_OFF ("\toff\n")
 # define BU_SET_MEXPO ("allexport")
-# define BU_SET_MBGCM ("notify")
+# define BU_SET_BREXP ("brace expand")
 # define BU_SET_MFNEX ("noglob")
 # define BU_SET_MONCM ("xtrace")
 # define BU_SET_GLDOT ("dotglob")

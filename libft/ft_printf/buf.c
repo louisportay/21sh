@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:36:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 17:59:51 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 11:41:40 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int					fpf_buf_clear(t_buf *buf)
 	}
 	else if (buf->type == FPF_A)
 	{
-		str = ft_strndup(buf->buf->buffer,
-							((size_t)buf->ret > buf->len) ? buf->len : (size_t)buf->ret);
+		str = ft_strndup(buf->buf->buffer, buf->buf->used > buf->len ?
+											buf->len : buf->buf->used);
 		*(buf->out.out) = str;
 	}
 	else
@@ -66,5 +66,5 @@ size_t				fpf_buf_gettotal(t_buf *buf)
 {
 	if (buf == NULL)
 		buf = fpf_buf_get();
-	return (buf->ret);
+	return (buf->buf->used);
 }

@@ -6,13 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 19:23:49 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/19 16:10:25 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 12:05:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "qbuf.h"
 
-int					qbuf_addc(t_qbuf *buf, char c)
+int						qbuf_addc(t_qbuf *buf, char c)
 {
 	if (buf->used + 1 == buf->size)
 	{
@@ -24,18 +24,18 @@ int					qbuf_addc(t_qbuf *buf, char c)
 	return (1);
 }
 
-int					qbuf_add(t_qbuf *buf, char *str)
+int						qbuf_add(t_qbuf *buf, char *str)
 {
 	if (str == NULL)
 		return (0);
 	return (qbuf_addn(buf, str, ft_strlen(str)));
 }
 
-int					qbuf_addl(t_qbuf *buf, long l)
+int						qbuf_addl(t_qbuf *buf, long l)
 {
-	char			s[21];
-	unsigned long	m;
-	int				i;
+	char				s[21];
+	unsigned long		m;
+	int					i;
 
 	i = ft_lwidth(l);
 	m = (l < 0) ? -l : l;
@@ -47,9 +47,16 @@ int					qbuf_addl(t_qbuf *buf, long l)
 	return (qbuf_add(buf, s));
 }
 
-int					qbuf_addn(t_qbuf *buf, char *str, size_t n)
+static inline size_t	lnearest_pow(size_t n, size_t b)
 {
-	size_t			total;
+	while (b < n)
+		b <<= 1;
+	return (b);
+}
+
+int						qbuf_addn(t_qbuf *buf, char *str, size_t n)
+{
+	size_t				total;
 
 	if (buf == NULL || str == NULL || n == (size_t)-1)
 		return (0);
@@ -60,7 +67,7 @@ int					qbuf_addn(t_qbuf *buf, char *str, size_t n)
 		buf->used = total;
 		return (1);
 	}
-	if (qbuf_grown(buf, total * 2) == 0)
+	if (qbuf_grown(buf, lnearest_pow(total << 1, buf->size)) == 0)
 		return (0);
 	ft_strncat(buf->buffer, str, n);
 	buf->used = total;
