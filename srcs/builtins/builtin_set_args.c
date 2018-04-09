@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 17:37:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 14:07:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 12:15:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static inline int	laddarg(u_short *tmp, char c)
 {
 	if (c == 'a')
 		*tmp |= BU_SET_EXPOR;
-	else if (c == 'b')
-		*tmp |= BU_SET_BGCMD;
+	else if (c == 'B')
+		*tmp |= BRACE_EXPAND;
 	else if (c == 'f')
 		*tmp |= BU_SET_FNEXP;
 	else if (c == 'x')
@@ -60,8 +60,8 @@ static inline int	lrmarg(u_short *tmp, char c)
 {
 	if (c == 'a')
 		*tmp &= ~BU_SET_EXPOR;
-	else if (c == 'b')
-		*tmp &= ~BU_SET_BGCMD;
+	else if (c == 'B')
+		*tmp &= ~BRACE_EXPAND;
 	else if (c == 'f')
 		*tmp &= ~BU_SET_FNEXP;
 	else if (c == 'x')

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 15:20:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 14:05:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/09 12:22:58 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void			lset(t_ctx *ctx, t_qbuf *buf)
 {
 	qbuf_add(buf, BU_SET_MEXPO);
 	qbuf_add(buf, ctx->set & BU_SET_EXPOR ? BU_SET_ON : BU_SET_OFF);
-	qbuf_add(buf, BU_SET_MBGCM);
-	qbuf_add(buf, ctx->set & BU_SET_BGCMD ? BU_SET_ON : BU_SET_OFF);
+	qbuf_add(buf, BU_SET_BREXP);
+	qbuf_add(buf, ctx->set & BRACE_EXPAND ? BU_SET_ON : BU_SET_OFF);
 	qbuf_add(buf, BU_SET_MFNEX);
 	qbuf_add(buf, ctx->set & BU_SET_FNEXP ? BU_SET_ON : BU_SET_OFF);
 	qbuf_add(buf, BU_SET_MONCM);
@@ -34,19 +34,19 @@ static void			lcmd(t_ctx *ctx, t_qbuf *buf)
 {
 	qbuf_add(buf, "set ");
 	qbuf_addc(buf, ctx->set & BU_SET_EXPOR ? '-' : '+');
-	qbuf_add(buf, "o allexport\nset ");
-	qbuf_addc(buf, ctx->set & BU_SET_BGCMD ? '-' : '+');
-	qbuf_add(buf, "o notify\nset ");
+	qbuf_add(buf, "a\nset ");
+	qbuf_addc(buf, ctx->set & BRACE_EXPAND ? '-' : '+');
+	qbuf_add(buf, "B\nset ");
 	qbuf_addc(buf, ctx->set & BU_SET_FNEXP ? '-' : '+');
-	qbuf_add(buf, "o noglob\nset ");
+	qbuf_add(buf, "f\nset ");
 	qbuf_addc(buf, ctx->set & BU_SET_ONCMD ? '-' : '+');
-	qbuf_add(buf, "o xtrace\nset ");
+	qbuf_add(buf, "x\nset ");
 	qbuf_addc(buf, ctx->set & DOTGLOB ? '-' : '+');
-	qbuf_add(buf, "o dotglob\nset ");
+	qbuf_add(buf, "d\nset ");
 	qbuf_addc(buf, ctx->set & NULLGLOB ? '-' : '+');
-	qbuf_add(buf, "o nullglob\nset ");
+	qbuf_add(buf, "n\nset ");
 	qbuf_addc(buf, ctx->set & FAILGLOB ? '-' : '+');
-	qbuf_add(buf, "o failglob\n");
+	qbuf_add(buf, "F\n");
 }
 
 static void			lloc(t_ctx *ctx, t_qbuf *buf)
