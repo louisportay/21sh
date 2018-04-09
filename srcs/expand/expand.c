@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:18:58 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/02 15:26:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 17:31:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int					expand(char *str, t_ctx *ctx, t_list **lst)
 	lcleanup(ret, &exp, &tmp, &swp);
 	ret = expand_param(tmp, &swp, ctx);
 	lcleanup(ret, &exp, &tmp, &swp);
-	ret = expand_glob(tmp, &swp, ctx);
-	lcleanup(ret, &exp, &tmp, &swp);
+//	ret = expand_glob(tmp, &swp, ctx);
+//	lcleanup(ret, &exp, &tmp, &swp);
 	if ((ret = expand_split(tmp, lst)) == -1)
 	{
 		ft_strdel(&tmp);
