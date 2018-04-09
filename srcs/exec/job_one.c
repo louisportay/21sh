@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 11:25:33 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/09 15:28:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int				fork_do(t_proc *p)
 	return (0);
 }
 
-static void				restore_fds(t_ctx *ctx)
+void					restore_fds(t_ctx *ctx)
 {
 	dup2(ctx->std_fd[0], STDIN_FILENO);
 	dup2(ctx->std_fd[1], STDOUT_FILENO);
