@@ -4,6 +4,7 @@ buf_op.c\
 char_op.c\
 characters.c\
 flag.c\
+flag_get.c\
 flag_p2.c\
 flag_print.c\
 flag_utils.c\
@@ -18,6 +19,7 @@ handle_bin.c\
 handle_char.c\
 handle_dec.c\
 handle_exp.c\
+handle_exp_prep.c\
 handle_float.c\
 handle_n.c\
 handle_pct.c\
@@ -27,6 +29,7 @@ handle_uns.c\
 handler.c\
 padding.c\
 print_dec.c\
+print_dec_rem.c\
 
 FT_PRINTF_DIR=ft_printf
 

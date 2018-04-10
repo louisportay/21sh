@@ -6,41 +6,11 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 17:32:59 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 17:12:53 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 16:19:23 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-static void			prepare_double(t_exp *e)
-{
-	int				neg;
-	int				negpre;
-
-	neg = e->d < 0;
-	if (neg)
-	{
-		e->d = -(e->d);
-		e->buf[e->len++] = '-';
-	}
-	negpre = (e->d) < 1;
-	if (negpre)
-	{
-		while ((e->d) < 1)
-		{
-			(e->sz)++;
-			(e->d) *= 10;
-		}
-	}
-	else
-	{
-		while ((e->d) > 10)
-		{
-			(e->sz)++;
-			(e->d) /= 10;
-		}
-	}
-}
 
 static void			bufferize(t_exp *e, t_flag *flag)
 {
@@ -94,16 +64,23 @@ static void			endbuffering(t_exp *e, t_flag *flag, u_char *spec)
 								- (e->rem != 0 ? 51 : 0)));
 }
 
+static void			prepare_exp(t_exp *e, va_list *ap)
+{
+	e->buf = fpf_buf_get()->tmp_buf;
+	e->len = 0;
+	e->sz = 0;
+	ft_bzero(e->buf, FT_TMPBSZ);
+	e->d = va_arg(*ap, double);
+	e->negpre = (e->d > 0 && e->d < 1) || (e->d < 0 && e->d > -1);
+	prepare_double(e);
+}
+
 int					fpf_handle_exp(va_list *ap, t_flag *flag)
 {
 	u_char			spec;
 	t_exp			e;
 
-	e = (t_exp){ .buf = fpf_buf_get()->tmp_buf, .len = 0, .sz = 0 };
-	ft_bzero(e.buf, FT_TMPBSZ);
-	e.d = va_arg(*ap, double);
-	e.negpre = (e.d > 0 && e.d < 1) || (e.d < 0 && e.d > -1);
-	prepare_double(&e);
+	prepare_exp(&e, ap);
 	bufferize(&e, flag);
 	spec = get_spec(flag, &e);
 	if (e.rem != 0)

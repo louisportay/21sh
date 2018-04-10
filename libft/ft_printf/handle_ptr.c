@@ -6,11 +6,18 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/29 13:57:25 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 17:23:35 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 16:13:21 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+static void		handle_ptr_rem(t_flag *flag, char *buf, size_t len)
+{
+	if ((flag->sz_flag & 6) != 0 && (size_t)flag->pre > len)
+		fpf_buf_addfillers(0, flag->pre - len);
+	fpf_buf_add(buf, len);
+}
 
 int				fpf_handle_ptr(va_list *ap, t_flag *flag)
 {
@@ -29,11 +36,7 @@ int				fpf_handle_ptr(va_list *ap, t_flag *flag)
 	if ((flag->flag & (1 << 9)) != 0)
 		pad_before(flag, len + 2);
 	if (ptr != NULL)
-	{
-		if ((flag->sz_flag & 6) != 0 && (size_t)flag->pre > len)
-			fpf_buf_addfillers(0, flag->pre - len);
-		fpf_buf_add(buf, len);
-	}
+		handle_ptr_rem(flag, buf, len);
 	else if ((flag->sz_flag & 6) == 6)
 		fpf_buf_addfillers(0, flag->pre);
 	else

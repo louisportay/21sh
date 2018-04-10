@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/05 18:21:54 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 17:41:36 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 16:25:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,37 +31,6 @@ static u_char		get_spec(char *str, t_flag *flag)
 	return (spec);
 }
 
-int					fpf_handle_prefix(t_flag *flag, u_char spec, size_t len)
-{
-	char		buf[3];
-	size_t		sz;
-
-	if ((flag->sz_flag & 2) != 0 && flag->pre <= len)
-	{
-		if (((flag->flag & (1 << 8))) && (flag->c == 'o' || flag->c == 'O'))
-			fpf_buf_addc('0');
-		return (pad_before(flag, len));
-	}
-	ft_bzero(buf, 3);
-	if ((spec & 1) != 0)
-		fpf_buf_addc('-');
-	if ((spec & (1 << 1)) != 0)
-		fpf_strcpy(buf, "0");
-	if ((spec & (1 << 2)) != 0)
-		fpf_strcpy(buf, flag->c == 'x' ? "0x" : "0X");
-	if ((spec & (1 << 3)) != 0)
-		fpf_strcpy(buf, "+");
-	if ((spec & (1 << 4)) != 0)
-		fpf_strcpy(buf, " ");
-	sz = fpf_strlen(buf);
-	if ((flag->flag & (1 << 9)) == 0)
-		pad_before(flag, len + sz);
-	fpf_buf_add(buf, sz);
-	if ((flag->flag & (1 << 9)) != 0)
-		pad_before(flag, len + sz);
-	return (sz);
-}
-
 static u_char		get_specpreci(t_flag *flag, char **str)
 {
 	u_char			spec;
@@ -74,6 +43,23 @@ static u_char		get_specpreci(t_flag *flag, char **str)
 	spec |= (((flag->flag & (1 << 12)) != 0
 				&& fpf_strchr("dDi", flag->c) != NULL) << 4);
 	return (spec);
+}
+
+static void			handle_pre_rem(char **str, t_flag *flag, size_t *len,
+									u_char spec)
+{
+	if (spec & 1)
+	{
+		fpf_buf_addc('-');
+		(*str)++;
+		(*len)--;
+	}
+	if ((spec & 17) == 16)
+		fpf_buf_addc('+');
+	if (flag->pre > (*len + ((spec & (1 << 2)) != 0)))
+		fpf_buf_addfillers(0, flag->pre - (*len + ((spec & (1 << 2)) != 0)));
+	if (spec & (1 << 1))
+		fpf_buf_addc('0');
 }
 
 int					fpf_handle_pre(char **str, t_flag *flag, size_t *len)
@@ -97,18 +83,7 @@ int					fpf_handle_pre(char **str, t_flag *flag, size_t *len)
 									- (((spec & 1) && flag->pre > *len))
 									- (((spec & (1 << 4)) != 0)));
 	}
-	if (spec & 1)
-	{
-		fpf_buf_addc('-');
-		(*str)++;
-		(*len)--;
-	}
-	if ((spec & 17) == 16)
-		fpf_buf_addc('+');
-	if (flag->pre > (*len + ((spec & (1 << 2)) != 0)))
-		fpf_buf_addfillers(0, flag->pre - (*len + ((spec & (1 << 2)) != 0)));
-	if (spec & (1 << 1))
-		fpf_buf_addc('0');
+	handle_pre_rem(str, flag, len, spec);
 	return (1);
 }
 

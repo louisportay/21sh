@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 12:01:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 15:40:01 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,20 +83,6 @@ void		sighand_int(int signo)
 	reset_line(ctx, ctx->cur_line);
 }
 
-#include<stdio.h>
-#include<execinfo.h>
-void		 sigquit(int signo)
-{
-	(void)signo;
-	void *callstack[128];
-	int i, frames=backtrace(callstack,128);
-	char **strs=backtrace_symbols(callstack,frames);
-	for(i=0;i<frames;i++) printf("%s\n", strs[i]);
-	free(strs);
-	kill(getpid(), SIGKILL);
-}
-
-
 void		set_sighandler(void)
 {
 	signal(SIGWINCH, &sighandler);
@@ -106,5 +92,4 @@ void		set_sighandler(void)
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGQUIT, &sigquit);
 }

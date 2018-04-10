@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:36:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 12:57:38 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 15:41:18 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,7 @@
 t_buf				*fpf_buf_get(void)
 {
 	static t_buf	buf = (t_buf){.init = 0};
-//	if (buf.init == 0)
-//	{
-//		if (buf.type != FPF_S)
-//		{
-//			printf("Allocation qbuf_new\n");
-//			buf.buf = qbuf_new(1 << 8);
-//			printf("qbuf_new: %p\n", buf.buf);
-//		}
-//		buf.init = 1;
-//	}
+
 	return (&buf);
 }
 

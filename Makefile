@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/10 11:40:06 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/10 15:37:29 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ SRCDIR= srcs/ \
 		srcs/exec \
 		srcs/builtins \
 		srcs/expand \
-		srcs/expand/path_matching \
 		srcs/expand/braces \
 		srcs/expand/tilde \
 		srcs/expand/quotes \
@@ -88,7 +87,6 @@ history.h\
 job_control.h\
 line.h\
 parser.h\
-pattern_matching.h\
 posix_classes.h\
 prompt.h\
 token.h\
@@ -205,18 +203,6 @@ SRCS=	main.c\
 		btok_get.c\
 		btok_from.c\
 		btok_sanitize.c\
-		expand_glob.c\
-		dir_expand_glob.c\
-		dir_explore.c\
-		ent_handling.c\
-		ent_sort.c\
-		ent_match.c\
-		pattern_matching_assert.c\
-		pattern_matching.c\
-		mtok_clear.c\
-		mtok_splitstr.c\
-		mtok_untilstr.c\
-		pattern_matching_tokens.c\
 		ttok_lifecycle.c\
 		ttok_comb.c\
 		ttok_combine.c\
@@ -224,11 +210,6 @@ SRCS=	main.c\
 		ttok_get.c\
 		ttok_utils.c\
 		ttok_str.c\
-		dir_handle_matched.c\
-		pattern_matching_pointers.c\
-		ft_utils.c\
-		pattern_matching_brackets.c\
-		pattern_matching_ematcher.c\
 		\
 		expand_tilde.c\
 		\
@@ -248,9 +229,6 @@ SRCS=	main.c\
 		vtok_addvar.c\
 		vtok_dollarbrace.c\
 		vtok_dollarexec.c\
-		\
-		mtok_print.c\
-		mtok_sort.c\
 		\
 		path_reset.c\
 		\

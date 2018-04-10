@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:28:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 12:05:36 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 16:23:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,5 +217,11 @@ void						fpf_ultobuf(unsigned long long l, size_t base,
 int							fpf_putcharbuf(wint_t wi, char buf[4], size_t *sz);
 int							fpf_bigcharsize(wint_t wi);
 t_handler					fpf_ptrget(int id);
+
+int							flag_get(const char *str, size_t *i, va_list ap,
+										t_flag *flag);
+void						prepare_double(t_exp *e);
+int							fpf_handle_prefix(t_flag *flag, u_char spec,
+												size_t len);
 
 #endif
