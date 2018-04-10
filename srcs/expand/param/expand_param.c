@@ -6,21 +6,35 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:48:20 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 12:48:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:22:09 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand_param.h"
+
+static int		lquoterr(void)
+{
+	ft_dprintf(STDERR_FILENO, "21sh: expand: param: Missing quote\n");
+	return (-1);
+}
 
 int				expand_param(char *str, char **ret, t_ctx *ctx)
 {
 	t_vtok		*toks;
 	char		*r;
 	int			v;
+	int			err;
+	int			rval;
 
-	if (scan_dollar(str) == 0)
+	if ((rval = scan_dollar(str)) == 0)
 		return (0);
-	toks = vtok_get(str);
+	else if (rval == -1)
+		return (lquoterr());
+	err = 0;
+	toks = vtok_get(str, &err);
+	*ret = NULL;
+	if (toks == NULL && err)
+		return (lquoterr());
 	vtok_sanitize(toks);
 	if ((v = vtok_handletokens(toks, &r, ctx)) == VAR_OK)
 		*ret = r;

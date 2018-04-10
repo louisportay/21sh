@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/08 19:32:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 11:15:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int						vtok_move(t_vtok **tok, int n);
 t_vtok					*vtok_peek(t_vtok *tok, int n);
 t_vtok					*vtok_peek_if(t_vtok *tok, int n, enum e_vtype type);
 
-t_vtok					*vtok_get(char *str);
+t_vtok					*vtok_get(char *str, int *err);
 
 void					vtok_tobuf(t_vtok *tok, t_qbuf *buf);
 void					vtok_print(t_vtok *tok);

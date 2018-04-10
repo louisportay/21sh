@@ -6,34 +6,40 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 16:55:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/10 17:07:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 10:40:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand_braces.h"
 
-static void				l_skip_squote(char **str)
+static int				l_skip_squote(char **str)
 {
 	char				*s;
 
 	s = *str + 1;
-	while (*s != '\'')
+	while (*s != '\0' && *s != '\'')
 		s++;
+	if (*s == '\0')
+		return (1);
 	*str = s + 1;
+	return (0);
 }
 
-static void				l_skip_dquote(char **str)
+static int				l_skip_dquote(char **str)
 {
 	char				*s;
 
 	s = *str + 1;
-	while (*s != '\"')
+	while (*s != '\0' && *s != '\"')
 	{
 		if (*s == '\\')
 			s++;
 		s++;
 	}
+	if (*s == '\0')
+		return (1);
 	*str = s + 1;
+	return (0);
 }
 
 int						braces_scan(char *str)
@@ -45,9 +51,15 @@ int						braces_scan(char *str)
 		else if (*str == '\\')
 			str += 2;
 		else if (*str == '\'')
-			l_skip_squote(&str);
+		{
+			if (l_skip_squote(&str))
+				return (-1);
+		}
 		else if (*str == '\"')
-			l_skip_dquote(&str);
+		{
+			if (l_skip_dquote(&str))
+				return (-1);
+		}
 		else if (*str == '$')
 		{
 			if (str[1] == '{')

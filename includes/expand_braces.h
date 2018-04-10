@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 16:48:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 11:52:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 11:48:02 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int						expand_braces(char *str, char **ret);
 
 int						braces_scan(char *str);
 
-t_btok					*btok_get(char *str);
+t_btok					*btok_get(char *str, int *err);
 
 int						btok_sanitize(t_btok *toks);
 t_btok					*btok_san_getnext(t_btok *tok);
@@ -73,8 +73,8 @@ void					btok_free(t_btok **tok);
 void					btok_clear(t_btok **tok);
 void					btok_insert(t_btok **head, t_btok **curr, t_btok *tmp);
 
-t_btok					*btok_from_squote(char **str);
-t_btok					*btok_from_dquote(char **str);
+t_btok					*btok_from_squote(char **str, int *err);
+t_btok					*btok_from_dquote(char **str, int *err);
 t_btok					*btok_from_other(char **str);
 
 void					btok_print(t_btok *tok);

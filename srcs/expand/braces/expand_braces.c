@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 16:46:39 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 12:25:04 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:56:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,19 @@ int					expand_braces(char *str, char **ret)
 {
 	t_btok			*tok;
 	t_ttok			*ttok;
+	int				r;
+	int				err;
 
 	if ((get_ctxaddr()->set & BRACE_EXPAND) == 0)
 		return (0);
-	if (braces_scan(str) == 0)
+	if ((r = braces_scan(str)) == 0)
 		return (0);
+	else if (r == -1)
+		return (-1);
 	*ret = NULL;
-	tok = btok_get(str);
+	err = 0;
+	if ((tok = btok_get(str, &err)) == NULL)
+		return (err ? -3 : -1);
 	btok_sanitize(tok);
 	ttok = ttok_get(tok);
 	btok_clear(&tok);

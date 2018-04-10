@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 11:39:56 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 12:24:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:51:02 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,11 @@ t_list				*bridge_strsplit(char *str)
 	lst[0] = NULL;
 	while (1)
 	{
-		while (ft_strindex(WHITESPACES, *str) != -1)
+		while (*str != '\0' && ft_strindex(WHITESPACES, *str) != -1)
 			str++;
 		n = get_next(str);
-		tmp = ft_strndup(str, (size_t)(n - str));
+		if ((tmp = ft_strndup(str, (size_t)(n - str))) == NULL)
+			fatal_err(NOMEM, get_ctxaddr());
 		lst[2] = list_create(tmp);
 		ft_list_insert(lst, lst + 1, lst[2]);
 		str = n;

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 20:14:39 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 10:07:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int						exec(t_job *jobs)
 
 	ctx = get_ctxaddr();
 	update_tty(ctx, 1);
-	signal(SIGINT, SIG_IGN);
 	while (jobs != NULL)
 	{
 		tmp = jobs;
@@ -39,7 +38,6 @@ int						exec(t_job *jobs)
 		dup2(ctx->std_fd[1], STDOUT_FILENO);
 		dup2(ctx->std_fd[0], STDIN_FILENO);
 	}
-	signal(SIGINT, &sighand_int);
 	update_tty(ctx, 0);
 	return (0);
 }

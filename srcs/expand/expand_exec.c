@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 15:05:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 13:10:57 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 11:37:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ int						expand_argv(t_proc *p, t_ctx *ctx)
 				ft_list_clear(&lst[0], &ft_memdel);
 				return (-2);
 			}
+			else if (ret == -3)
+			{
+				ft_dprintf(STDERR_FILENO, "21sh: expand: quote error\n");
+				ft_list_clear(&lst[0], &ft_memdel);
+				return (-3);
+			}
 		}
 		else
 			ft_list_insert_last(lst, lst + 1, lst[2]);
@@ -78,6 +84,11 @@ int						expand_asmt(t_proc *p, t_ctx *ctx)
 			{
 				ft_dprintf(STDERR_FILENO, "21sh: no match: %s\n", a->value);
 				return (-2);
+			}
+			else if (ret == -3)
+			{
+				ft_dprintf(STDERR_FILENO, "21sh: expand: quote error\n");
+				return (-3);
 			}
 		}
 		else
@@ -117,6 +128,12 @@ int						expand_redir(t_proc *p, t_ctx *ctx)
 					r->type = TOKERR;
 					ft_dprintf(STDERR_FILENO, "21sh: no match: %s\n", r->s_rhs);
 					return (-2);
+				}
+				else if (ret == -3)
+				{
+					r->type = TOKERR;
+					ft_dprintf(STDERR_FILENO, "21sh: expand: quote error\n");
+					return (-3);
 				}
 			}
 			else

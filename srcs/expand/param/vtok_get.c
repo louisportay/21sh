@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 18:11:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/02/22 13:39:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 11:11:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_vtok	*vtok_word(char **str)
 	return (vtok_newstr(VAWORD, ls));
 }
 
-static t_vtok	*vtok_other(char **str, int dq)
+static t_vtok	*vtok_other(char **str, int dq, int *err)
 {
 	char		*s;
 	char		*ls;
@@ -42,8 +42,13 @@ static t_vtok	*vtok_other(char **str, int dq)
 			if (dq == 0)
 			{
 				s++;
-				while (*s != '\'')
+				while (*s != '\0' && *s != '\'')
 					s++;
+				if (*s == '\0')
+				{
+					*err = 1;
+					return (NULL);
+				}
 			}
 			s++;
 		}
@@ -55,7 +60,7 @@ static t_vtok	*vtok_other(char **str, int dq)
 	return (vtok_newstr(VOTHER, ls));
 }
 
-static t_vtok	*vtok_next(char **str, int dq)
+static t_vtok	*vtok_next(char **str, int dq, int *err)
 {
 	t_vtok		*t;
 	int			pos;
@@ -71,10 +76,10 @@ static t_vtok	*vtok_next(char **str, int dq)
 	else if (ft_isalpha(**str))
 		return (vtok_word(str));
 	else
-		return (vtok_other(str, dq));
+		return (vtok_other(str, dq, err));
 }
 
-t_vtok			*vtok_get(char *str)
+t_vtok			*vtok_get(char *str, int *err)
 {
 	t_vtok		*tok[3];
 	int			dq;
@@ -83,11 +88,16 @@ t_vtok			*vtok_get(char *str)
 	tok[1] = NULL;
 	tok[2] = NULL;
 	dq = 0;
-	while ((tok[2] = vtok_next(&str, dq)) != NULL)
+	while ((tok[2] = vtok_next(&str, dq, err)) != NULL)
 	{
 		vtok_insert(tok, tok + 1, tok[2]);
 		if (tok[2]->type == VDQUOT)
 			dq ^= 1;
+	}
+	if (err)
+	{
+		vtok_clear(tok);
+		return (NULL);
 	}
 	return (tok[0]);
 }
