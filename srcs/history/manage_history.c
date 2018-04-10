@@ -6,13 +6,13 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 18:40:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 14:30:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:51:38 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-void	trim_history(t_dlist **histlist, char *s_histsize)
+void		trim_history(t_dlist **histlist, char *s_histsize)
 {
 	int		histsize;
 	t_dlist	*tmp;
@@ -35,7 +35,8 @@ void	trim_history(t_dlist **histlist, char *s_histsize)
 	*histlist = tmp;
 }
 
-void	save_history(char *histfile, t_dlist *histlist, int flags, int exiting)
+void		save_history(char *histfile, t_dlist *histlist, int flags,
+		int exiting)
 {
 	char	*tmp;
 	int		fd;
@@ -64,13 +65,19 @@ void	save_history(char *histfile, t_dlist *histlist, int flags, int exiting)
 	close(fd);
 }
 
-void	insert_histlist(t_dlist *dup, t_hist *hist);
-
-void	init_hist(t_hist *hist, char *histfile)
+static void	complete_histlist(char *histentry, t_hist *hist)
 {
-	char	*histentry;
-	int		file;
 	t_dlist		*dup;
+
+	if ((dup = dlst_from_str(histentry)) == NULL)
+		fatal_err(NOMEM, get_ctxaddr());
+	insert_histlist(dup, hist);
+}
+
+void		init_hist(t_hist *hist, char *histfile)
+{
+	char		*histentry;
+	int			file;
 
 	histentry = NULL;
 	if ((file = open(histfile, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR)) == -1
@@ -83,16 +90,13 @@ void	init_hist(t_hist *hist, char *histfile)
 	while (histentry)
 	{
 		if (ft_strlen(histentry))
-		{
-			if ((dup = dlst_from_str(histentry)) == NULL)
-					fatal_err(NOMEM, get_ctxaddr());
-			insert_histlist(dup, hist);
-		}
+			complete_histlist(histentry, hist);
 		free(histentry);
 		if (get_next_line(file, &histentry) == -1)
 			break ;
 	}
 	close(file);
 	hist->first_entry = hist->index;
-	trim_history(&hist->list, ft_astr_getval(get_ctxaddr()->locals, "HISTSIZE"));
+	trim_history(&hist->list, ft_astr_getval(get_ctxaddr()->locals,
+												"HISTSIZE"));
 }

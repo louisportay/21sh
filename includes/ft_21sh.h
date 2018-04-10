@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 15:37:34 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 13:09:21 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@
 # define PATH					"/usr/local/bin/:/usr/bin:/bin"
 
 //TO DELETE
+
 # define DEBUG 		write(STDOUT_FILENO, "DEBUG\n", 6)
 
 # define DFL_BGCNT 8
@@ -97,32 +98,16 @@ enum					e_errcode
 struct					s_ctx
 {
 
-	/*
-	**	JOB CONTROL - Might miss a lot of variables
-	*/
-
 	int					std_fd[3];
 	int					istty;
 	char				**path;
 
-	/*
-	**	EXECUTION HASH (for HASH builtin)
-	*/
-
 	t_hdict				*hash;
 	t_hdict				*builtins;
-
-	/*
-	**	SHELL VARIABLES
-	*/
 
 	char				**environ;
 	char				**locals;
 	unsigned short		set;
-
-	/*
-	**	LINE EDITION
-	*/
 
 	t_line				line;
 	t_hist				hist;
@@ -131,19 +116,11 @@ struct					s_ctx
 	char				prompt_mode[4];
 	int					ret_tcget;
 
-	/*
-	**	SHOPT BOOLS
-	*/
-
 	int					emacs_mode;
 	int					line_edition;
 	int					config_file;
 	int					history;
 	int					job_control;
-
-	/*
-	**	TERMINAL CONTEXT
-	*/
 
 	struct s_termcaps	tc;
 	struct winsize		ws;

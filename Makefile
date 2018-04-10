@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/09 22:19:27 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/10 11:40:06 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -151,6 +151,7 @@ SRCS=	main.c\
 		printers.c\
 		asmt.c\
 		bridge_token.c\
+		redir_dup.c\
 		bridge_dlist.c\
 		\
 		bridge_astr.c\

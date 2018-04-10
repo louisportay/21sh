@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:48:30 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 11:58:12 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 13:07:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 # include "dir_explorer.h"
 
-#define WHITESPACES (" \t\v")
+# define WHITESPACES (" \t\v")
 
 typedef struct s_job		t_job;
 typedef struct s_proc		t_proc;

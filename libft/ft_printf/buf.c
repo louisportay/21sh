@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:36:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 11:41:40 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 12:57:38 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 t_buf				*fpf_buf_get(void)
 {
-	static t_buf	buf = (t_buf) {.init = 0};
-
+	static t_buf	buf = (t_buf){.init = 0};
 //	if (buf.init == 0)
 //	{
 //		if (buf.type != FPF_S)

@@ -6,13 +6,13 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:10:31 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 20:11:53 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:30:17 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-static void			hashprint(char *key, void *value, void *data)
+static void	hashprint(char *key, void *value, void *data)
 {
 	char			*v;
 	size_t			*l;
@@ -22,7 +22,7 @@ static void			hashprint(char *key, void *value, void *data)
 	ft_printf("%-*s    %-*s\n", (int)l[0], key, (int)l[1], v);
 }
 
-static void			largest(char *key, void *value, void *data)
+static void	largest(char *key, void *value, void *data)
 {
 	char			*v;
 	size_t			*l;

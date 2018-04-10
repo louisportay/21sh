@@ -6,14 +6,14 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 10:20:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 11:19:15 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pattern_matching.h"
 #include "dir_explorer.h"
 
-static int             matching_bracket(char *s, t_stack *quote)
+static int		matching_bracket(char *s, t_stack *quote)
 {
 	char *opening_bracket;
 
@@ -36,9 +36,7 @@ static int             matching_bracket(char *s, t_stack *quote)
 	return (0);
 }
 
-
-
-static int             scan_glob(char *s)
+static int		scan_glob(char *s)
 {
 	t_stack *quote;
 
@@ -75,13 +73,8 @@ static int		multi_expand(t_list *lst)
 	while (lst != NULL)
 	{
 		s = (char *)lst->content;
-		if (scan_glob(s) == 1)
-		{
-			//	printf("RET=1\n");
-			if ((ret = do_expand_glob(&s)) < 1)
-				return (ret);
-		}
-		//	printf("RET=0\n");
+		if (scan_glob(s) == 1 && (ret = do_expand_glob(&s)) < 1)
+			return (ret);
 		lst->content = (void *)s;
 		lst = lst->next;
 	}

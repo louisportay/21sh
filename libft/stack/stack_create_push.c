@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_push_create.c                                :+:      :+:    :+:   */
+/*   stack_create_push.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 09:55:44 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 09:56:38 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 12:07:41 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ int	stack_create_push(t_stack **stack, int new_state)
 
 	if ((new = stack_create(new_state)) == NULL)
 		return (-1);
-	stack_push(stack, new);	
+	stack_push(stack, new);
 	return (0);
 }

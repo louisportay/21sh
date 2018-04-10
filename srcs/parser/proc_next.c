@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 11:28:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/04 20:11:57 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 11:43:08 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,11 @@ static char				**get_args(t_token **toks, t_redir **rdr)
 		}
 		else
 		{
-
 			if ((t2 = (t_token *)redir_dup((t_redir *)tmp)) == NULL)
 			{
 				ft_list_clear(lsts, &ft_memdel);
 				return ((void *)-1);
-}
+			}
 			else
 				token_insert((t_token **)rdr, (t_token **)rdr + 1, t2);
 		}

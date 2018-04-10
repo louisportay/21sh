@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 21:07:17 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/07 18:53:30 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 11:11:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,9 @@ void	quoting_newline(t_token *last_tok, t_dlist *line, t_stack **quote)
 {
 	if (is_quoting(*(char *)line->data))
 		update_linestate(quote, *(char *)line->data);
-
 	if (((*quote)->state == DOLLAR && *(char *)line->data != '$') ||
 		(*quote)->state == BRACE)
 		stack_pop(quote);
-
 	if (*(char *)line->data == '\n'
 			&& !((*quote)->state & (BSLASH | DQUOTE | SQUOTE)))
 		last_tok->last_letter = line->prev;
@@ -42,11 +40,9 @@ void	delimit_tokens(t_token *last_tok, t_dlist *line, t_stack **quote)
 	if (!last_tok->last_letter && (last_tok->type & (WORD | ASSIGNMENT_WORD |
 IO_NUMBER)) && !(extend_word(last_tok, *(char *)line->data, (*quote)->state)))
 		last_tok->last_letter = line->prev;
-
 	if (!last_tok->last_letter && is_extendable_operator(last_tok->type)
 		&& !(extend_operator(last_tok, *(char *)line->data, (*quote)->state)))
 		last_tok->last_letter = line->prev;
-
 	if (last_tok->last_letter && (!(ft_isblank(*(char *)line->data)) ||
 				(*quote)->state != UNQUOTED) && last_tok->last_letter != line)
 	{
@@ -55,7 +51,6 @@ IO_NUMBER)) && !(extend_word(last_tok, *(char *)line->data, (*quote)->state)))
 		if (is_max_operator(last_tok->next->type))
 			last_tok->next->last_letter = line;
 	}
-
 	if (is_max_operator(last_tok->type) && !last_tok->last_letter)
 	{
 		last_tok->last_letter = line;

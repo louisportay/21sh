@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 14:26:41 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 10:29:48 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 11:25:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static void	handle_dquote(t_stack **line)
 ** 	if ((*line)->state == BQUOTE)
 ** 		stack_pop(line);
 ** 	else if ((*line)->state != SQUOTE && (*line)->state != BSLASH)
-		if (stack_create_push(line, BQUOTE) == -1)
-			fatal_err(NOMEM, get_ctxaddr());
+**		if (stack_create_push(line, BQUOTE) == -1)
+**			fatal_err(NOMEM, get_ctxaddr());
 ** }
 **
 **	else if (c == '`')

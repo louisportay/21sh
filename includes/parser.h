@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/29 17:44:53 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 13:09:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void					asmt_insert(struct s_asmt **head, struct s_asmt **curr,
 struct s_asmt			*asmt_find(struct s_asmt *asmt, char *key);
 void					asmt_free(struct s_asmt **asmt);
 void					asmt_clear(struct s_asmt **asmt);
-void		rdir_clear(t_redir **rdirs);
+void					rdir_clear(t_redir **rdirs);
 
 /*
 **	BRIDGES
@@ -52,6 +52,7 @@ size_t					token_count(struct s_token *tok);
 int						token_issep(struct s_token *tok);
 void					*token_dumperror(struct s_token *tok);
 struct s_redir			*redir_dup(struct s_redir *redir);
+void					get_hdoc_line(t_heredoc *r);
 
 char					**astr_fromlist(struct s_list **list);
 

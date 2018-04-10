@@ -6,11 +6,17 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 17:38:36 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 14:22:54 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 11:24:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
+
+void		toggle_emacs_mode(t_ctx *ctx, t_line *l)
+{
+	(void)l;
+	ctx->emacs_mode = !ctx->emacs_mode;
+}
 
 static void	effective_read(t_ctx *ctx, t_line *l)
 {
@@ -44,7 +50,7 @@ void		ft_readline(t_ctx *ctx, t_line *l, char *prompt_mode)
 		if (dlst_isblank(l->split_line->next) == false)
 			add_histentry(&ctx->hist, l->split_line);
 		if (!l->eohdoc)
-			if (ft_dlstnewaddend(l->split_line, "\n", 1 ,& ft_dlstnew) == -1)
+			if (ft_dlstnewaddend(l->split_line, "\n", 1, &ft_dlstnew) == -1)
 				fatal_err(NOMEM, ctx);
 	}
 	ctx->cur_line = NULL;

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 22:21:18 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 13:08:17 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int						job_pipe(t_job *j, t_ctx *ctx);
 
 char					*job_last_argv(t_job *j);
 
-void					exec_print_err(enum e_extype, char *path);
+void					exec_print_err(enum e_extype type, char *path);
 
 void					clear_pipe(t_job *j, t_proc *last, int fd);
 

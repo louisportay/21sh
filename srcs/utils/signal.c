@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 20:11:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 10:18:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 12:01:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,23 @@
 ** Définit les comportements pour chaque signal
 ** SIGINT	==> Réaffiche le prompt ou kill les process en cours
 ** SIGWINCH ==> Window size change
-** SIGTERM ==> Call wrap_exit ?
+** SIGTERM ==> Block it.
 ** SIGQUIT ==> Block it.
 */
 
+static void	del_lines(t_line *l)
+{
+	if (l->line && l->line != l->lastline)
+	{
+		ft_dlstdel(&l->line, &delvoid);
+		ft_dlstdel(&l->lastline, &delvoid);
+	}
+	else
+	{
+		l->line = NULL;
+		ft_dlstdel(&l->lastline, &delvoid);
+	}
+}
 
 static void	reset_line(t_ctx *ctx, t_line *l)
 {
@@ -34,16 +47,7 @@ static void	reset_line(t_ctx *ctx, t_line *l)
 		ft_dlstdel(&l->split_line, &delvoid);
 	if (l->line)
 		ft_dlsthead(&l->line);
-	if (l->line && l->line != l->lastline)
-	{
-		ft_dlstdel(&l->line, &delvoid);
-		ft_dlstdel(&l->lastline, &delvoid);
-	}
-	else
-	{
-		l->line = NULL;
-		ft_dlstdel(&l->lastline, &delvoid);
-	}
+	del_lines(l);
 	stack_del(&l->linestate);
 	if (stack_create_push(&l->linestate, UNQUOTED) == -1)
 		fatal_err(NOMEM, ctx);
@@ -81,7 +85,7 @@ void		sighand_int(int signo)
 
 #include<stdio.h>
 #include<execinfo.h>
-void sigquit(int signo)
+void		 sigquit(int signo)
 {
 	(void)signo;
 	void *callstack[128];
@@ -92,13 +96,15 @@ void sigquit(int signo)
 	kill(getpid(), SIGKILL);
 }
 
-void			set_sighandler(void)
+
+void		set_sighandler(void)
 {
 	signal(SIGWINCH, &sighandler);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
-	signal(SIGTERM, &sighandler);
+	signal(SIGTERM, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGQUIT, &sigquit);
 }

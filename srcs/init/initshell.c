@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 12:26:22 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 11:06:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** returns an array composed of the different paths to look for binary files
 */
 
-char		**getpath(char **environ)
+char			**getpath(char **environ)
 {
 	char			**path;
 	char			*tpath;
@@ -45,10 +45,8 @@ static void		init_termios(t_ctx *ctx)
 	ctx->tios.c_lflag &= ~(ICANON | ECHO);
 	ctx->tios.c_cc[VMIN] &= 1;
 	ctx->tios.c_cc[VTIME] &= 0;
-#ifdef __APPLE__
 	ctx->tios.c_cc[VDSUSP] = _POSIX_VDISABLE;
 	ctx->tios.c_cc[VDISCARD] = _POSIX_VDISABLE;
-#endif
 	if (tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->tios) == -1)
 		ctx->line_edition = 0;
 	else
