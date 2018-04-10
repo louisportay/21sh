@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 16:53:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 14:04:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 20:30:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_btok					*btok_next(char **str, int *err)
 	int					pos;
 
 	buf[1] = '\0';
-	err = 0;
+	*err = 0;
 	if (**str == '\0')
 		return (NULL);
 	if ((pos = ft_strindex("{},.$", **str)) != -1)
@@ -42,7 +42,7 @@ t_btok					*btok_get(char *str, int *err)
 	t_btok				*tok[3];
 
 	tok[0] = NULL;
-	err = 0;
+	*err = 0;
 	while ((tok[2] = btok_next(&str, err)) != NULL)
 		btok_insert(tok, tok + 1, tok[2]);
 	if (err)

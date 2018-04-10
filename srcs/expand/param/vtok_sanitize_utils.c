@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 15:14:43 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/10 15:14:57 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 20:24:51 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void					vtok_split(t_vtok *tok, enum e_vtype type,
 	{
 		if (tok->type == type)
 		{
-			prev->next = NULL;
+			if (prev != NULL)
+				prev->next = NULL;
 			*next = tok;
 			return ;
 		}
