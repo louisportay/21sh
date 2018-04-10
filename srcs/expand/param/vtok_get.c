@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 18:11:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 11:11:46 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 20:03:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,23 @@ static t_vtok	*vtok_word(char **str)
 	return (vtok_newstr(VAWORD, ls));
 }
 
+static int		squote(char **s, int *err)
+{
+	char		*str;
+
+	str = *s;
+	str++;
+	while (*str != '\0' && *str != '\'')
+		str++;
+	if (*str == '\0')
+	{
+		*err = 1;
+		return (1);
+	}
+	*s = str;
+	return (0);
+}
+
 static t_vtok	*vtok_other(char **str, int dq, int *err)
 {
 	char		*s;
@@ -39,17 +56,8 @@ static t_vtok	*vtok_other(char **str, int dq, int *err)
 			s += 2;
 		else if (*s == '\'')
 		{
-			if (dq == 0)
-			{
-				s++;
-				while (*s != '\0' && *s != '\'')
-					s++;
-				if (*s == '\0')
-				{
-					*err = 1;
-					return (NULL);
-				}
-			}
+			if (dq == 0 && squote(&s, err) == 1)
+				return (NULL);
 			s++;
 		}
 		else
@@ -88,13 +96,14 @@ t_vtok			*vtok_get(char *str, int *err)
 	tok[1] = NULL;
 	tok[2] = NULL;
 	dq = 0;
+	*err = 0;
 	while ((tok[2] = vtok_next(&str, dq, err)) != NULL)
 	{
 		vtok_insert(tok, tok + 1, tok[2]);
 		if (tok[2]->type == VDQUOT)
 			dq ^= 1;
 	}
-	if (err)
+	if (*err)
 	{
 		vtok_clear(tok);
 		return (NULL);

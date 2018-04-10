@@ -6,38 +6,11 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 11:44:11 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 19:42:18 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-void					assert_next_token(t_token *tok)
-{
-	if (tok->type == NEWLINE)
-		ft_putstr("NEWLINE: end of parse\n");
-	else if (tok->type == AND)
-		ft_putstr("AND: Background job\n");
-	else if (tok->type == SEMICOL)
-		ft_putstr("SEMICOL: Need a proc after, else parse error\n");
-	else if (tok->type == COMMENT)
-		ft_putstr("COMMENT: end of parse\n");
-	else if (tok->type == OR)
-		ft_putstr("OR: pipeline\n");
-	else if (tok->type == OR_IF)
-		ft_putstr("OR_IF: Conditional execution of next\n");
-	else if (tok->type == AND_IF)
-		ft_putstr("AND_IF: Conditional execution of next\n");
-}
-
-void					proc_insert(t_proc **head, t_proc **curr, t_proc *e)
-{
-	if (*head == NULL)
-		*head = e;
-	else
-		(*curr)->next = e;
-	*curr = e;
-}
 
 static t_proc			*get_pipe(t_token **tokz)
 {
@@ -90,18 +63,6 @@ static t_job			*get_ands(t_token **toks, t_job *parent)
 	return (j[0]);
 }
 
-static void				job_updateands(t_job *job)
-{
-	t_job				*ok;
-
-	ok = job->ok;
-	while (ok != NULL)
-	{
-		ok->err = job->err;
-		ok = ok->ok;
-	}
-}
-
 static t_job			*job_getnext(t_token **tokens, t_job *parent)
 {
 	t_token				*tokz;
@@ -126,9 +87,33 @@ static t_job			*job_getnext(t_token **tokens, t_job *parent)
 	return (job);
 }
 
+static int				handle(struct s_token *tokens, t_job *job[3])
+{
+	if (tokens->type == NEWLINE)
+	{
+		if (tokens->next != NULL)
+		{
+			ft_dprintf(STDERR_FILENO,
+						"21sh: parser: Characters after NEWLINE\n");
+			return (-1);
+		}
+		job_insert(job, job + 1, job[2]);
+		return (0);
+	}
+	else if ((tokens->type & (SEMICOL)) != 0)
+	{
+		job_insert(job, job + 1, job[2]);
+		if (tokens->next == NULL || tokens->next->type == NEWLINE)
+			return (0);
+		return (1);
+	}
+	return (-1);
+}
+
 t_job					*parse(struct s_token *tokens)
 {
 	t_job				*job[3];
+	int					ret;
 
 	job[0] = NULL;
 	if (tokens == NULL || tokens->type == NEWLINE
@@ -138,18 +123,9 @@ t_job					*parse(struct s_token *tokens)
 	{
 		if ((job[2] = job_getnext(&tokens, NULL)) == NULL)
 			return (job_safeclear(&job[0]));
-		if (tokens->type == NEWLINE)
-		{
-			job_insert(job, job + 1, job[2]);
+		if ((ret = handle(tokens, job)) == 0)
 			break ;
-		}
-		else if ((tokens->type & (SEMICOL)) != 0)
-		{
-			job_insert(job, job + 1, job[2]);
-			if (tokens->next == NULL || tokens->next->type == NEWLINE)
-				break ;
-		}
-		else
+		else if (ret != 1)
 		{
 			ft_dprintf(STDERR_FILENO, "21sh: syntax error, unexpected token\n");
 			return (job_safeclear(job));

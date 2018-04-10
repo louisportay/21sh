@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 11:28:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 11:43:08 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 18:29:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,77 +15,91 @@
 #define TK_ASN (RDIR | ASSIGNMENT_WORD)
 #define TK_WORD (RDIR | WORD)
 
+static int				get_args_loop(t_token *tok[3], t_list *lsts[3],
+										t_redir **rdr)
+{
+	char				*word;
+
+	tok[1] = tok[0];
+	tok[0] = tok[0]->next;
+	if (tok[1]->type & (WORD | ASSIGNMENT_WORD))
+	{
+		word = dlst_pstr(tok[1]->first_letter, tok[1]->last_letter->next);
+		lsts[2] = list_create(word);
+		ft_list_insert(lsts, lsts + 1, lsts[2]);
+	}
+	else
+	{
+		if ((tok[2] = (t_token *)redir_dup((t_redir *)tok[1])) == NULL)
+		{
+			ft_list_clear(lsts, &ft_memdel);
+			return (1);
+		}
+		else
+			token_insert((t_token **)rdr, (t_token **)rdr + 1, tok[2]);
+	}
+	return (0);
+}
+
 static char				**get_args(t_token **toks, t_redir **rdr)
 {
 	t_list				*lsts[3];
-	t_token				*t;
-	t_token				*tmp;
-	t_token				*t2;
-	char				*word;
+	t_token				*tok[3];
 	char				**av;
 
 	lsts[0] = NULL;
-	t = *toks;
-	while (t != NULL && (t->type & (TK_WORD | TK_ASN)) != 0)
+	tok[0] = *toks;
+	while (tok[0] != NULL && (tok[0]->type & (TK_WORD | TK_ASN)) != 0)
 	{
-		tmp = t;
-		t = t->next;
-		if (tmp->type & (WORD | ASSIGNMENT_WORD))
-		{
-			word = dlst_pstr(tmp->first_letter, tmp->last_letter->next);
-			lsts[2] = list_create(word);
-			ft_list_insert(lsts, lsts + 1, lsts[2]);
-		}
-		else
-		{
-			if ((t2 = (t_token *)redir_dup((t_redir *)tmp)) == NULL)
-			{
-				ft_list_clear(lsts, &ft_memdel);
-				return ((void *)-1);
-			}
-			else
-				token_insert((t_token **)rdr, (t_token **)rdr + 1, t2);
-		}
+		if (get_args_loop(tok, lsts, rdr) != 0)
+			return ((void *)-1);
 	}
 	av = astr_fromlist(lsts);
-	*toks = t;
+	*toks = tok[0];
 	return (av);
+}
+
+static int				get_asmt_loop(t_token *tok[3], t_asmt *asmt[3],
+										t_redir **rdr)
+{
+	t_asmt				*exist;
+
+	tok[1] = tok[0];
+	tok[0] = tok[0]->next;
+	if (tok[1]->type == ASSIGNMENT_WORD)
+	{
+		asmt[2] = asmt_fromtoken(tok[1]);
+		if ((exist = asmt_find(asmt[0], asmt[2]->key)) != NULL)
+			asmt_update(exist, asmt + 2);
+		else
+			asmt_insert(asmt + 0, asmt + 1, asmt[2]);
+	}
+	else
+	{
+		if ((tok[2] = (t_token *)redir_dup((t_redir *)tok[1])) == NULL)
+		{
+			asmt_clear(asmt);
+			return (1);
+		}
+		else
+			token_insert((t_token **)rdr, (t_token **)rdr + 1, tok[2]);
+	}
+	return (0);
 }
 
 static t_asmt			*get_asmt(t_token **toks, t_redir **rdr)
 {
-	t_token				*t;
-	t_token				*tmp;
-	t_token				*t2;
+	t_token				*tok[3];
 	t_asmt				*asmt[3];
-	t_asmt				*exist;
 
-	t = *toks;
+	tok[0] = *toks;
 	asmt[0] = NULL;
-	while (t != NULL && (t->type & TK_ASN) != 0)
+	while (tok[0] != NULL && (tok[0]->type & TK_ASN) != 0)
 	{
-		tmp = t;
-		t = t->next;
-		if (tmp->type == ASSIGNMENT_WORD)
-		{
-			asmt[2] = asmt_fromtoken(tmp);
-			if ((exist = asmt_find(asmt[0], asmt[2]->key)) != NULL)
-				asmt_update(exist, asmt + 2);
-			else
-				asmt_insert(asmt + 0, asmt + 1, asmt[2]);
-		}
-		else
-		{
-			if ((t2 = (t_token *)redir_dup((t_redir *)tmp)) == NULL)
-			{
-				asmt_clear(asmt);
-				return ((void *)-1);
-			}
-			else
-				token_insert((t_token **)rdr, (t_token **)rdr + 1, t2);
-		}
+		if (get_asmt_loop(tok, asmt, rdr) != 0)
+			return ((void *)-1);
 	}
-	*toks = t;
+	*toks = tok[0];
 	return (asmt[0]);
 }
 

@@ -1,1 +1,0 @@
-SEGV on invalid var in PARAM expansion. Fix, asap. Or at least now it exists and don't complain later.

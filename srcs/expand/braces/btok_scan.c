@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 16:55:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 10:40:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:15:32 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,21 @@ static int				l_skip_dquote(char **str)
 	return (0);
 }
 
+static int				do_quotes(char **str)
+{
+	if (**str == '\'')
+	{
+		if (l_skip_squote(str))
+			return (-1);
+	}
+	else if (**str == '\"')
+	{
+		if (l_skip_dquote(str))
+			return (-1);
+	}
+	return (0);
+}
+
 int						braces_scan(char *str)
 {
 	while (*str != '\0')
@@ -50,14 +65,9 @@ int						braces_scan(char *str)
 			return (1);
 		else if (*str == '\\')
 			str += 2;
-		else if (*str == '\'')
+		else if (*str == '\'' || *str == '\"')
 		{
-			if (l_skip_squote(&str))
-				return (-1);
-		}
-		else if (*str == '\"')
-		{
-			if (l_skip_dquote(&str))
+			if (do_quotes(&str) == -1)
 				return (-1);
 		}
 		else if (*str == '$')

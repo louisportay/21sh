@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:18:58 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 15:38:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 20:04:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,12 @@ static void			lcleanup(int ret, int *exp, char **tmp, char **swp)
 	}
 }
 
+static int			ret_err(char **str, int val)
+{
+	ft_strdel(str);
+	return (val);
+}
+
 int					expand(char *str, t_ctx *ctx, t_list **lst)
 {
 	char			*tmp;
@@ -58,16 +64,10 @@ int					expand(char *str, t_ctx *ctx, t_list **lst)
 	lcleanup(ret, &exp, &tmp, &swp);
 	ret = expand_param(tmp, &swp, ctx);
 	if (ret == -1)
-	{
-		ft_strdel(&tmp);
-		return (-3);
-	}
+		return (ret_err(&tmp, -3));
 	lcleanup(ret, &exp, &tmp, &swp);
 	if ((ret = expand_split(tmp, lst)) == -1)
-	{
-		ft_strdel(&tmp);
-		return (-1);
-	}
+		return (ret_err(&tmp, -1));
 	ft_strdel(&tmp);
 	expand_quotes(*lst);
 	return (1);

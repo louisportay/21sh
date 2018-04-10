@@ -6,35 +6,48 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 18:12:40 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 14:18:40 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 19:28:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand_param.h"
 
-static int		scan_dquote(char **str)
+static int		scan_dquote(char **str, int *doll)
 {
-	int			doll;
+	char		*s;
 
-	doll = 0;
-	while (**str != '\0' && **str != '\"')
+	s = *str;
+	while (*s != '\0' && *s != '\"')
 	{
-		if (**str == '\\')
-			(*str) += 2;
-		else if (**str == '$')
-			doll = 1;
-		else
-			(*str)++;
+		if (*s == '\\')
+			s++;
+		else if (*s == '$')
+			*doll = 1;
+		s++;
 	}
-	if (**str == '\0')
+	if (*s == '\0')
 		return (-1);
-	(*str)++;
-	return (doll);
+	s++;
+	*str = s;
+	return (*doll);
+}
+
+static int		squote(char **str)
+{
+	char		*s;
+
+	s = *str;
+	while (*s != '\0' && *s != '\'')
+		s++;
+	s++;
+	if (*s == '\0')
+		return (-1);
+	*str = s;
+	return (0);
 }
 
 int				scan_dollar(char *str)
 {
-	int			ret;
 	int			doll;
 
 	doll = 0;
@@ -44,26 +57,19 @@ int				scan_dollar(char *str)
 			str += 2;
 		else if (*str == '\'')
 		{
-			while (*str != '\0' && *str != '\'')
-				str++;
-			str++;
-			if (*str == '\0')
+			if (squote(&str) == -1)
 				return (-1);
 		}
 		else if (*str == '\"')
 		{
-			if ((ret = scan_dquote(&str)) != 0)
-			{
-				if (ret == -1)
-					return (-1);
-				else if (ret == 1)
-					doll = 1;
-			}
+			if (scan_dquote(&str, &doll) == -1)
+				return (-1);
 		}
-		else if (*str == '$')
-			doll = 1;
 		else
+		{
+			doll |= *str == '$';
 			str++;
+		}
 	}
 	return (doll);
 }

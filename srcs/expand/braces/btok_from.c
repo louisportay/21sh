@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 17:39:12 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 14:28:41 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:11:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ t_btok					*btok_from_squote(char **str, int *err)
 	return (tok);
 }
 
+static void				*set_err(int *err)
+{
+	*err = 1;
+	return (NULL);
+}
+
 t_btok					*btok_from_dquote(char **str, int *err)
 {
 	char				*s;
@@ -54,10 +60,7 @@ t_btok					*btok_from_dquote(char **str, int *err)
 		s++;
 	}
 	if (*s == '\0')
-	{
-		*err = 1;
-		return (NULL);
-	}
+		return (set_err(err));
 	s++;
 	tmp = ft_strndup(*str, s - *str);
 	tok = btok_new(BOTHER, tmp);

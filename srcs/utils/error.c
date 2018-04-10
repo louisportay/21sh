@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 11:47:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 18:15:48 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,7 @@ void		wrap_exit(int status, t_ctx *ctx)
 		ft_astr_clear(&ctx->environ);
 	if (ctx->locals)
 		ft_astr_clear(&ctx->locals);
-	if (ctx->last_argv != NULL)
-		ft_strdel(&ctx->last_argv);
+	ft_strdel(&ctx->last_argv);
 	if (ctx->builtins != NULL)
 		hash_free(&ctx->builtins, NULL);
 	hash_free(&ctx->hash, &ft_memdel);

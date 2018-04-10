@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/10 15:37:29 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/10 18:07:38 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -146,6 +146,7 @@ SRCS=	main.c\
 		redir_and.c\
 		redir_err.c\
 		parser.c\
+		parser_utils.c\
 		printers.c\
 		asmt.c\
 		bridge_token.c\
@@ -194,6 +195,9 @@ SRCS=	main.c\
 		builtin_exit.c\
 		\
 		expand_exec.c\
+		expand_exec_argv.c\
+		expand_exec_asmt.c\
+		expand_exec_redir.c\
 		expand.c\
 		bridge_splitws.c\
 		\
