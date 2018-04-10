@@ -6,13 +6,11 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 15:20:04 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 11:08:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-//virer LEXER
 
 void	err_tok(t_token **toklist, t_token *bad_tok)
 {
@@ -24,7 +22,7 @@ void	err_tok(t_token **toklist, t_token *bad_tok)
 	while ((unsigned long)tok[i].key != bad_tok->type && tok[i].key)
 		i++;
 	ft_dprintf(STDERR_FILENO,
-			"-LEXER- 21sh: syntax error near unexpected token `%s'\n",
+			"21sh: syntax error near unexpected token `%s'\n",
 			(char *)tok[i].val);
 	clear_following_redirs(bad_tok);
 	delete_toklist(toklist);

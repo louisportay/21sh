@@ -6,13 +6,13 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 22:14:47 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 22:24:28 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:36:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int		r_andgreat_anddgreat(t_redir *r)
+int				r_andgreat_anddgreat(t_redir *r)
 {
 	int fd;
 
@@ -50,7 +50,7 @@ static int		get_right_op(t_redir *tok)
 	return (0);
 }
 
-int		r_greatand_lessand(t_redir *r, int fd[3])
+int				r_greatand_lessand(t_redir *r, int fd[3])
 {
 	if (get_right_op(r) == -1)
 		return (err_ambig_redir(r->s_rhs));
@@ -59,7 +59,7 @@ int		r_greatand_lessand(t_redir *r, int fd[3])
 	if (r->fd_rhs != -1 && r->fd_rhs == r->lhs)
 		return (0);
 	if (r->fd_rhs != -1 && dup2(r->fd_rhs, r->lhs) == -1)
-			return (err_badfd(r->s_rhs));
+		return (err_badfd(r->s_rhs));
 	if (r->dash == true && r->fd_rhs != -1)
 		close(r->fd_rhs);
 	else if (r->dash == true)

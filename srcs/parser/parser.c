@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/31 11:04:37 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 11:44:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static t_job			*get_ands(t_token **toks, t_job *parent)
 			return (job_safeclear(j));
 		j[2] = job_new(p);
 		j[2]->parent = parent;
-		if (j[1] != NULL)	
+		if (j[1] != NULL)
 			j[1]->ok = j[2];
 		if (j[0] == NULL)
 			j[0] = j[2];

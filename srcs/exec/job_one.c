@@ -6,13 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 22:35:35 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:34:55 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int				fork_do(t_proc *p)
+static int	fork_do(t_proc *p)
 {
 	pid_t				pid;
 
@@ -28,7 +28,7 @@ static int				fork_do(t_proc *p)
 	return (0);
 }
 
-void					restore_fds(t_ctx *ctx)
+void		restore_fds(t_ctx *ctx)
 {
 	dup2(ctx->std_fd[0], STDIN_FILENO);
 	dup2(ctx->std_fd[1], STDOUT_FILENO);
@@ -42,7 +42,7 @@ static void	set_proc_status(t_job *j, t_proc *p)
 	j->status = p->status;
 }
 
-int						job_one(t_job *j, t_ctx *ctx)
+int			job_one(t_job *j, t_ctx *ctx)
 {
 	t_proc				*p;
 	int					ret;

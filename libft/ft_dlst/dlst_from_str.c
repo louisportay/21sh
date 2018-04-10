@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 11:40:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 12:57:38 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 12:02:10 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	*del_list_return_null(t_dlist **lst)
 	return (NULL);
 }
 
-t_dlist	*dlst_from_str(char *str)
+t_dlist		*dlst_from_str(char *str)
 {
 	t_dlist		*lst;
 	unsigned	len;

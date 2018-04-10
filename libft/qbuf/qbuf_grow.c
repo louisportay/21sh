@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_dup.c                                        :+:      :+:    :+:   */
+/*   qbuf_grow.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/08 17:28:26 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 12:08:15 by lportay          ###   ########.fr       */
+/*   Created: 2018/04/10 12:08:56 by lportay           #+#    #+#             */
+/*   Updated: 2018/04/10 12:09:30 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stack.h"
+#include "qbuf.h"
 
-t_stack	*stack_dup(t_stack *stack)
+int					qbuf_grow(t_qbuf *buf)
 {
-	t_stack *dup;
-	t_stack *ret;
+	return (qbuf_grown(buf, buf->size * 2));
+}
 
-	if (stack == NULL)
-		return (NULL);
-	dup = NULL;
-	stack_push(&dup, stack_create(stack->state));
-	ret = dup;
-	stack = stack->down;
-	while (stack)
-	{
-		dup->down = stack_create(stack->state);
-		dup = dup->down;
-		stack = stack->down;
-	}
-	return (ret);
+int					qbuf_grown(t_qbuf *buf, size_t n)
+{
+	char			*str;
+
+	if ((str = ft_strnew(n)) == NULL)
+		return (0);
+	buf->size = n;
+	ft_strcpy(str, buf->buffer);
+	ft_strdel(&buf->buffer);
+	buf->buffer = str;
+	return (1);
 }

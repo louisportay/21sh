@@ -2,6 +2,7 @@ QBUF=\
 qbuf_dump.c\
 qbuf_insert.c\
 qbuf_lifecycle.c\
+qbuf_grow.c\
 
 QBUF_DIR=qbuf
 

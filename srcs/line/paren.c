@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 13:22:28 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 10:16:03 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 11:25:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	handle_brace(t_stack **line, char c)
 			&& (*line)->state != DQUOTE && c == '{')
 		if (stack_create_push(line, BRACE) == -1)
 			fatal_err(NOMEM, get_ctxaddr());
-
 }
 
 void	handle_dollar(t_stack **line)

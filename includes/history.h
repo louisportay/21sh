@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:04:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 14:32:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:39:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void					save_history(char *histfile, t_dlist *histlist,
 		int flags, int exiting);
 void					add_histentry(t_hist *hist, t_dlist *line);
 char					*dump_history(t_dlist *histlist, int n);
-
+void					insert_histlist(t_dlist *dup, t_hist *hist);
 void					history_expansion(t_hist *hist, t_dlist *dlst);
 
 #endif

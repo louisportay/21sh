@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/04 19:10:55 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 11:26:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,10 @@ void		lineread(t_ctx *ctx, t_line *l)
 		status = get_input(ctx, &key, l);
 	tputs(ctx->tc.ei, 1, &ft_putchar_stdin);
 	if (!l->line && l->eohdoc)
-	{
-		ft_dlsthead(&ctx->hist.list);
-		return ;
-	}
+		return (ft_dlsthead(&ctx->hist.list));
 	cleanup_after_read(ctx, l);
 	if (status != FINISHREAD)
-	{
-		special_read_status(ctx, l, status);
-		return ;
-	}
+		return (special_read_status(ctx, l, status));
 	get_state(l);
 	if (l->linestate->state != UNQUOTED)
 		update_prompt(ctx, l);

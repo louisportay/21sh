@@ -6,14 +6,14 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:48:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 20:56:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:35:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 #include <errno.h>
 
-static void				l_handle_proc_status(t_proc *p, int status)
+static void	l_handle_proc_status(t_proc *p, int status)
 {
 	if (WIFEXITED(status))
 		p->status = WEXITSTATUS(status) | JOB_CMP;
@@ -26,14 +26,14 @@ static void				l_handle_proc_status(t_proc *p, int status)
 			return ;
 		}
 		p->status = WTERMSIG(status);
-		waitpid(p->pid, NULL, WUNTRACED);
+		waitpid(p->pid, &status, WUNTRACED);
 		p->status = (p->status & 0xFF) | JOB_SIG | JOB_CMP;
 	}
 	else
 		ft_printf("Received unhandled status\n");
 }
 
-static int				l_wait_for_job(t_job *j)
+static int	l_wait_for_job(t_job *j)
 {
 	t_proc				*p;
 	int					status;
@@ -62,7 +62,7 @@ static int				l_wait_for_job(t_job *j)
 	return (0);
 }
 
-static void				set_job_status(t_job *j, t_job **job)
+static void	set_job_status(t_job *j, t_job **job)
 {
 	if (!j->err)
 		j->parent->status = 1 | JOB_DON;
@@ -70,14 +70,16 @@ static void				set_job_status(t_job *j, t_job **job)
 		*job = j->err;
 }
 
-static int				wait_err(t_job *j)
+static int	wait_err(t_job *j)
 {
-	waitpid(j->procs->pid, NULL, WUNTRACED);
+	int status;
+
+	waitpid(j->procs->pid, &status, WUNTRACED);
 	j->status = JOB_CMP | (-42 & 0xFF);
 	return (1);
 }
 
-int				job_exec_loop(t_job **job, t_ctx *ctx, int exp_err)
+int			job_exec_loop(t_job **job, t_ctx *ctx, int exp_err)
 {
 	t_job				*j;
 	int					ret;

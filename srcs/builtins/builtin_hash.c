@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 19:27:34 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 20:11:15 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:30:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static int			lhash_prt(t_proc *p, t_ctx *ctx, int i)
 	}
 	return (ret);
 }
-
 
 static int			lhash_find(t_proc *p, t_ctx *ctx, int i)
 {

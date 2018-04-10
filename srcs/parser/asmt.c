@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:53:18 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/27 12:46:35 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 11:29:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void					asmt_update(t_asmt *asmt, t_asmt **new)
 	tnew = *new;
 	*new = NULL;
 	ft_strdel(&asmt->value);
-	asmt->value = tnew->value; //ft_strdup(tnew->value);
+	asmt->value = tnew->value;
 	ft_strdel(&tnew->key);
 	ft_memdel((void **)&tnew);
 }

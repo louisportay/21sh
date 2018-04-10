@@ -6,13 +6,13 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:03:25 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 20:04:14 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:32:10 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static int				l_isdir(char *path)
+static int	l_isdir(char *path)
 {
 	struct stat			stats;
 
@@ -27,13 +27,13 @@ static int				l_isdir(char *path)
 	return (0);
 }
 
-static int				ladderr(void)
+static int	ladderr(void)
 {
 	ft_dprintf(STDERR_FILENO, BU_H_EPREQU);
 	return (-1);
 }
 
-static char				*lnewval(char *str, int *k, int newk)
+static char	*lnewval(char *str, int *k, int newk)
 {
 	if (l_isdir(str))
 		return (NULL);
@@ -41,7 +41,7 @@ static char				*lnewval(char *str, int *k, int newk)
 	return (ft_strdup(str));
 }
 
-int				hash_inh(t_proc *p, t_ctx *ctx, int i, int j)
+int			hash_inh(t_proc *p, t_ctx *ctx, int i, int j)
 {
 	char				*key;
 	char				*value;

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 15:37:02 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 11:47:15 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,22 @@ static void	free_hist(t_dlist **histlist, t_ctx *ctx)
 		ft_dlstdelone(histlist, &delvoid);
 }
 
+static void	close_fds(int fd[3])
+{
+	close(fd[0]);
+	close(fd[1]);
+	close(fd[2]);
+}
+
 /*
 ** Free everything
 */
 
 void		wrap_exit(int status, t_ctx *ctx)
 {
+	tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);
 	if (ctx->istty)
 		ft_putstr_fd("exit\n", ctx->std_fd[0]);
-	tcsetattr(STDIN_FILENO, TCSADRAIN, &ctx->oldtios);
 	if (ctx->line.line)
 		ft_dlstdel(&ctx->line.line, &delvoid);
 	if (ctx->yank)
@@ -89,8 +96,6 @@ void		wrap_exit(int status, t_ctx *ctx)
 	if (ctx->builtins != NULL)
 		hash_free(&ctx->builtins, NULL);
 	hash_free(&ctx->hash, &ft_memdel);
-	close(ctx->std_fd[0]);
-	close(ctx->std_fd[1]);
-	close(ctx->std_fd[2]);
+	close_fds(ctx->std_fd);
 	exit(status);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/07 20:16:46 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 11:41:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		rdir_clear(t_redir **rdirs)
 	}
 }
 
-void				proc_clear(t_proc **proc)
+void		proc_clear(t_proc **proc)
 {
 	t_proc			*p;
 	t_proc			*t;
@@ -53,7 +53,7 @@ void				proc_clear(t_proc **proc)
 	}
 }
 
-void				asmt_clear(t_asmt **asmt)
+void		asmt_clear(t_asmt **asmt)
 {
 	t_asmt			*a;
 	t_asmt			*t;
@@ -71,7 +71,7 @@ void				asmt_clear(t_asmt **asmt)
 	}
 }
 
-static void				*job_clear(t_job **job)
+static void	*job_clear(t_job **job)
 {
 	t_job				*j;
 
@@ -82,8 +82,7 @@ static void				*job_clear(t_job **job)
 	return (NULL);
 }
 
-
-void				*job_safeclear(t_job **job)
+void		*job_safeclear(t_job **job)
 {
 	t_job			*j;
 	t_job			*t;

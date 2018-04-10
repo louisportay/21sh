@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 13:39:52 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 10:28:29 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:38:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void		del_histentry(void *histentry, size_t histentry_size)
 	ft_memdel(&histentry);
 }
 
-void	insert_histlist(t_dlist *dup, t_hist *hist)
+void		insert_histlist(t_dlist *dup, t_hist *hist)
 {
 	t_histentry	*he;
 
@@ -54,5 +54,6 @@ void		add_histentry(t_hist *hist, t_dlist *line)
 	if ((dup = ft_dlstdup(line)) == NULL)
 		fatal_err(NOMEM, get_ctxaddr());
 	insert_histlist(dup, hist);
-	trim_history(&hist->list->next, ft_astr_getval(get_ctxaddr()->locals, "HISTSIZE"));
+	trim_history(&hist->list->next, ft_astr_getval(get_ctxaddr()->locals,
+													"HISTSIZE"));
 }

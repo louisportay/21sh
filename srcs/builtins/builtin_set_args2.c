@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:19:39 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 20:24:10 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:33:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static inline int	lrmarg(u_short *tmp, char c)
 	return (1);
 }
 
-int			lget_min(t_proc *p, int i, u_short *tmp)
+int					get_min(t_proc *p, int i, u_short *tmp)
 {
 	int				j;
 	int				ret;
@@ -91,7 +91,7 @@ int			lget_min(t_proc *p, int i, u_short *tmp)
 	return (ret);
 }
 
-int			lget_max(t_proc *p, int i, u_short *tmp)
+int					get_max(t_proc *p, int i, u_short *tmp)
 {
 	int				j;
 	int				ret;

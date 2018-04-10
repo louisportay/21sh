@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 20:24:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 09:33:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,8 @@ int						bu_hash_getopts(t_proc *p, t_ctx *ctx, int *i);
 int						hash_inh(t_proc *p, t_ctx *ctx, int i, int j);
 int						hash_print(t_hdict *dict);
 int						bu_set_getopts(t_proc *p, t_ctx *ctx, int i);
-int						lget_min(t_proc *p, int i, u_short *tmp);
-int						lget_max(t_proc *p, int i, u_short *tmp);
+int						get_min(t_proc *p, int i, u_short *tmp);
+int						get_max(t_proc *p, int i, u_short *tmp);
 int						set_help(t_proc *p, int usage);
 int						is_identifier(char *str);
 int						is_sane(char *str, int *end);

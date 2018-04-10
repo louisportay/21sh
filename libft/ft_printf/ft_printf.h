@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/27 17:28:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 11:39:51 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/10 12:05:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,6 @@ int							fpf_atoi(char const *str);
 long						fpf_atol(char const *str);
 int							fpf_get_base(t_flag *flag);
 double						rounder(int p);
-
 
 /*
 **	FLAG
