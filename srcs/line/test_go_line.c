@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 13:55:56 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 13:55:57 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 15:24:21 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	test_upper_line(t_ctx *ctx, t_line *l, t_key *key)
 	{
 		ft_bzero(key->buf, key->i);
 		key->i = 0;
-		if (l->cursor_line != 0)
+		if (l->cursor_line != 0 && ctx->ws.ws_col > 0)
 			return (true);
 		else
 			return (false);
@@ -35,7 +35,7 @@ bool	test_lower_line(t_ctx *ctx, t_line *l, t_key *key)
 	{
 		ft_bzero(key->buf, key->i);
 		key->i = 0;
-		if (l->cursor_line < l->num_lines)
+		if (l->cursor_line < l->num_lines && ctx->ws.ws_col > 0)
 			return (true);
 		else
 			return (false);

@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/10 18:07:38 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/10 22:15:24 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,6 +104,7 @@ SRCS=	main.c\
 		\
 		rawline.c\
 		default.c\
+		autocomplete.c\
 		prompt.c\
 		prompt_utils.c\
 		prompt_flags1.c\

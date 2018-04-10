@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 18:33:51 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 11:26:43 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 15:24:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	special_read_status(t_ctx *ctx, t_line *l, int status)
 static void	update_prompt(t_ctx *ctx, t_line *l)
 {
 	ft_strcpy(ctx->prompt_mode, PS2);
-	if (l->offset_inline % ctx->ws.ws_col)
+	if (ctx->ws.ws_col > 0 && l->offset_inline % ctx->ws.ws_col)
 		write(STDOUT_FILENO, "\n", 1);
 }
 

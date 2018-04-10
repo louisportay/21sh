@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 13:55:46 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 13:55:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 15:30:45 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ bool	test_rkey(t_ctx *ctx, t_line *l, t_key *key)
 	{
 		ft_bzero(key->buf, key->i);
 		key->i = 0;
-		if (l->line->next)
+		if (l->line->next && ctx->ws.ws_col > 0)
 			return (true);
 		else
 			return (false);
 	}
-	else if (*key->buf == C_F && ctx->emacs_mode && l->line->next)
+	else if (*key->buf == C_F && ctx->emacs_mode && l->line->next
+				&& ctx->ws.ws_col > 0)
 		return (true);
 	else
 		return (false);
@@ -35,12 +36,13 @@ bool	test_lkey(t_ctx *ctx, t_line *l, t_key *key)
 	{
 		ft_bzero(key->buf, key->i);
 		key->i = 0;
-		if (l->line->prev)
+		if (l->line->prev && ctx->ws.ws_col > 0)
 			return (true);
 		else
 			return (false);
 	}
-	else if (*key->buf == C_B && ctx->emacs_mode && l->line->prev)
+	else if (*key->buf == C_B && ctx->emacs_mode && l->line->prev
+				&& ctx->ws.ws_col > 0)
 		return (true);
 	else
 		return (false);
@@ -53,12 +55,13 @@ bool	test_upkey(t_ctx *ctx, t_line *l, t_key *key)
 	{
 		ft_bzero(key->buf, key->i);
 		key->i = 0;
-		if (ctx->hist.list->next)
+		if (ctx->hist.list->next && ctx->ws.ws_col > 0)
 			return (true);
 		else
 			return (false);
 	}
-	if (*key->buf == C_P && ctx->emacs_mode && ctx->hist.list->next)
+	if (*key->buf == C_P && ctx->emacs_mode && ctx->hist.list->next
+			&& ctx->ws.ws_col > 0)
 		return (true);
 	else
 		return (false);
@@ -71,12 +74,13 @@ bool	test_downkey(t_ctx *ctx, t_line *l, t_key *key)
 	{
 		ft_bzero(key->buf, key->i);
 		key->i = 0;
-		if (ctx->hist.list->prev)
+		if (ctx->hist.list->prev && ctx->ws.ws_col > 0)
 			return (true);
 		else
 			return (false);
 	}
-	if (*key->buf == C_N && ctx->emacs_mode && ctx->hist.list->prev)
+	if (*key->buf == C_N && ctx->emacs_mode && ctx->hist.list->prev
+			&& ctx->ws.ws_col > 0)
 		return (true);
 	else
 		return (false);
