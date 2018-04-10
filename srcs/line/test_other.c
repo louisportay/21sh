@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/20 18:34:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 12:39:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 13:21:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,16 @@ bool	test_clear_screen(t_ctx *ctx, t_line *l, t_key *key)
 {
 	(void)l;
 	if (*key->buf == C_L && ctx->emacs_mode)
+		return (true);
+	else
+		return (false);
+}
+
+bool	test_autocomplete(t_ctx *ctx, t_line *l, t_key *key)
+{
+	(void)ctx;
+	(void)l;
+	if (*key->buf == C_I)
 		return (true);
 	else
 		return (false);
