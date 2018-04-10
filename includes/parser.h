@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 11:33:06 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 13:09:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void					asmt_insert(struct s_asmt **head, struct s_asmt **curr,
 struct s_asmt			*asmt_find(struct s_asmt *asmt, char *key);
 void					asmt_free(struct s_asmt **asmt);
 void					asmt_clear(struct s_asmt **asmt);
-void		rdir_clear(t_redir **rdirs);
+void					rdir_clear(t_redir **rdirs);
 
 /*
 **	BRIDGES

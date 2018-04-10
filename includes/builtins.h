@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 09:33:39 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 13:07:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ typedef struct s_proc	t_proc;
 
 int						ft_cd(t_proc *p, t_ctx *ctx);
 int						cd_pipeline(t_ctx *ctx, char *path, int opt);
-int						remove_prev_dir(char *trim_path, unsigned *i, char *argpath);
+int						remove_prev_dir(char *trim_path, unsigned *i, char
+											*argpath);
 int						ft_echo(t_proc *p, t_ctx *ctx);
 int						ft_printenv(t_proc *p, t_ctx *ctx);
 int						ft_setenv(t_proc *p, t_ctx *ctx);
