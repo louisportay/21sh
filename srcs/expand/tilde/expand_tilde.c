@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:18:07 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/11 11:20:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 15:34:21 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,16 @@ static int		l_trysign(char *str, char **ret, t_ctx *ctx)
 	{
 		s = ft_astr_getval(ctx->environ, str[1] == '+' ? "PWD" : "OLDPWD");
 		if (s == NULL)
-			return (1);
+		{
+			qbuf_nuke(&buf);
+			return (-1);
+		}
 		qbuf_add(buf, s);
 		qbuf_add(buf, str + 2);
 		*ret = qbuf_del(&buf);
 		return (1);
 	}
+	qbuf_nuke(&buf);
 	return (0);
 }
 
