@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 18:12:40 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 19:28:20 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:34:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int				scan_dollar(char *str)
 	int			doll;
 
 	doll = 0;
+	if (str == NULL)
+		return (0);
 	while (*str != '\0')
 	{
 		if (*str == '\\')

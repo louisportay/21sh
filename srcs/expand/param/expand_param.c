@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:48:20 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 14:22:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 14:22:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,14 @@ int				expand_param(char *str, char **ret, t_ctx *ctx)
 	err = 0;
 	toks = vtok_get(str, &err);
 	*ret = NULL;
-	if (toks == NULL && err)
+	if (err)
 		return (lquoterr());
-	vtok_sanitize(toks);
+	err = 0;
+	if (vtok_sanitize(toks, 0, &err))
+	{
+		vtok_clear(&toks);
+		return (-1);
+	}
 	if ((v = vtok_handletokens(toks, &r, ctx)) == VAR_OK)
 		*ret = r;
 	else if (v == VAR_ERR)

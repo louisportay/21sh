@@ -6,66 +6,78 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 18:12:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/13 17:39:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 14:26:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand_param.h"
 
-static t_vtok			*l_get_match(t_vtok *tok)
+static t_vtok		*do_subexpr(t_vtok *tok, int depth, int *err)
 {
-	t_vtok				*h;
+	t_vtok			*next;
+	t_vtok			*last;
 
-	if (tok == NULL)
-		return (NULL);
-	h = tok;
-	tok = tok->next;
-	while ((tok = vtok_san_getnext(tok)) != NULL && tok->type != VACBRA)
-		;
-	if (tok == NULL)
-		vtok_conv(h);
-	return (tok == NULL ? NULL : tok->next);
-}
-
-static t_vtok			*l_get_dquote(t_vtok *tok)
-{
-	t_vtok				*next;
-
+	next = NULL;
 	tok = tok->next;
 	vtok_split(tok, VDQUOT, &next);
-	vtok_sanitize(tok);
-	vtok_last(tok)->next = next;
-	return (next->next);
-}
-
-static t_vtok			*l_get_vadoll(t_vtok *tok)
-{
-	if (vtok_isopen(tok))
-		return (l_get_match(tok));
-	else
-		return (tok->next);
-}
-
-t_vtok					*vtok_san_getnext(t_vtok *tok)
-{
+	if ((vtok_sanitize(tok, depth + 1, err)))
+		return (NULL);
 	if (tok == NULL)
 		return (NULL);
-	else if (tok->type == VADOLL)
-		return (l_get_vadoll(tok));
+	last = vtok_last(tok);
+	if (last != NULL)
+	{
+		last->next = next;
+		return (next);
+	}
+	return (next);
+}
+
+static t_vtok		*get_match(t_vtok *tok, int depth, int *err)
+{
+	t_vtok			*h;
+
+	h = tok;
+	if (tok->next == NULL)
+		return (NULL);
+	tok = tok->next;
+	while (tok != NULL && tok->type != VACBRA)
+		tok = vtok_get_next(tok, depth, err);
+	if (*err)
+		return (NULL);
+	if (tok == NULL)
+		vtok_conv(h);
+	return (tok != NULL ? tok->next : NULL);
+}
+
+t_vtok				*vtok_get_next(t_vtok *tok, int depth, int *err)
+{
+	if (tok->type == VADOLL)
+	{
+		if (vtok_isopen(tok))
+			return (get_match(tok, depth, err));
+		else
+			return (tok->next);
+	}
 	else if (tok->type == VDQUOT)
-		return (l_get_dquote(tok));
+		return (do_subexpr(tok, depth, err));
 	else if (tok->type == VACBRA)
 	{
 		tok->type = VOTHER;
 		tok->data.str = ft_strdup("}");
-		return (tok->next);
 	}
-	else
-		return (tok->next);
+	return (tok->next);
 }
 
-void					vtok_sanitize(t_vtok *tok)
+int					vtok_sanitize(t_vtok *tok, int depth, int *err)
 {
-	while ((tok = vtok_san_getnext(tok)) != NULL)
-		;
+	if (depth > PARAM_DEPTH)
+	{
+		*err = 1;
+		return (1);
+	}
+	depth += 1;
+	while (tok != NULL)
+		tok = vtok_get_next(tok, depth, err);
+	return (*err ? 1 : 0);
 }

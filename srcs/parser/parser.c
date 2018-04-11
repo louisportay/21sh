@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 19:42:18 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 13:44:59 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,7 @@ static int				handle(struct s_token *tokens, t_job *job[3])
 	if (tokens->type == NEWLINE)
 	{
 		if (tokens->next != NULL)
-		{
-			ft_dprintf(STDERR_FILENO,
-						"21sh: parser: Characters after NEWLINE\n");
-			return (-1);
-		}
+			fatal_err(CTX_ERR, get_ctxaddr());
 		job_insert(job, job + 1, job[2]);
 		return (0);
 	}

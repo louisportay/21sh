@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/11 11:05:17 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 13:44:12 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 # define BADQUOTES_STR			"21sh: unexpected end of file\n"
 # define BADOPT_C_STR			"21sh: -c: option requires an argument\n"
 # define BADOPT_F_STR			"21sh: -f: option requires an argument\n"
+# define CTX_ERR_STR			"21sh: context error\n"
 
 # define HELP1 "21sh, by vbastion and lportay:\n\n-h:\t\tDisplay this help\n"
 # define HELP2 "-f <file>:\tRead <file>\n-c <cmd>:"
@@ -78,6 +79,7 @@ enum					e_errcode
 	FAILSETSIGHDLR,
 	BADOPT_C,
 	BADOPT_F,
+	CTX_ERR
 };
 
 /*

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 19:08:40 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/07 18:53:11 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/11 13:35:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_token	*new_token(t_dlist *line)
 {
 	t_token *new;
 
-	if (!(new = (t_token *)malloc(sizeof(t_token))))
+	if (!(new = (t_token *)ft_pmemalloc(sizeof(t_token), &on_emem, NOMEM)))
 		return (NULL);
 	new->first_letter = line;
 	new->last_letter = NULL;

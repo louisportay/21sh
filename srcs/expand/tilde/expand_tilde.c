@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:18:07 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 12:41:04 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:20:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ static int		l_tryuser(char *str, char **ret)
 
 int				expand_tilde(char *str, char **ret, t_ctx *ctx)
 {
+	if (str == NULL)
+		return (0);
 	if (*str != '~')
 		return (0);
 	else if (str[1] == '/' || str[1] == '\0')

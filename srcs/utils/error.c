@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 18:15:48 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 13:49:16 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void		dump_err(char errcode)
 		ft_putstr_fd(BADOPT_C_STR, STDERR_FILENO);
 	else if (errcode == BADOPT_F)
 		ft_putstr_fd(BADOPT_F_STR, STDERR_FILENO);
+	else if (errcode == CTX_ERR)
+		ft_putstr_fd(CTX_ERR_STR, STDERR_FILENO);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 18:08:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/10 18:50:28 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:35:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_btok					*l_handle_dollar(t_btok *tok)
 {
 	tok->type = BOTHER;
 	tok = tok->next;
+	if (tok == NULL)
+		return (NULL);
 	if (tok->type == BROBRA)
 	{
 		tok->type = BOTHER;

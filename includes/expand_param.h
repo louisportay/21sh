@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 11:15:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 14:25:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define VAR_KO 0
 
 # define VAR_NOSTATE ("Missing a state\n")
+
+# define PARAM_DEPTH 8
 
 typedef struct s_vtok	t_vtok;
 typedef struct s_lvar	t_lvar;
@@ -68,7 +70,7 @@ int						expand_param(char *str, char **ret, t_ctx *ctx);
 
 int						scan_dollar(char *str);
 
-void					vtok_sanitize(t_vtok *tokens);
+int						vtok_sanitize(t_vtok *tokens, int depth, int *err);
 int						vtok_matching(t_vtok *curr, t_vtok **matched);
 t_vtok					*vtok_san_getnext(t_vtok *tok);
 
@@ -116,5 +118,8 @@ void					vtok_splittilclose(t_vtok *tok, t_vtok **next);
 int						vtok_isword(char *str);
 
 void					vtok_clear(t_vtok **tok);
+
+t_vtok					*vtok_get_next(t_vtok *tok, int depth, int *err);
+
 
 #endif

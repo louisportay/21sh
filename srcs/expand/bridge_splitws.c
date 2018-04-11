@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 11:39:56 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 20:28:44 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 12:00:24 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ t_list				*bridge_strsplit(char *str)
 	char			*n;
 	char			*tmp;
 
+	if (str == NULL)
+		return (NULL);
 	lst[0] = NULL;
 	while (1)
 	{
