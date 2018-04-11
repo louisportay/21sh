@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 13:13:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 13:14:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:04:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@ char					*list_flatten(t_list *list);
 
 void					astr_to_buf(char **argv, t_qbuf *buf, int last);
 void					astr_env_replace(char ***env, char *key, char *new_v);
+t_list					*bridge_strsplit(char *str);
 
 #endif

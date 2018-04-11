@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:48:30 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 13:07:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/11 11:02:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 /*
 **	HAS TO BE RENAMED "expand_path"
 */
-
-# include "dir_explorer.h"
 
 # define WHITESPACES (" \t\v")
 

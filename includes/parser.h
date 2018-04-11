@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 18:46:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 11:00:50 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "ft_21sh.h"
 
 typedef struct s_asmt	t_asmt;
+typedef struct s_job	t_job;
 
 struct					s_asmt
 {

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 13:09:21 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/11 11:05:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include "kvp.h"
 # include "builtins.h"
 # include "expand.h"
-# include "job_control.h"
 # include "ft_printf.h"
 # include "bridge.h"
 
@@ -65,12 +64,6 @@
 */
 
 # define PATH					"/usr/local/bin/:/usr/bin:/bin"
-
-//TO DELETE
-
-# define DEBUG 		write(STDOUT_FILENO, "DEBUG\n", 6)
-
-# define DFL_BGCNT 8
 
 typedef struct s_ctx	t_ctx;
 

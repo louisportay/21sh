@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/10 18:07:38 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/11 10:58:44 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,6 @@ line.h\
 prompt.h\
 token.h\
 builtins.h\
-dir_explorer.h\
 exec.h\
 expand.h\
 expand_braces.h\
@@ -84,10 +83,8 @@ expand_quotes.h\
 expand_tilde.h\
 ft_21sh.h\
 history.h\
-job_control.h\
 line.h\
 parser.h\
-posix_classes.h\
 prompt.h\
 token.h\
 
