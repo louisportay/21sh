@@ -55,7 +55,7 @@ ft-sh3
 #CTRL-W (cut the previous word, put it in the clipboard)
 
 #CTRL-C pour réafficher le prompt 			*SIGINT to catch*
-i
+
 CTRL-\ and other signals, block them
 
 *Alt-D	Delete the word after the cursor on the current line, put it on the clipboard
