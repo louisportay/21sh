@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 13:07:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/12 11:45:24 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@
 # define DOTGLOB		0x10
 # define NULLGLOB		0x20
 # define FAILGLOB		0x40
+
+# define BU_SET_HELP	0x010000
+# define BU_SET_USAGE	0x100000
 
 # define BU_SET_ON ("\ton\n")
 # define BU_SET_OFF ("\toff\n")

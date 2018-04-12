@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 16:48:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 11:48:02 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/11 19:07:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ t_ttok					*ttok_comb(t_ttok *tok);
 char					*ttok_tostr(t_ttok *tok);
 
 t_btok					*ttok_before(t_btok *next, t_btok *from);
+
+t_ttok					*ttok_do_mix(t_btok **head);
 
 int						ft_islet(char *str);
 

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/21 16:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/11 14:25:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/12 12:54:51 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void					vtok_addvar(t_qbuf *buf, t_ctx *ctx, char *key);
 void					vtok_vadoll(t_lvar *lvar);
 void					vtok_dollvaobra(t_lvar *lvar);
 void					vtok_dolldoll(t_lvar *lvar);
+void					vtok_dollword(t_lvar *lvar);
 void					vtok_dollunder(t_lvar *lvar);
 void					vtok_dollquest(t_lvar *lvar);
 void					vtok_addpid(t_qbuf *buf, int clear);
@@ -120,6 +121,5 @@ int						vtok_isword(char *str);
 void					vtok_clear(t_vtok **tok);
 
 t_vtok					*vtok_get_next(t_vtok *tok, int depth, int *err);
-
 
 #endif

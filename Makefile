@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/11 10:58:44 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/12 12:53:24 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=sanitize
+DEBUG=yes
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
@@ -200,6 +200,7 @@ SRCS=	main.c\
 		\
 		expand_braces.c\
 		btok_scan.c\
+		btok_print.c\
 		btok_lifecycle.c\
 		btok_get.c\
 		btok_from.c\
@@ -208,6 +209,7 @@ SRCS=	main.c\
 		ttok_comb.c\
 		ttok_combine.c\
 		ttok_compose.c\
+		ttok_do_mix.c\
 		ttok_get.c\
 		ttok_utils.c\
 		ttok_str.c\
@@ -219,6 +221,7 @@ SRCS=	main.c\
 		expand_param.c\
 		scan_dollar.c\
 		vtok_dollarpid.c\
+		vtok_dollunder.c\
 		vtok_lifecycle.c\
 		vtok_get.c\
 		vtok_handletokens.c\

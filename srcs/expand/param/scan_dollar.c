@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 18:12:40 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/11 11:34:14 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/12 12:45:23 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ static int		squote(char **str)
 	return (0);
 }
 
+static void		next(int *doll, char **str)
+{
+	*doll |= **str == '$';
+	(*str)++;
+}
+
 int				scan_dollar(char *str)
 {
 	int			doll;
@@ -68,10 +74,7 @@ int				scan_dollar(char *str)
 				return (-1);
 		}
 		else
-		{
-			doll |= *str == '$';
-			str++;
-		}
+			next(&doll, &str);
 	}
 	return (doll);
 }

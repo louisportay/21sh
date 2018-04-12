@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 10:55:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/08 19:36:13 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/12 12:51:12 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,6 @@ void				vtok_addpid(t_qbuf *buf, int clear)
 void				vtok_dolldoll(t_lvar *lvar)
 {
 	vtok_addpid(lvar->buf, 0);
-	lvar->curr_tok = lvar->curr_tok->next->next;
-	lvar->next = &vtok_start;
-}
-
-void				vtok_dollunder(t_lvar *lvar)
-{
-	t_ctx			*ctx;
-
-	ctx = get_ctxaddr();
-	if (ctx->last_argv != NULL)
-		qbuf_add(lvar->buf, ctx->last_argv);
 	lvar->curr_tok = lvar->curr_tok->next->next;
 	lvar->next = &vtok_start;
 }

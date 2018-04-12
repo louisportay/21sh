@@ -6,13 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 10:53:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/08 19:34:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/12 12:54:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand_param.h"
 
-static void			vtok_dollword(t_lvar *lvar)
+void				vtok_dollword(t_lvar *lvar)
 {
 	vtok_addvar(lvar->buf, lvar->ctx, lvar->curr_tok->next->data.str);
 	lvar->curr_tok = lvar->curr_tok->next->next;
