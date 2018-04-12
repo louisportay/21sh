@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 17:19:41 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/12 21:18:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@
 # define BU_EX_ENUMARG "21sh: exit: %s: numeric argument required\n"
 
 # define BU_HI_EEORNG "21sh: history, %s: history position out of range\n"
+# define BU_HI_ENUMARG "21sh: history: -d: option requires an argument\n"
+# define BU_HI_USAGE "history: history [n] [-c] [-d offset] [-arw filename]\n"
 
 # define BU_E_EARG "21sh: env: option requires an argument -- 'u'\n"
 # define BU_E_EINVARG "21sh: env: Cannot unset '%s': Invalid argument\n"

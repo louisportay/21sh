@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:35:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 14:35:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/12 21:18:56 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,29 @@ void		w_opt(t_proc *p, t_ctx *ctx)
 
 int			ft_history(t_proc *p, t_ctx *ctx)
 {
+	char *hlist;
+
+	hlist = NULL;
 	p->type = BUILTIN;
 	if (p->argv[1] == NULL)
-		ft_putstr(dump_history(ctx->hist.list->next, ctx->hist.index));
+		ft_putstr(hlist = dump_history(ctx->hist.list->next, ctx->hist.index));
 	else if (ft_isnumber(p->argv[1]) && p->argv[2] == NULL)
-		ft_putstr(dump_history(ctx->hist.list->next, ft_atoi(p->argv[1])));
+		ft_putstr(hlist = dump_history(ctx->hist.list->next, ft_atoi(p->argv[1])));
 	else if (!ft_strcmp(p->argv[1], "-c") && p->argv[2] == NULL)
 		ft_dlstdel(&ctx->hist.list->next, &del_histentry);
-	else if (!ft_strcmp(p->argv[1], "-d") && p->argv[2])
-		d_opt(p, ctx);
+	else if (!ft_strcmp(p->argv[1], "-d"))
+	{
+		if (p->argv[2])
+			d_opt(p, ctx);
+		else
+			ft_dprintf(STDERR_FILENO, "%s%s", BU_HI_ENUMARG, BU_HI_USAGE);
+	}
 	else if (!ft_strcmp(p->argv[1], "-a"))
 		a_opt(p, ctx);
 	else if (!ft_strcmp(p->argv[1], "-r"))
 		r_opt(p, ctx);
 	else if (!ft_strcmp(p->argv[1], "-w"))
 		w_opt(p, ctx);
+	free(hlist);
 	return (0);
 }
