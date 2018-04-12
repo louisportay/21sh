@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 11:37:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/06 19:36:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/12 12:52:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ static void	cd_getopt(char **operand, char *opt, char **av)
 	}
 }
 
-static int	cd_special_operand(char **operand, char *opt, char **environ)
+static int	cd_special_operand(char **operand, char *opt, char **environ,
+									char **locals)
 {
 	if (*operand == NULL)
 	{
-		if ((*operand = ft_astr_getval(environ, "HOME")) == NULL)
+		if ((*operand = ft_astr_getval(environ, "HOME")) == NULL
+				&& (*operand = ft_astr_getval(locals, "HOME")) == NULL)
 		{
 			ft_putstr_fd(SH_ENOHOM, STDERR_FILENO);
 			return (1);
@@ -57,7 +59,8 @@ static int	cd_special_operand(char **operand, char *opt, char **environ)
 	}
 	else if (!ft_strcmp(*operand, "-"))
 	{
-		if ((*operand = ft_astr_getval(environ, "OLDPWD")) == NULL)
+		if ((*operand = ft_astr_getval(environ, "OLDPWD")) == NULL
+				&& (*operand = ft_astr_getval(locals, "OLDPWD")) == NULL)
 		{
 			ft_putstr_fd(SH_ENOOPW, STDERR_FILENO);
 			return (1);
@@ -80,7 +83,7 @@ int			ft_cd(t_proc *p, t_ctx *ctx)
 		return (1);
 	}
 	cd_getopt(&operand, &opt, p->argv);
-	if (cd_special_operand(&operand, &opt, ctx->environ) == 1)
+	if (cd_special_operand(&operand, &opt, ctx->environ, ctx->locals) == 1)
 		return (1);
 	if (ft_strlen(operand) >= MAXPATHLEN)
 	{
