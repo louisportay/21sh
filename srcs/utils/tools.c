@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 10:48:13 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/06 20:55:44 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 19:26:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	dlst_isblank(t_dlist *dlst)
 {
 	while (dlst)
 	{
-		if (str_isblank(dlst->data) == false)
+		if (ft_isblank(*(char *)dlst->data) == false)
 			return (false);
 		dlst = dlst->next;
 	}

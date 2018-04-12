@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 13:23:20 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 19:02:18 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/12 17:25:04 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,36 @@ char	*get_string_to_complete(t_dlist *line)
 	next = line->next;
 	line->next = NULL;
 	tmp = line;
-	ft_dlsthead(&line);	//recule jusqu'au debut OU au premier espace rencontre
-	if ((s = str_from_dlst(line)) == NULL)
+	while (line->prev && ft_isblank(*(char *)line->data) == 0)
+		line = line->prev;	
+	if (line->next == NULL && ft_isblank(*(char *)line->data) == 1)
+	{
+			if ((s = ft_strdup("./")) == NULL)
+				fatal_err(NOMEM, get_ctxaddr());
+	}
+	else if ((s = str_from_dlst(line)) == NULL)
 		fatal_err(NOMEM, get_ctxaddr());
 	line = tmp;
 	line->next = next;
 	return (s);
 }
 
-int		string_has_blank(char *s)
+//int            string_has_blank(char *s)
+//{
+//	while (*s)
+//		if (ft_isblank(*s++) == 1)
+//			return (1);
+//	return (0);
+//}
+
+int		dlst_hasblank(t_dlist *dlst)
 {
-	while (*s)
-		if (ft_isblank(*s++) == 1)
+	while (dlst->prev)
+	{
+		if (ft_isblank(*(char *)dlst->data) == 1)
 			return (1);
+		dlst = dlst->prev;
+	}
 	return (0);
 }
 
@@ -122,6 +139,105 @@ void	fill_matches(struct s_string str, struct dirent *de, t_dlist **matches, uns
 	}
 }
 
+void	complete_path(t_ctx *ctx, t_line *l, struct s_string str)
+{
+	DIR				*dp;
+	struct dirent	*de;	
+	t_dlist			*matches;
+	char			*dirname;
+	char			*basename;
+	char			*last_slash;
+	unsigned		maxlen;
+
+	maxlen = 0;
+	matches = NULL;
+	basename = NULL;
+	dirname = NULL;
+
+	if ((last_slash = ft_strrchr(str.s, '/')) == NULL)
+	{
+		if ((dp = opendir(".")) == NULL)
+			return ;
+//		printf("\ndirname=%s\n", str.s);
+	}
+	else
+	{
+		dirname = ft_strdup(str.s);
+		*(ft_strrchr(dirname, '/') + 1) = '\0';
+		dp = opendir(dirname);
+//		printf("\ndirname=%s\n", dirname);
+		free(dirname);
+	}
+	
+
+	if ((last_slash = ft_strrchr(str.s, '/')) == NULL)
+		basename = ft_strdup(str.s);
+	else
+		basename = ft_strdup(last_slash + 1);
+
+//	printf("s=%s\nbase=%s\n", str.s, basename);
+
+	unsigned baselen;
+
+	baselen = ft_strlen(basename);
+	while ((de = readdir(dp)))
+	{
+		if (!ft_strncmp(basename, de->d_name, baselen))
+		{
+			if (!(baselen == 0
+					&& (!ft_strcmp(".", de->d_name) || !ft_strcmp("..", de->d_name))))
+			{
+				unsigned len;
+				len = ft_strlen(de->d_name);
+				if (ft_dlstnewadd(&matches, de->d_name, len, &ft_dlstnew) == -1)
+				{
+					ft_dlstdel(&matches, &delvoid);
+					fatal_err(NOMEM, get_ctxaddr());
+				}
+				if (len > maxlen)
+					maxlen = len;
+//				printf("MATCH=%s\n", de->d_name);
+			}
+		}
+	}
+	closedir(dp);
+	if (!matches)
+		return (free(basename));
+	else if (matches->next)
+		print_results(matches, ((maxlen / PAD) + 1) * PAD, ctx->ws.ws_col);
+	else
+	{
+		//printf("%s\n", matches->data);
+		if (ft_strcmp(basename, matches->data))
+		{
+			if (str.s[ft_strlen(str.s) - 1] == '/')
+				dirname = ft_strjoin(str.s, matches->data);
+			else
+				dirname = ft_strjoinc(str.s, matches->data, '/');
+		}
+		if ((dp = opendir(dirname)))
+		{
+			closedir(dp);
+			printf("\n|%s|\n", dirname);
+			printf("\n|%s|\n", str.s);
+			free(matches->data);
+			matches->data = ft_strnew(ft_strlen(dirname + 1));
+		//	ft_memcpy(matches->data, dirname, ft_strlen(dirname));
+		//	ft_memcpy(matches->data, "/", 1);
+			printf("\n|%s|\n", (char *)matches->data);
+			complete_line(l, matches->data, baselen);
+		}
+		else if (ft_strcmp(basename, matches->data))
+		{
+			complete_line(l, matches->data, baselen);
+			free(dirname);
+		}
+	}
+	ft_dlstdel(&matches, &delvoid);
+	restore_line(ctx, l);
+	free(basename);
+}
+
 void	complete_binary(t_ctx *ctx, t_line *l, char **p, struct s_string str)
 {
 	DIR				*dp;
@@ -161,10 +277,8 @@ void	autocomplete(t_ctx *ctx, t_line *l)
 	if (str.len == 0 || str.len >= 4096)
 		return (free(str.s));
 
-	if (string_has_blank(str.s) == 1)	
-	{
-		//get_current_path_files
-	}
+	if (dlst_hasblank(l->line) == 1)	
+		complete_path(ctx, l, str);
 	else
 		complete_binary(ctx, l, ctx->path, str);
 	free(str.s);
