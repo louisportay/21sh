@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 17:37:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 11:48:46 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/12 16:54:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static int	lget_switch(int opts[2], t_proc *p, int i, u_short *tmp)
 		if ((opts[1] = get_max(p, i, tmp)) == -1)
 			return (-1);
 	}
-	if (opts[0] & BU_SET_HELP)
-		return (set_help(p, (opts[0] & BU_SET_USAGE) != 0));
+	if (opts[1] & BU_SET_HELP)
+		return (set_help(p, (opts[1] & BU_SET_USAGE) != 0));
 	opts[0] |= opts[1];
 	return (0);
 }

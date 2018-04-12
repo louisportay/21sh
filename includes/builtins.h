@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 11:45:24 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/12 17:19:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@
 # define BU_S_HPR ("l: shows local variables. With '+l' shows env beforehand")
 # define BU_S_HSE ("o: shows options. '+o' prints it as commands to set them")
 # define BU_S_HEX ("a: assignment commands are exported")
-# define BU_S_HBG ("b: set job notifications to be immediate")
+# define BU_S_HBG ("B: activate brace expansion")
 # define BU_S_HON ("x: prints each action done before execution")
-# define BU_S_HFN ("f: inhibit globbing expansion")
-# define BU_S_HDO ("d: adds hidden files to globbing")
-# define BU_S_HNU ("n: if expansion fails, replace it with a null string")
-# define BU_S_HFA ("F: if expansion fails, aborts pipe execution")
+# define BU_S_HFN ("f: inhibits globbing")
+# define BU_S_HDO ("d: adds hidden files in globbing")
+# define BU_S_HNU ("n: if globbing fails, returns null string")
+# define BU_S_HFA ("F: if globbing fails, aborts pipe execution")
 # define BU_S_HEL ("h: displays this help. '+h' adds usage beforehand")
 
 # define BU_SET_PRLOC	0x01

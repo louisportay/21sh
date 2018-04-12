@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:19:39 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/12 11:50:15 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/12 16:53:35 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int					get_min(t_proc *p, int i, u_short *tmp)
 		else if (laddarg(tmp, p->argv[i][j]))
 			;
 		else if (p->argv[i][j] == 'h')
-			ret = (ret & ~BU_SET_USAGE) | BU_SET_USAGE;
+			ret = (ret & ~BU_SET_USAGE) | BU_SET_HELP;
 		else
 			return (lusage(p, p->argv[i][j], 1));
 		j++;
@@ -107,7 +107,7 @@ int					get_max(t_proc *p, int i, u_short *tmp)
 		else if (lrmarg(tmp, p->argv[i][j]))
 			;
 		else if (p->argv[i][j] == 'h')
-			ret |= BU_SET_HELP | BU_SET_USAGE;
+			ret |= (BU_SET_HELP | BU_SET_USAGE);
 		else
 			return (lusage(p, p->argv[i][j], 1));
 		j++;
