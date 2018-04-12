@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 18:12:40 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 12:45:23 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/12 14:28:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int		scan_dquote(char **str, int *doll)
 {
 	char		*s;
 
-	s = *str;
+	s = *str + 1;
 	while (*s != '\0' && *s != '\"')
 	{
 		if (*s == '\\')
@@ -27,8 +27,7 @@ static int		scan_dquote(char **str, int *doll)
 	}
 	if (*s == '\0')
 		return (-1);
-	s++;
-	*str = s;
+	*str = s + 1;
 	return (*doll);
 }
 
@@ -36,13 +35,12 @@ static int		squote(char **str)
 {
 	char		*s;
 
-	s = *str;
+	s = *str + 1;
 	while (*s != '\0' && *s != '\'')
 		s++;
-	s++;
 	if (*s == '\0')
 		return (-1);
-	*str = s;
+	*str = s + 1;
 	return (0);
 }
 
