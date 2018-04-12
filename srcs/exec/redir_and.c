@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 22:14:47 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 09:36:09 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/12 16:13:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,14 @@ static int		get_right_op(t_redir *tok)
 	return (0);
 }
 
-int				r_greatand_lessand(t_redir *r, int fd[3])
+int				r_greatand_lessand(t_redir *r, int fd[3], int *pipes)
 {
 	if (get_right_op(r) == -1)
 		return (err_ambig_redir(r->s_rhs));
 	else if (r->fd_rhs == fd[0] || r->fd_rhs == fd[1] || r->fd_rhs == fd[2])
+		return (err_busyfd(r->fd_rhs));
+	else if (pipes != NULL && r->fd_rhs != -1
+				&& (pipes[0] == r->fd_rhs || pipes[1] == r->fd_rhs))
 		return (err_busyfd(r->fd_rhs));
 	if (r->fd_rhs != -1 && r->fd_rhs == r->lhs)
 		return (0);

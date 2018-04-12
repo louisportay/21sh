@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 15:28:35 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/12 16:24:02 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int				fork_do(t_proc *p, int fd, t_ctx *ctx)
 ** wowsuchnameinmuchshell
 */
 
-static void				pipingation(t_proc *p)
+static void				pipingation(t_proc *p, int *pipe_out)
 {
 	int					fd[2];
 
@@ -66,6 +66,7 @@ static void				pipingation(t_proc *p)
 		dup2(p->pipe_in, STDIN_FILENO);
 		close(p->pipe_in);
 	}
+	*pipe_out = -1;
 	if (p->next != NULL)
 	{
 		if (pipe(fd) < 0)
@@ -76,6 +77,7 @@ static void				pipingation(t_proc *p)
 				ft_dprintf(STDERR_FILENO, "The system table is full\n");
 			wrap_exit(EXIT_FAILURE, get_ctxaddr());
 		}
+		*pipe_out = fd[1];
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		p->next->pipe_in = fd[0];
@@ -87,14 +89,19 @@ static void				pipingation(t_proc *p)
 int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 {
 	t_proc				*p;
+	int					rdr_pipe[2];
 
 	p = j->procs;
 	while (p != NULL)
 	{
 		restore_fds(ctx);
-		pipingation(p);
-		if (do_redir(p->redirs, ctx->std_fd) == -1)
+		pipingation(p, rdr_pipe + 1);
+		rdr_pipe[0] = p->next != NULL ? p->next->pipe_in : -1;
+		if (do_redir(p->redirs, ctx->std_fd, rdr_pipe) == -1)
+		{
+			close(STDOUT_FILENO);
 			p->status = 1 | JOB_CMP;
+		}
 		if ((p->status & JOB_CMP) == 0)
 		{
 			if (p->asmts != NULL && p->argv[0] == NULL)

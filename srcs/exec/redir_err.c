@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 22:12:39 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 22:22:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/12 16:25:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		err_open(char *s)
 
 int		err_busyfd(int fd)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: %d: protected file descriptor\n", fd);
+	ft_dprintf(STDERR_FILENO, "21sh: %d: Bad file descriptor\n", fd);
 	return (-1);
 }
 
