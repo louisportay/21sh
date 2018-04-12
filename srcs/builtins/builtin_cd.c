@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 11:37:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/06 19:36:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/12 22:02:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int			ft_cd(t_proc *p, t_ctx *ctx)
 	char *operand;
 	char opt;
 
+	opt = 0;
 	p->type = BUILTIN;
 	if (ft_astr_len(p->argv) > 3 || (ft_astr_len(p->argv) == 3 &&
 	ft_strcmp(p->argv[1], "-P") && ft_strcmp(p->argv[1], "-L")))
