@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/10 22:15:24 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/12 20:40:28 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRCDIR= srcs/ \
 		srcs/utils \
 		srcs/init \
 		srcs/line \
+		srcs/autocomplete \
 		srcs/history \
 		srcs/lexer \
 		srcs/parser \
@@ -105,6 +106,9 @@ SRCS=	main.c\
 		rawline.c\
 		default.c\
 		autocomplete.c\
+		ac_tools.c\
+		complete_path.c\
+		complete_binary.c\
 		prompt.c\
 		prompt_utils.c\
 		prompt_flags1.c\

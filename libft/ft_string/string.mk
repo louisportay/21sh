@@ -27,6 +27,7 @@ ft_strsplit.c\
 ft_strstr.c\
 fullpath.c\
 randstring.c\
+ft_strexpand.c\
 #__getpath__.c\
 
 STRING_DIR=ft_string

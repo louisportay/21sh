@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:39:51 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/11 13:59:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/12 18:42:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,7 @@ char			**ft_strsplit(char const *s, char c);
 char			*ft_strstr(const char *big, const char *little);
 char			*randstring(int len);
 int				ft_strindex(char *str, char c);
+char			*ft_strexpand(char *str, char c, char *expr);
+
 
 #endif

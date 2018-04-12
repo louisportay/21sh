@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 13:09:21 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/12 20:03:17 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # include "token.h"
 # include "parser.h"
 # include "exec.h"
+# include "autocomplete.h"
 
 # define NOMEM_STR				"21sh: Cannot allocate memory\n"
 # define NODIR_STR				"21sh: error retrieving current directory\n"
