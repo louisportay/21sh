@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/13 10:31:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 10:39:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # include <time.h>
 # include <limits.h>
 # include <pwd.h>
+# include <dirent.h>
 
 # include "line.h"
 # include "prompt.h"

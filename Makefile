@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/13 10:31:34 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/13 10:41:18 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,8 @@ endif
 
 ifeq ($(DEBUG), yes)
 	CFLAGS+= -g3
+else ifeq ($(DEBUG), prod)
+	CFLAGS+= -O3
 else ifeq ($(DEBUG), sanitize)
 	CFLAGS+= -g3 -fsanitize=address
 endif
