@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:08:27 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/11 13:53:58 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 10:22:14 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_dirname(char *path)
 		return (ft_strdup("/"));
 	last_char++;
 	if ((dirname = ft_strnew(last_char - path)) == NULL)
-			return (NULL);
+		return (NULL);
 	ft_memcpy(dirname, path, last_char - path);
 	return (dirname);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 09:43:57 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/11 15:18:24 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 10:22:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ char		*ft_basename(char *path)
 		return (ft_strdup(path));
 	else if (ft_stroccur(path, '/') == ft_strlen(path))
 		return (ft_strdup("/"));
-
 	first_char = ft_strrchr(path, '/');
 	if (*(first_char + 1) == '\0')
 		return (path_with_final_slash(path, first_char));
