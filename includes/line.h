@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 13:10:50 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 10:54:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@
 */
 
 # define READLEN 6
+# define PAD 2
 
 typedef struct s_ctx	t_ctx;
 
@@ -197,6 +198,8 @@ void			kill_prev_word(t_ctx *env, t_line *l);
 void			kill_next_word(t_ctx *env, t_line *l);
 void			yank(t_ctx *env, t_line *l);
 
+void			autocomplete(t_ctx *ctx, t_line *l);
+
 bool			test_kill_beginning(t_ctx *env, t_line *l, t_key *key);
 bool			test_kill_end(t_ctx *env, t_line *l, t_key *key);
 bool			test_kill_prev_word(t_ctx *env, t_line *l, t_key *key);
@@ -216,6 +219,7 @@ bool			test_lkey(t_ctx *env, t_line *l, t_key *key);
 bool			test_del_curr_char(t_ctx *env, t_line *l, t_key *key);
 bool			test_del_prev_char(t_ctx *env, t_line *l, t_key *key);
 bool			test_emacs_mode(t_ctx *env, t_line *l, t_key *key);
+bool			test_autocomplete(t_ctx *ctx, t_line *l, t_key *key);
 
 void			update_line(t_ctx *env, t_line *l);
 void			update_linestate(t_stack **state, char c);

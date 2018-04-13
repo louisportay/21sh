@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 11:51:16 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/06 19:44:41 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/10 13:23:52 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static void	init_pairs(t_line_pair *p)
 	p[16] = (t_line_pair){.test = &test_yank, .fun = &yank};
 	p[17] = (t_line_pair){.test = &test_clear_screen, .fun = &clear_screen_};
 	p[18] = (t_line_pair){.test = &test_emacs_mode, .fun = &toggle_emacs_mode};
-	p[19] = (t_line_pair){.test = NULL, .fun = NULL};
+	p[19] = (t_line_pair){.test = &test_autocomplete, .fun = &autocomplete};
+	p[20] = (t_line_pair){.test = NULL, .fun = NULL};
 }
 
 static int	read_state(t_ctx *ctx, t_line *l, t_key *key)
@@ -56,7 +57,7 @@ static int	read_state(t_ctx *ctx, t_line *l, t_key *key)
 
 static void	line_switch(t_ctx *ctx, t_line *l, t_key *key)
 {
-	t_line_pair	p[20];
+	t_line_pair	p[21];
 	int			i;
 
 	i = 0;

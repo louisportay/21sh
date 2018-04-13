@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 19:24:29 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/07 10:44:25 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 10:56:14 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char		*trim_path(char *path, char *argpath)
 	return (ft_strdup(trim_path));
 }
 
-static char		*get_cur_path(char **environ, char *path)
+static char		*get_cur_path(char **environ, char **locals, char *path)
 {
 	char	*prefix;
 	char	*curpath;
@@ -52,7 +52,8 @@ static char		*get_cur_path(char **environ, char *path)
 	else
 	{
 		alloc = 0;
-		if (!(prefix = ft_astr_getval(environ, "PWD")))
+		if (!(prefix = ft_astr_getval(environ, "PWD"))
+				&& !(prefix = ft_astr_getval(locals, "PWD")))
 		{
 			prefix = getcwd(NULL, 0);
 			alloc = 1;
@@ -92,18 +93,28 @@ static int		chdir_print_err(char *newpath, char *argpath)
 	return (0);
 }
 
-static void		set_pwd_vars(char ***environ, int opt, char *newpath)
+static void		set_pwd_vars(char ***environ, char ***locals,
+								int opt, char *newpath)
 {
 	char			cwd[MAXPATHLEN + 1];
+	char			*pwd;
+	int				in_loc;
 
-	astr_env_replace(environ, "OLDPWD", ft_astr_getval(*environ, "PWD"));
+	in_loc = 0;
+	if (!(pwd = ft_astr_getval(*environ, "PWD")))
+		if ((pwd = ft_astr_getval(*locals, "PWD")))
+			in_loc = 1;
+	if (ft_astr_getval(*locals, "OLDPWD"))
+		astr_env_replace(locals, "OLDPWD", pwd);
+	else
+		astr_env_replace(environ, "OLDPWD", pwd);
 	if (opt & 1)
 	{
 		getcwd(cwd, MAXPATHLEN + 1);
-		astr_env_replace(environ, "PWD", cwd);
+		astr_env_replace((in_loc == 1) ? locals : environ, "PWD", cwd);
 	}
 	else
-		astr_env_replace(environ, "PWD", newpath);
+		astr_env_replace((in_loc == 1) ? locals : environ, "PWD", newpath);
 }
 
 int				cd_pipeline(t_ctx *ctx, char *path, int opt)
@@ -111,7 +122,7 @@ int				cd_pipeline(t_ctx *ctx, char *path, int opt)
 	char	*curpath;
 	char	*newpath;
 
-	curpath = get_cur_path(ctx->environ, path);
+	curpath = get_cur_path(ctx->environ, ctx->locals, path);
 	if (opt & 1)
 		newpath = curpath;
 	else if ((newpath = trim_path(curpath, path)) == NULL)
@@ -126,7 +137,7 @@ int				cd_pipeline(t_ctx *ctx, char *path, int opt)
 			free(newpath);
 		return (1);
 	}
-	set_pwd_vars(&ctx->environ, opt, newpath);
+	set_pwd_vars(&ctx->environ, &ctx->locals, opt, newpath);
 	if (opt & 2)
 		ft_printf("%s\n", curpath);
 	free(curpath);
