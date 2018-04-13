@@ -6,19 +6,27 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 20:33:31 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/13 10:56:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 12:18:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-static void	fill_matches_binary(t_string str, struct dirent *de,
-						t_dlist **matches, unsigned *maxlen)
+static int	fill_matches_binary(t_string str, char *path, struct dirent *de,
+															t_dlist **matches)
 {
 	unsigned		len;
+	char			fpath[PATH_MAX + 1];
 
-	if (ft_strncmp(str.s, de->d_name, str.len) == 0
-			&& entry_already_in_list(de->d_name, *matches) == 0)
+	if (ft_strlen(path) + ft_strlen(de->d_name) >= PATH_MAX)
+		return (0);
+	ft_bzero(fpath, PATH_MAX + 1);
+	ft_strcat(fpath, path);
+	ft_strcat(fpath, "/");
+	ft_strcat(fpath, de->d_name);
+	len = 0;
+	if (ft_strncmp(str.s, de->d_name, str.len) == 0 && !(de->d_type & DT_DIR)
+	&& !access(fpath, X_OK) && !entry_already_in_list(de->d_name, *matches))
 	{
 		len = ft_strlen(de->d_name);
 		if (ft_dlstnewadd(matches, de->d_name, len, &ft_dlstnew) == -1)
@@ -26,15 +34,29 @@ static void	fill_matches_binary(t_string str, struct dirent *de,
 			ft_dlstdel(matches, &delvoid);
 			fatal_err(NOMEM, get_ctxaddr());
 		}
+	}
+	return (len);
+}
+
+void		read_pathes(char *path, t_string str, t_dlist **matches,
+								unsigned *maxlen)
+{
+	DIR				*dp;
+	struct dirent	*de;
+	unsigned		len;
+
+	dp = opendir(path);
+	while ((de = readdir(dp)))
+	{
+		len = fill_matches_binary(str, path, de, matches);
 		if (len > *maxlen)
 			*maxlen = len;
 	}
+	closedir(dp);
 }
 
 void		complete_binary(t_ctx *ctx, t_line *l, char **p, t_string str)
 {
-	DIR				*dp;
-	struct dirent	*de;
 	t_dlist			*matches;
 	unsigned		maxlen;
 
@@ -43,13 +65,7 @@ void		complete_binary(t_ctx *ctx, t_line *l, char **p, t_string str)
 	maxlen = 0;
 	matches = NULL;
 	while (*p)
-	{
-		dp = opendir(*p);
-		while ((de = readdir(dp)))
-			fill_matches_binary(str, de, &matches, &maxlen);
-		closedir(dp);
-		p++;
-	}
+		read_pathes(*p++, str, &matches, &maxlen);
 	if (!matches)
 		return ;
 	else if (matches->next)

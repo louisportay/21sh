@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 13:23:20 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/13 11:01:40 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 12:02:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	autocomplete(t_ctx *ctx, t_line *l)
 
 	str.s = get_string_to_complete(ctx->environ, l->line);
 	str.len = ft_strlen(str.s);
-	if (str.len == 0 || str.len >= 4096)
+	if (str.len == 0 || str.len >= PATH_MAX)
 		return (free(str.s));
 	if (dlst_hasblank(l->line) == 1)
 		complete_path(ctx, l, str);
