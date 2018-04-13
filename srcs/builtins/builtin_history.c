@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:35:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/12 21:18:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 10:13:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,14 @@ void		w_opt(t_proc *p, t_ctx *ctx)
 
 int			ft_history(t_proc *p, t_ctx *ctx)
 {
-	char *hlist;
+	char *s;
 
-	hlist = NULL;
+	s = NULL;
 	p->type = BUILTIN;
 	if (p->argv[1] == NULL)
-		ft_putstr(hlist = dump_history(ctx->hist.list->next, ctx->hist.index));
+		ft_putstr(s = dump_history(ctx->hist.list->next, ctx->hist.index));
 	else if (ft_isnumber(p->argv[1]) && p->argv[2] == NULL)
-		ft_putstr(hlist = dump_history(ctx->hist.list->next, ft_atoi(p->argv[1])));
+		ft_putstr(s = dump_history(ctx->hist.list->next, ft_atoi(p->argv[1])));
 	else if (!ft_strcmp(p->argv[1], "-c") && p->argv[2] == NULL)
 		ft_dlstdel(&ctx->hist.list->next, &del_histentry);
 	else if (!ft_strcmp(p->argv[1], "-d"))
@@ -90,6 +90,6 @@ int			ft_history(t_proc *p, t_ctx *ctx)
 		r_opt(p, ctx);
 	else if (!ft_strcmp(p->argv[1], "-w"))
 		w_opt(p, ctx);
-	free(hlist);
+	free(s);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 16:24:02 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/13 10:18:07 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,14 @@ static void				pipingation(t_proc *p, int *pipe_out)
 		dup2(get_ctxaddr()->std_fd[1], STDOUT_FILENO);
 }
 
+static void				name_me_decently(t_ctx *ctx, t_proc *p)
+{
+	if (p->asmts != NULL && p->argv[0] == NULL)
+		prefork_assign(ctx, p->asmts);
+	else if (p->argv[0] != NULL)
+		prepare_fork(p, ctx, 1);
+}
+
 int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 {
 	t_proc				*p;
@@ -103,12 +111,7 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 			p->status = 1 | JOB_CMP;
 		}
 		if ((p->status & JOB_CMP) == 0)
-		{
-			if (p->asmts != NULL && p->argv[0] == NULL)
-				prefork_assign(ctx, p->asmts);
-			else if (p->argv[0] != NULL)
-				prepare_fork(p, ctx, 1);
-		}
+			name_me_decently(ctx, p);
 		if (fork_do(p, fd, ctx) == 1)
 		{
 			clear_pipe(j, p, fd);
