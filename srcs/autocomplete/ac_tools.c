@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 19:53:16 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/12 20:06:09 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 14:12:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,4 @@ int		entry_already_in_list(char *name, t_dlist *matches)
 		matches = matches->next;
 	}
 	return (0);
-}
-
-void	restore_line(t_ctx *ctx, t_line *l)
-{
-	t_dlist *tmp;
-
-	tmp = l->line;
-	clear_line(ctx, l);
-	redraw_line(ctx, l);
-	while (l->line != tmp)
-		lkey(get_ctxaddr(), l);
 }

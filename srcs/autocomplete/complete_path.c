@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 20:30:18 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/13 10:58:46 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 14:09:28 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,9 @@ void			complete_path(t_ctx *ctx, t_line *l, t_string str)
 	if (!matches)
 		return (free(basename.s));
 	else if (matches->next)
-		print_results(matches, ((maxlen / PAD) + 1) * PAD, ctx->ws.ws_col);
+		print_results(ctx, l, matches, ((maxlen / PAD) + 1) * PAD);
 	else if (ft_strcmp(basename.s, matches->data))
-		complete_line(l, matches->data, basename.len);
-	restore_line(ctx, l);
+		complete_line(ctx, l, matches->data, basename.len);
 	ft_dlstdel(&matches, &delvoid);
 	free(basename.s);
 }

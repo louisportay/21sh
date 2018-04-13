@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 13:23:20 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/13 12:02:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 14:13:55 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,17 @@ char	*get_string_to_complete(char **environ, t_dlist *line)
 	return (s);
 }
 
-void	print_results(t_dlist *matches, int maxlen, unsigned ws_col)
+void	print_results(t_ctx *ctx, t_line *l, t_dlist *matches,
+							unsigned maxlen)
 {
+	t_dlist *tmp;
 	int		entry_num;
 	int		i;
 
-	entry_num = ws_col / maxlen;
 	i = 0;
+	tmp = l->line;
+	entry_num = ctx->ws.ws_col / maxlen;
+	go_end(ctx, l);
 	write(STDOUT_FILENO, "\n", 1);
 	while (matches)
 	{
@@ -58,9 +62,13 @@ void	print_results(t_dlist *matches, int maxlen, unsigned ws_col)
 	}
 	if (i != 0)
 		write(STDOUT_FILENO, "\n", 1);
+	reset_attributes(l);
+	redraw_line(ctx, l);
+	while (l->line != tmp)
+		lkey(ctx, l);
 }
 
-void	complete_line(t_line *l, char *fullpath, unsigned len)
+void	complete_line(t_ctx *ctx, t_line *l, char *fullpath, unsigned len)
 {
 	t_dlist *dlst;
 	t_dlist *tmp;
@@ -75,6 +83,11 @@ void	complete_line(t_line *l, char *fullpath, unsigned len)
 	if (tmp)
 		tmp->prev = l->line;
 	ft_dlstdelone(&dlst, &delvoid);
+	tmp = l->line;
+	clear_line(ctx, l);
+	redraw_line(ctx, l);
+	while (l->line != tmp)
+		lkey(ctx, l);
 }
 
 void	autocomplete(t_ctx *ctx, t_line *l)

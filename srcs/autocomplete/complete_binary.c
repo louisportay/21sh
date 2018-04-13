@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 20:33:31 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/13 12:18:53 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 14:10:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ void		complete_binary(t_ctx *ctx, t_line *l, char **p, t_string str)
 	if (!matches)
 		return ;
 	else if (matches->next)
-		print_results(matches, ((maxlen / PAD) + 1) * PAD, ctx->ws.ws_col);
+		print_results(ctx, l, matches, ((maxlen / PAD) + 1) * PAD);
 	else if (ft_strcmp(str.s, matches->data))
-		complete_line(l, matches->data, str.len);
-	restore_line(ctx, l);
+		complete_line(ctx, l, matches->data, str.len);
 	ft_dlstdel(&matches, &delvoid);
 }
