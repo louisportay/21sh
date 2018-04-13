@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:02:11 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 17:12:24 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 10:54:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void			kill_next_word(t_ctx *env, t_line *l);
 void			yank(t_ctx *env, t_line *l);
 
 void			autocomplete(t_ctx *ctx, t_line *l);
-	
+
 bool			test_kill_beginning(t_ctx *env, t_line *l, t_key *key);
 bool			test_kill_end(t_ctx *env, t_line *l, t_key *key);
 bool			test_kill_prev_word(t_ctx *env, t_line *l, t_key *key);

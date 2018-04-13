@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 20:33:31 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/12 20:47:58 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 10:56:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	fill_matches_binary(t_string str, struct dirent *de,
 void		complete_binary(t_ctx *ctx, t_line *l, char **p, t_string str)
 {
 	DIR				*dp;
-	struct dirent	*de;	
+	struct dirent	*de;
 	t_dlist			*matches;
 	unsigned		maxlen;
 

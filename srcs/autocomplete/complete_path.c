@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 20:30:18 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/12 20:37:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 10:58:46 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,18 @@ static void		fill_matches_path(t_string basename, struct dirent *de,
 	unsigned len;
 
 	if (!ft_strncmp(basename.s, de->d_name, basename.len)
-		&& (!(basename.len == 0 && (!ft_strcmp(".", de->d_name) || !ft_strcmp("..", de->d_name)))))
+		&& (!(basename.len == 0 && (!ft_strcmp(".", de->d_name)
+					|| !ft_strcmp("..", de->d_name)))))
 	{
 		len = ft_strlen(de->d_name);
 		if (de->d_type & DT_DIR)
 		{
-			if (ft_dlstnewadd(matches, ft_strjoin(de->d_name, "/"), len++, &ft_dlstnewaddr) == -1)
+			if (ft_dlstnewadd(matches, ft_strjoin(de->d_name, "/"), len++,
+						&ft_dlstnewaddr) == -1)
 			{
 				ft_dlstdel(matches, &delvoid);
 				fatal_err(NOMEM, get_ctxaddr());
-			}		
+			}
 		}
 		else if (ft_dlstnewadd(matches, de->d_name, len, &ft_dlstnew) == -1)
 		{
@@ -59,7 +61,7 @@ static void		fill_matches_path(t_string basename, struct dirent *de,
 static t_string	get_basename(char *s)
 {
 	t_string		basename;
-	char 			*last_slash;
+	char			*last_slash;
 
 	if ((last_slash = ft_strrchr(s, '/')) == NULL)
 		basename.s = ft_strdup(s);
@@ -82,7 +84,7 @@ void			complete_path(t_ctx *ctx, t_line *l, t_string str)
 	maxlen = 0;
 	matches = NULL;
 	if (!(dp = get_dirp(str)))
-			return ;
+		return ;
 	basename = get_basename(str.s);
 	while ((de = readdir(dp)))
 		fill_matches_path(basename, de, &matches, &maxlen);

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/06 19:24:29 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/12 16:24:34 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 10:56:14 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,15 @@ static int		chdir_print_err(char *newpath, char *argpath)
 	return (0);
 }
 
-static void		set_pwd_vars(char ***environ, char ***locals, int opt, char *newpath)
+static void		set_pwd_vars(char ***environ, char ***locals,
+								int opt, char *newpath)
 {
 	char			cwd[MAXPATHLEN + 1];
 	char			*pwd;
 	int				in_loc;
 
 	in_loc = 0;
-	if (!(pwd = ft_astr_getval(*environ, "PWD")))		
+	if (!(pwd = ft_astr_getval(*environ, "PWD")))
 		if ((pwd = ft_astr_getval(*locals, "PWD")))
 			in_loc = 1;
 	if (ft_astr_getval(*locals, "OLDPWD"))
