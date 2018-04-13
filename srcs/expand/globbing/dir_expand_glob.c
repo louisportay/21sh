@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 12:51:49 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 18:44:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/13 10:56:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,25 +61,29 @@ int				path_match(t_mtok *tok, t_entry **matched)
 	return (tok == NULL ? 0 : proceed(tok, matched, dats));
 }
 
-static int		no_exp(t_mtok *new)
-{
-	while (new != NULL)
-	{
-		if (new->type != STRIN)
-			return (0);
-		new = new->next;
-	}
-	return (1);
-}
+/*
+**	static int		no_exp(t_mtok *new)
+**	{
+**		while (new != NULL)
+**		{
+**			if (new->type != STRIN)
+**				return (0);
+**			new = new->next;
+**		}
+**		return (1);
+**	}
+*/
 
-static void		preclear_mtok(t_mtok *tok)
-{
-	while (tok)
-	{
-		ft_strdel(&tok->data.str);
-		tok = tok->next;
-	}
-}
+/*
+**	static void		preclear_mtok(t_mtok *tok)
+**	{
+**		while (tok)
+**		{
+**			ft_strdel(&tok->data.str);
+**			tok = tok->next;
+**		}
+**	}
+*/
 
 /*
 **	{
@@ -106,8 +110,8 @@ int				do_expand_glob(char **str)
 {
 	t_mtok		*or;
 	t_mtok		*new;
-	t_entry		*matched;
-	int			lret;
+//	t_entry		*matched;
+//	int			lret;
 
 	or = NULL;
 	get_matcher_tokens(*str, &or);
