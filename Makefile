@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/12 12:53:24 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/13 11:07:27 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCDIR= srcs/ \
 		srcs/expand/tilde \
 		srcs/expand/quotes \
 		srcs/expand/param \
+		srcs/expand/globbing \
 
 vpath %.c $(SRCDIR)
 vpath %.h includes/
@@ -238,6 +239,18 @@ SRCS=	main.c\
 		\
 		exec_pipe_error.c\
 		vtok_print.c\
+		\
+		expand_glob.c\
+		dir_expand_glob.c\
+#		dir_explore.c\
+		ent_handling.c\
+		ent_match.c\
+		ent_sort.c\
+		pattern_matching.c\
+		pattern_matching_assert.c\
+		pattern_matching_brackets.c\
+		pattern_matching_pointers.c\
+		glob_utils.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
