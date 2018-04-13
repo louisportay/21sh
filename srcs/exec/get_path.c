@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:52:16 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 09:31:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/13 11:50:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char					*env_path_get(char *exe, char **pathes)
 {
 	static char			buffer[PATH_MAX + 1];
 	size_t				i;
+	struct stat			stats;
 
 	if (pathes == NULL)
 		return (NULL);
@@ -51,7 +52,11 @@ char					*env_path_get(char *exe, char **pathes)
 		ft_strcat(buffer, pathes[i]);
 		ft_strcat(buffer, "/");
 		ft_strcat(buffer, exe);
-		if (access(buffer, X_OK) == 0)
+		if (stat(buffer, &stats) == -1)
+			;
+		else if (S_ISDIR(stats.st_mode))
+			;
+		else if (S_IXUSR & stats.st_mode)
 			return (buffer);
 		i++;
 	}
