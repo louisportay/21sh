@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/13 10:41:18 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/13 14:26:48 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=sanitize
+DEBUG=no
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
