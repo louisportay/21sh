@@ -53,3 +53,26 @@ void			ent_clear(t_entry **ent)
 		ent_free(&t);
 	}
 }
+
+/*
+**	void			ent_last(t_entry *e)
+**	{
+**		if (e == NULL || e->next == NULL)
+**			return (NULL);
+**		while (e->next != NULL)
+**			e = e->next;
+**		return (e);
+**	}
+**	
+**	void			ent_insertlast(t_entry **head, t_entry ** curr, t_entry *e)
+**	{
+**		t_entry		*last;
+**	
+**		last = e->next == NULL ? e : ent_last(e);
+**		if (*head == NULL)
+**			*head = e;
+**		else
+**			(*curr)->next = e;
+**		*curr = last;
+**	}
+*/
