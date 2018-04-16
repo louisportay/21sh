@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/16 11:43:19 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/16 15:50:05 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -248,15 +248,23 @@ SRCS=	main.c\
 		\
 		expand_glob.c\
 		dir_expand_glob.c\
-#		dir_explore.c\
-		ent_handling.c\
-		ent_match.c\
-		ent_sort.c\
+		glob_utils.c\
 		pattern_matching.c\
 		pattern_matching_assert.c\
 		pattern_matching_brackets.c\
 		pattern_matching_pointers.c\
-		glob_utils.c\
+		mtok_lifecycle.c\
+		mtok_utils.c\
+		mtok_print.c\
+		mtok_sort.c\
+		mtok_splitstr.c\
+		dir_explore.c\
+		ent_handling.c\
+		ent_lifecycle.c\
+		ent_sort.c\
+		ent_match.c\
+		mtok_untilstr.c\
+#		dir_handle_matched.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))

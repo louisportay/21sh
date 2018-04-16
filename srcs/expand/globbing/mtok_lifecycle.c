@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pattern_matching_tokens.c                          :+:      :+:    :+:   */
+/*   mtok_lifecycle.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/05 12:43:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 18:32:37 by vbastion         ###   ########.fr       */
+/*   Created: 2018/04/16 15:43:45 by vbastion          #+#    #+#             */
+/*   Updated: 2018/04/16 15:44:28 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,19 @@ t_mtok			*mtok_create_str(enum e_mt_type type, char *str)
 	return (ret);
 }
 
-t_mtok			*mtok_last(t_mtok *last)
+void				mtok_clear(t_mtok **mt)
 {
-	if (last == NULL)
-		return (NULL);
-	if (last->next == NULL)
-		return (last);
-	while (last->next != NULL)
-		last = last->next;
-	return (last);
+	t_mtok			*curr;
+	t_mtok			*tmp;
+
+	curr = *mt;
+	*mt = NULL;
+	while (curr != NULL)
+	{
+		tmp = curr;
+		curr = curr->next;
+		if (tmp->type == STRIN)
+			ft_strdel(&tmp->data.str);
+		ft_memdel((void **)&tmp);
+	}
 }

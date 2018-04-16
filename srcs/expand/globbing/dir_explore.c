@@ -6,14 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 16:42:57 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/01 17:22:55 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/16 14:11:42 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./dir_explorer.h"
-#include "./pattern_matching.h"
+#include "globbing.h"
 
-int				dir_explore(char *path, t_entry **ret)
+int				dir_explore(char *path, t_entry **ret, int show_hidden)
 {
 	t_entry		*ent[3];
 	DIR			*pdir;
@@ -30,6 +29,8 @@ int				dir_explore(char *path, t_entry **ret)
 	ent[1] = NULL;
 	while ((dir = readdir(pdir)) != NULL)
 	{
+		if (show_hidden == 0 && dir->d_name[0] == '.')
+			continue ;
 		if ((ent[2] = ent_create(curr ? NULL : path, dir->d_name)) == NULL)
 		{
 			ent_clear(ent);
