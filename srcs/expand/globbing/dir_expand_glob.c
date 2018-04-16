@@ -16,6 +16,8 @@ static int		mtok_match(char *str, t_mtok *tok);
 
 static int		lmatch_rng(char *str, t_mtok *tok)
 {
+	if (str == '\0')
+		return (0);
 	if (ft_strindex(tok->data.str, *str) == -1)
 		return (0);
 	return (mtok_match(str + 1, tok->next));
@@ -26,6 +28,8 @@ static int		lmatch_str(char *str, t_mtok *tok)
 	char		*s;
 	size_t		len;
 
+	if (str == '\0')
+		return (0);
 	s = tok->data.str;
 	len = ft_strlen(s);
 	if (ft_strncmp(str, s, len) == 0)
@@ -55,7 +59,7 @@ static int		lmatch_fil(char *str, t_mtok *tok)
 
 static int		mtok_match(char *str, t_mtok *tok)
 {
-	if (str == NULL)
+	if (str == NULL || (*str == '\0' && tok != NULL && tok->type != STRIN))
 		return (0);
 	if (tok == NULL)
 		return (*str == '\0');
@@ -125,35 +129,35 @@ static char		*get_match(t_entry *ents, t_mtok *tok)
 	t_entry *e;
 	t_entry	*t;
 	struct stat	stats;
+	t_entry	*entries[2];
+	t_entry	*result;
+
 
 	e = ents;
+	entries[0] = NULL;
 	while (e != NULL)
 	{
 		t = e;
 		e = e->next;
-		if (stat(e->path, &stats) == -1
-			|| (S_ISDIR(stats.st_mode) && (stats.st_mode & S_IRUSR)) == 0)
-			ent_free(&t);
-		else
+		if (stat(t->path, &stats) != -1
+			&& (S_ISDIR(stats.st_mode) && (stats.st_mode & S_IRUSR)))
 		{
-			t_entry	*result;
-
-			dir_explore(e->path, &result, get_ctxaddr()->set & DOTGLOB
-						|| (tok->type == STRIN && tok->data.str[0] == '.'));
+			if (dir_explore(t->path, &result, get_ctxaddr()->set & DOTGLOB
+						|| (tok->type == STRIN && tok->data.str[0] == '.')) == -1)
+				fatal_err(NOMEM, get_ctxaddr());
+			ent_insert(entries, entries + 1, result);
 		}
 		{	/*	Append it's results	*/	}
+		ent_free(&t);
 	}
-	return (get_match(ents, tok));
+	return (get_match(entries[0], tok));
 }
 
 char			*glob_match(t_mtok *tok)
 {
 	char		buf[MAXPATHLEN + 1];
 	t_entry		*ents;
-//	t_mtok		*next;
-//	t_mtok		*last;
 	char		*ret;
-//	int			deeper;
 
 	ret = NULL;
 	if (tok->type == STRIN && tok->data.str[0] == '/')
