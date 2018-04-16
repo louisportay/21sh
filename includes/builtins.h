@@ -16,9 +16,9 @@
 # include <sys/param.h>
 # include <sys/stat.h>
 
-# include "ft_21sh.h"
+# include "ft_42sh.h"
 
-# define BU_S_USG ("21sh: usage: set [-+][Fabdfhnolx]")
+# define BU_S_USG ("42sh: usage: set [-+][Fabdfhnolx]")
 
 # define BU_S_HPR ("l: shows local variables. With '+l' shows env beforehand")
 # define BU_S_HSE ("o: shows options. '+o' prints it as commands to set them")
@@ -71,24 +71,24 @@
 # define SH_ENOFOD ("No such file or directory")
 # define SH_ENODIR ("Not a directory")
 # define SH_ERIGHT ("Permission denied")
-# define SH_EARGTO ("21sh: cd: Too much arguments\n")
-# define SH_ENOHOM ("21sh: cd: Variable $HOME not set\n")
-# define SH_ENOOPW ("21sh: cd: Variable $OLDPWD not set\n")
+# define SH_EARGTO ("42sh: cd: Too much arguments\n")
+# define SH_ENOHOM ("42sh: cd: Variable $HOME not set\n")
+# define SH_ENOOPW ("42sh: cd: Variable $OLDPWD not set\n")
 
-# define BU_H_EEMPTY ("121sh: hash empty\n")
+# define BU_H_EEMPTY ("42sh: hash empty\n")
 # define BU_H_CLR 0x01
 # define BH_H_INH 0x02
 # define BU_H_DEL 0x04
 # define BU_H_PRT 0x08
 # define BU_H_LST 0x10
 
-# define BU_H_ETREQU	("21sh: hash: -t: option requires an argument\n")
-# define BU_H_EDREQU	("21sh: hash: -d: option requires an argument\n")
-# define BU_H_EPREQU	("21sh: hash: -p: option requires two arguments\n")
-# define BU_H_ENOKEY	("21sh: hash: %s not found\n")
-# define BU_H_USAGE		("21sh: usage: hash [-lr] [-p path] [-dt] [name ...]\n")
+# define BU_H_ETREQU	("42sh: hash: -t: option requires an argument\n")
+# define BU_H_EDREQU	("42sh: hash: -d: option requires an argument\n")
+# define BU_H_EPREQU	("42sh: hash: -p: option requires two arguments\n")
+# define BU_H_ENOKEY	("42sh: hash: %s not found\n")
+# define BU_H_USAGE		("42sh: usage: hash [-lr] [-p path] [-dt] [name ...]\n")
 
-# define BU_H_EINVAL ("21sh: hash: -%c: invalid option\n%s")
+# define BU_H_EINVAL ("42sh: hash: -%c: invalid option\n%s")
 
 # define BU_J_L 0x01
 # define BU_J_S 0x02
@@ -100,15 +100,15 @@
 
 # define BU_J_USAGE ("jobs: usage: jobs [-lprs] [jobspec ...]")
 
-# define BU_EX_ENUMARG "21sh: exit: %s: numeric argument required\n"
+# define BU_EX_ENUMARG "42sh: exit: %s: numeric argument required\n"
 
-# define BU_HI_EEORNG "21sh: history, %s: history position out of range\n"
-# define BU_HI_ENUMARG "21sh: history: -d: option requires an argument\n"
+# define BU_HI_EEORNG "42sh: history, %s: history position out of range\n"
+# define BU_HI_ENUMARG "42sh: history: -d: option requires an argument\n"
 # define BU_HI_USAGE "history: history [n] [-c] [-d offset] [-arw filename]\n"
 
-# define BU_E_EARG "21sh: env: option requires an argument -- 'u'\n"
-# define BU_E_EINVARG "21sh: env: Cannot unset '%s': Invalid argument\n"
-# define BU_E_EINVOPT "221sh: env: invalid option -- '%c'\n"
+# define BU_E_EARG "42sh: env: option requires an argument -- 'u'\n"
+# define BU_E_EINVARG "42sh: env: Cannot unset '%s': Invalid argument\n"
+# define BU_E_EINVOPT "42sh: env: invalid option -- '%c'\n"
 
 typedef struct s_ctx	t_ctx;
 typedef struct s_proc	t_proc;

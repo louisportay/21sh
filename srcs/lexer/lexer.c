@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 void	err_tok(t_token **toklist, t_token *bad_tok)
 {
@@ -22,7 +22,7 @@ void	err_tok(t_token **toklist, t_token *bad_tok)
 	while ((unsigned long)tok[i].key != bad_tok->type && tok[i].key)
 		i++;
 	ft_dprintf(STDERR_FILENO,
-			"21sh: syntax error near unexpected token `%s'\n",
+			"42sh: syntax error near unexpected token `%s'\n",
 			(char *)tok[i].val);
 	clear_following_redirs(bad_tok);
 	delete_toklist(toklist);

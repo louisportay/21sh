@@ -42,7 +42,7 @@ int			hash_print(t_hdict *dict)
 
 	if (dict->count == 0)
 	{
-		ft_putstr("21sh: hash table empty\n");
+		ft_putstr("42sh: hash table empty\n");
 		return (0);
 	}
 	len[0] = 4;

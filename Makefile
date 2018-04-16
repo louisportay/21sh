@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/13 14:26:48 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/16 13:12:12 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ INCLUDE=\
 -I$(LIBDIR)ft_printf\
 
 HEADERS=\
-ft_21sh.h\
+ft_42sh.h\
 history.h\
 line.h\
 prompt.h\
@@ -84,7 +84,6 @@ expand_braces.h\
 expand_param.h\
 expand_quotes.h\
 expand_tilde.h\
-ft_21sh.h\
 history.h\
 line.h\
 parser.h\
@@ -92,7 +91,7 @@ prompt.h\
 token.h\
 
 SRCS=	main.c\
-		ft_21sh.c\
+		ft_42sh.c\
 		initvar.c\
 		initshell.c\
 		init_ctx.c\
@@ -252,7 +251,7 @@ OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
 LIBDIR= libft/
 LIB= libft.a
 
-NAME= 21sh
+NAME= 42sh
 
 GREEN="\033[32m"
 RESET="\033[0m"

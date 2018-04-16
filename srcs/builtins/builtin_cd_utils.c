@@ -76,17 +76,17 @@ static int		chdir_print_err(char *newpath, char *argpath)
 	{
 		if (stat(newpath, &st) == -1)
 		{
-			ft_dprintf(STDERR_FILENO, "21sh: cd: %s: %s\n", argpath, SH_ENOFOD);
+			ft_dprintf(STDERR_FILENO, "42sh: cd: %s: %s\n", argpath, SH_ENOFOD);
 			return (1);
 		}
 		else if (!S_ISDIR(st.st_mode))
 		{
-			ft_dprintf(STDERR_FILENO, "21sh: cd: %s: %s\n", argpath, SH_ENODIR);
+			ft_dprintf(STDERR_FILENO, "42sh: cd: %s: %s\n", argpath, SH_ENODIR);
 			return (1);
 		}
 		else if (access(newpath, X_OK) == -1)
 		{
-			ft_dprintf(STDERR_FILENO, "21sh: cd: %s: %s\n", argpath, SH_ERIGHT);
+			ft_dprintf(STDERR_FILENO, "42sh: cd: %s: %s\n", argpath, SH_ERIGHT);
 			return (1);
 		}
 	}

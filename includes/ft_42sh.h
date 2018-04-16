@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_21sh.h                                          :+:      :+:    :+:   */
+/*   ft_42sh.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/31 10:32:03 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/13 10:39:27 by lportay          ###   ########.fr       */
+/*   Created: 2018/04/16 11:44:04 by vbastion          #+#    #+#             */
+/*   Updated: 2018/04/16 11:44:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_21SH_H
-# define FT_21SH_H
+#ifndef FT_42SH_H
+# define FT_42SH_H
 
 # include "ft_dlst.h"
 # include "stack.h"
@@ -50,15 +50,15 @@
 # include "exec.h"
 # include "autocomplete.h"
 
-# define NOMEM_STR				"21sh: Cannot allocate memory\n"
-# define NODIR_STR				"21sh: error retrieving current directory\n"
-# define FAILREAD_STR			"21sh: closing standard input\n"
-# define BADQUOTES_STR			"21sh: unexpected end of file\n"
-# define BADOPT_C_STR			"21sh: -c: option requires an argument\n"
-# define BADOPT_F_STR			"21sh: -f: option requires an argument\n"
-# define CTX_ERR_STR			"21sh: context error\n"
+# define NOMEM_STR				"42sh: Cannot allocate memory\n"
+# define NODIR_STR				"42sh: error retrieving current directory\n"
+# define FAILREAD_STR			"42sh: closing standard input\n"
+# define BADQUOTES_STR			"42sh: unexpected end of file\n"
+# define BADOPT_C_STR			"42sh: -c: option requires an argument\n"
+# define BADOPT_F_STR			"42sh: -f: option requires an argument\n"
+# define CTX_ERR_STR			"42sh: context error\n"
 
-# define HELP1 "21sh, by vbastion and lportay:\n\n-h:\t\tDisplay this help\n"
+# define HELP1 "42sh, by vbastion and lportay:\n\n-h:\t\tDisplay this help\n"
 # define HELP2 "-f <file>:\tRead <file>\n-c <cmd>:"
 # define HELP3 "\tExecute <cmd>\n\n--rawline:\tdisable advanced line edition\n"
 

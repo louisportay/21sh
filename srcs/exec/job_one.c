@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 static int	fork_do(t_proc *p)
 {
@@ -18,7 +18,7 @@ static int	fork_do(t_proc *p)
 
 	if ((pid = fork()) < 0)
 	{
-		ft_putstr_fd("21sh: fork: could not fork\n", STDERR_FILENO);
+		ft_putstr_fd("42sh: fork: could not fork\n", STDERR_FILENO);
 		return (1);
 	}
 	else if (pid == 0)

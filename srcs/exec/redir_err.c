@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 int		err_close_fd(int fd)
 {
@@ -20,24 +20,24 @@ int		err_close_fd(int fd)
 
 int		err_open(char *s)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: %s: No such file or directory\n", s);
+	ft_dprintf(STDERR_FILENO, "42sh: %s: No such file or directory\n", s);
 	return (-1);
 }
 
 int		err_busyfd(int fd)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: %d: Bad file descriptor\n", fd);
+	ft_dprintf(STDERR_FILENO, "42sh: %d: Bad file descriptor\n", fd);
 	return (-1);
 }
 
 int		err_tmpfile(void)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: error creating temporary file\n");
+	ft_dprintf(STDERR_FILENO, "42sh: error creating temporary file\n");
 	return (-1);
 }
 
 int		err_badfd(char *fd)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: %s: Bad file descriptor\n", fd);
+	ft_dprintf(STDERR_FILENO, "42sh: %s: Bad file descriptor\n", fd);
 	return (-1);
 }

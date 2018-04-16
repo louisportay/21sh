@@ -30,7 +30,7 @@ static void	lrm(t_ctx *ctx, char *str)
 
 static int	ladd_err(char *av, char *name)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: %s: %s: not a valid identifier\n",
+	ft_dprintf(STDERR_FILENO, "42sh: %s: %s: not a valid identifier\n",
 				name, av);
 	return (1);
 }

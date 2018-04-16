@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 #include <errno.h>
 
 static void				l_last_job(t_proc *p, int fd, t_ctx *ctx)
@@ -40,7 +40,7 @@ static int				fork_do(t_proc *p, int fd, t_ctx *ctx)
 			proc_exec(p);
 	}
 	else if (pid < 0)
-		return (print_err("21sh: fork: could not fork\n", 1));
+		return (print_err("42sh: fork: could not fork\n", 1));
 	else
 	{
 		p->pid = pid;

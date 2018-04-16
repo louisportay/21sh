@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 int				r_andgreat_anddgreat(t_redir *r)
 {
@@ -30,7 +30,7 @@ int				r_andgreat_anddgreat(t_redir *r)
 
 static int		err_ambig_redir(char *s)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: %s: ambiguous redirect\n", s);
+	ft_dprintf(STDERR_FILENO, "42sh: %s: ambiguous redirect\n", s);
 	return (-1);
 }
 

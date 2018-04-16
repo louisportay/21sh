@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 /*
 ** Replace ASSIGNMENT_WORD by WORD when character in the part before the '='

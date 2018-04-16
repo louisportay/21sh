@@ -16,7 +16,7 @@ static int			lusage(t_proc *p, char c, char ec)
 {
 	if (ec)
 	{
-		ft_dprintf(STDERR_FILENO, "21sh: set: -%c: invalind argument\n%s\n",
+		ft_dprintf(STDERR_FILENO, "42sh: set: -%c: invalind argument\n%s\n",
 					c, BU_S_USG);
 	}
 	else

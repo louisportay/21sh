@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 static int				err_expand(int ret, t_redir *r)
 {
@@ -19,13 +19,13 @@ static int				err_expand(int ret, t_redir *r)
 	else if (ret == -2)
 	{
 		r->type = TOKERR;
-		ft_dprintf(STDERR_FILENO, "21sh: no match: %s\n", r->s_rhs);
+		ft_dprintf(STDERR_FILENO, "42sh: no match: %s\n", r->s_rhs);
 		return (-2);
 	}
 	else if (ret == -3)
 	{
 		r->type = TOKERR;
-		ft_dprintf(STDERR_FILENO, "21sh: expand: quote error\n");
+		ft_dprintf(STDERR_FILENO, "42sh: expand: quote error\n");
 		return (-3);
 	}
 	return (-1);
