@@ -103,6 +103,33 @@ static void		mtok_assert(t_entry **entries, t_mtok *toks)
 	*entries = ok[0];
 }
 
+static char		*get_match(t_entry *ents, t_mtok *tok);
+
+static char		*get_deeper(t_entry *e, t_mtok *tok)
+{
+	t_entry	*t;
+	struct stat	stats;
+	t_entry	*entries[2];
+	t_entry	*result;
+
+	entries[0] = NULL;
+	while (e != NULL)
+	{
+		t = e;
+		e = e->next;
+		if (stat(t->path, &stats) != -1
+			&& (S_ISDIR(stats.st_mode) && (stats.st_mode & S_IRUSR)))
+		{
+			if (dir_explore(t->path, &result, get_ctxaddr()->set & DOTGLOB
+						|| (tok->type == STRIN && tok->data.str[0] == '.')) == -1)
+				fatal_err(NOMEM, get_ctxaddr());
+			ent_insert(entries, entries + 1, result);
+		}
+		ent_free(&t);
+	}
+	return (get_match(entries[0], tok));
+}
+
 static char		*get_match(t_entry *ents, t_mtok *tok)
 {
 	t_mtok		*next;
@@ -121,36 +148,12 @@ static char		*get_match(t_entry *ents, t_mtok *tok)
 		ent_clear(&ents);
 		return (ret);
 	}
+	last->next = next;
+	tok = next->next;
+	return (get_deeper(ents, tok));
 /*
 **	Deserves to be splitted.
 */
-	last->next = next;
-	tok = next->next;
-	t_entry *e;
-	t_entry	*t;
-	struct stat	stats;
-	t_entry	*entries[2];
-	t_entry	*result;
-
-
-	e = ents;
-	entries[0] = NULL;
-	while (e != NULL)
-	{
-		t = e;
-		e = e->next;
-		if (stat(t->path, &stats) != -1
-			&& (S_ISDIR(stats.st_mode) && (stats.st_mode & S_IRUSR)))
-		{
-			if (dir_explore(t->path, &result, get_ctxaddr()->set & DOTGLOB
-						|| (tok->type == STRIN && tok->data.str[0] == '.')) == -1)
-				fatal_err(NOMEM, get_ctxaddr());
-			ent_insert(entries, entries + 1, result);
-		}
-		{	/*	Append it's results	*/	}
-		ent_free(&t);
-	}
-	return (get_match(entries[0], tok));
 }
 
 char			*glob_match(t_mtok *tok)
@@ -177,8 +180,6 @@ int				do_expand_glob(char **str)
 {
 	t_mtok		*or;
 	t_mtok		*new;
-//	t_entry		*matched;
-//	int			lret;
 	char		*ret;
 
 	or = NULL;
@@ -186,7 +187,6 @@ int				do_expand_glob(char **str)
 	new = mtok_splitstr(or);
 	mtok_clear(&or);
 	new = mtok_requal(new);
-//	mtok_print(new);
 	if ((ret = glob_match(new)) != NULL)
 	{
 		ft_strdel(str);
