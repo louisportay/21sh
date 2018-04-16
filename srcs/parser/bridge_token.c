@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 11:40:12 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/16 14:15:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ size_t					token_count(t_token *tok)
 
 int						token_issep(t_token *tok)
 {
-	return ((tok->type & (NEWLINE | AND | SEMICOL | COMMENT | OR | OR_IF
+	return ((tok->type & (NEWLINE | AND | SEMICOL | OR | OR_IF
 							| AND_IF)) != 0);
 }
 
@@ -58,8 +58,6 @@ void					*token_dumperror(t_token *tok)
 		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_AND);
 	else if (tok->type == SEMICOL)
 		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_SEM);
-	else if (tok->type == COMMENT)
-		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_COM);
 	else if (tok->type == OR)
 		ft_dprintf(STDERR_FILENO, FMT_SYN, FMT_OR);
 	else if (tok->type == OR_IF)

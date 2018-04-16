@@ -6,14 +6,16 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 11:51:16 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 13:23:52 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/16 18:06:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 
-static void	init_pairs(t_line_pair *p)
+static t_line_pair	*init_pairs(void)
 {
+	static t_line_pair	p[21];
+
 	p[0] = (t_line_pair){.test = &test_upkey, .fun = &up_key};
 	p[1] = (t_line_pair){.test = &test_downkey, .fun = &down_key};
 	p[2] = (t_line_pair){.test = &test_lkey, .fun = &lkey};
@@ -35,6 +37,7 @@ static void	init_pairs(t_line_pair *p)
 	p[18] = (t_line_pair){.test = &test_emacs_mode, .fun = &toggle_emacs_mode};
 	p[19] = (t_line_pair){.test = &test_autocomplete, .fun = &autocomplete};
 	p[20] = (t_line_pair){.test = NULL, .fun = NULL};
+	return (p);
 }
 
 static int	read_state(t_ctx *ctx, t_line *l, t_key *key)
@@ -57,11 +60,12 @@ static int	read_state(t_ctx *ctx, t_line *l, t_key *key)
 
 static void	line_switch(t_ctx *ctx, t_line *l, t_key *key)
 {
-	t_line_pair	p[21];
-	int			i;
+	static t_line_pair *p = NULL;
+	int					i;
 
 	i = 0;
-	init_pairs(p);
+	if (!p)
+		p = init_pairs();
 	while (p[i].test && !(p[i].test(ctx, l, key)))
 		i++;
 	if (p[i].test)

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/08 18:14:50 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/16 15:30:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ enum	e_toktype
 
 /*
 ** Quotes and Heredoc injects '\n'
-** change UNQUOTED to 0b0 ?
-** BQUOTE, 42SH
 */
 
 enum	e_linestate
@@ -81,12 +79,15 @@ enum	e_linestate
 	BSLASH = 1 << 1,
 	SQUOTE = 1 << 2,
 	DQUOTE = 1 << 3,
-	PAREN = 1 << 4,
-	BRACE = 1 << 5,
-	HEREDOC = 1 << 6,
-	ERROR = 1 << 7,
-	DOLLAR = 1 << 8,
+	BQUOTE = 1 << 4,
+	PAREN = 1 << 5,
+	BRACE = 1 << 6,
+	HEREDOC = 1 << 7,
+	ERROR = 1 << 8,
+	DOLLAR = 1 << 9,
+	HASH = 1 << 10,
 	DOLLBRACE = DOLLAR | BRACE,
+	DOLLPAREN = DOLLAR | PAREN,
 };
 
 typedef struct		s_token

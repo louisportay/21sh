@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 17:06:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 18:45:59 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/16 14:15:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void					assert_next_token(t_token *tok)
 		ft_putstr("AND: Background job\n");
 	else if (tok->type == SEMICOL)
 		ft_putstr("SEMICOL: Need a proc after, else parse error\n");
-	else if (tok->type == COMMENT)
-		ft_putstr("COMMENT: end of parse\n");
 	else if (tok->type == OR)
 		ft_putstr("OR: pipeline\n");
 	else if (tok->type == OR_IF)

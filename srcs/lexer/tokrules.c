@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 21:07:17 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 11:11:09 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/16 15:24:47 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,12 @@ void	quoting_newline(t_token *last_tok, t_dlist *line, t_stack **quote)
 		(*quote)->state == BRACE)
 		stack_pop(quote);
 	if (*(char *)line->data == '\n'
-			&& !((*quote)->state & (BSLASH | DQUOTE | SQUOTE)))
+			&& !((*quote)->state & (BSLASH | DQUOTE | SQUOTE | BQUOTE)))
+	{
 		last_tok->last_letter = line->prev;
+		if (last_tok->type == COMMENT)
+			stack_pop(quote);
+	}
 }
 
 void	delimit_tokens(t_token *last_tok, t_dlist *line, t_stack **quote)

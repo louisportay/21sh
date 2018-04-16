@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 19:02:58 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 11:24:41 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/16 13:55:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	join_split_lines(t_line *l)
 
 void	add_newline(t_line *l)
 {
-	if ((l->linestate->state & (SQUOTE | DQUOTE) && !l->eohdoc) ||
+	if ((l->linestate->state & (SQUOTE | DQUOTE | BQUOTE)) ||
 (l->linestate->state & HEREDOC))
 		if (ft_dlstnewaddend(l->split_line, "\n", 1, &ft_dlstnew) == -1)
 			fatal_err(NOMEM, get_ctxaddr());
@@ -55,6 +55,8 @@ void	missing_quote_err(int quote)
 		ft_dprintf(STDERR_FILENO, "while looking for matching `''\n");
 	else if (quote == DQUOTE)
 		ft_dprintf(STDERR_FILENO, "while looking for matching `\"'\n");
+	else if (quote == BQUOTE)
+		ft_dprintf(STDERR_FILENO, "while looking for matching ``'\n");
 }
 
 void	warning_heredoc(t_line *l)
