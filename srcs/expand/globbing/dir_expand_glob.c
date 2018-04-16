@@ -6,105 +6,168 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 12:51:49 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/13 10:56:53 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/16 18:20:01 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pattern_matching.h"
-#include "dir_explorer.h"
+#include "globbing.h"
 
-static int		proceed(t_mtok *tok, t_entry **matched, t_entry *dats)
+static int		mtok_match(char *str, t_mtok *tok);
+
+static int		lmatch_rng(char *str, t_mtok *tok)
+{
+	if (ft_strindex(tok->data.str, *str) == -1)
+		return (0);
+	return (mtok_match(str + 1, tok->next));
+}
+
+static int		lmatch_str(char *str, t_mtok *tok)
+{
+	char		*s;
+	size_t		len;
+
+	s = tok->data.str;
+	len = ft_strlen(s);
+	if (ft_strncmp(str, s, len) == 0)
+		return (mtok_match(str + len, tok->next));
+	return (0);
+}
+
+static int		lmatch_any(char *str, t_mtok *tok)
+{
+	if (str == '\0')
+		return (0);
+	return (mtok_match(str + 1, tok->next));
+}
+
+static int		lmatch_fil(char *str, t_mtok *tok)
+{
+	if (tok->next == NULL)
+		return (1);
+	while (*str != '\0')
+	{
+		if (mtok_match(str, tok->next) == 1)
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
+static int		mtok_match(char *str, t_mtok *tok)
+{
+	if (str == NULL)
+		return (0);
+	if (tok == NULL)
+		return (*str == '\0');
+	if (tok->type == ANYSI)
+		return (lmatch_any(str, tok));
+	else if (tok->type == STRIN)
+		return (lmatch_str(str, tok));
+	else if (tok->type == RANGE)
+		return (lmatch_rng(str, tok));
+	else if (tok->type == FILEN)
+		return (lmatch_fil(str, tok));
+	return (0);
+}
+
+static int		show_hidden(t_mtok *tok)
+{
+	return (get_ctxaddr()->set & DOTGLOB
+			|| (tok->type == STRIN && tok->data.str[0] == '.'));
+}
+
+static void		mtok_assert(t_entry **entries, t_mtok *toks)
+{
+	t_entry		*e;
+	t_entry		*tmp;
+	t_entry		*ok[2];
+
+	e = *entries;
+	ok[0] = NULL;
+	while (e != NULL)
+	{
+		tmp = e;
+		e = e->next;
+		if (mtok_match(tmp->name, toks) == 0)
+			ent_free(&tmp);
+		else
+		{
+			tmp->next = NULL;
+			ent_insert(ok, ok + 1, tmp);
+		}
+	}
+	*entries = ok[0];
+}
+
+static char		*get_match(t_entry *ents, t_mtok *tok)
 {
 	t_mtok		*next;
-	int			ret;
+	t_mtok		*last;
+	char		*ret;
+	int			deeper;
 
-	mtok_until_str(tok, "/", &next);
-	dats = ent_matching(tok, dats);
-	ret = handle_matched(next, matched, dats);
-	mtok_last(tok)->next = next;
-	return (ret);
-}
-
-static int		is_sep_tok(t_mtok *tok)
-{
-	return (tok != NULL && tok->type == STRIN
-			&& ft_strcmp(tok->data.str, "/") == 0);
-}
-
-int				path_match(t_mtok *tok, t_entry **matched)
-{
-	t_entry		*dats;
-	int			ret;
-
-	ret = 0;
-	if (tok->type == STRIN)
+	deeper = mtok_until_str(tok, "/", &last, &next);
+	mtok_assert(&ents, tok);
+	if (ents == NULL)
+		return (NULL);
+	if (next == NULL)
 	{
-		if (tok->next == NULL)
-			return (0);
-		else if (is_sep_tok(tok))
-		{
-			ret = dir_explore("/", &dats);
-			tok = tok->next;
-		}
-		else if (is_sep_tok(tok->next))
-		{
-			ret = dir_explore(tok->data.str, &dats);
-			tok = tok->next->next;
-		}
+		if ((ret = ent_cat(ents)) == NULL)
+			fatal_err(NOMEM, get_ctxaddr());
+		ent_clear(&ents);
+		return (ret);
+	}
+/*
+**	Deserves to be splitted.
+*/
+	last->next = next;
+	tok = next->next;
+	t_entry *e;
+	t_entry	*t;
+	struct stat	stats;
+
+	e = ents;
+	while (e != NULL)
+	{
+		t = e;
+		e = e->next;
+		if (stat(e->path, &stats) == -1
+			|| (S_ISDIR(stats.st_mode) && (stats.st_mode & S_IRUSR)) == 0)
+			ent_free(&t);
 		else
-			ret = dir_explore(tok->data.str, &dats);
+		{
+			t_entry	*result;
+
+			dir_explore(e->path, &result, get_ctxaddr()->set & DOTGLOB
+						|| (tok->type == STRIN && tok->data.str[0] == '.'));
+		}
+		{	/*	Append it's results	*/	}
+	}
+	return (get_match(ents, tok));
+}
+
+char			*glob_match(t_mtok *tok)
+{
+	char		buf[MAXPATHLEN + 1];
+	t_entry		*ents;
+//	t_mtok		*next;
+//	t_mtok		*last;
+	char		*ret;
+//	int			deeper;
+
+	ret = NULL;
+	if (tok->type == STRIN && tok->data.str[0] == '/')
+	{
+		dir_explore("/", &ents, get_ctxaddr()->set & DOTGLOB);
+		tok = tok->next;
 	}
 	else
-		ret = dir_explore(NULL, &dats);
-	if (ret < 1)
-		return (ret);
-	return (tok == NULL ? 0 : proceed(tok, matched, dats));
+	{
+		ft_bzero(buf, MAXPATHLEN + 1);
+		dir_explore(NULL, &ents, show_hidden(tok));
+	}
+	return (get_match(ents, tok));
 }
-
-/*
-**	static int		no_exp(t_mtok *new)
-**	{
-**		while (new != NULL)
-**		{
-**			if (new->type != STRIN)
-**				return (0);
-**			new = new->next;
-**		}
-**		return (1);
-**	}
-*/
-
-/*
-**	static void		preclear_mtok(t_mtok *tok)
-**	{
-**		while (tok)
-**		{
-**			ft_strdel(&tok->data.str);
-**			tok = tok->next;
-**		}
-**	}
-*/
-
-/*
-**	{
-**		if ((lret = path_match(new, &matched)) <= 0)
-**		{
-**			preclear_mtok(new);	//	TO BE CHECKED, but seems DUMB AF and duplicate
-**			mtok_clear(&new);
-**			return (lret);
-**		}
-**		else if (matched == NULL)
-**		{
-**			mtok_clear(&new);
-**			return (0);
-**		}
-**		free(*str);
-**		*str = ent_cat(matched);
-**		ent_clear(&matched);
-**		mtok_clear(&new);
-**		return (*str != NULL ? 1 : -1);
-**	}
-*/
 
 int				do_expand_glob(char **str)
 {
@@ -112,13 +175,19 @@ int				do_expand_glob(char **str)
 	t_mtok		*new;
 //	t_entry		*matched;
 //	int			lret;
+	char		*ret;
 
 	or = NULL;
 	get_matcher_tokens(*str, &or);
 	new = mtok_splitstr(or);
 	mtok_clear(&or);
 	new = mtok_requal(new);
-	mtok_print(new);
+//	mtok_print(new);
+	if ((ret = glob_match(new)) != NULL)
+	{
+		ft_strdel(str);
+		*str = ret;
+	}
 	mtok_clear(&new);
-	return (1);
+	return (ret != NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:47:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 18:22:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/16 16:48:12 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ struct					s_entry
 	t_entry				*next;
 };
 
-int						expand_glob(char *str, char **ret, t_ctx *ctx);
+int						expand_glob(t_list *lst, t_ctx *ctx);
 int						do_expand_glob(char **str);
 
 t_entry					*ent_create(char *path, char *name);
+void					ent_clear(t_entry **ent);
+void					ent_free(t_entry **ent);
+
 void					ent_insert(t_entry **head, t_entry **curr,
 									t_entry *tmp);
-void					ent_clear(t_entry **ent);
 t_entry					*ent_last(t_entry *e);
 
 t_entry					*ent_matching(t_mtok *tok, t_entry *dat);
@@ -52,7 +54,7 @@ int						ent_match(char *str, t_mtok *tokens);
 int						handle_matched(t_mtok *tok, t_entry **matched,
 										t_entry *dats);
 
-int						dir_explore(char *path, t_entry **ret);
+int						dir_explore(char *path, t_entry **ret, int show_hidden);
 
 t_list					*bridge_strsplit(char *str);
 

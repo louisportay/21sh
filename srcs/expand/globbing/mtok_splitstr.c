@@ -6,11 +6,11 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 10:56:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/03/26 10:36:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/16 14:33:50 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./pattern_matching.h"
+#include "globbing.h"
 
 static void		l_handchar(char **str, t_qbuf *buf, t_list *lst[3])
 {
