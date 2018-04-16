@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 static int				err_expand(int ret, char *val)
 {
@@ -18,12 +18,12 @@ static int				err_expand(int ret, char *val)
 		on_emem(NOMEM);
 	else if (ret == -2)
 	{
-		ft_dprintf(STDERR_FILENO, "21sh: no match: %s\n", val);
+		ft_dprintf(STDERR_FILENO, "42sh: no match: %s\n", val);
 		return (-2);
 	}
 	else if (ret == -3)
 	{
-		ft_dprintf(STDERR_FILENO, "21sh: expand: quote error\n");
+		ft_dprintf(STDERR_FILENO, "42sh: expand: quote error\n");
 		return (-3);
 	}
 	return (-1);

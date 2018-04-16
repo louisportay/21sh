@@ -20,12 +20,12 @@ int			remove_prev_dir(char *trim_path, unsigned *i, char *argpath)
 		trim_path[--(*i)] = '\0';
 	if (stat(trim_path, &st) == -1)
 	{
-		ft_dprintf(STDERR_FILENO, "21sh: cd: %s: %s\n", argpath, SH_ENOFOD);
+		ft_dprintf(STDERR_FILENO, "42sh: cd: %s: %s\n", argpath, SH_ENOFOD);
 		return (-1);
 	}
 	else if (!S_ISDIR(st.st_mode))
 	{
-		ft_dprintf(STDERR_FILENO, "21sh: cd: %s: %s\n", argpath, SH_ENODIR);
+		ft_dprintf(STDERR_FILENO, "42sh: cd: %s: %s\n", argpath, SH_ENODIR);
 		return (-1);
 	}
 	while (*i != 0 && trim_path[*i - 1] != '/')
@@ -89,7 +89,7 @@ int			ft_cd(t_proc *p, t_ctx *ctx)
 	if (ft_strlen(operand) >= MAXPATHLEN)
 	{
 		ft_dprintf(STDERR_FILENO,
-				"21sh: cd: %s: File name too long\n", operand);
+				"42sh: cd: %s: File name too long\n", operand);
 		return (1);
 	}
 	return (cd_pipeline(ctx, operand, opt));

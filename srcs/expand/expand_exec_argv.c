@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 static int				handle_err(int ret, t_list **lst, char *name)
 {
 	if (ret == -2)
-		ft_dprintf(STDERR_FILENO, "21sh: expand: no match: %s\n", name);
+		ft_dprintf(STDERR_FILENO, "42sh: expand: no match: %s\n", name);
 	else
-		ft_dprintf(STDERR_FILENO, "21sh: expand: quote error\n");
+		ft_dprintf(STDERR_FILENO, "42sh: expand: quote error\n");
 	ft_list_clear(lst, &ft_memdel);
 	return (ret);
 }

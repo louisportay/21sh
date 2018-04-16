@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 static t_proc			*get_pipe(t_token **tokz)
 {
@@ -123,7 +123,7 @@ t_job					*parse(struct s_token *tokens)
 			break ;
 		else if (ret != 1)
 		{
-			ft_dprintf(STDERR_FILENO, "21sh: syntax error, unexpected token\n");
+			ft_dprintf(STDERR_FILENO, "42sh: syntax error, unexpected token\n");
 			return (job_safeclear(job));
 		}
 	}

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 int			set_help(t_proc *p, int usage)
 {
@@ -55,7 +55,7 @@ int			bu_set_getopts(t_proc *p, t_ctx *ctx, int i)
 			lget_switch(opts, p, i, &tmp);
 		else if (p->argv[i][0] == '-' || p->argv[i][0] == '+')
 		{
-			ft_dprintf(STDERR_FILENO, "21sh: set: %s: Invalid argument\n%s\n",
+			ft_dprintf(STDERR_FILENO, "42sh: set: %s: Invalid argument\n%s\n",
 						p->argv[i], BU_S_USG);
 			return (-1);
 		}

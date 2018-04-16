@@ -14,7 +14,7 @@
 
 static int		lquoterr(void)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: expand: param: Missing quote\n");
+	ft_dprintf(STDERR_FILENO, "42sh: expand: param: Missing quote\n");
 	return (-1);
 }
 

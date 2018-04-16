@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
-#define FMT_SYN ("21sh: syntax error near unexpected token %s\n")
+#define FMT_SYN ("42sh: syntax error near unexpected token %s\n")
 #define FMT_EOF ("EOF")
 #define FMT_AND ("&")
 #define FMT_SEM (";")

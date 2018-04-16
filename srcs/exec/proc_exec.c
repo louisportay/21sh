@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 #define ENOCMD ("command not found")
 
@@ -29,13 +29,13 @@ void					exec_print_err(enum e_extype type, char *path)
 	char				*fmt;
 
 	if (type == EXDIR)
-		fmt = "21sh: %s: Is a directory\n";
+		fmt = "42sh: %s: Is a directory\n";
 	else if (type == EXPERM)
-		fmt = "21sh: %s: Permission denied\n";
+		fmt = "42sh: %s: Permission denied\n";
 	else if (type == EXNFOD)
-		fmt = "21sh: %s: No such file or directory\n";
+		fmt = "42sh: %s: No such file or directory\n";
 	else
-		fmt = "21sh: %s: command not found\n";
+		fmt = "42sh: %s: command not found\n";
 	ft_dprintf(STDERR_FILENO, fmt, path);
 }
 
@@ -62,6 +62,6 @@ void					proc_exec(t_proc *p)
 		exit(s);
 	}
 	execve(p->data.path, p->argv, p->env);
-	ft_dprintf(STDERR_FILENO, "21sh: %s: Unknown command\n", p->data.path);
+	ft_dprintf(STDERR_FILENO, "42sh: %s: Unknown command\n", p->data.path);
 	exit(1);
 }

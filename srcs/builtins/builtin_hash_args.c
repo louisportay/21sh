@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 static int				hash_invalid_arg(char *s)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: hash: '%s': Invalid argument\n", s);
+	ft_dprintf(STDERR_FILENO, "42sh: hash: '%s': Invalid argument\n", s);
 	return (-1);
 }
 

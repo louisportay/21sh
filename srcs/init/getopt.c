@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 static void	c_opt(t_ctx *ctx, char **av)
 {
@@ -34,7 +34,7 @@ static void	f_opt(t_ctx *ctx, char **av)
 		fatal_err(BADOPT_F, ctx);
 	if ((ctx->std_fd[0] = open(av[1], O_RDONLY)) == -1)
 	{
-		ft_dprintf(STDERR_FILENO, "21sh: %s: %s\n", av[1], SH_ENOFOD);
+		ft_dprintf(STDERR_FILENO, "42sh: %s: %s\n", av[1], SH_ENOFOD);
 		wrap_exit(EXIT_FAILURE, ctx);
 	}
 	ctx->istty = 0;

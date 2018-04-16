@@ -15,7 +15,7 @@
 
 # define HISTSIZE		"100"
 # define HISTFILESIZE	"100"
-# define HISTFILE		".21sh_history"
+# define HISTFILE		".42sh_history"
 
 # define T_HISTENTRY(ptr)	((t_histentry *)ptr)
 

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 static int	l_isdir(char *path)
 {
@@ -20,7 +20,7 @@ static int	l_isdir(char *path)
 	{
 		if (S_ISDIR(stats.st_mode))
 		{
-			ft_dprintf(STDERR_FILENO, "21sh: hash: %s is a directory\n", path);
+			ft_dprintf(STDERR_FILENO, "42sh: hash: %s is a directory\n", path);
 			return (1);
 		}
 	}

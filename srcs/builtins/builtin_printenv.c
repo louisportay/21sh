@@ -28,7 +28,7 @@ static int		traverse(t_proc *p)
 		if (pos == -1)
 		{
 			err |= 1;
-			ft_dprintf(STDERR_FILENO, "21sh: printenv: '%s' not found\n",
+			ft_dprintf(STDERR_FILENO, "42sh: printenv: '%s' not found\n",
 						p->argv[i]);
 		}
 		else if (p->env[pos][len] == '=')

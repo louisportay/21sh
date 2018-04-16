@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "ft_42sh.h"
 
 void	join_split_lines(t_line *l)
 {
@@ -60,7 +60,7 @@ void	missing_quote_err(int quote)
 void	warning_heredoc(t_line *l)
 {
 	ft_dprintf(STDERR_FILENO,
-	"21sh: warning: here-document delimited by end-of-file (wanted `%s')\n",
+	"42sh: warning: here-document delimited by end-of-file (wanted `%s')\n",
 	l->eohdoc);
 	if (get_ctxaddr()->line_edition)
 		ft_dlstdel(&l->line, &delvoid);

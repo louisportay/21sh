@@ -66,7 +66,7 @@ static int			add_error(char *str, char *bu)
 
 	if ((i = ft_strindex(str, '=')) == -1)
 		i = ft_strlen(str);
-	ft_dprintf(STDERR_FILENO, "21sh: %s: '%*s': not a valid identifier\n",
+	ft_dprintf(STDERR_FILENO, "42sh: %s: '%*s': not a valid identifier\n",
 				bu, i, str);
 	return (1);
 }
