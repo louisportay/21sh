@@ -57,6 +57,18 @@ t_mtok			*mtok_create_str(enum e_mt_type type, char *str)
 	return (ret);
 }
 
+void                mtok_free(t_mtok **mt)
+{
+    t_mtok          *m;
+
+    if (mt == NULL || *mt == NULL)
+        return ;
+    m = *mt;
+    if (m->type == STRIN || m->type == RANGE)
+        ft_strdel(&m->data.str);
+    ft_memdel((void **)mt);
+}
+
 void				mtok_clear(t_mtok **mt)
 {
 	t_mtok			*curr;
@@ -68,7 +80,7 @@ void				mtok_clear(t_mtok **mt)
 	{
 		tmp = curr;
 		curr = curr->next;
-		if (tmp->type == STRIN)
+		if (tmp->type == STRIN || tmp->type == RANGE)
 			ft_strdel(&tmp->data.str);
 		ft_memdel((void **)&tmp);
 	}

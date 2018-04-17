@@ -14,59 +14,104 @@
 
 #define GLOBSTAR 0x0
 
+
 t_mtok			*mtok_requal(t_mtok *mtk)
 {
-	t_mtok		*ok[2];
-	t_mtok		*err[2];
-	t_mtok		*t;
-	int			globstar;
+    t_mtok		*ok[2];
+    t_mtok		*err[2];
+    t_mtok		*t;
+    int			globstar;
 
-	globstar = get_ctxaddr()->set & GLOBSTAR;
-	ok[0] = NULL;
-	ok[1] = NULL;
-	err[0] = NULL;
-	err[1] = NULL;
-	while (mtk != NULL)
-	{
-		t = mtk;
-		mtk = t->next;
-		t->next = NULL;
-		if (t->type != FILEN && t->type != DIREC)
-			mtok_insert(ok, ok + 1, t);
-		else if (ok[1] == NULL && (t->type == FILEN
-									|| (t->type == DIREC && globstar)))
-			mtok_insert(ok, ok + 1, t);
-		else if (ok[1] == NULL && t->type == DIREC && globstar == 0)
-		{
-			t->type = FILEN;
-			mtok_insert(ok, ok + 1, t);
-			t = mtok_create_str(STRIN, ft_strdup("/"));
-			mtok_insert(ok, ok + 1, t);
-		}
-		else if (t->type == FILEN && ok[1]->type == FILEN)
-			mtok_insert(err, err + 1, t);
-		else if (t->type == FILEN && ok[1]->type != FILEN)
-			mtok_insert(ok, ok + 1, t);
-		else if (t->type == DIREC && globstar && ok[1]->type == FILEN)
-		{
-			ok[1]->type = DIREC;
-			ft_memdel((void **)&t);
-		}
-		else if (t->type == DIREC && globstar && ok[1]->type != FILEN)
-			mtok_insert(ok, ok + 1, t);
-		else if (t->type == DIREC && globstar == 0 && ok[1]->type == FILEN)
-		{
-			t->type = STRIN;
-			t->data.str = ft_strdup("/");
-			mtok_insert(ok, ok + 1, t);
-		}
-		else if (t->type == DIREC && globstar == 0 && ok[1]->type != FILEN)
-		{
-			t->type = FILEN;
-			mtok_insert(ok, ok + 1, t);
-			t = mtok_create_str(STRIN, ft_strdup("/"));
-			mtok_insert(ok, ok + 1, t);
-		}
-	}
-	return (ok[0]);
+    globstar = get_ctxaddr()->set & GLOBSTAR;
+    ok[0] = NULL;
+    ok[1] = NULL;
+    err[0] = NULL;
+    err[1] = NULL;
+    while (mtk != NULL)
+    {
+        t = mtk;
+        mtk = t->next;
+        t->next = NULL;
+        if (t->type != FILEN && t->type != DIREC)
+            mtok_insert(ok, ok + 1, t);
+        else if (ok[1] == NULL && (t->type == FILEN
+                    || (t->type == DIREC && globstar)))
+            mtok_insert(ok, ok + 1, t);
+        else if (ok[1] == NULL && t->type == DIREC && globstar == 0)
+        {
+            t->type = FILEN;
+            mtok_insert(ok, ok + 1, t);
+            t = mtok_create_str(STRIN, ft_strdup("/"));
+            mtok_insert(ok, ok + 1, t);
+        }
+        else if (t->type == FILEN && ok[1]->type == FILEN)
+            mtok_insert(err, err + 1, t);
+        else if (t->type == FILEN && ok[1]->type != FILEN)
+            mtok_insert(ok, ok + 1, t);
+        else if (t->type == DIREC && globstar && ok[1]->type == FILEN)
+        {
+            ok[1]->type = DIREC;
+            ft_memdel((void **)&t);
+        }
+        else if (t->type == DIREC && globstar && ok[1]->type != FILEN)
+            mtok_insert(ok, ok + 1, t);
+        else if (t->type == DIREC && globstar == 0 && ok[1]->type == FILEN)
+        {
+            t->type = STRIN;
+            t->data.str = ft_strdup("/");
+            mtok_insert(ok, ok + 1, t);
+        }
+        else if (t->type == DIREC && globstar == 0 && ok[1]->type != FILEN)
+        {
+            t->type = FILEN;
+            mtok_insert(ok, ok + 1, t);
+            t = mtok_create_str(STRIN, ft_strdup("/"));
+            mtok_insert(ok, ok + 1, t);
+        }
+    }
+    return (ok[0]);
 }
+
+
+//  t_mtok              *mtok_requal(t_mtok *mtk)
+//  {
+//      t_mtok          *t;
+//      t_mtok          *ok[2];
+//      int             filen;
+//  
+//      ok[0] = NULL;
+//      filen = 0;
+//      while (mtk != NULL)
+//      {
+//          t = mtk;
+//          t->next = NULL;
+//          mtk = mtk->next;
+//          if (t->type != FILEN && t->type != DIREC)
+//          {
+//              filen = 0;
+//              mtok_insert(ok, ok + 1, t);
+//          }
+//          else if (t->type == FILEN)
+//          {
+//              if (filen)
+//                  mtok_clear(&t);
+//              else
+//                  mtok_insert(ok, ok + 1, t);
+//              filen = 1;
+//          }
+//          else if (t->type == DIREC)
+//          {
+//              if (filen == 0)
+//              {
+//                  mtok_create(FILEN);
+//                  mtok_insert(ok, ok + 1, t);
+//              }
+//              t->type = STRIN;
+//              t->data.str = ft_strdup("/");
+//              mtok_insert(ok, ok + 1, t);
+//              filen = 0;
+//          }
+//          t = NULL;
+//      }
+//      return (ok[0]);
+//  }

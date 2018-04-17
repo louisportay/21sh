@@ -118,6 +118,7 @@ t_mtok						*mtok_create_mod(enum e_mt_type type,
 												enum e_modtype mod);
 t_mtok						*mtok_create_str(enum e_mt_type type, char *str);
 void						mtok_clear(t_mtok **mt);
+void                        mtok_free(t_mtok **mt);
 t_mtok						*mtok_splitstr(t_mtok *o);
 void						mtok_print(t_mtok *o);
 int							mtok_until_str(t_mtok *tok, char *str,

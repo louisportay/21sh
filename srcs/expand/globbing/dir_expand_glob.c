@@ -137,12 +137,20 @@ static char		*get_match(t_entry *ents, t_mtok *tok)
 	char		*ret;
 	int			deeper;
 
+    last = NULL;
+    next = NULL;
 	deeper = mtok_until_str(tok, "/", &last, &next);
 	mtok_assert(&ents, tok);
 	if (ents == NULL)
+	{
+		if (last != NULL)
+			last->next = next;
 		return (NULL);
+	}
 	if (next == NULL)
 	{
+		if (last != NULL)
+			last->next = next;
 		if ((ret = ent_cat(ents)) == NULL)
 			fatal_err(NOMEM, get_ctxaddr());
 		ent_clear(&ents);
@@ -187,6 +195,8 @@ int				do_expand_glob(char **str)
 	new = mtok_splitstr(or);
 	mtok_clear(&or);
 	new = mtok_requal(new);
+    mtok_print(new);
+    exit(1);
 	if ((ret = glob_match(new)) != NULL)
 	{
 		ft_strdel(str);
