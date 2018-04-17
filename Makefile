@@ -35,7 +35,7 @@ vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=no
+DEBUG=yes
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
