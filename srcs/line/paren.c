@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 13:22:28 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/16 15:29:35 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/18 17:58:17 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	handle_hash(t_stack **line)
 
 void	handle_paren(t_stack **line, char c)
 {
-	if ((*line)->state == PAREN && c == ')')
+	if ((*line)->state & PAREN && c == ')')
 		stack_pop(line);
 	else if ((*line)->state & DOLLAR && c == '(')
 		(*line)->state |= PAREN;

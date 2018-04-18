@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:48:30 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/11 11:02:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/18 17:15:05 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "expand_tilde.h"
 # include "expand_param.h"
 # include "expand_quotes.h"
+# include "expand_cmdsub.h"
 
 /*
 **	HAS TO BE RENAMED "expand_path"

@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/16 13:12:12 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/18 17:16:13 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,6 +84,7 @@ expand_braces.h\
 expand_param.h\
 expand_quotes.h\
 expand_tilde.h\
+expand_cmdsub.h\
 history.h\
 line.h\
 parser.h\
@@ -225,6 +226,8 @@ SRCS=	main.c\
 		expand_quotes.c\
 		\
 		expand_param.c\
+		\
+		expand_cmdsub.c\
 		scan_dollar.c\
 		vtok_dollarpid.c\
 		vtok_dollunder.c\
