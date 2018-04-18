@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 15:40:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/18 15:17:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ struct					s_proc
 	pid_t				pid;
 	int					status;
 	struct s_redir		*redirs;
-	int					pipe_in;
 	enum e_extype		type;
 	union u_ebin		data;
 };
@@ -102,6 +101,7 @@ struct					s_job
 int						exec(t_job *jobs);
 
 int						exec_pipe(t_job *j, t_ctx *ctx, int fd);
+int						fork_do(t_proc *p, int fd, t_ctx *ctx, int *pipes);
 
 struct s_proc			*proc_cr(void);
 struct s_proc			*proc_new(char **argv);
@@ -146,9 +146,10 @@ int						prepare_fork(t_proc *p, t_ctx *ctx, int pipeline);
 
 char					*get_command(t_job *j);
 
-int						do_redir(t_redir *r, int fd[3], int *pipes);
+int						do_redir(t_redir *r, int fd[3], int *pipes, int ipc);
 int						r_andgreat_anddgreat(t_redir *r);
-int						r_greatand_lessand(t_redir *r, int fd[3], int *pipes);
+int						r_greatand_lessand(t_redir *r, int fd[3], int *pipes,
+											int ipc);
 int						err_close_fd(int fd);
 int						err_open(char *s);
 int						err_busyfd(int	fd);

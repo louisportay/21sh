@@ -6,13 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 15:48:02 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/18 15:18:06 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 
-static int	fork_do(t_proc *p)
+static int	lfork_do(t_proc *p)
 {
 	pid_t				pid;
 
@@ -51,7 +51,7 @@ int			job_one(t_job *j, t_ctx *ctx)
 	p = j->procs;
 	if (ctx->set & BU_SET_ONCMD)
 		proc_print(p);
-	if (do_redir(p->redirs, ctx->std_fd, NULL) == -1)
+	if (do_redir(p->redirs, ctx->std_fd, NULL, -1) == -1)
 	{
 		restore_fds(ctx);
 		return (1);
@@ -61,7 +61,7 @@ int			job_one(t_job *j, t_ctx *ctx)
 		prefork_assign(ctx, p->asmts);
 	else if (p->argv[0] != NULL)
 		prepare_fork(p, ctx, 0);
-	if (p->type == BINARY && fork_do(p) == 1)
+	if (p->type == BINARY && lfork_do(p) == 1)
 		ret = 1;
 	else if ((p->type & (EXDIR | EXPERM | EXNFD | EXNFOD)) != 0)
 		set_proc_status(j, p);

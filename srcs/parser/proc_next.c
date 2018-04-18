@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 11:28:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 18:29:46 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/18 13:47:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,5 @@ t_proc					*proc_next(t_token **tokz)
 		ft_memdel((void **)&p);
 		return (NULL);
 	}
-	p->pipe_in = -1;
 	return (p);
 }

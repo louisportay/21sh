@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 11:44:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/16 11:44:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/18 15:10:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,12 @@
 # define HELP1 "42sh, by vbastion and lportay:\n\n-h:\t\tDisplay this help\n"
 # define HELP2 "-f <file>:\tRead <file>\n-c <cmd>:"
 # define HELP3 "\tExecute <cmd>\n\n--rawline:\tdisable advanced line edition\n"
+
+#define PRINT_TTY(fmt, ...) {\
+	int __FD__ = open("/dev/tty", O_WRONLY);\
+	dprintf(__FD__, fmt, __VA_ARGS__);\
+	close(__FD__);\
+}
 
 /*
 ** # define HELP4 "--norc:\t\tdo not read configuration file\n"
