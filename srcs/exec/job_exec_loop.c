@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:48:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 09:35:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/18 19:38:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,17 @@ static int	l_wait_for_job(t_job *j)
 
 static void	set_job_status(t_job *j, t_job **job)
 {
-	if (!j->err)
-		j->parent->status = 1 | JOB_DON;
-	else
-		*job = j->err;
+	j = j->next;
+	while (j != NULL)
+	{
+		if (j->type == JOB_ERR)
+		{
+			*job = j;
+			return ;
+		}
+		j = j->next;
+	}
+	j->parent->status = 1 | JOB_DON;
 }
 
 static int	wait_err(t_job *j)
@@ -79,9 +86,27 @@ static int	wait_err(t_job *j)
 	return (1);
 }
 
+static t_job			*exec_getnext(t_job *j)
+{
+	int					status;
+
+	status = j->status & 0xFF;
+	j = j->next;
+	while (j != NULL)
+	{
+		if (status && j->type == JOB_ERR)
+			return (j);
+		else if (status == 0 && j->type == JOB_OK)
+			return (j);
+		j = j->next;
+	}
+	return (NULL);
+}
+
 int			job_exec_loop(t_job **job, t_ctx *ctx, int exp_err)
 {
 	t_job				*j;
+	t_job				*n;
 	int					ret;
 
 	j = *job;
@@ -95,12 +120,11 @@ int			job_exec_loop(t_job **job, t_ctx *ctx, int exp_err)
 		else if (ret == -1)
 			return (wait_err(j));
 		l_wait_for_job(j);
-		if ((j->status & 0xFF) && j->err != NULL)
-			*job = j->err;
-		else if ((j->status & 0xFF) == 0 && j->ok != NULL)
-			*job = j->ok;
+		if ((n = exec_getnext(j)) == NULL)
+			j->parent->status = (JOB_DON | (j->status & 0xFF));
 		else
-			j->parent->status = JOB_DON | (j->status & 0xFF);
+			j = n;
 	}
+	*job = j;
 	return (0);
 }

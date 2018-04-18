@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/18 15:17:17 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/18 19:50:18 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@
 # define FTSH_RUN 0
 # define FTSH_SIG 1
 # define FTSH_EXI 2
+
+# define JOB_OK		0
+# define JOB_ERR	1
+# define JOB_HEAD	-1
 
 typedef struct s_asmt	t_asmt;
 typedef struct s_redir	t_redir;
@@ -89,16 +93,15 @@ struct					s_proc
 
 struct					s_job
 {
-	char				*command;
 	struct s_proc		*procs;
 	int					status;
-	struct s_job		*ok;
-	struct s_job		*err;
+	int					type;
 	struct s_job		*next;
+	struct s_job		*forward;
 	struct s_job		*parent;
 };
 
-int						exec(t_job *jobs);
+int						exec(t_job *exec_list);
 
 int						exec_pipe(t_job *j, t_ctx *ctx, int fd);
 int						fork_do(t_proc *p, int fd, t_ctx *ctx, int *pipes);
@@ -117,7 +120,7 @@ void					proc_foreach_data(t_proc *p,
 											void (*act)(t_proc *, void *),
 											void *data);
 
-struct s_job			*job_new(t_proc *plist);
+struct s_job			*job_new(int type);
 void					job_insert(t_job **head, t_job **curr, t_job *j);
 void					job_ctxinsert(t_job *job, t_ctx *ctx);
 
@@ -134,6 +137,7 @@ int						job_next(t_job *j, t_ctx *ctx);
 int						job_donext(t_job *j, t_ctx *ctx);
 
 void					*job_safeclear(t_job **job);
+void					*job_clearall(t_job **job);
 
 void					prefork_assign(t_ctx *ctx, t_asmt *asmt);
 int						proc_update_env(t_proc *p);

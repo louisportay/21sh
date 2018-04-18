@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 10:07:17 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/18 19:37:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int						exec(t_job *jobs)
 	while (jobs != NULL)
 	{
 		tmp = jobs;
-		jobs = jobs->next;
-		tmp->next = NULL;
+		jobs = jobs->forward;
+		tmp->forward = NULL;
 		job_exec(tmp, ctx);
 		ctx->last_ret = tmp->parent->status & 0xFF;
 		job_safeclear(&tmp->parent);

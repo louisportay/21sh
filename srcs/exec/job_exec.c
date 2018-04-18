@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 20:55:46 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/18 19:37:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int						job_exec(t_job *j, t_ctx *ctx)
 
 	if (j == NULL)
 		return (0);
-	j->command = get_command(j);
 	while ((j->parent->status & JOB_DON) == 0)
 	{
 		j->status = expand_job(j, ctx, &exp_err);

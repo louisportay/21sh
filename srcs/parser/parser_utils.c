@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 17:06:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/16 14:15:43 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/18 20:07:29 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,4 @@ void					proc_insert(t_proc **head, t_proc **curr, t_proc *e)
 	else
 		(*curr)->next = e;
 	*curr = e;
-}
-
-void					job_updateands(t_job *job)
-{
-	t_job				*ok;
-
-	ok = job->ok;
-	while (ok != NULL)
-	{
-		ok->err = job->err;
-		ok = ok->ok;
-	}
 }

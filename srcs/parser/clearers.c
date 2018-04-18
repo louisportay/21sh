@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 11:41:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/18 18:24:26 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,26 +82,37 @@ static void	*job_clear(t_job **job)
 	return (NULL);
 }
 
-void		*job_safeclear(t_job **job)
+void		*job_clearall(t_job **job)
 {
-	t_job			*j;
-	t_job			*t;
-	t_job			*e;
+	t_job	*j;
+	t_job	*t;
 
 	if (job == NULL || *job == NULL)
 		return (NULL);
 	j = *job;
 	*job = NULL;
-	if (j->command != NULL)
-		ft_strdel(&j->command);
-	e = (j->err != NULL) ? j->err : NULL;
 	while (j != NULL)
 	{
 		t = j;
-		j = j->ok;
+		j = j->forward;
+		job_safeclear(&t);
+	}
+	return (NULL);
+}
+
+void		*job_safeclear(t_job **job)
+{
+	t_job	*j;
+	t_job	*t;
+
+	if (job == NULL || *job == NULL)
+		return (NULL);
+	j = *job;
+	while (j != NULL)
+	{
+		t = j;
+		j = j->next;
 		job_clear(&t);
 	}
-	if (e != NULL)
-		job_safeclear(&e);
 	return (NULL);
 }

@@ -6,20 +6,22 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 15:03:23 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/08 19:47:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/18 19:51:25 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 
-t_job					*job_new(t_proc *plist)
+t_job					*job_new(int type)
 {
 	t_job				*job;
 
+	if (type != JOB_OK && type != JOB_ERR && type != JOB_HEAD)
+		return (NULL);
 	if ((job = (t_job *)ft_pmemalloc(sizeof(t_job), &on_emem, NOMEM)) == NULL)
 		return (NULL);
-	job->procs = plist;
 	job->parent = job;
+	job->type = type;
 	return (job);
 }
 

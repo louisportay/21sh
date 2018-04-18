@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/11 11:00:50 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/18 20:07:37 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ struct					s_asmt
 	struct s_asmt		*next;
 };
 
-struct s_job			*parser(struct s_token *tokens);
+struct s_job			*parse(struct s_token *tok);
 
 struct s_proc			*proc_next(struct s_token **tokens);
 
@@ -64,8 +64,8 @@ char					**astr_fromlist(struct s_list **list);
 void					asmt_print(struct s_asmt *asmt);
 void					astr_print(char **astr);
 void					job_print(struct s_job *job);
+void					job_print_cmd(struct s_job *job);
+void					job_printall(struct s_job *job);
 void					redir_print(struct s_redir *redir);
-
-void					job_updateands(t_job *job);
 
 #endif

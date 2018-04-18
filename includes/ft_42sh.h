@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 11:44:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/18 15:10:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/18 18:35:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@
 	dprintf(__FD__, fmt, __VA_ARGS__);\
 	close(__FD__);\
 }
+
+#define HOLA PRINT_TTY("%s: %s: %d\n", __FILE__, __FUNCTION__, __LINE__)
 
 /*
 ** # define HELP4 "--norc:\t\tdo not read configuration file\n"
@@ -166,9 +168,6 @@ bool					str_isblank(char *str);
 bool					dlst_isblank(t_dlist *dlst);
 bool					is_number(char *str);
 bool					is_number_w_dash(char *str);
-
-t_job					*parse(t_token *tok);
-int						job_waitforit(t_job *j, t_ctx *ctx);
 
 void					sighandler(int signo);
 
