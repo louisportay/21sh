@@ -59,7 +59,7 @@ static int		lmatch_fil(char *str, t_mtok *tok)
 
 static int		mtok_match(char *str, t_mtok *tok)
 {
-	if (str == NULL || (*str == '\0' && tok != NULL && tok->type != STRIN))
+	if (str == NULL || (*str == '\0' && tok != NULL && tok->type != FILEN))
 		return (0);
 	if (tok == NULL)
 		return (*str == '\0');
@@ -159,9 +159,6 @@ static char		*get_match(t_entry *ents, t_mtok *tok)
 	last->next = next;
 	tok = next->next;
 	return (get_deeper(ents, tok));
-/*
-**	Deserves to be splitted.
-*/
 }
 
 char			*glob_match(t_mtok *tok)
@@ -195,8 +192,6 @@ int				do_expand_glob(char **str)
 	new = mtok_splitstr(or);
 	mtok_clear(&or);
 	new = mtok_requal(new);
-    mtok_print(new);
-    exit(1);
 	if ((ret = glob_match(new)) != NULL)
 	{
 		ft_strdel(str);

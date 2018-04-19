@@ -18,6 +18,4 @@
 # include "pattern_matching.h"
 # include "dir_explorer.h"
 
-# define HOLA printf("%s: %s: %d", __FILE__, __FUNCTION__, __LINE__)
-
 #endif
