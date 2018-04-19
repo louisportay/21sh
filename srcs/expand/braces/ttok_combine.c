@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 16:12:50 by vbastion          #+#    #+#             */
-/*   Updated: 2018/01/13 15:16:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/19 12:23:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static int			l_inc_alprng(t_ttok *tok)
 		data->rng[2]++;
 	else
 		data->rng[2]--;
+	if (data->rng[2] > 'Z' && data->rng[2] < 'a')
+		data->rng[2] = data->rng[0] < data->rng[1] ? 'a' : 'Z';
 	return (1);
 }
 
