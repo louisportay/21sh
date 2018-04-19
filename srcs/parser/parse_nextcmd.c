@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 10:19:50 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/19 11:22:51 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/19 12:10:46 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,10 @@ struct s_job			*get_nextcommand(t_token **tokens)
 
 	job[0] = NULL;
 	while ((job[2] = job_getnext(tokens, job[0])) != NULL)
+	{
 		job_insert(job, job + 1, job[2]);
+		if (*tokens != NULL && (*tokens)->type == SEMICOL)
+			break ;
+	}
 	return (job[0]);
 }

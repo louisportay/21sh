@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:32 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/19 10:23:05 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/19 12:10:36 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int				validate(struct s_token *tokens)
 			fatal_err(CTX_ERR, get_ctxaddr());
 		return (0);
 	}
-	else if ((tokens->type & (SEMICOL)) != 0)
+	else if (tokens->type & SEMICOL)
 	{
 		if (tokens->next == NULL || tokens->next->type == NEWLINE)
 			return (0);

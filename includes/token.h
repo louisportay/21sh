@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/16 15:30:36 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/19 11:52:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # define R_GREAT (GREAT | DGREAT | GREATAND)
 # define R_AND (ANDGREAT | ANDDGREAT)
 # define RDIR (R_LESS | R_GREAT | R_AND)
+
+#define FMT_SYN ("42sh: syntax error near unexpected token %s\n")
 
 /*
 **	NEWLINE 				\n

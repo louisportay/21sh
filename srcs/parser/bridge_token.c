@@ -6,13 +6,12 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:41:06 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/16 14:15:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/19 11:53:34 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 
-#define FMT_SYN ("42sh: syntax error near unexpected token %s\n")
 #define FMT_EOF ("EOF")
 #define FMT_AND ("&")
 #define FMT_SEM (";")
