@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 19:49:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/18 18:24:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/19 11:41:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void		proc_clear(t_proc **proc)
 		if (t->asmts != NULL)
 			asmt_clear(&t->asmts);
 		rdir_clear(&t->redirs);
-		ft_memdel((void **)&t);
+		free(t);
 	}
 }
 
@@ -69,17 +69,6 @@ void		asmt_clear(t_asmt **asmt)
 			ft_strdel(&t->value);
 		ft_memdel((void **)&t);
 	}
-}
-
-static void	*job_clear(t_job **job)
-{
-	t_job				*j;
-
-	j = *job;
-	*job = NULL;
-	proc_clear(&j->procs);
-	ft_memdel((void **)&j);
-	return (NULL);
 }
 
 void		*job_clearall(t_job **job)
@@ -102,17 +91,18 @@ void		*job_clearall(t_job **job)
 
 void		*job_safeclear(t_job **job)
 {
-	t_job	*j;
-	t_job	*t;
+	t_job	*job_head;
+	t_job	*curr_job;
 
 	if (job == NULL || *job == NULL)
 		return (NULL);
-	j = *job;
-	while (j != NULL)
+	job_head = *job;
+	while (job_head != NULL)
 	{
-		t = j;
-		j = j->next;
-		job_clear(&t);
+		curr_job = job_head;
+		job_head = job_head->next;
+		proc_clear(&curr_job->procs);
+		free(curr_job);
 	}
 	return (NULL);
 }

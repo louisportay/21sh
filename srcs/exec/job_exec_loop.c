@@ -6,14 +6,14 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:48:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/18 19:38:22 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/19 10:32:26 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 #include <errno.h>
 
-static void	l_handle_proc_status(t_proc *p, int status)
+static void				l_handle_proc_status(t_proc *p, int status)
 {
 	if (WIFEXITED(status))
 		p->status = WEXITSTATUS(status) | JOB_CMP;
@@ -33,7 +33,7 @@ static void	l_handle_proc_status(t_proc *p, int status)
 		ft_printf("Received unhandled status\n");
 }
 
-static int	l_wait_for_job(t_job *j)
+static int				l_wait_for_job(t_job *j)
 {
 	t_proc				*p;
 	int					status;
@@ -62,7 +62,7 @@ static int	l_wait_for_job(t_job *j)
 	return (0);
 }
 
-static void	set_job_status(t_job *j, t_job **job)
+static void				set_job_status(t_job *j, t_job **job)
 {
 	j = j->next;
 	while (j != NULL)
@@ -77,33 +77,16 @@ static void	set_job_status(t_job *j, t_job **job)
 	j->parent->status = 1 | JOB_DON;
 }
 
-static int	wait_err(t_job *j)
+static int				wait_err(t_job *j)
 {
-	int status;
+	int 				status;
 
 	waitpid(j->procs->pid, &status, WUNTRACED);
 	j->status = JOB_CMP | (-42 & 0xFF);
 	return (1);
 }
 
-static t_job			*exec_getnext(t_job *j)
-{
-	int					status;
-
-	status = j->status & 0xFF;
-	j = j->next;
-	while (j != NULL)
-	{
-		if (status && j->type == JOB_ERR)
-			return (j);
-		else if (status == 0 && j->type == JOB_OK)
-			return (j);
-		j = j->next;
-	}
-	return (NULL);
-}
-
-int			job_exec_loop(t_job **job, t_ctx *ctx, int exp_err)
+int						job_exec_loop(t_job **job, t_ctx *ctx, int exp_err)
 {
 	t_job				*j;
 	t_job				*n;
@@ -120,7 +103,7 @@ int			job_exec_loop(t_job **job, t_ctx *ctx, int exp_err)
 		else if (ret == -1)
 			return (wait_err(j));
 		l_wait_for_job(j);
-		if ((n = exec_getnext(j)) == NULL)
+		if ((n = job_getnextexec(j)) == NULL)
 			j->parent->status = (JOB_DON | (j->status & 0xFF));
 		else
 			j = n;

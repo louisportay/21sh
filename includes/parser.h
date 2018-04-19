@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:42:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/18 20:07:37 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/19 10:21:40 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ struct					s_asmt
 };
 
 struct s_job			*parse(struct s_token *tok);
+struct s_job			*get_nextcommand(t_token **tokens);
 
 struct s_proc			*proc_next(struct s_token **tokens);
 

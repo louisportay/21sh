@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/18 19:53:14 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/19 10:33:11 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -149,6 +149,7 @@ SRCS=	main.c\
 		redir_and.c\
 		redir_err.c\
 		parser.c\
+		parse_nextcmd.c\
 		parser_utils.c\
 		printers.c\
 		asmt.c\
@@ -167,6 +168,7 @@ SRCS=	main.c\
 		job_exec_loop.c\
 		job_pipe.c\
 		job_one.c\
+		job_getnextexec.c\
 		proc_exec.c\
 		exec_pipe.c\
 		exec_fork.c\

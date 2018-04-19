@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 17:06:03 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/18 20:07:29 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/19 11:16:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ void					assert_next_token(t_token *tok)
 		ft_putstr("AND_IF: Conditional execution of next\n");
 }
 
-void					proc_insert(t_proc **head, t_proc **curr, t_proc *e)
+void					proc_insert(t_proc **head, t_proc **curr, t_proc **e)
 {
 	if (*head == NULL)
-		*head = e;
+		*head = *e;
 	else
-		(*curr)->next = e;
-	*curr = e;
+		(*curr)->next = *e;
+	*curr = *e;
+	*e = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 12:56:29 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/18 19:30:57 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/19 10:14:14 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,6 @@ void					job_printall(t_job *job)
 	}
 }
 
-void					job_print(t_job *job)
-{
-	t_proc				*proc;
-
-	proc = job->procs;
-	while (proc != NULL)
-	{
-		asmt_print(proc->asmts);
-		astr_print(proc->argv);
-		if (proc->redirs != NULL)
-		{
-			ft_printf("\nREDIRS:\n");
-			redir_print(proc->redirs);
-			ft_printf("\n");
-		}
-		proc = proc->next;
-	}
-}
-
 void					redir_print(t_redir *redir)
 {
 	while (redir != NULL)
@@ -74,17 +55,29 @@ void					redir_print(t_redir *redir)
 
 void					job_print_cmd(t_job *job)
 {
+	t_proc				*p;
+
 	while (job != NULL)
 	{
-		if (job->type == JOB_HEAD)
-			ft_printf("JOB_HEAD\n");
-		else if (job->type == JOB_OK)
-			ft_printf("JOB_OK\n");
+		if (job->type == JOB_HEAD || job->type == JOB_OK)
+			ft_printf("%s\n", job->type == JOB_HEAD ? "JOB_HEAD" : "JOB_OK");
 		else if (job->type == JOB_ERR)
 			ft_printf("JOB_ERR\n");
 		else
 			ft_printf("UNTAGGED JOB\n");
-		job_print(job);
+		p = job->procs;
+		while (p != NULL)
+		{
+			asmt_print(p->asmts);
+			astr_print(p->argv);
+			if (p->redirs != NULL)
+			{
+				ft_printf("\nREDIRS:\n");
+				redir_print(p->redirs);
+				ft_printf("\n");
+			}
+			p = p->next;
+		}
 		job = job->next;
 	}
 }
