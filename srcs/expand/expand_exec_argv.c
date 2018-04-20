@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 18:08:02 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 18:09:22 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 19:09:39 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int				handle_err(int ret, t_list **lst, char *name)
 {
 	if (ret == -2)
 		ft_dprintf(STDERR_FILENO, "42sh: expand: no match: %s\n", name);
-	else
+	else if (ret == -3)
 		ft_dprintf(STDERR_FILENO, "42sh: expand: quote error\n");
 	ft_list_clear(lst, &ft_memdel);
 	return (ret);
@@ -49,10 +49,12 @@ int						expand_argv(t_proc *p, t_ctx *ctx)
 		{
 			if (ret == -1)
 				on_emem(NOMEM);
-			else if (ret == 0 && (ctx->set & NULLGLOB) == 0)
-				add_result(lst, lst + 1, p->argv[i]);
-			if (ret == -2 || ret == -3)
+			else if (ret == -2 || ret == -3)
 				return (handle_err(ret, lst, p->argv[i]));
+			else if (ret == -4)
+				;
+			else
+				add_result(lst, lst + 1, p->argv[1]);
 		}
 		else
 			ft_list_insert_last(lst, lst + 1, lst[2]);

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 14:50:13 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 18:09:50 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,15 +101,23 @@ static int		multi_expand(t_list *lst)
 		s = (char *)lst->content;
 		if ((ret = scan_glob(s)) == -1)
 			return (-1);
-		else if (ret == 1 && (ret = do_expand_glob(&s)) < 0)
-			return (ret);
-		if (ret == 0)
+		else if (ret == 0)
 		{
 			lst->content = (void *)s;
 			lst = lst->next;
 		}
-		else
-			multi_expand_loop(&s, &lst);
+		else if (ret == 1)
+		{
+			ret = do_expand_glob(&s);
+			if (ret == 0)
+			{
+				lst->content = (void *)s;
+				lst = lst->next;
+				return (0);
+			}
+			else
+				multi_expand_loop(&s, &lst);
+		}
 	}
 	return (1);
 }
@@ -130,7 +138,7 @@ int				expand_glob(t_list *lst, t_ctx *ctx)
 		if (ctx->set & FAILGLOB)
 			return (-2);
 		else if (ctx->set & NULLGLOB)
-			return (-3);
+			return (-4);
 		return (0);
 	}
 	return (1);

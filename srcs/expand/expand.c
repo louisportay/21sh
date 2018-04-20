@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:18:58 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/16 16:40:49 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 18:16:42 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ int					expand(char *str, t_ctx *ctx, t_list **lst)
 	if ((ret = expand_split(tmp, lst)) == -1)
 		return (ret_err(&tmp, -1));
 	ft_strdel(&tmp);
-	expand_glob(*lst, ctx);
+	ret = expand_glob(*lst, ctx);
+	if (ret < 1)
+		return (ret);
 	expand_quotes(*lst);
 	return (1);
 }

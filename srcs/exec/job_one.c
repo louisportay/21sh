@@ -6,13 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/18 15:18:06 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 18:59:44 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 
-static int	lfork_do(t_proc *p)
+static int				lfork_do(t_proc *p)
 {
 	pid_t				pid;
 
@@ -28,21 +28,22 @@ static int	lfork_do(t_proc *p)
 	return (0);
 }
 
-void		restore_fds(t_ctx *ctx)
+void					restore_fds(t_ctx *ctx)
 {
 	dup2(ctx->std_fd[0], STDIN_FILENO);
 	dup2(ctx->std_fd[1], STDOUT_FILENO);
 	dup2(ctx->std_fd[2], STDERR_FILENO);
 }
 
-static void	set_proc_status(t_job *j, t_proc *p)
+static void				set_proc_status(t_job *j, t_proc *p)
 {
-	exec_print_err(p->type, p->type == EXNFOD ? p->data.path : p->argv[0]);
+	if (p->is_err == 0)
+		exec_print_err(p->type, p->type == EXNFOD ? p->data.path : p->argv[0]);
 	p->status |= ((p->type & (EXNFD | EXNFOD)) ? 127 : 1) | JOB_CMP;
 	j->status = p->status;
 }
 
-int			job_one(t_job *j, t_ctx *ctx)
+int						job_one(t_job *j, t_ctx *ctx)
 {
 	t_proc				*p;
 	int					ret;
@@ -66,5 +67,5 @@ int			job_one(t_job *j, t_ctx *ctx)
 	else if ((p->type & (EXDIR | EXPERM | EXNFD | EXNFOD)) != 0)
 		set_proc_status(j, p);
 	restore_fds(ctx);
-	return (ret);
+	return (p->is_err ? 1 : ret);
 }
