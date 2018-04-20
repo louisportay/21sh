@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/18 17:16:13 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/19 14:50:49 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCDIR= srcs/ \
 		srcs/builtins \
 		srcs/expand \
 		srcs/expand/braces \
+		srcs/expand/cmdsub \
 		srcs/expand/tilde \
 		srcs/expand/quotes \
 		srcs/expand/param \
@@ -228,6 +229,8 @@ SRCS=	main.c\
 		expand_param.c\
 		\
 		expand_cmdsub.c\
+		cmdsub_bquotes.c\
+		\
 		scan_dollar.c\
 		vtok_dollarpid.c\
 		vtok_dollunder.c\
