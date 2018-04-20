@@ -6,11 +6,30 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 15:04:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 15:12:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 16:00:00 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "globbing.h"
+
+static char		*get_dirs(t_entry *e, t_entry *entries[2])
+{
+	struct stat	stats;
+	t_entry		*tmp;
+
+	while (e != NULL)
+	{
+		tmp = e;
+		e = e->next;
+		if (stat(tmp->path, &stats) == -1)
+			ent_free(&tmp);
+		else if (S_ISDIR(stats.st_mode) == 0)
+			ent_free(&tmp);
+		else
+			ent_insert_one(entries, tmp);
+	}
+	return (ent_cat(entries[0], 1));
+}
 
 static char		*get_deeper(t_entry *e, t_mtok *tok)
 {
@@ -21,6 +40,8 @@ static char		*get_deeper(t_entry *e, t_mtok *tok)
 
 	entries[0] = NULL;
 	entries[1] = NULL;
+	if (tok == NULL)
+		return (get_dirs(e, entries));
 	while (e != NULL)
 	{
 		t = e;
@@ -82,7 +103,7 @@ char			*glob_get_match(t_entry *ents, t_mtok *tok)
 		last->next = next;
 	if (next == NULL)
 	{
-		if ((ret = ent_cat(ents)) == NULL)
+		if ((ret = ent_cat(ents, 0)) == NULL)
 			fatal_err(NOMEM, get_ctxaddr());
 		ent_clear(&ents);
 		return (ret);

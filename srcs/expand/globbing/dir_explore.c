@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 16:42:57 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 14:13:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 16:08:12 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,7 @@ int				dir_explore(char *path, t_entry **ret, int show_hidden)
 	{
 		if (show_hidden == 0 && dir->d_name[0] == '.')
 			continue ;
-		if ((ent[2] = ent_create(curr ? NULL : path, dir->d_name)) == NULL)
-		{
-			ent_clear(ent);
-			return (-1);
-		}
+		ent[2] = ent_create(curr ? NULL : path, dir->d_name);
 		ent_insert(ent, ent + 1, ent[2]);
 	}
 	closedir(pdir);
