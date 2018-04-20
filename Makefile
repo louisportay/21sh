@@ -6,11 +6,11 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/19 14:50:49 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/20 14:18:05 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY: clean fclean re all
+.PHONY: tags clean fclean re all
 
 SRCDIR= srcs/ \
 		srcs/bridge \
@@ -285,6 +285,9 @@ $(LIBDIR)$(LIB):
 main: $(LIB)
 	$(CC) $(CFLAGS) -o test $(main) -L$(LIBDIR) -lft $(TERMLIB)
 	-rm -f $(main:.c=.o)
+
+tags:
+	ctags -R *
 
 clean:
 

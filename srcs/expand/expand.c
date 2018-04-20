@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:18:58 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/19 16:18:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/20 16:06:58 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,13 @@ static int			ret_err(char **str, int val)
 	return (val);
 }
 
+/*
+**	ret = expand_cmdsub(tmp, &swp);
+**	if (ret == -1)
+**		;//pb
+**	lcleanup(ret, &exp, &tmp, &swp);
+**
+*/
 
 int					expand(char *str, t_ctx *ctx, t_list **lst)
 {
@@ -68,16 +75,9 @@ int					expand(char *str, t_ctx *ctx, t_list **lst)
 	if (ret == -1)
 		return (ret_err(&tmp, -3));
 	lcleanup(ret, &exp, &tmp, &swp);
-
-	ret = expand_cmdsub(tmp, &swp);
-	if (ret == -1)
-		;//pb
-	lcleanup(ret, &exp, &tmp, &swp);
-
 	if ((ret = expand_split(tmp, lst)) == -1)
 		return (ret_err(&tmp, -1));
 	ft_strdel(&tmp);
 	expand_quotes(*lst);
-	//evaluer le retour de expand quotes
 	return (1);
 }
