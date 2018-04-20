@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/05 18:28:52 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/16 15:22:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 11:25:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void			ent_insert(t_entry **head, t_entry **curr, t_entry *tmp)
 {
 	if (*head == NULL)
 		*head = tmp;
+	else if (*curr == NULL)
+	{
+		ent_last(*head)->next = tmp;
+		*curr = ent_last(tmp);
+	}
 	else
 		(*curr)->next = tmp;
 	*curr = ent_last(tmp);

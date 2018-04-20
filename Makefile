@@ -6,11 +6,11 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/19 10:33:11 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/20 10:41:20 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY: clean fclean re all
+.PHONY: clean fclean re all tags
 
 SRCDIR= srcs/ \
 		srcs/bridge \
@@ -35,7 +35,7 @@ vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=yes
+DEBUG=sanitize
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
@@ -302,6 +302,9 @@ $(LIBDIR)$(LIB):
 main: $(LIB)
 	$(CC) $(CFLAGS) -o test $(main) -L$(LIBDIR) -lft $(TERMLIB)
 	-rm -f $(main:.c=.o)
+
+tags:
+	ctags -R *
 
 clean:
 

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 12:51:49 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/16 18:20:01 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 10:49:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int		mtok_match(char *str, t_mtok *tok);
 
 static int		lmatch_rng(char *str, t_mtok *tok)
 {
-	if (str == '\0')
+	if (str == NULL || *str == '\0')
 		return (0);
 	if (ft_strindex(tok->data.str, *str) == -1)
 		return (0);
@@ -28,7 +28,7 @@ static int		lmatch_str(char *str, t_mtok *tok)
 	char		*s;
 	size_t		len;
 
-	if (str == '\0')
+	if (str == NULL || *str == '\0')
 		return (0);
 	s = tok->data.str;
 	len = ft_strlen(s);
@@ -39,7 +39,7 @@ static int		lmatch_str(char *str, t_mtok *tok)
 
 static int		lmatch_any(char *str, t_mtok *tok)
 {
-	if (str == '\0')
+	if (str == NULL || *str == '\0')
 		return (0);
 	return (mtok_match(str + 1, tok->next));
 }
@@ -113,6 +113,7 @@ static char		*get_deeper(t_entry *e, t_mtok *tok)
 	t_entry	*result;
 
 	entries[0] = NULL;
+	entries[1] = NULL;
 	while (e != NULL)
 	{
 		t = e;
@@ -135,11 +136,11 @@ static char		*get_match(t_entry *ents, t_mtok *tok)
 	t_mtok		*next;
 	t_mtok		*last;
 	char		*ret;
-	int			deeper;
+//	int			deeper;
 
     last = NULL;
     next = NULL;
-	deeper = mtok_until_str(tok, "/", &last, &next);
+	/*deeper =*/ mtok_until_str(tok, "/", &last, &next);
 	mtok_assert(&ents, tok);
 	if (ents == NULL)
 	{
@@ -165,9 +166,9 @@ char			*glob_match(t_mtok *tok)
 {
 	char		buf[MAXPATHLEN + 1];
 	t_entry		*ents;
-	char		*ret;
+//	char		*ret;
 
-	ret = NULL;
+//	ret = NULL;
 	if (tok->type == STRIN && tok->data.str[0] == '/')
 	{
 		dir_explore("/", &ents, get_ctxaddr()->set & DOTGLOB);
