@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 11:06:32 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/20 17:22:59 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ static void		init_line_edition(t_ctx *ctx)
 	if (ctx->istty)
 	{
 		if (ctx->ret_tcget == -1 || ctx->line_edition == 0
-			|| (tmp = getenv("TERM")) == NULL || tgetent(NULL, tmp) == ERR)
+			|| (tmp = getenv("TERM")) == NULL || tgetent(NULL, tmp) == ERR
+			|| (ft_strcmp(tmp, "screen") && ft_strcmp(tmp, "xterm")
+				&& ft_strcmp(tmp, "xterm-256color") && ft_strcmp(tmp, "linux")))
 			ctx->line_edition = 0;
 		else
 			init_termios(ctx);

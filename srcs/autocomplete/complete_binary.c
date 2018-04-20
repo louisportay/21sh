@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 20:33:31 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/13 14:10:19 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/20 17:16:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void		read_pathes(char *path, t_string str, t_dlist **matches,
 	struct dirent	*de;
 	unsigned		len;
 
-	dp = opendir(path);
+	if ((dp = opendir(path)) == NULL)
+		return ;
 	while ((de = readdir(dp)))
 	{
 		len = fill_matches_binary(str, path, de, matches);
