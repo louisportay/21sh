@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/20 10:41:20 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/20 15:05:46 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -256,6 +256,7 @@ SRCS=	main.c\
 		pattern_matching_brackets.c\
 		pattern_matching_pointers.c\
 		mtok_lifecycle.c\
+		mtok_match.c\
 		mtok_utils.c\
 		mtok_print.c\
 		mtok_sort.c\
@@ -266,6 +267,7 @@ SRCS=	main.c\
 		ent_sort.c\
 		ent_match.c\
 		mtok_untilstr.c\
+		get_match.c\
 #		dir_handle_matched.c\
 
 OBJDIR= obj

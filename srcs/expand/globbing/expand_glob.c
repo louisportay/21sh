@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/16 17:34:56 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 14:50:13 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,37 @@ static int		scan_glob(char *s)
 	return (0);
 }
 
+static void		multi_expand_loop(char **s, t_list **lst)
+{
+	t_list		*news;
+	t_list		*t;
+	t_list		*next;
+
+	news = bridge_strsplit(*s);
+	ft_strdel(s);
+	(*lst)->content = news->content;
+	if (news->next == NULL)
+	{
+		free(news);
+		*lst = (*lst)->next;
+	}
+	else
+	{
+		news->content = NULL;
+		t = news;
+		news = news->next;
+		free(t);
+		t = ft_list_last(news);
+		next = (*lst)->next;
+		(*lst)->next = news;
+		t->next = next;
+	}
+}
+
 static int		multi_expand(t_list *lst)
 {
 	char		*s;
 	int			ret;
-	t_list		*news;
-	t_list		*t;
-	t_list		*next;
 
 	while (lst != NULL)
 	{
@@ -85,28 +109,7 @@ static int		multi_expand(t_list *lst)
 			lst = lst->next;
 		}
 		else
-		{
-			news = bridge_strsplit(s);
-			ft_strdel(&s);
-			if (news->next == NULL)
-			{
-				lst->content = news->content;
-				free(news);
-				lst = lst->next;
-			}
-			else
-			{
-				lst->content = news->content;
-				news->content = NULL;
-				t = news;
-				news = news->next;
-				free(t);
-				t = ft_list_last(news);
-				next = lst->next;
-				lst->next = news;
-				t->next = next;
-			}
-		}
+			multi_expand_loop(&s, &lst);
 	}
 	return (1);
 }

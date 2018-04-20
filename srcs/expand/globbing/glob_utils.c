@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:53:53 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 16:48:42 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/20 14:20:29 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@ int				ft_strwildcmp(char *str, char *matcher)
 	return (*matcher == '\0' ? 0 : (*str - *matcher));
 }
 
+static char		*lcleanup(int mod, char **str, t_qbuf **buf)
+{
+	if (mod)
+	{
+		ft_strdel(str);
+		*str = qbuf_del(buf);
+	}
+	else
+		qbuf_nuke(buf);
+	return (*str);
+}
+
 char			*ft_strrmdup(char **str)
 {
 	char		*s;
@@ -59,15 +71,5 @@ char			*ft_strrmdup(char **str)
 			mod = 1;
 		prz[c] = 1;
 	}
-	if (mod)
-	{
-		ft_strdel(str);
-		*str = qbuf_del(&buf);
-	}
-	else
-	{
-		free(buf->buffer);
-		free(buf);
-	}
-	return (*str);
+	return (lcleanup(mod, str, &buf));
 }

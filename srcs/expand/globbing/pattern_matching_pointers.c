@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:48:28 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 18:32:17 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 15:00:02 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ static int			f_brac(char **matcher, t_mtok **tmp)
 	while (*end != '\0' && *end != ']')
 		end++;
 	if (*end == '\0')
+	{
+		*matcher = end;
 		return (0);
+	}
 	if ((str = create_range(beg, end)) == NULL)
 		return (-1);
 	if ((ft_strrmdup(&str)) == NULL)
@@ -65,7 +68,7 @@ static int			f_dflt(char **matcher, t_mtok **tmp)
 
 t_mptr				get_matcher(int id)
 {
-	static const t_mptr	ptrs[3] = (const t_mptr[3]) { &f_star, &f_mark, &f_brac };
+	static const t_mptr	ptrs[3] = (const t_mptr[]){&f_star, &f_mark, &f_brac};
 
 	return ((id < 0 || id >= SPEC_CHR_CNT) ? &f_dflt : ptrs[id]);
 }

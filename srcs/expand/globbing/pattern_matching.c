@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:47:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 16:18:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/20 14:58:55 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,14 @@ static int		l_get_nret(char **matcher, t_mtok **tok)
 		return (get_string(matcher, tok));
 }
 
+static int		err_matcher(t_mtok **tok, char *orig, t_mtok **tokens)
+{
+	tok[2] = mtok_create_str(STRIN, ft_strdup(orig));
+	mtok_insert(tok, tok + 1, tok[2]);
+	*tokens = tok[0];
+	return (*tokens != NULL ? 1 : -1);
+}
+
 static int		normal_matcher(char *matcher, t_mtok **tokens)
 {
 	t_mtok		*tok[3];
@@ -59,10 +67,7 @@ static int		normal_matcher(char *matcher, t_mtok **tokens)
 	{
 		ret = l_get_nret(&matcher, tok + 2);
 		if (ret == 0)
-		{
-			*tokens = mtok_create_str(STRIN, ft_strdup(orig));
-			return (*tokens != NULL ? 1 : -1);
-		}
+			return (err_matcher(tok, orig, tokens));
 		else if (ret == -1)
 			break ;
 		if (tok[2] != NULL)

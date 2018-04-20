@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:08:10 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/16 12:44:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 14:34:51 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int					ent_match(char *str, t_mtok *tokens)
 {
 	if (get_ctxaddr()->set & DOTGLOB)
-		return (compare(str,0, tokens) == 0);
+		return (compare(str, 0, tokens) == 0);
 	if (str[0] == '.' && tokens->type == FILEN)
 		return (0);
 	else

@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 15:47:45 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 18:30:25 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 15:00:49 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,6 @@ char			*create_range(char *beg, char *end)
 			qbuf_addrange(buf, beg[0], beg[2]);
 			beg += 3;
 		}
-		/*
-		**	TO BE FIXED TO match `[[:class:]]`, not `[:class:]`
-		*/
 		else if (ft_strwildcmp(beg, PM_CLASS_WILDCARD) == 0)
 			classes(buf, &beg);
 		else if (spec_classes(buf, &beg) != 0)
