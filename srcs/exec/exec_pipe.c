@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/21 13:49:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 16:35:42 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ static void				open_pipe(t_proc *p, int *pipes)
 				ft_dprintf(STDERR_FILENO, "The system table is full\n");
 			wrap_exit(EXIT_FAILURE, get_ctxaddr());
 		}
+		dup2(pipes[1], STDOUT_FILENO);
+		close(pipes[1]);
+		pipes[1] = -1;
 	}
 	else
 		dup2(get_ctxaddr()->std_fd[1], STDOUT_FILENO);
@@ -49,6 +52,8 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 	{
 		restore_fds(ctx);
 		open_pipe(p, pipes);
+		if (do_redir(p->redirs, ctx->std_fd, pipes, fd) == -1)
+			p->is_err = 1;
 		if ((p->status & JOB_CMP) == 0)
 			prefork(ctx, p);
 		if (fork_do(p, fd, ctx, pipes) == 1)

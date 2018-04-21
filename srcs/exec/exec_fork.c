@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:46:43 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/21 13:50:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 16:55:48 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,14 @@ static void				chg_fd(int *fd, int flag, int tar, int *move)
 
 static void				l_last_job(t_proc *p, int fd, t_ctx *ctx, int *pipes)
 {
-	int					ret;
-
 	chg_fd(pipes + 2, DO_DUP | DO_CLO, STDIN_FILENO, NULL);
 	chg_fd(pipes + 3, DO_CLO, 0, NULL);
 	chg_fd(pipes, DO_CLO, 0, NULL);
 	chg_fd(pipes + 1, DO_CLO, 0, NULL);
 	close(fd);
-	ret = do_redir(p->redirs, ctx->std_fd, pipes, -1);
+	dup2(ctx->std_fd[0], STDOUT_FILENO);
 	if (ctx->set & BU_SET_ONCMD)
 		proc_print(p);
-	if (ret == -1)
-		exit(1);
 	if (p->status & JOB_CMP)
 		exit(1);
 	else
@@ -54,17 +50,12 @@ static void				l_last_job(t_proc *p, int fd, t_ctx *ctx, int *pipes)
 
 static void				fork_child(t_proc *p, t_ctx *ctx, int *pipes)
 {
-	int					ret;
-
 	chg_fd(pipes + 1, DO_DUP | DO_CLO, STDOUT_FILENO, NULL);
 	chg_fd(pipes, DO_CLO, 0, NULL);
 	chg_fd(pipes + 2, DO_DUP | DO_CLO, STDIN_FILENO, NULL);
 	chg_fd(pipes + 3, DO_CLO, 0, NULL);
-	ret = do_redir(p->redirs, ctx->std_fd, pipes, -1);
 	if (ctx->set & BU_SET_ONCMD)
 		proc_print(p);
-	if (ret == -1)
-		exit(1);
 	if (p->status & JOB_CMP)
 		exit(1);
 	else

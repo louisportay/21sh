@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:48:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/20 19:09:04 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 15:42:11 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,9 @@ static int				l_wait_for_job(t_job *j)
 	{
 		while ((p->status & JOB_CMP) == 0)
 		{
-			pid = waitpid(p->pid, &status, WUNTRACED);
-			if (pid < 0)
-			{
-				if (errno == ECHILD)
-					;
-				else
-					ft_dprintf(STDERR_FILENO, "Critical pid error.\n");
-			}
+			pid = waitpid(p->pid, &status, 0);
+			if (pid < 0 && errno != ECHILD)
+				ft_dprintf(STDERR_FILENO, "Critical pid error.\n");
 			l_handle_proc_status(p, status);
 		}
 		if (p->next == NULL)
