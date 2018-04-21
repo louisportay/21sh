@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 18:08:02 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 19:09:39 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 12:58:40 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,8 @@ int						expand_argv(t_proc *p, t_ctx *ctx)
 				on_emem(NOMEM);
 			else if (ret == -2 || ret == -3)
 				return (handle_err(ret, lst, p->argv[i]));
-			else if (ret == -4)
-				;
-			else
-				add_result(lst, lst + 1, p->argv[1]);
+			else if (ret != -4)
+				add_result(lst, lst + 1, p->argv[i]);
 		}
 		else
 			ft_list_insert_last(lst, lst + 1, lst[2]);

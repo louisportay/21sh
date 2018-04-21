@@ -6,18 +6,14 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/18 15:19:17 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 13:49:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 #include <errno.h>
 
-/*
-** wowsuchnameinmuchshell
-*/
-
-static void				pipingation(t_proc *p, int *pipes)
+static void				open_pipe(t_proc *p, int *pipes)
 {
 	if (p->next != NULL)
 	{
@@ -52,12 +48,7 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 	while (p != NULL)
 	{
 		restore_fds(ctx);
-		pipingation(p, pipes);
-		if (do_redir(p->redirs, ctx->std_fd, pipes, fd) == -1)
-		{
-			close(STDOUT_FILENO);
-			p->status = 1 | JOB_CMP;
-		}
+		open_pipe(p, pipes);
 		if ((p->status & JOB_CMP) == 0)
 			prefork(ctx, p);
 		if (fork_do(p, fd, ctx, pipes) == 1)

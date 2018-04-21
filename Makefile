@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/20 15:05:46 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/21 13:10:20 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -249,6 +249,7 @@ SRCS=	main.c\
 		vtok_print.c\
 		\
 		expand_glob.c\
+		scan_glob.c\
 		dir_expand_glob.c\
 		glob_utils.c\
 		pattern_matching.c\
