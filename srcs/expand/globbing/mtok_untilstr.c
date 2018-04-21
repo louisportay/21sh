@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_exec.c                                         :+:      :+:    :+:   */
+/*   mtok_untilstr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 18:39:01 by vbastion         ###   ########.fr       */
+/*   Created: 2018/01/05 15:28:35 by vbastion          #+#    #+#             */
+/*   Updated: 2018/04/16 14:34:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_42sh.h"
+#include "globbing.h"
 
-int						job_exec(t_job *j, t_ctx *ctx)
+int				mtok_until_str(t_mtok *tok, char *str, t_mtok **last,
+								t_mtok **next)
 {
-	if (j == NULL)
-		return (0);
-	while ((j->parent->status & JOB_DON) == 0)
+	*next = NULL;
+	while (tok->next != NULL)
 	{
-		j->status = expand_job(j, ctx);
-		if (job_exec_loop(&j, ctx) == 1)
+		if (tok->next->type == STRIN
+			&& ft_strcmp(tok->next->data.str, str) == 0)
+		{
+			*last = tok;
+			*next = tok->next;
+			tok->next = NULL;
 			return (1);
+		}
+		tok = tok->next;
 	}
-	if (ctx->last_argv != NULL)
-		ft_strdel(&ctx->last_argv);
-	ctx->last_argv = job_last_argv(j);
 	return (0);
 }

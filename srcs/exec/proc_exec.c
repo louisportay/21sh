@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 16:18:11 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 14:34:43 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 18:51:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void					proc_exec(t_proc *p)
 {
 	int					s;
 
+	if (p->is_err)
+		exit(1);
 	setup_signals();
 	if (p->argv[0] == NULL)
 	{

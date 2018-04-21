@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:48:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/19 10:32:26 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 19:09:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,52 +62,32 @@ static int				l_wait_for_job(t_job *j)
 	return (0);
 }
 
-static void				set_job_status(t_job *j, t_job **job)
-{
-	j = j->next;
-	while (j != NULL)
-	{
-		if (j->type == JOB_ERR)
-		{
-			*job = j;
-			return ;
-		}
-		j = j->next;
-	}
-	j->parent->status = 1 | JOB_DON;
-}
-
 static int				wait_err(t_job *j)
 {
-	int 				status;
+	int					status;
 
 	waitpid(j->procs->pid, &status, WUNTRACED);
 	j->status = JOB_CMP | (-42 & 0xFF);
 	return (1);
 }
 
-int						job_exec_loop(t_job **job, t_ctx *ctx, int exp_err)
+int						job_exec_loop(t_job **job, t_ctx *ctx)
 {
 	t_job				*j;
 	t_job				*n;
 	int					ret;
 
 	j = *job;
-	if (exp_err)
-		set_job_status(j, job);
+	if ((ret = ((j->procs->next != NULL) ?
+					job_pipe(j, ctx) : job_one(j, ctx))) == 1)
+		return (1);
+	else if (ret == -1)
+		return (wait_err(j));
+	l_wait_for_job(j);
+	if ((n = job_getnextexec(j)) == NULL)
+		j->parent->status = (JOB_DON | (j->status & 0xFF));
 	else
-	{
-		if ((ret = ((j->procs->next != NULL) ?
-						job_pipe(j, ctx) : job_one(j, ctx))) == 1)
-			return (1);
-		else if (ret == -1)
-			return (wait_err(j));
-		l_wait_for_job(j);
-		if ((n = job_getnextexec(j)) == NULL)
-			j->parent->status = (JOB_DON | (j->status & 0xFF));
-		else
-			j = n;
-	}
+		j = n;
 	*job = j;
 	return (0);
 }

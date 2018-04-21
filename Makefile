@@ -6,11 +6,11 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/19 10:33:11 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/20 15:05:46 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY: clean fclean re all
+.PHONY: clean fclean re all tags
 
 SRCDIR= srcs/ \
 		srcs/bridge \
@@ -28,13 +28,14 @@ SRCDIR= srcs/ \
 		srcs/expand/tilde \
 		srcs/expand/quotes \
 		srcs/expand/param \
+		srcs/expand/globbing \
 
 vpath %.c $(SRCDIR)
 vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=no
+DEBUG=sanitize
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
@@ -246,6 +247,28 @@ SRCS=	main.c\
 		\
 		exec_pipe_error.c\
 		vtok_print.c\
+		\
+		expand_glob.c\
+		dir_expand_glob.c\
+		glob_utils.c\
+		pattern_matching.c\
+		pattern_matching_assert.c\
+		pattern_matching_brackets.c\
+		pattern_matching_pointers.c\
+		mtok_lifecycle.c\
+		mtok_match.c\
+		mtok_utils.c\
+		mtok_print.c\
+		mtok_sort.c\
+		mtok_splitstr.c\
+		dir_explore.c\
+		ent_handling.c\
+		ent_lifecycle.c\
+		ent_sort.c\
+		ent_match.c\
+		mtok_untilstr.c\
+		get_match.c\
+#		dir_handle_matched.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
@@ -281,6 +304,9 @@ $(LIBDIR)$(LIB):
 main: $(LIB)
 	$(CC) $(CFLAGS) -o test $(main) -L$(LIBDIR) -lft $(TERMLIB)
 	-rm -f $(main:.c=.o)
+
+tags:
+	ctags -R *
 
 clean:
 

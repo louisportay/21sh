@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/19 11:16:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 18:44:19 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ union					u_ebin
 struct					s_proc
 {
 	struct s_proc		*next;
+	int					is_err;
 	char				**argv;
 	char				**env;
 	struct s_asmt		*asmts;
@@ -162,7 +163,7 @@ int						err_tmpfile(void);
 int						err_badfd(char *fd);
 
 int						job_exec(t_job *j, t_ctx *ctx);
-int						job_exec_loop(t_job **job, t_ctx *ctx, int exp_err);
+int						job_exec_loop(t_job **job, t_ctx *ctx);
 int						job_one(t_job *j, t_ctx *ctx);
 int						job_pipe(t_job *j, t_ctx *ctx);
 
@@ -173,9 +174,5 @@ void					exec_print_err(enum e_extype type, char *path);
 void					clear_pipe(t_job *j, t_proc *last, int fd);
 
 void					restore_fds(t_ctx *ctx);
-
-int						expand_redir(t_proc *p, t_ctx *ctx);
-int						expand_argv(t_proc *p, t_ctx *ctx);
-int						expand_asmt(t_proc *p, t_ctx *ctx);
 
 #endif

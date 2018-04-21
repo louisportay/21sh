@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 15:05:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/10 18:06:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/20 18:41:51 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int						expand_proc(t_proc *p, t_ctx *ctx)
 	return (0);
 }
 
-int						expand_job(t_job *j, t_ctx *ctx, int *exp_err)
+int						expand_job(t_job *j, t_ctx *ctx)
 {
 	t_proc				*p;
 	int					status;
@@ -44,11 +44,10 @@ int						expand_job(t_job *j, t_ctx *ctx, int *exp_err)
 	if (j == NULL)
 		return (0);
 	p = j->procs;
-	*exp_err = 0;
 	while (p != NULL)
 	{
 		if ((status = expand_proc(p, ctx)) == 1)
-			*exp_err = 1;
+			p->is_err = 1;
 		p = p->next;
 	}
 	return (status);

@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_exec.c                                         :+:      :+:    :+:   */
+/*   ent_match.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/24 15:12:24 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 18:39:01 by vbastion         ###   ########.fr       */
+/*   Created: 2018/01/07 15:08:10 by vbastion          #+#    #+#             */
+/*   Updated: 2018/04/20 14:34:51 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_42sh.h"
+#include "globbing.h"
 
-int						job_exec(t_job *j, t_ctx *ctx)
+int					ent_match(char *str, t_mtok *tokens)
 {
-	if (j == NULL)
+	if (get_ctxaddr()->set & DOTGLOB)
+		return (compare(str, 0, tokens) == 0);
+	if (str[0] == '.' && tokens->type == FILEN)
 		return (0);
-	while ((j->parent->status & JOB_DON) == 0)
-	{
-		j->status = expand_job(j, ctx);
-		if (job_exec_loop(&j, ctx) == 1)
-			return (1);
-	}
-	if (ctx->last_argv != NULL)
-		ft_strdel(&ctx->last_argv);
-	ctx->last_argv = job_last_argv(j);
-	return (0);
+	else
+		return (compare(str, 0, tokens) == 0);
 }
