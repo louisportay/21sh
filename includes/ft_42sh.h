@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 11:44:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/18 18:35:17 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 12:49:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,11 @@
 # define FAILREAD_STR			"42sh: closing standard input\n"
 # define BADQUOTES_STR			"42sh: unexpected end of file\n"
 # define BADOPT_C_STR			"42sh: -c: option requires an argument\n"
-# define BADOPT_F_STR			"42sh: -f: option requires an argument\n"
 # define CTX_ERR_STR			"42sh: context error\n"
 
 # define HELP1 "42sh, by vbastion and lportay:\n\n-h:\t\tDisplay this help\n"
-# define HELP2 "-f <file>:\tRead <file>\n-c <cmd>:"
+# define HELP2 "-c <cmd>:"
 # define HELP3 "\tExecute <cmd>\n\n--rawline:\tdisable advanced line edition\n"
-
-#define PRINT_TTY(fmt, ...) {\
-	int __FD__ = open("/dev/tty", O_WRONLY);\
-	dprintf(__FD__, fmt, __VA_ARGS__);\
-	close(__FD__);\
-}
-
-#define HOLA PRINT_TTY("%s: %s: %d\n", __FILE__, __FUNCTION__, __LINE__)
 
 /*
 ** # define HELP4 "--norc:\t\tdo not read configuration file\n"

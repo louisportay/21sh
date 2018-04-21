@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 11:51:16 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/16 18:06:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/21 13:42:19 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static t_line_pair	*init_pairs(void)
 	return (p);
 }
 
-static int	read_state(t_ctx *ctx, t_line *l, t_key *key)
+static int			read_state(t_ctx *ctx, t_line *l, t_key *key)
 {
 	if (*key->buf == NL || (ctx->emacs_mode && *key->buf == C_O))
 	{
@@ -58,9 +58,9 @@ static int	read_state(t_ctx *ctx, t_line *l, t_key *key)
 	return (READON);
 }
 
-static void	line_switch(t_ctx *ctx, t_line *l, t_key *key)
+static void			line_switch(t_ctx *ctx, t_line *l, t_key *key)
 {
-	static t_line_pair *p = NULL;
+	static t_line_pair	*p = NULL;
 	int					i;
 
 	i = 0;
@@ -72,7 +72,7 @@ static void	line_switch(t_ctx *ctx, t_line *l, t_key *key)
 		p[i].fun(ctx, l);
 }
 
-static void	reset_buffer(t_key *key)
+static void			reset_buffer(t_key *key)
 {
 	if ((key->buf[0] && key->buf[0] != ESC) ||
 		(key->buf[1] && key->buf[1] != '[') ||
@@ -88,7 +88,7 @@ static void	reset_buffer(t_key *key)
 ** C_I --> autocompletion
 */
 
-int			user_input(t_ctx *ctx, t_line *l, t_key *key)
+int					user_input(t_ctx *ctx, t_line *l, t_key *key)
 {
 	int ret;
 

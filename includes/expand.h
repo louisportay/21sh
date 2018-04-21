@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 19:48:30 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 18:44:34 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 12:48:07 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,5 @@ int							expand_proc(t_proc *p, t_ctx *ctx);
 int							expand_asmt(t_proc *p, t_ctx *ctx);
 int							expand_redir(t_proc *p, t_ctx *ctx);
 int							expand_argv(t_proc *p, t_ctx *ctx);
-
 
 #endif

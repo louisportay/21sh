@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/18 15:19:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 12:59:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,9 @@ int		do_redir(t_redir *r, int fd[3], int *pipes, int ipc)
 
 	while (r)
 	{
-		if (r->lhs == fd[0] || r->lhs == fd[1] || r->lhs == fd[2])
-			return (err_busyfd(r->lhs));
-		else if (pipes != NULL && (pipes[0] == r->lhs || pipes[1] == r->lhs))
-			return (err_busyfd(r->lhs));
-		else if (ipc != -1 && r->lhs == ipc)
+		if (r->lhs == fd[0] || r->lhs == fd[1] || r->lhs == fd[2]
+			|| (ipc != -1 && r->lhs == ipc)
+			|| (pipes != NULL && (pipes[0] == r->lhs || pipes[1] == r->lhs)))
 			return (err_busyfd(r->lhs));
 		if (r->type & (GREAT | DGREAT))
 			ret = r_great_dgreat(r);

@@ -6,13 +6,34 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 09:42:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/19 11:52:50 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 14:17:02 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 
-void	err_tok(t_token **toklist, t_token *bad_tok)
+static t_token	*filter_tokens(t_token *toklist)
+{
+	t_token *prev;
+	t_token *ret;
+
+	prev = toklist;
+	toklist = toklist->next;
+	while (toklist->type != NEWLINE)
+	{
+		if (toklist->type & COMMENT)
+		{
+			prev->next = toklist->next;
+			free(toklist);
+			toklist = prev->next;
+		}
+		else if ((ret = filter_token_loop(&toklist, &prev)) != NULL)
+			return (ret);
+	}
+	return (NULL);
+}
+
+void			err_tok(t_token **toklist, t_token *bad_tok)
 {
 	t_kvp	tok[20];
 	int		i;
@@ -26,8 +47,8 @@ void	err_tok(t_token **toklist, t_token *bad_tok)
 	delete_toklist(toklist);
 }
 
-void	init_tokenizer(t_dlist **line, t_token **tlist,
-		t_token **ltok, t_stack **qstate)
+void			init_tokenizer(t_dlist **line, t_token **tlist,
+								t_token **ltok, t_stack **qstate)
 {
 	*qstate = NULL;
 	if (stack_create_push(qstate, UNQUOTED) == -1)
@@ -45,7 +66,7 @@ void	init_tokenizer(t_dlist **line, t_token **tlist,
 **	print_toklist(toklist->next);
 */
 
-t_token	*tokenizer(t_dlist *line)
+t_token			*tokenizer(t_dlist *line)
 {
 	t_token *toklist;
 	t_token *last_tok;

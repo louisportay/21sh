@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 13:27:54 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/16 17:44:01 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/21 14:15:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,46 +128,37 @@ static int	filter_io_number(t_token *toklist, t_token *prev)
 ** TLESS
 ** ANDGREAT
 ** ANDDGREAT
+** COMMENT
 **
 ** Into:
 **
 ** Complete redirections operations with both operands
 ** and the operator in a single token
 **
+** Simple WORDs
+**
+** Remove Comments
+**
 ** Return the first faulty redirection if any.
 */
 
-t_token		*filter_tokens(t_token *toklist)
+t_token		*filter_token_loop(t_token **toklist, t_token **prev)
 {
-	t_token *prev;
-
-	prev = toklist;
-	toklist = toklist->next;
-	while (toklist->type != NEWLINE)
+	if ((*toklist)->type & ASSIGNMENT_WORD)
+		filter_assignment_word(*toklist);
+	else if ((*toklist)->type & AND)
+		(*toklist)->type = WORD;
+	else if ((*toklist)->type & IO_NUMBER)
 	{
-		if (toklist->type & ASSIGNMENT_WORD)
-			filter_assignment_word(toklist);
-		else if (toklist->type & AND)
-			toklist->type = WORD;
-		else if (toklist->type & COMMENT)
-		{
-			prev->next = toklist->next;
-			free(toklist);
-			toklist = prev->next;
-			continue ;
-		}
-		else if (toklist->type & IO_NUMBER)
-		{
-			if (filter_io_number(toklist, prev) == -1)
-				return (toklist->next);
-		}
-		else if (toklist->type & RDIR)
-		{
-			if (filter_redir(toklist, prev) == -1)
-				return (toklist);
-		}
-		prev = prev->next;
-		toklist = prev->next;
+		if (filter_io_number(*toklist, *prev) == -1)
+			return ((*toklist)->next);
 	}
+	else if ((*toklist)->type & RDIR)
+	{
+		if (filter_redir(*toklist, *prev) == -1)
+			return (*toklist);
+	}
+	*prev = (*prev)->next;
+	*toklist = (*prev)->next;
 	return (NULL);
 }

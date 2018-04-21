@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 14:26:41 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/21 10:47:02 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/21 13:14:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static void	handle_dquote(t_stack **line)
 **
 **	else if (c == '`')
 **		handle_bquote(state);
-**
 */
 
 void		update_linestate(t_stack **state, char c)

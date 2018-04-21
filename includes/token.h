@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:30:05 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/19 11:52:27 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 14:16:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 # define R_GREAT (GREAT | DGREAT | GREATAND)
 # define R_AND (ANDGREAT | ANDDGREAT)
 # define RDIR (R_LESS | R_GREAT | R_AND)
+# define QUOT (BSLASH | SQUOTE | DQUOTE | BQUOTE)
 
-#define FMT_SYN ("42sh: syntax error near unexpected token %s\n")
+# define FMT_SYN ("42sh: syntax error near unexpected token %s\n")
 
 /*
 **	NEWLINE 				\n
@@ -138,7 +139,7 @@ void				tokrules(t_token *last_tok, t_dlist *line, t_stack **quote);
 
 t_token				*tokenizer(t_dlist *line);
 
-t_token				*filter_tokens(t_token *toklist);
+t_token				*filter_token_loop(t_token **toklist, t_token **prev);
 
 int					is_metachar(char c);
 int					is_quoting(char c);
