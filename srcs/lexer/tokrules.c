@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 21:07:17 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/16 15:24:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/21 10:39:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,9 @@ void	quoting_newline(t_token *last_tok, t_dlist *line, t_stack **quote)
 {
 	if (is_quoting(*(char *)line->data))
 		update_linestate(quote, *(char *)line->data);
-	if (((*quote)->state == DOLLAR && *(char *)line->data != '$') ||
-		(*quote)->state == BRACE)
+	if ((*quote)->state == DOLLAR && *(char *)line->data != '$')
 		stack_pop(quote);
-	if (*(char *)line->data == '\n'
-			&& !((*quote)->state & (BSLASH | DQUOTE | SQUOTE | BQUOTE)))
+	if (*(char *)line->data == '\n' && ((*quote)->state & (UNQUOTED | COMMENT)))
 	{
 		last_tok->last_letter = line->prev;
 		if (last_tok->type == COMMENT)
