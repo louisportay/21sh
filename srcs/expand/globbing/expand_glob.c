@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/07 16:47:01 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 18:09:50 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 12:34:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int				expand_glob(t_list *lst, t_ctx *ctx)
 	int			r;
 
 	if (ctx->set & BU_SET_FNEXP)
-		return (0);
+		return (1);
 	if (lst == NULL)
 		return (0);
 	if ((r = multi_expand(lst)) < 1)
