@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 18:44:19 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 18:25:03 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ struct					s_proc
 
 struct					s_job
 {
+	pid_t				pgid;
 	struct s_proc		*procs;
 	int					status;
 	int					type;
@@ -105,7 +106,7 @@ struct					s_job
 int						exec(t_job *exec_list);
 
 int						exec_pipe(t_job *j, t_ctx *ctx, int fd);
-int						fork_do(t_proc *p, int fd, t_ctx *ctx, int *pipes);
+int						fork_do(t_proc *p, int fd, pid_t pgid, int *pipes);
 
 struct s_proc			*proc_cr(void);
 struct s_proc			*proc_new(char **argv);
@@ -128,6 +129,9 @@ void					job_ctxinsert(t_job *job, t_ctx *ctx);
 struct s_job			*job_find(pid_t pid, t_job *job_list);
 int						job_stopped(t_job *job);
 int						job_completed(t_job *job);
+
+int						job_setpgid(pid_t pid, pid_t pgid);
+int						job_setpgrp(pid_t pgid);
 
 int						job_wait(t_job *j);
 int						job_putfg(t_job *j, t_ctx *ctx);

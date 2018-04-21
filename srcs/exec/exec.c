@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 14:30:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/18 19:37:17 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:41:55 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ int						exec(t_job *jobs)
 		job_safeclear(&tmp->parent);
 		dup2(ctx->std_fd[1], STDOUT_FILENO);
 		dup2(ctx->std_fd[0], STDIN_FILENO);
+	}
+	if (tcsetpgrp(ctx->term_fd, ctx->pid) == -1)
+	{
+		ft_putstr_fd("42sh: 42sh could not control back\n", STDERR_FILENO);
+		exit(-42);
 	}
 	update_tty(ctx, 0);
 	return (0);

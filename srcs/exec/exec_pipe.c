@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/21 16:35:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 18:55:53 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,22 @@ static void				prefork(t_ctx *ctx, t_proc *p)
 		prepare_fork(p, ctx, 1);
 }
 
+static void				l_setpgid(pid_t *pgid)
+{
+	*pgid = getpid();
+	if (job_setpgid(*pgid, *pgid) == -1)
+		exit(-42);
+	else if (job_setpgrp(*pgid) == -1)
+		exit(-42);
+}
+
 int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 {
 	t_proc				*p;
 	int					*pipes;
+	pid_t				pgid;
 
+	l_setpgid(&pgid);
 	p = j->procs;
 	pipes = (int[]){-1, -1, -1, -1};
 	while (p != NULL)
@@ -56,7 +67,7 @@ int						exec_pipe(t_job *j, t_ctx *ctx, int fd)
 			p->is_err = 1;
 		if ((p->status & JOB_CMP) == 0)
 			prefork(ctx, p);
-		if (fork_do(p, fd, ctx, pipes) == 1)
+		if (fork_do(p, fd, pgid, pipes) == 1)
 		{
 			clear_pipe(j, p, fd);
 			exit(-42);

@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/09 14:20:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/21 17:26:07 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,34 @@ static void	init_parameters(t_ctx *ctx)
 	ctx->job_control = 1;
 }
 
+static void	set_term_fd(t_ctx *ctx)
+{
+	ctx->std_fd[0] = dup2(STDIN_FILENO, TERM_FD_STDIN);
+	ctx->std_fd[1] = dup2(STDOUT_FILENO, TERM_FD_STDOUT);
+	ctx->std_fd[2] = dup2(STDERR_FILENO, TERM_FD_STDERR);
+	if (ctx->std_fd[0] == -1 || ctx->std_fd[1] == -1 || ctx->std_fd[2] == -1)
+	{
+		ft_dprintf(STDERR_FILENO, "Could not save default FD\n");
+		exit(-1);
+	}
+	if ((ctx->istty = isatty(STDIN_FILENO)))
+	{
+		ctx->term_fd = dup2(STDIN_FILENO, TERM_FD);
+		return ;
+	}
+	else if ((ctx->istty = isatty(STDOUT_FILENO)))
+	{
+		ctx->term_fd = dup2(STDOUT_FILENO, TERM_FD);
+		return ;
+	}
+	else if ((ctx->istty = isatty(STDERR_FILENO)))
+	{
+		ctx->term_fd = dup2(STDERR_FILENO, TERM_FD);
+		return ;
+	}
+	ctx->istty = 0;
+}
+
 void		init_ctx(t_ctx *ctx, char **av, char **environ)
 {
 	ctx->av = av;
@@ -45,12 +73,7 @@ void		init_ctx(t_ctx *ctx, char **av, char **environ)
 	if ((ctx->hist.list = ft_dlstnew("HEAD", 4)) == NULL)
 		fatal_err(NOMEM, ctx);
 	ctx->hist.index = 1;
-	ctx->std_fd[0] = dup(STDIN_FILENO);
-	ctx->std_fd[1] = dup(STDOUT_FILENO);
-	ctx->std_fd[2] = dup(STDERR_FILENO);
-	if (ctx->std_fd[0] == -1 || ctx->std_fd[1] == -1 || ctx->std_fd[2] == -1)
-		exit(-1);
-	ctx->istty = isatty(STDIN_FILENO);
+	set_term_fd(ctx);
 	if (!ctx->istty || ioctl(STDIN_FILENO, TIOCGWINSZ, &ctx->ws) == -1)
 		ctx->line_edition = 0;
 	if ((ctx->environ = ft_astr_dup(environ)) == NULL)

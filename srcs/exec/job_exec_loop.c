@@ -6,55 +6,47 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:48:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/21 15:42:11 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 19:13:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 #include <errno.h>
 
-static void				l_handle_proc_status(t_proc *p, int status)
+static int				l_get_exit_code(int status)
 {
 	if (WIFEXITED(status))
-		p->status = WEXITSTATUS(status) | JOB_CMP;
+		return (WEXITSTATUS(status) | JOB_CMP);
 	else if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGPIPE)
-		{
-			waitpid(p->pid, &status, WUNTRACED);
-			p->status = (p->status & 0xFF) | JOB_CMP;
-			return ;
-		}
-		p->status = WTERMSIG(status);
-		waitpid(p->pid, &status, WUNTRACED);
-		p->status = (p->status & 0xFF) | JOB_SIG | JOB_CMP;
-	}
+		return (WTERMSIG(status) + 128 | JOB_CMP);
 	else
-		ft_printf("Received unhandled status\n");
+		PRINT_TTY("UNHANDLED STATUS: %d\n", status);
+	return (-1);
 }
 
-static int				l_wait_for_job(t_job *j)
+static void				l_wait_for_job(t_job *j)
 {
-	t_proc				*p;
-	int					status;
 	pid_t				pid;
+	int					status;
 
-	status = 0;
-	p = j->procs;
-	while (p != NULL)
+	PRINT_TTY("Waiting for pgid: %d\n", j->pgid);
+	while ((pid = waitpid(j->pgid, &status, 0)) != -1)
 	{
-		while ((p->status & JOB_CMP) == 0)
-		{
-			pid = waitpid(p->pid, &status, 0);
-			if (pid < 0 && errno != ECHILD)
-				ft_dprintf(STDERR_FILENO, "Critical pid error.\n");
-			l_handle_proc_status(p, status);
-		}
-		if (p->next == NULL)
-			j->status = (p->status & 0xFF) | JOB_CMP;
-		p = p->next;
+		PRINT_TTY("\033[31mNotified about %d with status: %d\033[0m\n",
+					pid, l_get_exit_code(status) & 0xFF);
+		if (pid == j->pgid)
+			j->status = l_get_exit_code(status) & 0xFF;
 	}
-	return (0);
+	if (pid == -1 && errno != ECHILD)
+	{
+		if (errno == EINTR)
+			ft_putstr_fd("42sh: waitpid: interrupted by a caught signal\n",
+							STDERR_FILENO);
+		else
+			ft_putstr_fd("42sh: waitpid: context error\n", STDERR_FILENO);
+		j->status = (-42 & 0xFF);
+	}
+	j->status = JOB_CMP | (j->status & 0xFF);
 }
 
 static int				wait_err(t_job *j)

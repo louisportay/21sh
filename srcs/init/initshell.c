@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 17:22:59 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/21 17:40:25 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ int				init(t_ctx *ctx, char **av, char **environ)
 	ctx->path = getpath(ctx->environ);
 	ctx->set |= BRACE_EXPAND;
 	init_hist(&ctx->hist, ft_astr_getval(ctx->locals, "HISTFILE"));
+	ctx->pid = getpid();
 	return (SUCCESS);
 }

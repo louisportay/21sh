@@ -6,13 +6,13 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 18:59:44 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 17:48:01 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 
-static int				lfork_do(t_proc *p)
+static int				lfork_do(t_job *j, t_proc *p)
 {
 	pid_t				pid;
 
@@ -24,7 +24,14 @@ static int				lfork_do(t_proc *p)
 	else if (pid == 0)
 		proc_exec(p);
 	else
+	{
+		if (job_setpgid(pid, pid) == -1)
+			return (1);
+		else if (job_setpgrp(pid) == -1)
+			return (1);
 		p->pid = pid;
+		j->pgid = pid;
+	}
 	return (0);
 }
 
@@ -62,7 +69,7 @@ int						job_one(t_job *j, t_ctx *ctx)
 		prefork_assign(ctx, p->asmts);
 	else if (p->argv[0] != NULL)
 		prepare_fork(p, ctx, 0);
-	if (p->type == BINARY && lfork_do(p) == 1)
+	if (p->type == BINARY && lfork_do(j, p) == 1)
 		ret = 1;
 	else if ((p->type & (EXDIR | EXPERM | EXNFD | EXNFOD)) != 0)
 		set_proc_status(j, p);

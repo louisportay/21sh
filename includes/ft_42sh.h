@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 11:44:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/21 12:49:40 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/21 18:35:52 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,18 @@
 # define HELP2 "-c <cmd>:"
 # define HELP3 "\tExecute <cmd>\n\n--rawline:\tdisable advanced line edition\n"
 
+# define TERM_FD_STDIN	10
+# define TERM_FD_STDOUT	11
+# define TERM_FD_STDERR	12
+# define TERM_FD		13
+# define TERM_FD_TTY	14
+
+#define PRINT_TTY(fmt, ...) {\
+	FILE *__TTY__ = fopen("/dev/tty", "w");\
+	fprintf(__TTY__, fmt, __VA_ARGS__);\
+	fflush(__TTY__);\
+}
+
 /*
 ** # define HELP4 "--norc:\t\tdo not read configuration file\n"
 */
@@ -93,7 +105,8 @@ enum					e_errcode
 
 struct					s_ctx
 {
-
+	pid_t				pid;
+	int					term_fd;
 	int					std_fd[3];
 	int					istty;
 	char				**path;
