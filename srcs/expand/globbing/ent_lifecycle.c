@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 15:18:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 14:17:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 12:25:40 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,12 @@ t_entry			*ent_create(char *path, char *name)
 										&on_emem, NOMEM)) == NULL)
 		return (NULL);
 	ret->name = ft_strdup(name);
-	ret->path = path == NULL ? ft_strdup(name) : ft_strjoinc(path, name, '/');
+	if (path == NULL)
+		ret->path = ft_strdup(name);
+	else if (path[0] == '/' && path[1] == '\0')
+		ret->path = ft_strjoin(path, name);
+	else
+		ret->path = ft_strjoinc(path, name, '/');
 	if (ret->name == NULL || ret->path == NULL)
 	{
 		ft_strdel(&ret->name);

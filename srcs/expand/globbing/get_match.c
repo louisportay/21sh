@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 15:04:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 16:00:00 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/21 12:16:17 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ static char		*get_dirs(t_entry *e, t_entry *entries[2])
 {
 	struct stat	stats;
 	t_entry		*tmp;
+	char		*ret;
 
 	while (e != NULL)
 	{
 		tmp = e;
 		e = e->next;
+		tmp->next = NULL;
 		if (stat(tmp->path, &stats) == -1)
 			ent_free(&tmp);
 		else if (S_ISDIR(stats.st_mode) == 0)
@@ -28,7 +30,9 @@ static char		*get_dirs(t_entry *e, t_entry *entries[2])
 		else
 			ent_insert_one(entries, tmp);
 	}
-	return (ent_cat(entries[0], 1));
+	ret = ent_cat(entries[0], 1);
+	ent_clear(entries);
+	return (ret);
 }
 
 static char		*get_deeper(t_entry *e, t_mtok *tok)
