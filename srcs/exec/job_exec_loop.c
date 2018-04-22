@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:48:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/22 18:14:47 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/22 19:26:20 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static void				l_wait_for_job(t_job *j)
 	pid_t				pid;
 	int					status;
 
+	if (get_ctxaddr()->istty == 0)
+		signal(SIGINT, SIG_DFL);
 	while ((pid = waitpid(-j->pgid, &status, 0)) != -1)
 	{
 		if (pid == j->pgid)
@@ -42,13 +44,15 @@ static void				l_wait_for_job(t_job *j)
 		j->status = (-42 & 0xFF);
 	}
 	j->status = JOB_CMP | (j->status & 0xFF);
+	if (get_ctxaddr()->istty == 0)
+		signal(SIGINT, SIG_IGN);
 }
 
 static int				wait_err(t_job *j)
 {
 	int					status;
 
-	waitpid(j->procs->pid, &status, WUNTRACED);
+	waitpid(j->procs->pid, &status, 0);
 	j->status = JOB_CMP | (-42 & 0xFF);
 	return (1);
 }

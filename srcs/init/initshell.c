@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/12 16:01:14 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/21 17:40:25 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 20:02:02 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static void		init_line_edition(t_ctx *ctx)
 
 int				init(t_ctx *ctx, char **av, char **environ)
 {
+	ctx->c_opt = 0;
 	init_ctx(ctx, av, environ);
 	set_sighandler();
 	get_shell_opt(ctx, ctx->av);

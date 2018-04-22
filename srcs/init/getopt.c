@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:13:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/21 12:49:07 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/22 20:03:33 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ static void	c_opt(t_ctx *ctx, char **av)
 	l_av = dlst_from_str(av[1]);
 	if (ft_dlstnewaddend(l_av, "\n", 1, &ft_dlstnew) == 1)
 		fatal_err(NOMEM, get_ctxaddr());
+	ctx->c_opt = 1;
 	exec_loop(l_av);
-	ft_dlstdel(&l_av, &delvoid);
 	ctx->istty = 0;
+	ft_dlstdel(&l_av, &delvoid);
 	wrap_exit(EXIT_SUCCESS, ctx);
 }
 

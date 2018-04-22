@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 11:44:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/22 16:12:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 19:55:22 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ struct					s_ctx
 
 	char				last_ret;
 	char				*last_argv;
+
+	int					c_opt;
 };
 
 void					vingtetunsh(char **av, char **environ);
