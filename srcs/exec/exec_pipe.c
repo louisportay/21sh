@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/22 17:43:31 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/22 18:15:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int				subshell_waitforchild(pid_t pgid, pid_t last)
 	while ((pid = waitpid(-pgid, &status, 0)) != -1)
 	{
 		if (pid == last)
-			ret = get_exit_code(status);
+			ret = get_exit_code(status, pid);
 	}
 	if (pid == -1 && errno != ECHILD)
 	{
