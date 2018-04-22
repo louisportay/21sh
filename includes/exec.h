@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/22 18:15:37 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/22 20:22:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,8 +176,12 @@ void					exec_print_err(enum e_extype type, char *path);
 
 void					clear_pipe(t_job *j, t_proc *last, int fd);
 
-void					restore_fds(t_ctx *ctx);
+int						restore_fds(t_ctx *ctx);
 
 int						get_exit_code(int status, pid_t pid);
+
+void					clear_lfd(int lfd[7]);
+
+void					move_fd_up(int *pipes);
 
 #endif

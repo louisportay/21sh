@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/22 13:12:31 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/22 20:22:07 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -170,6 +170,7 @@ SRCS=	main.c\
 		job_pipe.c\
 		job_one.c\
 		job_getnextexec.c\
+		pipe_movefd.c\
 		proc_exec.c\
 		exec_pipe.c\
 		exec_fork.c\

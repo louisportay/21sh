@@ -6,41 +6,12 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/22 18:15:13 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/22 20:21:13 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 #include <errno.h>
-
-static void				do_move_fd(int *pipes, int fd)
-{
-	dup2(pipes[0], fd);
-	close(pipes[0]);
-	pipes[0] = fd;
-}
-
-
-static void				move_fd_up(int *pipes)
-{
-	if (pipes[2] != LOWER_PIPE_BND && pipes[3] != LOWER_PIPE_BND)
-	{
-		do_move_fd(pipes, LOWER_PIPE_BND);
-		return ;
-	}
-	if ((pipes[2] == LOWER_PIPE_BND && pipes[3]  == -1)
-			|| (pipes[3] == LOWER_PIPE_BND && pipes[2] == -1))
-		do_move_fd(pipes, LOWER_PIPE_BND + 1);
-	else if (pipes[2] == LOWER_PIPE_BND && pipes[3] > pipes[2])
-		do_move_fd(pipes, pipes[3] + 1);
-	else if (pipes[3] == LOWER_PIPE_BND && pipes[2] > pipes[3])
-		do_move_fd(pipes, pipes[2] + 1);
-	else
-	{
-		ft_putstr_fd("42sh: Big fd assignment error\n", STDERR_FILENO);
-		wrap_exit(-42, get_ctxaddr());
-	}
-}
 
 static int				open_pipe(t_proc *p, int *pipes)
 {
@@ -90,7 +61,6 @@ static void				subshell_execloop(t_proc *p, int *pipes, pid_t *last,
 {
 	t_ctx				*ctx;
 	int					fd[7];
-	int					i;
 
 	ft_bzero(fd, sizeof(int) * 7);
 	ctx = get_ctxaddr();
@@ -109,13 +79,7 @@ static void				subshell_execloop(t_proc *p, int *pipes, pid_t *last,
 		ft_dprintf(STDERR_FILENO, EFILEDESC_STR);
 		exit(-42);
 	}
-	i = 0;
-	while (i < 7)
-	{
-		if (fd[i])
-			close(i + 3);
-		i++;
-	}
+	clear_lfd(fd);
 }
 
 int						exec_pipe(t_job *j)

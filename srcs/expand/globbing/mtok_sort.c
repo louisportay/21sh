@@ -6,23 +6,13 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 15:31:48 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/20 14:56:42 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 20:25:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "globbing.h"
 
 #define GLOBSTAR 0x0
-
-/*
-**	THIS IS PLACEHOLDER
-*/
-
-t_mtok			*mtok_requal_glob(t_mtok *mtk)
-{
-	mtok_clear(&mtk);
-	return (NULL);
-}
 
 static void		mtok_direc(t_mtok *tmp, t_mtok **ok, int *filen)
 {
@@ -47,11 +37,6 @@ static void		mtok_filen(t_mtok *tmp, t_mtok **ok, int *filen)
 		mtok_insert(ok, ok + 1, tmp);
 	*filen = 1;
 }
-
-/*
-**	if (get_ctxaddr()->set & GLOBSTAR)
-**		return (mtok_requal_glob(mtk));
-*/
 
 t_mtok			*mtok_requal(t_mtok *mtk)
 {

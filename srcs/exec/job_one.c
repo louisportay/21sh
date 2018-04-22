@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/22 17:46:24 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/22 20:16:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,12 @@ static int				lfork_do(t_job *j, t_proc *p)
 	return (0);
 }
 
-void					restore_fds(t_ctx *ctx)
+int						restore_fds(t_ctx *ctx)
 {
 	dup2(ctx->std_fd[0], STDIN_FILENO);
 	dup2(ctx->std_fd[1], STDOUT_FILENO);
 	dup2(ctx->std_fd[2], STDERR_FILENO);
+	return (1);
 }
 
 static void				set_proc_status(t_job *j, t_proc *p)
@@ -55,19 +56,14 @@ int						job_one(t_job *j, t_ctx *ctx)
 	t_proc				*p;
 	int					ret;
 	int					fd[7];
-	int					i;
 
 	ft_bzero(fd, sizeof(int) * 7);
-
 	ret = 0;
 	p = j->procs;
 	if (ctx->set & BU_SET_ONCMD)
 		proc_print(p);
 	if (do_redir(p->redirs, fd) == -1)
-	{
-		restore_fds(ctx);
-		return (1);
-	}
+		return (restore_fds(ctx));
 	if (p->asmts != NULL
 		&& p->argv[0] == NULL)
 		prefork_assign(ctx, p->asmts);
@@ -77,13 +73,7 @@ int						job_one(t_job *j, t_ctx *ctx)
 		ret = 1;
 	else if ((p->type & (EXDIR | EXPERM | EXNFD | EXNFOD)) != 0)
 		set_proc_status(j, p);
-	i = 0;
-	while (i < 7)
-	{
-		if (fd[i])
-			close(i + 3);
-		i++;
-	}
+	clear_lfd(fd);
 	restore_fds(ctx);
 	return (p->is_err ? 1 : ret);
 }

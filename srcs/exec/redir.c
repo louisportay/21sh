@@ -6,11 +6,24 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/22 17:56:43 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/22 20:10:25 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
+
+void	clear_lfd(int lfd[7])
+{
+	int	i;
+
+	i = 0;
+	while (i < 7)
+	{
+		if (lfd[i])
+			close(i + 3);
+		i++;
+	}
+}
 
 int		r_great_dgreat(t_redir *r, int lfd[7])
 {
