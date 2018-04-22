@@ -6,6 +6,13 @@
 * lexing
 * parsing
 * pipe handling
-* redirection
-* simple job control
+* redirections
+* ~~simple job control~~
 * signal handling
+* filename expansion
+* brace expansion
+* variable expansion
+* some builtins (set, hash...)
+* shell options
+* history handling
+* autocompletion
