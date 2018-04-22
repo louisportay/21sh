@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 11:44:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/21 18:35:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 13:25:04 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,16 @@
 # include "exec.h"
 # include "autocomplete.h"
 
-# define NOMEM_STR				"42sh: Cannot allocate memory\n"
-# define NODIR_STR				"42sh: error retrieving current directory\n"
-# define FAILREAD_STR			"42sh: closing standard input\n"
-# define BADQUOTES_STR			"42sh: unexpected end of file\n"
-# define BADOPT_C_STR			"42sh: -c: option requires an argument\n"
-# define CTX_ERR_STR			"42sh: context error\n"
+# define NOMEM_STR		"42sh: Cannot allocate memory\n"
+# define NODIR_STR		"42sh: error retrieving current directory\n"
+# define FAILREAD_STR	"42sh: closing standard input\n"
+# define BADQUOTES_STR	"42sh: unexpected end of file\n"
+# define BADOPT_C_STR	"42sh: -c: option requires an argument\n"
+# define CTX_ERR_STR	"42sh: context error\n"
+# define NOPROC_STR		"42sh: setpgid: No such process\n"
+# define EFILEDESC_STR	"42sh: Too much file descriptor\n"
+# define WAITINTR_STR	"42sh: waitpid: interrupted by a caught signal\n"
+# define WAITCTX_STR	"42sh: waitpid: context error\n"
 
 # define HELP1 "42sh, by vbastion and lportay:\n\n-h:\t\tDisplay this help\n"
 # define HELP2 "-c <cmd>:"
@@ -66,12 +70,6 @@
 # define TERM_FD_STDERR	12
 # define TERM_FD		13
 # define TERM_FD_TTY	14
-
-#define PRINT_TTY(fmt, ...) {\
-	FILE *__TTY__ = fopen("/dev/tty", "w");\
-	fprintf(__TTY__, fmt, __VA_ARGS__);\
-	fflush(__TTY__);\
-}
 
 /*
 ** # define HELP4 "--norc:\t\tdo not read configuration file\n"
@@ -92,7 +90,11 @@ enum					e_errcode
 	FAILSETSIGHDLR,
 	BADOPT_C,
 	BADOPT_F,
-	CTX_ERR
+	CTX_ERR,
+	NOPROC,
+	EFILEDESC,
+	EWAITINTR,
+	EWAITCTX
 };
 
 /*

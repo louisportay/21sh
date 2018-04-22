@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 19:10:15 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/21 12:50:11 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/22 13:24:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ void		dump_err(char errcode)
 		ft_putstr_fd(FAILREAD_STR, STDERR_FILENO);
 	else if (errcode == BADOPT_C)
 		ft_putstr_fd(BADOPT_C_STR, STDERR_FILENO);
+	else if (errcode == NOPROC)
+		ft_putstr_fd(NOPROC_STR, STDERR_FILENO);
+	else if (errcode == EFILEDESC)
+		ft_putstr_fd(EFILEDESC_STR, STDERR_FILENO);
+	else if (errcode == EWAITINTR)
+		ft_putstr_fd(WAITINTR_STR, STDERR_FILENO);
+	else if (errcode == EWAITCTX)
+		ft_putstr_fd(WAITCTX_STR, STDERR_FILENO);
 }
 
 /*
@@ -57,11 +65,13 @@ static void	free_hist(t_dlist **histlist, t_ctx *ctx)
 		ft_dlstdelone(histlist, &delvoid);
 }
 
-static void	close_fds(int fd[3])
+static void	close_fds(t_ctx *ctx)
 {
-	close(fd[0]);
-	close(fd[1]);
-	close(fd[2]);
+	close(ctx->std_fd[0]);
+	close(ctx->std_fd[1]);
+	close(ctx->std_fd[2]);
+	tcsetpgrp(ctx->term_fd, ctx->pid);
+	close(ctx->term_fd);
 }
 
 /*
@@ -93,6 +103,6 @@ void		wrap_exit(int status, t_ctx *ctx)
 	if (ctx->builtins != NULL)
 		hash_free(&ctx->builtins, NULL);
 	hash_free(&ctx->hash, &ft_memdel);
-	close_fds(ctx->std_fd);
+	close_fds(ctx);
 	exit(status);
 }

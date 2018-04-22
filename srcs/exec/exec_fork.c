@@ -6,18 +6,25 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:46:43 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/21 18:56:55 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 12:57:41 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
+
+/*
+**	DO_DUP:	Duplicates fd at value given by the `tar` argument
+**	DO_CLO: Closes the fd given;
+**	DO_NUL:	Set the fd value to -1, indicating nothing needs to be done further
+**	DO_MOV:	Changes fd position to another int pointed by `move`
+*/
 
 #define DO_DUP 1
 #define DO_CLO 2
 #define DO_NUL 4
 #define DO_MOV 8
 
-static void				chg_fd(int *fd, int flag, int tar, int *move)
+static void				transform_fd(int *fd, int flag, int tar, int *move)
 {
 	if (*fd != -1)
 	{
@@ -32,14 +39,25 @@ static void				chg_fd(int *fd, int flag, int tar, int *move)
 	}
 }
 
-static void				l_last_job(t_proc *p, int fd, int *pipes)
+static void				fork_child(t_proc *p, int *pipes, pid_t pgid)
 {
-	chg_fd(pipes + 2, DO_DUP | DO_CLO, STDIN_FILENO, NULL);
-	chg_fd(pipes + 3, DO_CLO, 0, NULL);
-	chg_fd(pipes, DO_CLO, 0, NULL);
-	chg_fd(pipes + 1, DO_CLO, 0, NULL);
-	close(fd);
-	dup2(get_ctxaddr()->std_fd[0], STDOUT_FILENO);
+	if (p->next == NULL)
+	{
+		transform_fd(pipes + 2, DO_DUP | DO_CLO, STDIN_FILENO, NULL);
+		transform_fd(pipes + 3, DO_CLO, 0, NULL);
+		transform_fd(pipes, DO_CLO, 0, NULL);
+		transform_fd(pipes + 1, DO_CLO, 0, NULL);
+		dup2(get_ctxaddr()->std_fd[0], STDOUT_FILENO);
+	}
+	else
+	{
+		transform_fd(pipes + 1, DO_DUP | DO_CLO, STDOUT_FILENO, NULL);
+		transform_fd(pipes, DO_CLO, 0, NULL);
+		transform_fd(pipes + 2, DO_DUP | DO_CLO, STDIN_FILENO, NULL);
+		transform_fd(pipes + 3, DO_CLO, 0, NULL);
+	}
+	if (job_setpgid(getpid(), pgid) == -1)
+		exit(1);
 	if (get_ctxaddr()->set & BU_SET_ONCMD)
 		proc_print(p);
 	if (p->status & JOB_CMP)
@@ -48,47 +66,24 @@ static void				l_last_job(t_proc *p, int fd, int *pipes)
 		proc_exec(p);
 }
 
-static void				fork_child(t_proc *p, t_ctx *ctx, int *pipes,
-									pid_t pgid)
-{
-	chg_fd(pipes + 1, DO_DUP | DO_CLO, STDOUT_FILENO, NULL);
-	chg_fd(pipes, DO_CLO, 0, NULL);
-	chg_fd(pipes + 2, DO_DUP | DO_CLO, STDIN_FILENO, NULL);
-	chg_fd(pipes + 3, DO_CLO, 0, NULL);
-	if (job_setpgid(getpid(), pgid) == -1)
-		exit(1);
-	if (ctx->set & BU_SET_ONCMD)
-		proc_print(p);
-	if (p->status & JOB_CMP)
-		exit(1);
-	else
-		proc_exec(p);
-}
-
-int						fork_do(t_proc *p, int fd, pid_t pgid, int *pipes)
+int						fork_do(t_proc *p, pid_t pgid, int *pipes)
 {
 	pid_t				pid;
 
-	if (p->next == NULL)
-		l_last_job(p, fd, pipes);
-	else if ((pid = fork()) == 0)
-		fork_child(p, get_ctxaddr(), pipes, pgid);
+	if ((pid = fork()) == 0)
+		fork_child(p, pipes, pgid);
 	else if (pid < 0)
-		return (print_err("42sh: fork: could not fork\n", 1));
+		return (print_err("42sh: fork: could not fork\n", -1));
 	else
 	{
-		chg_fd(pipes + 2, DO_CLO | DO_NUL, 0, NULL);
-		chg_fd(pipes + 3, DO_CLO | DO_NUL, 0, NULL);
-		chg_fd(pipes + 1, DO_CLO | DO_NUL, 0, NULL);
-		chg_fd(pipes, DO_MOV, 0, pipes + 2);
+		transform_fd(pipes + 2, DO_CLO | DO_NUL, 0, NULL);
+		transform_fd(pipes + 3, DO_CLO | DO_NUL, 0, NULL);
+		transform_fd(pipes + 1, DO_CLO | DO_NUL, 0, NULL);
+		transform_fd(pipes, DO_MOV, 0, pipes + 2);
 		p->pid = pid;
 		if (job_setpgid(pid, pgid) == -1)
 			return (-1);
-		if (write(fd, (char*)&pid, sizeof(int)) == -1)
-		{
-			ft_dprintf(STDERR_FILENO, "Closed IPC pipe.\n");
-			return (-1);
-		}
+		return (pid);
 	}
 	return (0);
 }

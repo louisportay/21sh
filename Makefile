@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/21 13:10:20 by vbastion         ###   ########.fr        #
+#    Updated: 2018/04/22 13:12:31 by vbastion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ vpath %.h includes/
 
 CC= gcc-8
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=sanitize
+DEBUG=
 OPT=LIB
 ARCH:= $(shell uname)
 TERMLIB=-ltermcap
@@ -245,7 +245,6 @@ SRCS=	main.c\
 		\
 		path_reset.c\
 		\
-		exec_pipe_error.c\
 		vtok_print.c\
 		\
 		expand_glob.c\
