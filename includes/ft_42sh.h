@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 11:44:04 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/22 13:25:04 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 16:12:30 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@
 # define TERM_FD_STDERR	12
 # define TERM_FD		13
 # define TERM_FD_TTY	14
+# define LOWER_PIPE_BND	15
 
 /*
 ** # define HELP4 "--norc:\t\tdo not read configuration file\n"
