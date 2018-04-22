@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 14:45:26 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/22 15:57:09 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:43:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ static void				subshell_execloop(t_proc *p, int *pipes, pid_t *last,
 											pid_t pgid)
 {
 	t_ctx				*ctx;
+	int					fd[7];
+	int					i;
 
+	ft_bzero(fd, sizeof(int) * 7);
 	ctx = get_ctxaddr();
 	restore_fds(ctx);
 	if (open_pipe(p, pipes) == -1)
@@ -97,7 +100,7 @@ static void				subshell_execloop(t_proc *p, int *pipes, pid_t *last,
 		ft_dprintf(STDERR_FILENO, EFILEDESC_STR);
 		exit(-42);
 	}
-	if (do_redir(p->redirs) == -1)
+	if (do_redir(p->redirs, fd) == -1)
 		p->is_err = 1;
 	if ((p->status & JOB_CMP) == 0)
 		prepare_forking(ctx, p);
@@ -105,6 +108,13 @@ static void				subshell_execloop(t_proc *p, int *pipes, pid_t *last,
 	{
 		ft_dprintf(STDERR_FILENO, EFILEDESC_STR);
 		exit(-42);
+	}
+	i = 0;
+	while (i < 7)
+	{
+		if (fd[i])
+			close(i + 3);
+		i++;
 	}
 }
 

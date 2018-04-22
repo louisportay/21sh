@@ -6,13 +6,13 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:07:55 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/22 14:34:36 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:56:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_42sh.h"
 
-int		r_great_dgreat(t_redir *r)
+int		r_great_dgreat(t_redir *r, int lfd[7])
 {
 	int fd;
 
@@ -23,10 +23,12 @@ int		r_great_dgreat(t_redir *r)
 	if (dup2(fd, r->lhs) == -1)
 		return (err_close_fd(fd));
 	close(fd);
+	if (r->lhs > 2)
+		lfd[r->lhs - 3] = 1;
 	return (0);
 }
 
-int		r_less(t_redir *r)
+int		r_less(t_redir *r, int lfd[7])
 {
 	int fd;
 
@@ -35,10 +37,12 @@ int		r_less(t_redir *r)
 	if (dup2(fd, r->lhs) == -1)
 		return (err_close_fd(fd));
 	close(fd);
+	if (r->lhs > 2)
+		lfd[r->lhs - 3] = 1;
 	return (0);
 }
 
-int		r_dless_tless(t_redir *r)
+int		r_dless_tless(t_redir *r, int lfd[7])
 {
 	int		fd;
 
@@ -51,10 +55,12 @@ int		r_dless_tless(t_redir *r)
 	if (dup2(fd, r->lhs) == -1)
 		return (err_close_fd(fd));
 	close(fd);
+	if (r->lhs > 2)
+		lfd[r->lhs - 3] = 1;
 	return (0);
 }
 
-int		do_redir(t_redir *r)
+int		do_redir(t_redir *r, int fd[7])
 {
 	int ret;
 
@@ -63,15 +69,15 @@ int		do_redir(t_redir *r)
 		if (r->lhs >= 10)
 			return (err_busyfd(r->lhs));
 		if (r->type & (GREAT | DGREAT))
-			ret = r_great_dgreat(r);
+			ret = r_great_dgreat(r, fd);
 		else if (r->type & LESS)
-			ret = r_less(r);
+			ret = r_less(r, fd);
 		else if (r->type & (DLESS | TLESS))
-			ret = r_dless_tless(r);
+			ret = r_dless_tless(r, fd);
 		else if (r->type & R_AND)
 			ret = r_andgreat_anddgreat(r);
 		else if (r->type & (GREATAND | LESSAND))
-			ret = r_greatand_lessand(r);
+			ret = r_greatand_lessand(r, fd);
 		else
 			return (-1);
 		if (ret == -1)

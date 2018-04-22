@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 17:25:27 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/22 14:00:52 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:31:02 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,9 +156,9 @@ int						prepare_fork(t_proc *p, t_ctx *ctx, int pipeline);
 
 char					*get_command(t_job *j);
 
-int						do_redir(t_redir *r);
+int						do_redir(t_redir *r, int fd[7]);
 int						r_andgreat_anddgreat(t_redir *r);
-int						r_greatand_lessand(t_redir *r);
+int						r_greatand_lessand(t_redir *r, int fd[7]);
 int						err_close_fd(int fd);
 int						err_open(char *s);
 int						err_busyfd(int	fd);

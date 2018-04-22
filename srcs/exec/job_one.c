@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 11:37:17 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/22 14:02:37 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 17:46:24 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,16 @@ int						job_one(t_job *j, t_ctx *ctx)
 {
 	t_proc				*p;
 	int					ret;
+	int					fd[7];
+	int					i;
+
+	ft_bzero(fd, sizeof(int) * 7);
 
 	ret = 0;
 	p = j->procs;
 	if (ctx->set & BU_SET_ONCMD)
 		proc_print(p);
-	if (do_redir(p->redirs) == -1)
+	if (do_redir(p->redirs, fd) == -1)
 	{
 		restore_fds(ctx);
 		return (1);
@@ -73,6 +77,13 @@ int						job_one(t_job *j, t_ctx *ctx)
 		ret = 1;
 	else if ((p->type & (EXDIR | EXPERM | EXNFD | EXNFOD)) != 0)
 		set_proc_status(j, p);
+	i = 0;
+	while (i < 7)
+	{
+		if (fd[i])
+			close(i + 3);
+		i++;
+	}
 	restore_fds(ctx);
 	return (p->is_err ? 1 : ret);
 }

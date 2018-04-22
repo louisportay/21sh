@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:48:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/22 13:24:30 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 16:53:10 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int						get_exit_code(int status)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status) | JOB_CMP);
 	else if (WIFSIGNALED(status))
-		return (WTERMSIG(status) + 128 | JOB_CMP);
+		return ((WTERMSIG(status) + 128) | JOB_CMP);
 	return (-1);
 }
 

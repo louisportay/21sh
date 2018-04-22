@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 19:18:10 by lportay           #+#    #+#             */
-/*   Updated: 2018/03/14 16:57:56 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/22 17:22:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	print_char(t_ctx *ctx, char *prompt)
 		ctx->cur_line->prompt_len = 0;
 		ctx->cur_line->num_lines++;
 	}
-	if (!(ctx->cur_line->prompt_len % ctx->ws.ws_col)
+	if (ctx->ws.ws_col && !(ctx->cur_line->prompt_len % ctx->ws.ws_col)
 			&& ctx->cur_line->prompt_len > 0)
 	{
 		tputs(ctx->tc.dow, 1, &ft_putchar_stdin);

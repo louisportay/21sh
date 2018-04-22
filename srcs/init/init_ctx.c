@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 19:37:06 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/21 17:26:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/22 18:01:04 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ static void	set_term_fd(t_ctx *ctx)
 		ctx->term_fd = dup2(STDIN_FILENO, TERM_FD);
 		return ;
 	}
-	else if ((ctx->istty = isatty(STDOUT_FILENO)))
+	else if (isatty(STDOUT_FILENO))
 	{
 		ctx->term_fd = dup2(STDOUT_FILENO, TERM_FD);
 		return ;
 	}
-	else if ((ctx->istty = isatty(STDERR_FILENO)))
+	else if (isatty(STDERR_FILENO))
 	{
 		ctx->term_fd = dup2(STDERR_FILENO, TERM_FD);
 		return ;
