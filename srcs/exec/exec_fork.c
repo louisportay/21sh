@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:46:43 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/22 19:51:26 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/23 11:17:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void				fork_child(t_proc *p, int *pipes, pid_t pgid)
 		transform_fd(pipes + 3, DO_CLO, 0, NULL);
 		transform_fd(pipes, DO_CLO, 0, NULL);
 		transform_fd(pipes + 1, DO_CLO, 0, NULL);
-		dup2(get_ctxaddr()->std_fd[1], STDOUT_FILENO);
 	}
 	else
 	{
