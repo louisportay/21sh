@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 18:40:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 09:51:38 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/23 14:19:53 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,18 @@ static void	complete_histlist(char *histentry, t_hist *hist)
 	insert_histlist(dup, hist);
 }
 
-void		init_hist(t_hist *hist, char *histfile)
+int			init_hist(t_hist *hist, char *histfile, int flags)
 {
 	char		*histentry;
 	int			file;
 
 	histentry = NULL;
-	if ((file = open(histfile, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR)) == -1
+	if ((file = open(histfile, flags, S_IWUSR | S_IRUSR)) == -1
 			|| (get_next_line(file, &histentry) == -1))
 	{
 		close(file);
 		hist->first_entry = hist->index;
-		return ;
+		return (-1);
 	}
 	while (histentry)
 	{
@@ -99,4 +99,5 @@ void		init_hist(t_hist *hist, char *histfile)
 	hist->first_entry = hist->index;
 	trim_history(&hist->list, ft_astr_getval(get_ctxaddr()->locals,
 												"HISTSIZE"));
+	return (0);
 }

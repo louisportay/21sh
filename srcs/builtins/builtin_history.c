@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:35:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/23 14:06:55 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/23 14:29:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,13 @@ static void		a_opt(t_proc *p, t_ctx *ctx)
 	ctx->hist.first_entry = ctx->hist.index;
 }
 
-static void		r_opt(t_proc *p, t_ctx *ctx)
+static int		r_opt(t_proc *p, t_ctx *ctx)
 {
 	if (p->argv[2])
-		init_hist(&ctx->hist, p->argv[2]);
+		return (init_hist(&ctx->hist, p->argv[2], O_RDONLY));
 	else
-		init_hist(&ctx->hist, ft_astr_getval(ctx->locals, "HISTFILE"));
+		return (init_hist(&ctx->hist, ft_astr_getval(ctx->locals, "HISTFILE"),
+								O_RDONLY));
 }
 
 static void		w_opt(t_proc *p, t_ctx *ctx)
@@ -85,7 +86,7 @@ int				ft_history(t_proc *p, t_ctx *ctx)
 	else if (!ft_strcmp(p->argv[1], "-a"))
 		a_opt(p, ctx);
 	else if (!ft_strcmp(p->argv[1], "-r"))
-		r_opt(p, ctx);
+		return (r_opt(p, ctx));
 	else if (!ft_strcmp(p->argv[1], "-w"))
 		w_opt(p, ctx);
 	else

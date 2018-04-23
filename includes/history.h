@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 12:04:48 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/10 09:39:05 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/23 14:19:26 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct			s_histentry
 	unsigned			index;
 }						t_histentry;
 
-void					init_hist(t_hist *hist, char *histfile);
+int						init_hist(t_hist *hist, char *histfile, int flags);
 void					add_histfile(t_ctx *env);
 void					del_histentry(void *histentry, size_t histentry_size);
 void					del_history(t_dlist **history);
