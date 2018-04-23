@@ -6,7 +6,7 @@
 #    By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2018/04/22 20:22:07 by lportay          ###   ########.fr        #
+#    Updated: 2018/04/23 14:04:59 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -199,6 +199,7 @@ SRCS=	main.c\
 		builtin_env.c\
 		builtin_envopt.c\
 		builtin_history.c\
+		builtin_hist_utils.c\
 		builtin_exit.c\
 		\
 		expand_exec.c\

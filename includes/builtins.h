@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/23 13:18:35 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/23 14:05:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@
 
 # define BU_HI_EEORNG "42sh: history, %s: history position out of range\n"
 # define BU_HI_ENUMARG "42sh: history: -d: option requires an argument\n"
-# define BU_HI_EINVAL "42sh: history: %s: invalid option\n"
-# define BU_HI_USAGE "history: history [n] [-c] [-d offset] [-arw [filename]]\n"
+# define BU_HI_USAGE "usage: history [n] [-c] [-d offset] [-arw [filename]]\n"
 
 # define BU_E_EARG "42sh: env: option requires an argument -- 'u'\n"
 # define BU_E_EINVARG "42sh: env: Cannot unset '%s': Invalid argument\n"
@@ -125,6 +124,8 @@ int						ft_hash(t_proc *proc, t_ctx *ctx);
 int						ft_set(t_proc *proc, t_ctx *ctx);
 int						ft_env(t_proc *p);
 int						ft_history(t_proc *p, t_ctx *ctx);
+void					print_history(t_dlist *histlist, int n, char *av);
+int						usage_history(char *av);
 int						ft_jobs(t_proc *proc, t_ctx *ctx);
 int						ft_fg(t_proc *proc, t_ctx *ctx, int pipeline);
 int						ft_bg(t_proc *proc, t_ctx *ctx, int pipeline);
