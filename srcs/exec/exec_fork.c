@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:46:43 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/23 11:17:38 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/23 11:47:15 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ static void				fork_child(t_proc *p, int *pipes, pid_t pgid)
 	}
 	if (job_setpgid(getpid(), pgid) == -1)
 		exit(1);
-	if (get_ctxaddr()->set & BU_SET_ONCMD)
-		proc_print(p);
 	if (p->status & JOB_CMP)
 		exit(1);
 	else

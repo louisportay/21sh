@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:19:39 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/12 16:53:35 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/23 11:48:37 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ static inline int	laddarg(u_short *tmp, char c)
 		*tmp |= BRACE_EXPAND;
 	else if (c == 'f')
 		*tmp |= BU_SET_FNEXP;
-	else if (c == 'x')
-		*tmp |= BU_SET_ONCMD;
 	else if (c == 'd')
 		*tmp |= DOTGLOB;
 	else if (c == 'n')
@@ -54,8 +52,6 @@ static inline int	lrmarg(u_short *tmp, char c)
 		*tmp &= ~BRACE_EXPAND;
 	else if (c == 'f')
 		*tmp &= ~BU_SET_FNEXP;
-	else if (c == 'x')
-		*tmp &= ~BU_SET_ONCMD;
 	else if (c == 'd')
 		*tmp &= ~DOTGLOB;
 	else if (c == 'n')

@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 17:37:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 16:54:07 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/23 11:50:22 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int			set_help(t_proc *p, int usage)
 	p->type = BUILTIN;
 	if (usage)
 		ft_putendl_fd(BU_S_USG, STDERR_FILENO);
-	ft_printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
-				BU_S_HPR, BU_S_HSE, BU_S_HEX, BU_S_HBG, BU_S_HON, BU_S_HFN,
+	ft_printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
+				BU_S_HPR, BU_S_HSE, BU_S_HEX, BU_S_HBG, BU_S_HFN,
 				BU_S_HDO, BU_S_HNU, BU_S_HFA, BU_S_HEL);
 	return (-1);
 }

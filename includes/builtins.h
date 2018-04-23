@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 21:18:29 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/23 11:52:40 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,12 @@
 
 # include "ft_42sh.h"
 
-# define BU_S_USG ("42sh: usage: set [-+][Fabdfhnolx]")
+# define BU_S_USG ("42sh: usage: set [-+][BFadfhlno]")
 
 # define BU_S_HPR ("l: shows local variables. With '+l' shows env beforehand")
 # define BU_S_HSE ("o: shows options. '+o' prints it as commands to set them")
 # define BU_S_HEX ("a: assignment commands are exported")
 # define BU_S_HBG ("B: activate brace expansion")
-# define BU_S_HON ("x: prints each action done before execution")
 # define BU_S_HFN ("f: inhibits globbing")
 # define BU_S_HDO ("d: adds hidden files in globbing")
 # define BU_S_HNU ("n: if globbing fails, returns null string")
@@ -39,7 +38,6 @@
 # define BU_SET_EXPOR	0x01
 # define BRACE_EXPAND	0x02
 # define BU_SET_FNEXP	0x04
-# define BU_SET_ONCMD	0x08
 # define DOTGLOB		0x10
 # define NULLGLOB		0x20
 # define FAILGLOB		0x40
@@ -52,7 +50,6 @@
 # define BU_SET_MEXPO ("allexport")
 # define BU_SET_BREXP ("brace expand")
 # define BU_SET_MFNEX ("noglob")
-# define BU_SET_MONCM ("xtrace")
 # define BU_SET_GLDOT ("dotglob")
 # define BU_SET_GLNUL ("nullglob")
 # define BU_SET_GLFAI ("failglob")

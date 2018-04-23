@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 15:20:05 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 12:22:58 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/23 11:49:27 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ static void			lset(t_ctx *ctx, t_qbuf *buf)
 	qbuf_add(buf, ctx->set & BRACE_EXPAND ? BU_SET_ON : BU_SET_OFF);
 	qbuf_add(buf, BU_SET_MFNEX);
 	qbuf_add(buf, ctx->set & BU_SET_FNEXP ? BU_SET_ON : BU_SET_OFF);
-	qbuf_add(buf, BU_SET_MONCM);
-	qbuf_add(buf, ctx->set & BU_SET_ONCMD ? BU_SET_ON : BU_SET_OFF);
 	qbuf_add(buf, BU_SET_GLDOT);
 	qbuf_add(buf, ctx->set & DOTGLOB ? BU_SET_ON : BU_SET_OFF);
 	qbuf_add(buf, BU_SET_GLNUL);
@@ -39,8 +37,6 @@ static void			lcmd(t_ctx *ctx, t_qbuf *buf)
 	qbuf_add(buf, "B\nset ");
 	qbuf_addc(buf, ctx->set & BU_SET_FNEXP ? '-' : '+');
 	qbuf_add(buf, "f\nset ");
-	qbuf_addc(buf, ctx->set & BU_SET_ONCMD ? '-' : '+');
-	qbuf_add(buf, "x\nset ");
 	qbuf_addc(buf, ctx->set & DOTGLOB ? '-' : '+');
 	qbuf_add(buf, "d\nset ");
 	qbuf_addc(buf, ctx->set & NULLGLOB ? '-' : '+');
