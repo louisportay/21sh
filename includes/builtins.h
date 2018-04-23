@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 19:10:22 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/23 11:52:40 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/23 13:18:35 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@
 
 # define BU_HI_EEORNG "42sh: history, %s: history position out of range\n"
 # define BU_HI_ENUMARG "42sh: history: -d: option requires an argument\n"
-# define BU_HI_USAGE "history: history [n] [-c] [-d offset] [-arw filename]\n"
+# define BU_HI_EINVAL "42sh: history: %s: invalid option\n"
+# define BU_HI_USAGE "history: history [n] [-c] [-d offset] [-arw [filename]]\n"
 
 # define BU_E_EARG "42sh: env: option requires an argument -- 'u'\n"
 # define BU_E_EINVARG "42sh: env: Cannot unset '%s': Invalid argument\n"

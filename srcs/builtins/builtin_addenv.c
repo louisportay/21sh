@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:25:12 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/09 19:59:34 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/23 13:31:57 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,5 @@ int					modenv(t_proc *p, t_ctx *ctx, char *name)
 	}
 	if (pmod)
 		path_reset(ctx, 1);
-	return (0);
+	return (ret);
 }

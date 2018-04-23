@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 20:48:08 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/22 19:26:20 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/23 12:56:54 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ int						job_exec_loop(t_job **job, t_ctx *ctx)
 		return (1);
 	else if (ret == -1)
 		return (wait_err(j));
-	l_wait_for_job(j);
+	if (j->procs->next == NULL && j->procs->type == BUILTIN)
+		j->status = j->procs->status | JOB_CMP;
+	else
+		l_wait_for_job(j);
 	if ((n = job_getnextexec(j)) == NULL)
 		j->parent->status = (JOB_DON | (j->status & 0xFF));
 	else

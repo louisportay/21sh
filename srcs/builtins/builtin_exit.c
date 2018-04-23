@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:49:28 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/06 19:38:35 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/23 13:05:08 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ int		ft_exit(t_proc *p, t_ctx *ctx, int pipeline)
 			wrap_exit(EXIT_SUCCESS, ctx);
 		return (0);
 	}
-	else if (p->argv[1] && !ft_isnumber(p->argv[1]))
+	if (p->argv[1] && !ft_isnumber(p->argv[1]))
+	{
 		ft_dprintf(STDERR_FILENO, BU_EX_ENUMARG, p->argv[1]);
-	return (0);
+		return (1);
+	}
+	return ((unsigned char)ft_atoi(p->argv[1]));
 }

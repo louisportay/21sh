@@ -6,7 +6,7 @@
 /*   By: vbastion <vbastion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/09 10:55:00 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/12 12:51:12 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/23 13:06:38 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void				vtok_dollquest(t_lvar *lvar)
 
 	ctx = get_ctxaddr();
 	ft_bzero(buf, 20);
-	ft_ltobuf((long long)ctx->last_ret, 10, 0, buf);
+	ft_ltobuf((long long)(unsigned char)ctx->last_ret, 10, 0, buf);
 	qbuf_add(lvar->buf, buf);
 	lvar->curr_tok = lvar->curr_tok->next->next;
 	lvar->next = &vtok_start;

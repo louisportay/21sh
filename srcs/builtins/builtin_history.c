@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 10:35:33 by lportay           #+#    #+#             */
-/*   Updated: 2018/04/13 10:13:22 by lportay          ###   ########.fr       */
+/*   Updated: 2018/04/23 13:20:20 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,15 @@ int			ft_history(t_proc *p, t_ctx *ctx)
 	s = NULL;
 	p->type = BUILTIN;
 	if (p->argv[1] == NULL)
+	{
 		ft_putstr(s = dump_history(ctx->hist.list->next, ctx->hist.index));
+		free(s);
+	}
 	else if (ft_isnumber(p->argv[1]) && p->argv[2] == NULL)
+	{
 		ft_putstr(s = dump_history(ctx->hist.list->next, ft_atoi(p->argv[1])));
+		free(s);
+	}
 	else if (!ft_strcmp(p->argv[1], "-c") && p->argv[2] == NULL)
 		ft_dlstdel(&ctx->hist.list->next, &del_histentry);
 	else if (!ft_strcmp(p->argv[1], "-d"))
@@ -83,6 +89,7 @@ int			ft_history(t_proc *p, t_ctx *ctx)
 			d_opt(p, ctx);
 		else
 			ft_dprintf(STDERR_FILENO, "%s%s", BU_HI_ENUMARG, BU_HI_USAGE);
+		return (1);
 	}
 	else if (!ft_strcmp(p->argv[1], "-a"))
 		a_opt(p, ctx);
@@ -90,6 +97,10 @@ int			ft_history(t_proc *p, t_ctx *ctx)
 		r_opt(p, ctx);
 	else if (!ft_strcmp(p->argv[1], "-w"))
 		w_opt(p, ctx);
-	free(s);
+	else
+	{
+		ft_dprintf(STDERR_FILENO, BU_HI_EINVAL BU_HI_USAGE, p->argv[1]);
+		return (1);
+	}
 	return (0);
 }

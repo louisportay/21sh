@@ -6,7 +6,7 @@
 /*   By: vbastion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 17:37:09 by vbastion          #+#    #+#             */
-/*   Updated: 2018/04/23 11:50:22 by vbastion         ###   ########.fr       */
+/*   Updated: 2018/04/23 13:25:31 by vbastion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ int			bu_set_getopts(t_proc *p, t_ctx *ctx, int i)
 	{
 		if ((p->argv[i][0] == '-' || p->argv[i][0] == '+')
 				&& ft_isalpha(p->argv[i][1]))
-			lget_switch(opts, p, i, &tmp);
+		{
+			if (lget_switch(opts, p, i, &tmp) == -1)
+				return (-1);
+		}
 		else if (p->argv[i][0] == '-' || p->argv[i][0] == '+')
 		{
 			ft_dprintf(STDERR_FILENO, "42sh: set: %s: Invalid argument\n%s\n",
